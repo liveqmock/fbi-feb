@@ -13,14 +13,14 @@ public abstract class AbstractTxnAction {
     private static Logger logger = LoggerFactory.getLogger(AbstractTxnAction.class);
 
     @Transactional
-    public List<SOFForm> run(MTia tia) {
+    public List<SOFForm> run(String termid, String tellid, MTia tia) {
         try {
-            return process(tia);
+            return process(termid, tellid, tia);
         } catch (Exception e) {
             logger.error("交易异常", e);
             throw new RuntimeException(e.getMessage() == null ? "交易异常." : e.getMessage());
         }
     }
 
-    abstract protected List<SOFForm> process(MTia tia) throws Exception;
+    abstract protected List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception;
 }

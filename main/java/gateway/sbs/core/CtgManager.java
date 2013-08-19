@@ -44,12 +44,8 @@ public class CtgManager {
      *
      * @throws Exception
      */
-    public void processSingleResponsePkg(String termid, String tellerid, SBSRequest request, SBSResponse response) {
+    public void processSingleResponsePkg(SBSRequest request, SBSResponse response) {
 
-        if(StringUtils.isEmpty(termid)) throw new RuntimeException("终端号不能为空.");
-        if(StringUtils.isEmpty(tellerid)) throw new RuntimeException("柜员号不能为空.");
-        if(4 != termid.length()) throw new RuntimeException("终端号长度错误.");
-        if(4 != tellerid.length()) throw new RuntimeException("柜员号长度错误.");
         ECIRequest eciRequestObject = null;
         javaGatewayObject = null;
         try {
@@ -72,7 +68,7 @@ public class CtgManager {
             byte[] abytCommarea = new byte[iCommareaSize];
 
             //包头内容，xxxx交易，010网点，MPC1终端，MPC1柜员，包头定长51个字符
-            requestBuffer = "TPEI" + request.getTxncode() + "  010       " + termid + tellerid;
+            requestBuffer = "TPEI" + request.getTxncode() + "  010       " + request.getTermid() + request.getTellerid();
             //打包包头
             System.arraycopy(getBytes(requestBuffer), 0, abytCommarea, 0, requestBuffer.length());
             //打包包体

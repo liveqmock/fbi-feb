@@ -7,9 +7,9 @@ public class M9805 extends MTia {
     private String CURCDE;  // ±Ò±ð
     private String IRTDAT; // ÈÕÆÚ
 
-    public M9805(String curcde, String irtdat8) {
-        this.CURCDE = curcde;
-        this.IRTDAT = irtdat8;
+    public M9805(String CURCDE, String IRTDAT) {
+        this.CURCDE = CURCDE;
+        this.IRTDAT = IRTDAT;
     }
 
     public String getCURCDE() {

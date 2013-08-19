@@ -55,6 +55,7 @@ public class ActirtAction implements Serializable {
         action = params.get("action");
         irtdate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         if (!StringUtils.isEmpty(irtcde)) {
+
             M9804 m9804 = new M9804(curcde, irtcde, extdat, "0");
             SOFForm form = dataExchangeService.callSbsTxn("9804", m9804).get(0);
             if (!"T804".equals(form.getFormHeader().getFormCode())) {

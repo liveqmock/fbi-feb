@@ -18,9 +18,9 @@ public class CoreTxnService {
 
     public SBSResponse execute(String termid, String tellerid, String txnCode, List<String> paramList) {
         CtgManager ctgManager = new CtgManager();
-        SBSRequest sbsRequest = new SBSRequest(txnCode, paramList);
+        SBSRequest sbsRequest = new SBSRequest(termid, tellerid, txnCode, paramList);
         SBSResponse sbsResponse = new SBSResponse();
-        ctgManager.processSingleResponsePkg(termid, tellerid, sbsRequest, sbsResponse);
+        ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
         return sbsResponse;
     }
 }

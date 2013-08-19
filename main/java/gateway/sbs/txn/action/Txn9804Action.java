@@ -4,7 +4,6 @@ import gateway.sbs.core.SBSResponse;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.service.CoreTxnService;
 import gateway.sbs.txn.model.msg.M9804;
-import gateway.sbs.txn.model.msg.M9805;
 import gateway.sbs.txn.model.msg.MTia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class Txn9804Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
 
         M9804 m9804 = (M9804) tia;
         logger.info("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
@@ -51,7 +50,7 @@ public class Txn9804Action extends AbstractTxnAction {
         paramList.add("000001");
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(m9804.getTermid(), m9804.getOperid(), "9804", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellid, "9804", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
                 " 日期：" + m9804.getEFFDAT() + "返回码：");

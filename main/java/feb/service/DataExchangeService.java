@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.service.SbsTxnService;
 import gateway.sbs.txn.model.msg.MTia;
+import skyline.service.SkylineService;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class DataExchangeService {
 
     // SBS交易执行点
     public List<SOFForm> callSbsTxn(String txnCode, MTia tia) {
-        return sbsTxnService.execute(txnCode, tia);
+        String tellerid = SkylineService.getOperId();
+        String termid = tellerid;
+        return sbsTxnService.execute(termid, tellerid, txnCode, tia);
     }
 }
