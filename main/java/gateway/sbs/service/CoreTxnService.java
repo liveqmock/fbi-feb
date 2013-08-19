@@ -16,11 +16,11 @@ import java.util.List;
 public class CoreTxnService {
     private static Logger logger = LoggerFactory.getLogger(CoreTxnService.class);
 
-    public SBSResponse execute(String txnCode, List<String> paramList) {
+    public SBSResponse execute(String termid, String tellerid, String txnCode, List<String> paramList) {
         CtgManager ctgManager = new CtgManager();
         SBSRequest sbsRequest = new SBSRequest(txnCode, paramList);
         SBSResponse sbsResponse = new SBSResponse();
-        ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
+        ctgManager.processSingleResponsePkg(termid, tellerid, sbsRequest, sbsResponse);
         return sbsResponse;
     }
 }

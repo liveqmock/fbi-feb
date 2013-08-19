@@ -51,7 +51,7 @@ public class Txn9804Action extends AbstractTxnAction {
         paramList.add("000001");
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute("9804", paramList);
+        SBSResponse response = coreTxnService.execute(m9804.getTermid(), m9804.getOperid(), "9804", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
                 " 日期：" + m9804.getEFFDAT() + "返回码：");
