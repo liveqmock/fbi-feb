@@ -1,4 +1,4 @@
-package pub.platform.debug;
+package pub.platform.deb;
 
 public class DebugInfo {
 	private Throwable stack;

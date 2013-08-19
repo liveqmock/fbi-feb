@@ -7,7 +7,7 @@ import java.util.Vector;
 import pub.platform.db.ConnectionManager;
 import pub.platform.db.DatabaseConnection;
 import pub.platform.db.RecordSet;
-import pub.platform.debug.DebugInfo;
+import pub.platform.deb.DebugInfo;
 import pub.platform.form.util.event.LogAssistor;
 import pub.platform.system.manage.dao.PtDeptBean;
 import pub.platform.system.manage.dao.PtOperBean;

@@ -1,4 +1,4 @@
-package pub.platform.debug;
+package pub.platform.deb;
 
 import java.io.File;
 import java.io.FileInputStream;

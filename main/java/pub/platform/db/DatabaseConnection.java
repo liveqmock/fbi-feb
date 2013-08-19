@@ -22,8 +22,8 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import pub.platform.debug.BussDebug;
-import pub.platform.debug.DebugInfo;
+import pub.platform.deb.BussDebug;
+import pub.platform.deb.DebugInfo;
 import pub.platform.utils.*;
 
 /**
