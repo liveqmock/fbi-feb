@@ -12,7 +12,7 @@ function tabbarclk(obj) {
         setclass(obj.getAttribute("id"));
         obj.setAttribute("active", "true");
         obj.className = "tabs-item-active";
-        document.getElementById(tabbarid).style.display = "inline";
+        document.getElementById(tabbarid).style.display = "block";
         tabbarhide(tabbarid);
     }
 }
