@@ -22,9 +22,9 @@ public class T804 extends SOFFormBean {
     private String IRTSPL;          // 浮动下限值
     private String SPRFLG;          // 浮动标志
     private String CDFLAG;          // 借贷标志
-    private String IRTTRM;          // 期限单位
-    private String TRMUNT;          // 建档柜员
-    private String CRETLR;          // 期限
+    private String IRTTRM;          // 期限
+    private String TRMUNT;          // 期限单位
+    private String CRETLR;          //  建档柜员
     private String CREDAT;          // 建档日期
 
     public String getCURCDE() {
