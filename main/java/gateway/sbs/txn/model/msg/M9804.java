@@ -20,6 +20,9 @@ public class M9804 extends MTia {
     private String TRMUNT = "";  // 期限单位
     private String FUNCDE;       // 操作类别 0-单笔查询,2-修改, 3-删除, 4-增加
 
+    public M9804() {
+    }
+
     public M9804(String CURCDE, String IRTCDE, String EFFDAT, String FUNCDE) {
         this.CURCDE = CURCDE;
         this.IRTCDE = IRTCDE;
