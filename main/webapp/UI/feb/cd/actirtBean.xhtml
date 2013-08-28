@@ -59,11 +59,11 @@
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="币别:"/>
-                            <p:inputText id="curcde" value="#{actirtAction.irt.CURCDE}" readonly="#{actirtAction.readonly}"/>
+                            <p:inputText id="curcde" value="#{actirtAction.irt.CURCDE}" readonly="true"/>
                             <h:outputLabel value="利率码:"/>
-                            <p:inputText value="#{actirtAction.irtcde}" readonly="#{actirtAction.readonly}"/>
+                            <p:inputText value="#{actirtAction.irtcde}" readonly="true"/>
                             <h:outputLabel value="启用日期:"/>
-                            <p:inputText value="#{actirtAction.irt.EFFDAT}" readonly="#{actirtAction.readonly}"/>
+                            <p:inputText value="#{actirtAction.irt.EFFDAT}" readonly="true"/>
                             <h:outputLabel value="利率名称:"/>
                             <p:inputText value="#{actirtAction.irt.IRTNAM}"/>
                             <h:outputLabel value="基准利率值:"/>
@@ -74,7 +74,7 @@
                             <p:inputText value="#{actirtAction.irt.IRTSPL}"/>
                             <h:outputLabel value="浮动标记:"/>
                             <p:inputText value="#{actirtAction.irt.SPRFLG}"/>
-                            <h:outputLabel value="借贷别:"/>
+                            <h:outputLabel value="借贷标记:"/>
                             <p:inputText value="#{actirtAction.irt.CDFLAG}"/>
                             <h:outputLabel value="期限:"/>
                             <p:inputText value="#{actirtAction.irt.IRTTRM}"/>
@@ -84,11 +84,11 @@
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
                                              action="#{actirtAction.onUpdate}" ajax="true"
-                                             disabled="#{!actirtAction.updateable}" update="msgs,btns">
+                                             disabled="#{actirtAction.updateable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton style="width:80px;margin-left:10px;" value="删除"
                                              action="#{actirtAction.onDelete}" ajax="true"
-                                             disabled="#{!actirtAction.deleteable}" update="msgs,btns">
+                                             disabled="#{actirtAction.deleteable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                              action="#{actirtAction.onBack}"
@@ -99,7 +99,7 @@
                 <br/>
                 <p:outputLabel
                         style="font-size: 12px !important;font-weight: bold;color: grey;"
-                        value="   借贷别：D-借，C-贷，B-双方使用；浮动标志：0-不浮动,1-上浮,2-下浮,3-上下浮；期限单位：M-月，Y-年，D-日。"/>
+                        value=" 借贷标志：D-借，C-贷，B-双方使用；浮动标志：0-不浮动,1-上浮,2-下浮,3-上下浮；期限单位：M-月，Y-年，D-日。"/>
                 <p:separator/>
             </h:form>
         </div>

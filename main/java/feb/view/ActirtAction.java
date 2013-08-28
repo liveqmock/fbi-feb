@@ -42,12 +42,9 @@ public class ActirtAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
     private List<T805> dataList;
-    private T804 irt = new T804();
+    private T804 irt;
     private boolean updateable = false;
     private boolean deleteable = false;
-    private boolean readonly = false;
-    private List<M9804> addirtList = new ArrayList<>();
-    private M9804 addirt;
 
     @PostConstruct
     public void init() {
@@ -58,6 +55,7 @@ public class ActirtAction implements Serializable {
         action = params.get("action");
         irtdate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         if (!StringUtils.isEmpty(irtcde)) {
+
             M9804 m9804 = new M9804(curcde, irtcde, extdat, "0");
             SOFForm form = dataExchangeService.callSbsTxn("9804", m9804).get(0);
             if (!"T804".equals(form.getFormHeader().getFormCode())) {
@@ -65,30 +63,10 @@ public class ActirtAction implements Serializable {
             } else {
                 irt = (T804) form.getFormData().getBeans().get(0);
             }
-        } else {
-            // 添加利率 初始化 addirt
-            initAddirt();
         }
-        if ("update".equals(action)) {
-            updateable = true;
-            readonly = true;
-        }
-        if ("delete".equals(action)) {
-            deleteable = true;
-            readonly = true;
-        }
+        if ("update".equals(action)) updateable = true;
+        if ("delete".equals(action)) deleteable = true;
         if ("query".equals(action)) onAllQuery();
-    }
-
-    private void initAddirt() {
-        addirt = new M9804();
-        addirt.setCURCDE("001");
-        addirt.setEFFDAT(irtdate);
-        addirt.setIRTSPH("0.00");
-        addirt.setIRTSPL("0.00");
-        addirt.setSPRFLG("0");
-        addirt.setIRTTRM("360");
-        addirt.setTRMUNT("Y");
     }
 
     public String onAllQuery() {
@@ -128,7 +106,7 @@ public class ActirtAction implements Serializable {
 
     public String onUpdate() {
         try {
-            String formcode = txn9804ForUD();
+            String formcode = txn9804();
             if ("W001".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 updateable = false;
@@ -144,7 +122,7 @@ public class ActirtAction implements Serializable {
 
     public String onDelete() {
         try {
-            String formcode = txn9804ForUD();
+            String formcode = txn9804();
             if ("W004".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 deleteable = false;
@@ -158,34 +136,14 @@ public class ActirtAction implements Serializable {
         return null;
     }
 
-    public String onAdd() {
-        try {
-            addirt.setMODFLG("1");
-            addirt.setFUNCDE("4");
-            SOFForm form = dataExchangeService.callSbsTxn("9804", addirt).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W005".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfoWithClientID("msgs", formcode);
-                addirtList.add(addirt);
-                initAddirt();
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("利率增加失败", e);
-            MessageUtil.addError("利率增加失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-
     // 利率修改和删除
-    private String txn9804ForUD() throws IllegalAccessException {
-        M9804 m9804 = new M9804(irt.getCURCDE(), irt.getIRTKD1() + irt.getIRTKD2(), irt.getEFFDAT(), null);
+    private String txn9804() throws IllegalAccessException {
+        M9804 m9804 = new M9804(irt.getCURCDE(), irt.getIRTKD1() + irt.getIRTKD2(), irt.getEFFDAT(), "2");
         BeanHelper.copyFields(irt, m9804);
         m9804.setMODFLG("1");
         if ("update".equals(action)) m9804.setFUNCDE("2");
-        else if ("delete".equals(action)) m9804.setFUNCDE("3");
-        else m9804.setFUNCDE("4");
+        if ("delete".equals(action)) m9804.setFUNCDE("3");
+        if ("insert".equals(action)) m9804.setFUNCDE("4");
         SOFForm form = dataExchangeService.callSbsTxn("9804", m9804).get(0);
         return form.getFormHeader().getFormCode();
     }
@@ -266,29 +224,5 @@ public class ActirtAction implements Serializable {
 
     public void setDeleteable(boolean deleteable) {
         this.deleteable = deleteable;
-    }
-
-    public boolean isReadonly() {
-        return readonly;
-    }
-
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
-    }
-
-    public List<M9804> getAddirtList() {
-        return addirtList;
-    }
-
-    public void setAddirtList(List<M9804> addirtList) {
-        this.addirtList = addirtList;
-    }
-
-    public M9804 getAddirt() {
-        return addirt;
-    }
-
-    public void setAddirt(M9804 addirt) {
-        this.addirt = addirt;
     }
 }
