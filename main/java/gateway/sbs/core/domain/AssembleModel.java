@@ -3,9 +3,9 @@ package gateway.sbs.core.domain;
 import java.lang.reflect.Field;
 
 /**
- * Form 父类
+ * 可装配类
  */
-public abstract class AssembleForm implements Assemble {
+public class AssembleModel implements Assemble {
     protected int offset = 0;
 
     //字段类型  1：字符串 2：短整数
@@ -14,7 +14,8 @@ public abstract class AssembleForm implements Assemble {
     //字段长度  字节数
     protected int[] fieldLengths;
 
-    public void assembleFields(byte[] buffer) {
+    public void assembleFields(int offset, byte[] buffer) {
+        this.offset = offset;
         Class clazz = this.getClass();
         try {
             Field[] fields = clazz.getDeclaredFields();

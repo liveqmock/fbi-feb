@@ -1,5 +1,5 @@
 package gateway.sbs.core.domain;
 
 public interface Assemble {
-    void assembleFields(byte[] buffer);
+    void assembleFields(int offset, byte[] buffer);
 }

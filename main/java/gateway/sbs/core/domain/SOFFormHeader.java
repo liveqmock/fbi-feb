@@ -3,7 +3,7 @@ package gateway.sbs.core.domain;
 /**
  * SBS Form ±¨ÎÄÍ·
  */
-public final class SOFFormHeader extends AssembleForm {
+public final class SOFFormHeader extends AssembleModel {
     private String fmh;
     private String branchId;
     private String termId;
@@ -16,10 +16,6 @@ public final class SOFFormHeader extends AssembleForm {
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1};
         fieldLengths = new int[]{3, 10, 4, 1, 1, 2, 4, 2};
-    }
-
-    public SOFFormHeader(int offset) {
-        super.offset = offset;
     }
 
     public String getFmh() {

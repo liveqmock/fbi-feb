@@ -9,29 +9,40 @@ import org.slf4j.LoggerFactory;
 public class SOFForm {
     private static Logger logger = LoggerFactory.getLogger(SOFForm.class);
 
-    private SOFFormHeader formHeader;
-    public int formHeaderLength = 27;
-    public short formDataLength;
-    private SOFFormData formData;
-    public int length;
+    public int length;                                      // Form总长度
+    public final static int formHeaderLength = 27;          // Form头长度
+    public final static int formBodyFieldLength = 2;        // Form体长度域字节数
+    public short formBodyLength;                            // Form体长度
+    private SOFFormHeader formHeader;                       // Form头
+    private SOFFormBody formBody;                           // Form体
 
     public void assembleFields(int offset, byte[] buffer) {
         // 包头解析
-        formHeader = new SOFFormHeader(offset);
-        formHeader.assembleFields(buffer);
+        formHeader = new SOFFormHeader();
+        formHeader.assembleFields(offset, buffer);
         // 包体长度
-        byte[] dataLengthBytes = new byte[2];
-        System.arraycopy(buffer, offset + formHeaderLength, dataLengthBytes, 0, dataLengthBytes.length);
+        byte[] dataLengthBytes = new byte[formBodyFieldLength];
+        System.arraycopy(buffer, offset + formHeaderLength, dataLengthBytes, 0, formBodyFieldLength);
         short s1 = (short) (dataLengthBytes[1] & 0xff);
         short s2 = (short) ((dataLengthBytes[0] << 8) & 0xff00);
-        formDataLength = (short) (s2 | s1);
+        formBodyLength = (short) (s2 | s1);
         // 包总长度
-        length = formHeaderLength + 2 + formDataLength;
+        length = formHeaderLength + formBodyFieldLength + formBodyLength;
         // 包体
-        logger.info("FormCode:" + formHeader.getFormCode() + "包体长度：" + formDataLength);
-        if (formDataLength != 0) {
-            formData = new SOFFormData(formDataLength);
-            formData.assembleBeans(offset + formHeaderLength + 2, buffer, formHeader.getFormCode());
+        logger.info("FormCode:" + formHeader.getFormCode() + "包体长度：" + formBodyLength);
+        if (formBodyLength != 0) {
+            try {
+                // 实例化Form体
+                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormCode());
+                formBody = (SOFFormBody) clazz.newInstance();
+                // 截取Form体字节数据
+                byte[] bodyBytes = new byte[formBodyLength];
+                System.arraycopy(buffer, offset + formHeaderLength + formBodyFieldLength, bodyBytes, 0, formBodyLength);
+                // 装配Form体
+                formBody.assembleFields(0, bodyBytes);
+            } catch (Exception e) {
+                throw new RuntimeException("没有定义该Form：" + formHeader.getFormCode());
+            }
         }
     }
 
@@ -39,7 +50,7 @@ public class SOFForm {
         return formHeader;
     }
 
-    public SOFFormData getFormData() {
-        return formData;
+    public SOFFormBody getFormBody() {
+        return formBody;
     }
 }

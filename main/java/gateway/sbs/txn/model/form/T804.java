@@ -1,11 +1,15 @@
 package gateway.sbs.txn.model.form;
 
-import gateway.sbs.core.domain.SOFFormBean;
+import gateway.sbs.core.domain.AssembleModel;
+import gateway.sbs.core.domain.SOFFormBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 9804利率单笔查询、增删改-响应 T804
  */
-public class T804 extends SOFFormBean {
+public class T804 extends SOFFormBody {
 
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};

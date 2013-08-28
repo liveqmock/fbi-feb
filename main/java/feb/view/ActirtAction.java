@@ -2,7 +2,6 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.core.domain.SOFFormBean;
 import gateway.sbs.txn.model.form.T804;
 import gateway.sbs.txn.model.form.T805;
 import gateway.sbs.txn.model.msg.M9804;
@@ -41,7 +40,7 @@ public class ActirtAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    private List<T805> dataList;
+    private List<T805.Bean> dataList = new ArrayList<>();
     private T804 irt = new T804();
     private boolean updateable = false;
     private boolean deleteable = false;
@@ -63,7 +62,7 @@ public class ActirtAction implements Serializable {
             if (!"T804".equals(form.getFormHeader().getFormCode())) {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             } else {
-                irt = (T804) form.getFormData().getBeans().get(0);
+                irt = (T804) form.getFormBody();
             }
         } else {
             // 添加利率 初始化 addirt
@@ -103,9 +102,8 @@ public class ActirtAction implements Serializable {
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
                     } else if ("T805".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        for (SOFFormBean formBean : form.getFormData().getBeans()) {
-                            dataList.add((T805) formBean);
-                        }
+                        T805 t805 = (T805) form.getFormBody();
+                        dataList.addAll(t805.getBeanList());
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
 //                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -220,11 +218,19 @@ public class ActirtAction implements Serializable {
         this.irtdate = irtdate;
     }
 
-    public List<T805> getDataList() {
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public List<T805.Bean> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<T805> dataList) {
+    public void setDataList(List<T805.Bean> dataList) {
         this.dataList = dataList;
     }
 
