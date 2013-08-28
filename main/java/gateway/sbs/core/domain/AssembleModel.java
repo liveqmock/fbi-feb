@@ -32,7 +32,7 @@ public class AssembleModel implements Assemble {
                     len = (short) ((bytes[0] << 8 & 0xFF00) | (bytes[1] & 0x00FF));
                     fields[i].set(this, len);
                 } else {
-                    throw new RuntimeException("×Ö¶ÎÀàÐÍ");
+                    // TODO
                 }
                 pos += bytes.length;
             }

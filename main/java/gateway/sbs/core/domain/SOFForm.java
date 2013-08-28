@@ -29,7 +29,7 @@ public class SOFForm {
         // 包总长度
         length = formHeaderLength + formBodyFieldLength + formBodyLength;
         // 包体
-        logger.info("FormCode:" + formHeader.getFormCode() + "包体长度：" + formBodyLength);
+        logger.info("FormCode:" + formHeader.getFormCode() + " 包体长度：" + formBodyLength);
         if (formBodyLength != 0) {
             try {
                 // 实例化Form体
@@ -41,6 +41,7 @@ public class SOFForm {
                 // 装配Form体
                 formBody.assembleFields(0, bodyBytes);
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new RuntimeException("没有定义该Form：" + formHeader.getFormCode());
             }
         }

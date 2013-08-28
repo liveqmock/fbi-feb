@@ -4,6 +4,12 @@ package pub.platform.security;
 //import cbs.repository.platform.dao.ScttlrMapper;
 //import cbs.repository.platform.model.Scttlr;
 //import cbs.repository.platform.model.ScttlrExample;
+
+import feb.service.DataExchangeService;
+import gateway.sbs.core.CtgManager;
+import gateway.sbs.core.SBSRequest;
+import gateway.sbs.core.SBSResponse;
+import gateway.sbs.txn.model.msg.M0001;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.advance.utils.PropertyManager;
@@ -16,6 +22,7 @@ import pub.platform.utils.ImgSign;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,27 +41,27 @@ import java.util.Map;
  * <p>
  * Company:
  * </p>
- * 
+ *
  * @author WangHaiLei
  * @version 1.6 $ UpdateDate: Y-M-D-H-M: 2003-12-02-09-50 2004-03-01-20-35 $
  */
 public class OperatorManager implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(OperatorManager.class);
-	/**
-	 * operatorid是从login(operatorid, password)中得到的。
-	 */
-	private String fimgSign = "";
+    /**
+     * operatorid是从login(operatorid, password)中得到的。
+     */
+    private String fimgSign = "";
 
-	private String operatorname = null;
+    private String operatorname = null;
 
-	private String operatorid = null;
+    private String operatorid = null;
 
     //当前权限下的菜单项（不包含子菜单）
-	private String xmlString = null;
+    private String xmlString = null;
 
     //当前权限下的全部菜单
-	private String jsonString = null;
+    private String jsonString = null;
 
     /*
     20100820 zhanrui
@@ -65,93 +72,92 @@ public class OperatorManager implements Serializable {
      */
     private Map jsonMap = new HashMap();
 
-	private Resources resources;
+    private Resources resources;
 
-	private String[] roles = new String[] {};
+    private String[] roles = new String[]{};
 
-	private MenuBean mb;
+    private MenuBean mb;
 
-	private List jsplist = null;
+    private List jsplist = null;
 
-	private PtOperBean operator;
-	//private Scttlr scttlr;
+    private PtOperBean operator;
+    //private Scttlr scttlr;
 
-	private String remoteAddr = null;
+    private String remoteAddr = null;
 
-	private String remoteHost = null;
+    private String remoteHost = null;
 
-	private String loginTime = BusinessDate.getTodaytime();
+    private String loginTime = BusinessDate.getTodaytime();
 
-	private boolean isLogin = false;
+    private boolean isLogin = false;
 
-	private String filePath = "";
+    private String filePath = "";
 
-	private String safySign = "";
+    private String safySign = "";
 
-	public OperatorManager() {
+    public OperatorManager() {
 
-		// //创建图片标示
-		createImgSign();
-	}
+        // //创建图片标示
+        createImgSign();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getXmlString() {
-		return (this.xmlString);
-	}
+    /**
+     * @return
+     */
+    public String getXmlString() {
+        return (this.xmlString);
+    }
 
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * 返回一个Operator Object。这个Ojbect中包含该操作员的基本信息，包括：operid, email, enabled, sex,
-	 * status, opername。
-	 * 
-	 * @return Operator Ojbect.
-	 */
-	public PtOperBean getOperator() {
-		return operator;
-	}
+    /**
+     * 返回一个Operator Object。这个Ojbect中包含该操作员的基本信息，包括：operid, email, enabled, sex,
+     * status, opername。
+     *
+     * @return Operator Ojbect.
+     */
+    public PtOperBean getOperator() {
+        return operator;
+    }
 
-	public String filePath() {
-		return filePath;
-	}
+    public String filePath() {
+        return filePath;
+    }
 
-	/**
-	 * 得到当前操作员的operatorname。
-	 * 
-	 * @return
-	 */
-	public String getOperatorName() {
-		return operator.getOpername();
-	}
+    /**
+     * 得到当前操作员的operatorname。
+     *
+     * @return
+     */
+    public String getOperatorName() {
+        return operator.getOpername();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getOperatorId() {
-		return operatorid;
-	}
+    /**
+     * @return
+     */
+    public String getOperatorId() {
+        return operatorid;
+    }
 
-	/**
-	 * 操作员签到，验证operid+passwd是否正确 签到成功后 1.isLogin=true 2.取得该操作员相关的所有角色 3.初始化资源列表
-	 * 4.取得操作员的菜单
-	 * 
-	 * @param operid
-	 * @param password
-	 * @return boolean
-	 * @roseuid 3F80B6360281
-	 */
-	public boolean login(String operid, String password) {
+    /**
+     * 操作员签到，验证operid+passwd是否正确 签到成功后 1.isLogin=true 2.取得该操作员相关的所有角色 3.初始化资源列表
+     * 4.取得操作员的菜单
+     *
+     * @param operid
+     * @param password
+     * @return boolean
+     * @roseuid 3F80B6360281
+     */
+    public boolean login(String operid, String password) {
 
-		ConnectionManager cm = ConnectionManager.getInstance();
-		DatabaseConnection dc = cm.get();
+        if (!sbsLogin(operid, password)) return false;
+        ConnectionManager cm = ConnectionManager.getInstance();
+        DatabaseConnection dc = cm.get();
 //        SqlSession session = IbatisFactory.ORACLE.getInstance().openSession();
-		try {
-			String loginWhere = "where operid='" + operid
-					+ "' and operpasswd ='" + password + "'and operenabled='1'";
+        try {
+            String loginWhere = "where operid='" + operid
+                    + "' and operpasswd ='" + password + "'and operenabled='1'";
             //zhan 20100415 for UAAP
             /*
             if (operid == null) {
@@ -234,26 +240,40 @@ public class OperatorManager implements Serializable {
             // }
             return isLogin;
         } catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			cm.release();
-		}
+            e.printStackTrace();
+            return false;
+        } finally {
+            cm.release();
+        }
 
-	}
+    }
+
+    public boolean sbsLogin(String tellerId, String tellerPwd) {
+        M0001 m0001 = new M0001(tellerId, tellerPwd);
+        List<String> paramList = new ArrayList<>();
+        paramList.add(m0001.getTLRNUM());
+        paramList.add(m0001.getTLRPWD());
+        paramList.add(m0001.getDEVBLN());
+        CtgManager ctgManager = new CtgManager();
+        SBSRequest sbsRequest = new SBSRequest(tellerId, tellerId, "0001", paramList);
+        SBSResponse sbsResponse = new SBSResponse();
+        ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
+        return sbsResponse.getFormCodes().contains("T901");
+    }
 
     /**
      * 单点登录入口 不检查pwd
+     *
      * @param operid
      * @return
      */
-	public boolean login4sso(String operid) {
+    public boolean login4sso(String operid) {
 
-		ConnectionManager cm = ConnectionManager.getInstance();
-		DatabaseConnection dc = cm.get();
-		try {
-			String loginWhere = "where operid='" + operid
-					+ "' and operenabled='1'";
+        ConnectionManager cm = ConnectionManager.getInstance();
+        DatabaseConnection dc = cm.get();
+        try {
+            String loginWhere = "where operid='" + operid
+                    + "' and operenabled='1'";
             this.operatorid = operid;
             operator = new PtOperBean();
             operator = (PtOperBean) operator.findFirstByWhere(loginWhere);
@@ -289,7 +309,7 @@ public class OperatorManager implements Serializable {
                 String system = mb.generateJsonStream(operid, "system");
                 this.jsonMap.put("system", system);
 
-                if ((aDefault+system).length() <=100) {
+                if ((aDefault + system).length() <= 100) {
                     return false;
                 }
 
@@ -301,85 +321,85 @@ public class OperatorManager implements Serializable {
 
             return isLogin;
         } catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			cm.release();
-		}
+            e.printStackTrace();
+            return false;
+        } finally {
+            cm.release();
+        }
 
-	}
+    }
 
-	/**
-	 * @return ArrayList
-	 * @roseuid 3F80B71A01BC
-	 */
-	public List getJspList() {
-		return jsplist;
-	}
+    /**
+     * @return ArrayList
+     * @roseuid 3F80B71A01BC
+     */
+    public List getJspList() {
+        return jsplist;
+    }
 
-	/**
-	 * @return boolean
-	 * @roseuid 3F80B71A00BC
-	 */
-	public boolean isLogin() {
-		return isLogin;
-	}
+    /**
+     * @return boolean
+     * @roseuid 3F80B71A00BC
+     */
+    public boolean isLogin() {
+        return isLogin;
+    }
 
-	/**
-	 * 检验权限 1。取到合法资源标识 2。使用Resources的checkPermission方法校验
-	 * 
-	 * @param resource
-	 * @return boolean
-	 * @roseuid 3F80B8590151
-	 */
-	public boolean checkPermission(String resource, int type, String url) {
-		boolean permit = resources.checkPermission(resource, type, url);
-		return permit;
-	}
+    /**
+     * 检验权限 1。取到合法资源标识 2。使用Resources的checkPermission方法校验
+     *
+     * @param resource
+     * @return boolean
+     * @roseuid 3F80B8590151
+     */
+    public boolean checkPermission(String resource, int type, String url) {
+        boolean permit = resources.checkPermission(resource, type, url);
+        return permit;
+    }
 
-	/**
-	 * 签退
-	 */
-	public void logout() {
+    /**
+     * 签退
+     */
+    public void logout() {
 
-		isLogin = false;
-		resources = null;
-		operator = null;
-		operatorname = null;
-		operatorid = null;
-		roles = null;
-		mb = null;
-		xmlString = null;
-		jsonString = null;
-		remoteHost = null;
-		remoteAddr = null;
-		loginTime = null;
-	}
+        isLogin = false;
+        resources = null;
+        operator = null;
+        operatorname = null;
+        operatorid = null;
+        roles = null;
+        mb = null;
+        xmlString = null;
+        jsonString = null;
+        remoteHost = null;
+        remoteAddr = null;
+        loginTime = null;
+    }
 
-	public void setRemoteAddr(String remoteAddr) {
-		this.remoteAddr = remoteAddr;
-	}
+    public void setRemoteAddr(String remoteAddr) {
+        this.remoteAddr = remoteAddr;
+    }
 
-	public void setRemoteHost(String remoteHost) {
-		this.remoteHost = remoteHost;
-	}
+    public void setRemoteHost(String remoteHost) {
+        this.remoteHost = remoteHost;
+    }
 
-	public void createImgSign2() {
+    public void createImgSign2() {
 
-		try {
-			String deptfillstr100 = PropertyManager.getProperty("cims");
-			deptfillstr100 = new String(deptfillstr100.getBytes(), "GBK");
-			String lastFile = System.currentTimeMillis() + "";
+        try {
+            String deptfillstr100 = PropertyManager.getProperty("cims");
+            deptfillstr100 = new String(deptfillstr100.getBytes(), "GBK");
+            String lastFile = System.currentTimeMillis() + "";
 
-			ImgSign imgSign = new ImgSign();
-			filePath = "/images/" + lastFile + ".jpg";
-			safySign = imgSign.creatImgSign(deptfillstr100 + filePath);
+            ImgSign imgSign = new ImgSign();
+            filePath = "/images/" + lastFile + ".jpg";
+            safySign = imgSign.creatImgSign(deptfillstr100 + filePath);
 
-		} catch (Exception e) {
-		}
+        } catch (Exception e) {
+        }
 
 		/*
-		 * try { String deptfillstr100 = PropertyManager.getProperty("cims");
+         * try { String deptfillstr100 = PropertyManager.getProperty("cims");
 		 * deptfillstr100 = new String(deptfillstr100.getBytes(), "GBK"); String
 		 * lastFile = System.currentTimeMillis() + "";
 		 * 
@@ -401,78 +421,78 @@ public class OperatorManager implements Serializable {
 		 *  }
 		 */
 
-	}
+    }
 
-	public boolean ImgSign(String sign) {
-		boolean retbool = false;
+    public boolean ImgSign(String sign) {
+        boolean retbool = false;
 
-		try {
-			ImgSignDel();
+        try {
+            ImgSignDel();
 
-			if (sign.equals(safySign))
-				retbool = true;
+            if (sign.equals(safySign))
+                retbool = true;
 
-			return retbool;
-		} catch (Exception e) {
-			return retbool;
-		}
+            return retbool;
+        } catch (Exception e) {
+            return retbool;
+        }
 
-	}
+    }
 
-	public void ImgSignDel() {
-		try {
-			String deptfillstr100 = PropertyManager.getProperty("cims");
-			deptfillstr100 = new String(deptfillstr100.getBytes(), "GBK");
-			File f = new File(deptfillstr100 + filePath);
-			if (f.exists())
-				f.delete();
+    public void ImgSignDel() {
+        try {
+            String deptfillstr100 = PropertyManager.getProperty("cims");
+            deptfillstr100 = new String(deptfillstr100.getBytes(), "GBK");
+            File f = new File(deptfillstr100 + filePath);
+            if (f.exists())
+                f.delete();
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-		}
-	}
+        }
+    }
 
-	private void createImgSign() {
-		fimgSign = "";
+    private void createImgSign() {
+        fimgSign = "";
 
-		try {
+        try {
 
-			int rad = (int) Math.round(Math.random() * 10);
-			if (rad == 10)
-				rad = 9;
-			fimgSign += rad;
+            int rad = (int) Math.round(Math.random() * 10);
+            if (rad == 10)
+                rad = 9;
+            fimgSign += rad;
 
-			rad = (int) Math.round(Math.random() * 10);
-			if (rad == 10)
-				rad = 9;
-			fimgSign += rad;
+            rad = (int) Math.round(Math.random() * 10);
+            if (rad == 10)
+                rad = 9;
+            fimgSign += rad;
 
-			rad = (int) Math.round(Math.random() * 10);
-			if (rad == 10)
-				rad = 9;
-			fimgSign += rad;
+            rad = (int) Math.round(Math.random() * 10);
+            if (rad == 10)
+                rad = 9;
+            fimgSign += rad;
 
-			rad = (int) Math.round(Math.random() * 10);
-			if (rad == 10)
-				rad = 9;
-			fimgSign += rad;
+            rad = (int) Math.round(Math.random() * 10);
+            if (rad == 10)
+                rad = 9;
+            fimgSign += rad;
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-		}
-	}
+        }
+    }
 
-	public String getImgSign() {
+    public String getImgSign() {
 
-		return fimgSign;
-	}
+        return fimgSign;
+    }
 
-    public String getJsonString(){
+    public String getJsonString() {
         return jsonString;
     }
 
-    public String getJsonString(String target){
-        return (String)this.jsonMap.get(target);
+    public String getJsonString(String target) {
+        return (String) this.jsonMap.get(target);
     }
 
     public String getRemoteAddr() {

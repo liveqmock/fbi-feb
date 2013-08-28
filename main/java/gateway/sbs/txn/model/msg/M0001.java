@@ -12,4 +12,16 @@ public class M0001 extends MTia {
         this.TLRNUM = TLRNUM;
         this.TLRPWD = TLRPWD;
     }
+
+    public String getTLRNUM() {
+        return TLRNUM;
+    }
+
+    public String getTLRPWD() {
+        return TLRPWD;
+    }
+
+    public String getDEVBLN() {
+        return DEVBLN;
+    }
 }
