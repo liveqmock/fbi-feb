@@ -74,7 +74,7 @@ public class CtgManager {
             //打包包体
             setBufferValues(request.getParamList(), abytCommarea);
             String sendTime = new SimpleDateFormat("HH:mm:ss:SSS").format(new Date());
-//            logger.info("交易" + request.getTxncode() + " 发送报文: " + sendTime + format16(truncBuffer(abytCommarea)));
+            logger.info("交易" + request.getTxncode() + " 发送报文: " + sendTime + format16(truncBuffer(abytCommarea)));
 
             long starttime = System.currentTimeMillis();
             //发送包

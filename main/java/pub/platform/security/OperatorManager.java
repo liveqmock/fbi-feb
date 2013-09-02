@@ -261,6 +261,15 @@ public class OperatorManager implements Serializable {
         return sbsResponse.getFormCodes().contains("T901");
     }
 
+    public boolean sbsLogout(String tellerId, String termId) {
+        List<String> paramList = new ArrayList<>();
+        CtgManager ctgManager = new CtgManager();
+        SBSRequest sbsRequest = new SBSRequest(tellerId, termId, "0002", paramList);
+        SBSResponse sbsResponse = new SBSResponse();
+        ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
+        return sbsResponse.getFormCodes().contains("W001");
+    }
+
     /**
      * 单点登录入口 不检查pwd
      *
@@ -360,20 +369,23 @@ public class OperatorManager implements Serializable {
     /**
      * 签退
      */
-    public void logout() {
+    public boolean logout() {
 
-        isLogin = false;
-        resources = null;
-        operator = null;
-        operatorname = null;
-        operatorid = null;
-        roles = null;
-        mb = null;
-        xmlString = null;
-        jsonString = null;
-        remoteHost = null;
-        remoteAddr = null;
-        loginTime = null;
+        if (sbsLogout(operatorid, operatorid)) {
+            isLogin = false;
+            resources = null;
+            operator = null;
+            operatorname = null;
+            operatorid = null;
+            roles = null;
+            mb = null;
+            xmlString = null;
+            jsonString = null;
+            remoteHost = null;
+            remoteAddr = null;
+            loginTime = null;
+            return true;
+        } else return false;
     }
 
     public void setRemoteAddr(String remoteAddr) {

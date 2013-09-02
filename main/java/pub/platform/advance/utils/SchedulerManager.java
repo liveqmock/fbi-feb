@@ -9,7 +9,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.ccb.dao.SYSSCHEDULER;
+import pub.platform.dao.SYSSCHEDULER;
 
 public class SchedulerManager extends HttpServlet {
 

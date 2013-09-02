@@ -172,7 +172,7 @@
                 <span>ÄúºÃ,<%=username%>! </span>
                 <span><%= " | [" + rolesall + "] |" %></span>
                 <span onclick="changepwd()" onMouseOver="this.style.cursor='hand'">ĞŞ¸ÄÃÜÂë</span>
-                <span onclick="Relogin()" onMouseOver="this.style.cursor='hand'">| ÍË³ö&nbsp;&nbsp;</span>
+                <span onclick="Relogin()" onMouseOver="this.style.cursor='hand'">| Ç©ÍË&nbsp;&nbsp;</span>
             </td>
         </tr>
         <tr style="width:100%; height:25px">

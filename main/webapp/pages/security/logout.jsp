@@ -12,6 +12,7 @@
     <tr>
         <td valign="top">
             <%
+                String path = request.getContextPath();
                 OperatorManager om = (OperatorManager) session.getAttribute(SystemAttributeNames.USER_INFO_NAME);
                 if (om != null) {
                     om.logout();
@@ -22,15 +23,11 @@
                     //System.out.println("-------:\n  "+removeStr);
                     session.removeAttribute(removeStr);
                 }
-
-            %>
-            <%
                 String isClose = request.getParameter("isclose");
                 if (isClose == null || isClose.trim().equals("")) {
-            %>
-            <jsp:forward page="/pages/security/loginPage.jsp"/>
-            <%
+                    out.println("<script language=\"javascript\">alert ('«©ÕÀ≥…π¶£°'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
                 } else {
+                    out.println("<script>alert ('«©ÕÀ ß∞‹');</script>");
                     out.println("<script>window.close();</script>");
                 }
             %>

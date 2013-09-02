@@ -1,6 +1,5 @@
 package pub.platform.advance.utils;
 
-import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +10,7 @@ import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
-import com.ccb.dao.SYSSCHEDULER;
+import pub.platform.dao.SYSSCHEDULER;
 
 
 import pub.platform.db.ConnectionManager;
