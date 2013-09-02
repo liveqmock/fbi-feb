@@ -67,7 +67,7 @@
 <%--<!DOCTYPE html>--%>
 <html>
 <head>
-    <title>财务公司报表查询平台</title>
+    <title>财务公司核心业务系统</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=5" />
 
@@ -166,7 +166,7 @@
                 <img src="../../images/haier.png" height="40px">
             </td>
             <td colspan="2">
-                <img src="../../images/haierrms.jpg" height="40px" style="margin-left: 5px">
+                <img src="../../images/haierfin.jpg" height="40px" style="margin-left: 5px">
             </td>
             <td style="text-align:right" class="headfont">
                 <span>您好,<%=username%>! </span>
