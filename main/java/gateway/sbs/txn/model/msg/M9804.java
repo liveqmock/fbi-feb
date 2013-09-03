@@ -5,6 +5,9 @@ package gateway.sbs.txn.model.msg;
  */
 public class M9804 extends MTia {
 
+    private String BATSEQ = "111111";  // 平台顺序号
+    private String ORGIDT = "010";     // 机构号
+    private String DEPNUM = "60";      // 部门号
     private String CURCDE;       // 币别
     private String IRTCDE;       // 利率码
     private String EFFDAT;       // 启用日期
@@ -19,6 +22,7 @@ public class M9804 extends MTia {
     private String IRTTRM = "";  // 期限
     private String TRMUNT = "";  // 期限单位
     private String FUNCDE;       // 操作类别 0-单笔查询,2-修改, 3-删除, 4-增加
+    private String BEGNUM = "000001"; // 起始笔数
 
     public M9804() {
     }
@@ -28,6 +32,18 @@ public class M9804 extends MTia {
         this.IRTCDE = IRTCDE;
         this.EFFDAT = EFFDAT;
         this.FUNCDE = FUNCDE;
+    }
+
+    public String getBATSEQ() {
+        return BATSEQ;
+    }
+
+    public String getORGIDT() {
+        return ORGIDT;
+    }
+
+    public String getDEPNUM() {
+        return DEPNUM;
     }
 
     public String getCURCDE() {
@@ -140,5 +156,9 @@ public class M9804 extends MTia {
 
     public void setFUNCDE(String FUNCDE) {
         this.FUNCDE = FUNCDE;
+    }
+
+    public String getBEGNUM() {
+        return BEGNUM;
     }
 }

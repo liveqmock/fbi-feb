@@ -30,9 +30,9 @@ public class Txn9804Action extends AbstractTxnAction {
         logger.info("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
                 " 日期：" + m9804.getEFFDAT() + " 利率码：" + m9804.getIRTCDE());
         List<String> paramList = new ArrayList<>();
-        paramList.add("111111");
-        paramList.add("010");
-        paramList.add("60");
+        paramList.add(m9804.getBATSEQ());
+        paramList.add(m9804.getORGIDT());
+        paramList.add(m9804.getDEPNUM());
         paramList.add(m9804.getCURCDE());
         paramList.add(m9804.getIRTCDE());
         paramList.add(m9804.getEFFDAT());   // 启用日期
@@ -47,7 +47,7 @@ public class Txn9804Action extends AbstractTxnAction {
         paramList.add(m9804.getIRTTRM());   // 期限
         paramList.add(m9804.getTRMUNT());   // 期限单位
         paramList.add(m9804.getFUNCDE());   // 操作类别   0-单笔查询,2-修改, 3-删除, 4-增加
-        paramList.add("000001");
+        paramList.add(m9804.getBEGNUM());
 
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellid, "9804", paramList);

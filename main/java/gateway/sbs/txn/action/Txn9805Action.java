@@ -27,23 +27,23 @@ public class Txn9805Action extends AbstractTxnAction {
     public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
 
         M9805 m9805 = (M9805) tia;
-        logger.info("[9805-利率查询] 币别：" + m9805.getCURCDE() + " 日期：" + m9805.getIRTDAT());
+        logger.info("[9805-利率查询] 币别：" + m9805.getCURCDE() + " 日期：" + m9805.getEFFDAT());
 
         List<String> paramList = new ArrayList<>();
-        paramList.add("111111");
-        paramList.add("010");
-        paramList.add("60");
+        paramList.add(m9805.getBATSEQ());
+        paramList.add(m9805.getORGIDT());
+        paramList.add(m9805.getDEPNUM());
         paramList.add(m9805.getCURCDE());
-        paramList.add("");
-        paramList.add(m9805.getIRTDAT());
-        paramList.add("6");
-        paramList.add("000001");
+        paramList.add(m9805.getIRTCDE());
+        paramList.add(m9805.getEFFDAT());
+        paramList.add(m9805.getFUNCDE());
+        paramList.add(m9805.getBEGNUM());
 
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellid, "9805", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9805-利率查询] 币别：" + m9805.getCURCDE() + " 日期：" +
-                m9805.getIRTDAT() + "返回码：");
+                m9805.getEFFDAT() + "返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }
