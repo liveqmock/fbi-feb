@@ -4,7 +4,6 @@ import gateway.sbs.core.SBSResponse;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.service.CoreTxnService;
 import gateway.sbs.txn.model.msg.M8101;
-import gateway.sbs.txn.model.msg.M9805;
 import gateway.sbs.txn.model.msg.MTia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +75,7 @@ public class Txn8101Action extends AbstractTxnAction {
         SBSResponse response = coreTxnService.execute(termid, tellid, "8101", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[8101-客户开户] 账号：" + m8101.getACTNUM() + " 账户名称：" +
-                m8101.getACTNAM() + "返回码：");
+                m8101.getACTNAM() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

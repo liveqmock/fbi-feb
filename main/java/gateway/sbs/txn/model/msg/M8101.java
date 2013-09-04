@@ -8,12 +8,12 @@ public class M8101 extends MTia {
     private String BATSEQ = "111111";  // 平台顺序号
     private String ORGIDT = "010";     // 机构号
     private String DEPNUM = "60";      // 部门号
-    private String ACTNUM = "";             // 14位账号(客户号+核算码+币别)
-    private String ACTNAM = "";             // 账户名称
+    private String ACTNUM = "";        // 14位账号(客户号+核算码+币别)
+    private String ACTNAM = "";        // 账户名称
     private String STMFMT = "C";       // 账页形式 C.外部客户账页 S.共享账户账页 O.不出账页
     private String STMSHT = "001";     // 出账份数
     private String STMDEP = "01060";   // 对账单分发部门
-    private String STMADD = "";             // 对账单地址
+    private String STMADD = "";        // 对账单地址
     private String STMZIP = "";        // 邮编
     private String STMCYC = "M";       // 对账单出账周期 D.天 T?旬 M?月 S.季 Y.年底 P.满页 E.有发生出 F.其它条件
     private String STMCDT = "0031";    // 出账日期
@@ -26,8 +26,8 @@ public class M8101 extends MTia {
     private String BALLIM = "000";     // 协定账户余额限度 金额到分，没有小数点
     private String OVELIM = "000";     // 透支限额 金额到分，没有小数点
     private String OVEEXP = "";        // 额度到期日 YYYYMMDD
-    private String DINRAT = "";             // 借方利率代码  账户类型为贷款账户时,为必输项,贷款利率代码
-    private String CINRAT = "";             // 贷方利率代码  账户类型为存款账户时,为必输项,存款利率代码
+    private String DINRAT = "";        // 借方利率代码  账户类型为贷款账户时,为必输项,贷款利率代码
+    private String CINRAT = "";        // 贷方利率代码  账户类型为存款账户时,为必输项,存款利率代码
     private String DRATSF = "";        // 借方固定或浮动利率  贷款利率码自动带出利率值
     private String CRATSF = "";        // 贷方固定或浮动利率  存款利率码自动带出利率值
     private String VCHAUT = "";        // 主管代号
