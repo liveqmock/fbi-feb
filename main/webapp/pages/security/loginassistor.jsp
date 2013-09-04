@@ -61,7 +61,7 @@
         loginOM.setRemoteHost(request.getRemoteHost());
         isLogin = loginOM.login(loginUsername, password);
         if (!isLogin) {
-            out.println("<script language=\"javascript\">alert ('输入用户名或密码有误！'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
+            out.println("<script language=\"javascript\">alert ('签到失败！'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
         }
     } catch (Exception e) {
         e.printStackTrace();
