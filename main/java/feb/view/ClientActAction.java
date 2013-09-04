@@ -32,6 +32,7 @@ public class ClientActAction implements Serializable {
     private T101 rtnActInfo;                      // 开关户返回信息
     private T109 closeActInfo;                 // 关户查询返回信息
     private boolean closeable = false;         // 是否可关户
+    private String actnum;
 
     public String onCreate() {
         try {
@@ -59,6 +60,7 @@ public class ClientActAction implements Serializable {
                 if ("T109".equalsIgnoreCase(formcode)) {
                     closeActInfo = (T109) form.getFormBody();
                     closeable = true;
+                    actnum = closeActInfo.getCUSIDT() + closeActInfo.getAPCODE() + closeActInfo.getCURCDE();
                 } else if ("W313".equalsIgnoreCase(formcode)) {
                     MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
                 } else {
@@ -139,5 +141,13 @@ public class ClientActAction implements Serializable {
 
     public void setCloseable(boolean closeable) {
         this.closeable = closeable;
+    }
+
+    public String getActnum() {
+        return actnum;
+    }
+
+    public void setActnum(String actnum) {
+        this.actnum = actnum;
     }
 }

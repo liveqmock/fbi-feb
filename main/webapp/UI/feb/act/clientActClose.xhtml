@@ -15,18 +15,20 @@
             }
 
             .col-label {
-                /*width: 100px;*/
+                width: 148px;
                 text-align: right;
             }
 
             .col-input {
-                width: 150px;
+                width: 180px;
                 text-align: left;
             }
 
             .col-label2 {
-                width: 100px;
+                width: 180px;
                 text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
             }
 
             .col-input2 {
@@ -49,8 +51,8 @@
                 <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
-                        <h:panelGrid columns="4" cellspacing="5"
-                                     columnClasses="col-label,col-input,col-label,col-input">
+                        <h:panelGrid columns="2" cellspacing="5"
+                                     columnClasses="col-label,col-input">
                             <h:outputLabel value="客户账号:" style="font-weight: bold"/>
                             <p:inputText required="true" size="25"
                                          requiredMessage="客户账号不能为空。"
@@ -85,7 +87,7 @@
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="账号:"/>
-                            <h:outputText value="#{clientActAction.closeActInfo.CUSIDT + clientActAction.closeActInfo.APCODE + clientActAction.closeActInfo.CURCDE}"/>
+                            <h:outputText value="#{clientActAction.actnum}"/>
                             <h:outputLabel value="账户名称:"/>
                             <h:outputText value="#{clientActAction.closeActInfo.ACTNAM}"/>
                             <h:outputLabel value="贷方利率代码:"/>
