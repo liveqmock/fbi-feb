@@ -59,5 +59,7 @@
         <property name="basePackage" value="feb.repository.dao,skyline.repository.dao"/>
     </bean>
 
-
+   <bean id="skylineService" class="skyline.service.SkylineService">
+       <property name="selectable" ref="ptEnuSelectImpl"/>
+   </bean>
 </beans>
