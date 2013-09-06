@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:focus for="actnum"/>
+                <p:panel>
+                    <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*账号:"/>
+                            <p:inputText id="actnum" value="#{clientActAction.internalAct.ACTNUM}" required="true"
+                                         requiredMessage="必须输入14位账号" maxlength="14"/>
+                            <h:outputLabel value="*账户名称:"/>
+                            <p:inputText value="#{clientActAction.internalAct.ACTNAM}" maxlength="36" required="true"
+                                         requiredMessage="必须输入账户名称"/>
+                            <h:outputLabel value="贷方利率代码:"/>
+                            <p:inputText value="#{clientActAction.internalAct.CINRAT}" maxlength="3"/>
+                            <h:outputLabel value="账户类型:"/>
+                            <p:inputText value="#{clientActAction.internalAct.ACTTYP}"/>
+                            <h:outputLabel value="计息标志:"/>
+                            <p:inputText value="#{clientActAction.internalAct.INTFLG}"/>
+                            <h:outputLabel value="计息周期:"/>
+                            <p:inputText value="#{clientActAction.internalAct.INTCYC}"/>
+                            <h:outputLabel value="转息账户:"/>
+                            <p:inputText value="#{clientActAction.internalAct.INTTRA}"/>
+                            <h:outputLabel value="借方利率代码:"/>
+                            <p:inputText value="#{clientActAction.internalAct.DINRAT}"/>
+                            <h:outputLabel value="借方固定或浮动利率:"/>
+                            <p:inputText value="#{clientActAction.internalAct.DRATSF}"/>
+                            <h:outputLabel value="贷方固定或浮动利率:"/>
+                            <p:inputText value="#{clientActAction.internalAct.CRATSF}"/>
+                            <h:outputLabel value="分户账出账周期:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGCYC}"/>
+                            <h:outputLabel value="分户账出账日期:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGCDT}"/>
+                            <h:outputLabel value="分户账账页形式:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGFMT}"/>
+                            <h:outputLabel value="分户账地址:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGADD}"/>
+                            <h:outputLabel value="分户账出账份数:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGSHT}"/>
+                            <h:outputLabel value="分户账分发部门:"/>
+                            <p:inputText value="#{clientActAction.internalAct.LEGDEP}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
+                                             action="#{clientActAction.onCreateInternalAct()}" ajax="true"
+                                             update="msgs,btns,rtnActInfo">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="部门号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.ORGIDT}"/>
+                        <h:outputLabel value="机构号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.DEPNUM}"/>
+                        <h:outputLabel value="账号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.ACTNUM}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.CUSNAM}"/>
+                        <h:outputLabel value="建立日期:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.OPNDAT}"/>
+                        <h:outputLabel value="操作员:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.AMDTLR}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
