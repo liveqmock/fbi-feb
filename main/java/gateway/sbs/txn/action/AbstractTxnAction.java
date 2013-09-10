@@ -12,7 +12,6 @@ public abstract class AbstractTxnAction {
 
     private static Logger logger = LoggerFactory.getLogger(AbstractTxnAction.class);
 
-    @Transactional
     public List<SOFForm> run(String termid, String tellid, MTia tia) {
         try {
             return process(termid, tellid, tia);

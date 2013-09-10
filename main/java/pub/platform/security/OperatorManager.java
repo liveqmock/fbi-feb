@@ -9,6 +9,8 @@ import feb.service.DataExchangeService;
 import gateway.sbs.core.CtgManager;
 import gateway.sbs.core.SBSRequest;
 import gateway.sbs.core.SBSResponse;
+import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.T901;
 import gateway.sbs.txn.model.msg.M0001;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +96,8 @@ public class OperatorManager implements Serializable {
     private String filePath = "";
 
     private String safySign = "";
+
+    private String sysBusinessDate = BusinessDate.getTodaytime(); // 业务日期 默认当前系统日期
 
     public OperatorManager() {
 
@@ -258,7 +262,15 @@ public class OperatorManager implements Serializable {
         SBSRequest sbsRequest = new SBSRequest(tellerId, tellerId, "0001", paramList);
         SBSResponse sbsResponse = new SBSResponse();
         ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
-        return sbsResponse.getFormCodes().contains("T901");
+        List<SOFForm> forms = sbsResponse.getSofForms();
+        for (SOFForm form : forms) {
+            if ("T901".equals(form.getFormHeader().getFormCode())) {
+                T901 t901 = (T901) form.getFormBody();
+                sysBusinessDate = t901.getSYSDAT();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean sbsLogout(String tellerId, String termId) {
@@ -519,7 +531,15 @@ public class OperatorManager implements Serializable {
         return loginTime;
     }
 
-//    public Scttlr getScttlr() {
+    public String getSysBusinessDate() {
+        return sysBusinessDate;
+    }
+
+    public void setSysBusinessDate(String sysBusinessDate) {
+        this.sysBusinessDate = sysBusinessDate;
+    }
+
+    //    public Scttlr getScttlr() {
 //        return scttlr;
 //    }
 }
