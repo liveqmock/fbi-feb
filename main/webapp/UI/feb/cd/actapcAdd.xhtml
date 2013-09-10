@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+<ui:define name="head">
+    <script language="JavaScript" type="text/JavaScript">
+        function KeyDown() {
+            if (event.keyCode == 13) {
+                if (event.srcElement.id == 'inputform:apcnam') {
+                    event.returnValue = false;
+                    event.cancel = true;
+                    document.forms['inputform']['inputform:query'].click();
+                } else {
+                    event.keyCode = 9;
+                }
+            }
+        }
+
+        function handleAddRequest(xhr, status, args) {
+            if (args.validationFailed) {
+                jQuery('#dlg').effect("shake", { times:3 }, 100);
+            } else {
+                insertDialog.hide();
+            }
+        }
+    </script>
+</ui:define>
+
+<ui:define name="content">
+<div class="entry">
+<h:form id="inputform">
+    <p:focus for="glcode"/>
+    <p:messages id="msgs" showSummary="false" showDetail="true"/>
+    <p:panel id="basePanel" header="核算码信息">
+        <h:panelGrid id="basePanelGrid" columns="4"  columnClasses="panel_label2,panel_value,panel_label2,panel_value">
+            <h:outputText value="核算码:*"/>
+            <h:inputText id="apcode" value="#{actapcAction.apc.apcode}" label="核算码"/>
+            <h:outputText value="核算码名称:*"/>
+            <h:inputText value="#{actapcAction.apc.apcnam}" label="核算码名称"  />
+            <h:outputText value="核算码类型:"/>
+            <h:inputText value="#{actapcAction.apc.apctyp}" label="核算码类型"/>
+            <h:outputText value="总账码:"/>
+            <h:inputText value="#{actapcAction.apc.glcode}" label="总账码"/>
+            <h:outputText value="对应损益码:"/>
+            <h:inputText value="#{actapcAction.apc.plcode}" label="对应损益码"/>
+            <h:outputText value="利息支出帐户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.intexp}" label="利息支出帐户核算码"/>
+            <h:outputText value="利息收入帐户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.intinc}" label="利息收入帐户核算码" />
+            <h:outputText value="对转核算码:"/>
+            <h:inputText value="#{actapcAction.apc.opsapc}" label="对转核算码" />
+            <h:outputText value="核算码描述:"/>
+            <h:inputText value="#{actapcAction.apc.apcdcr}" label="核算码描述"/>
+            <h:outputText value="应付利息帐户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.intdac}" label="应付利息帐户核算码"/>
+            <h:outputText value="应收利息帐户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.intcac}" label="应收利息帐户核算码"/>
+            <h:outputText value="未实现利息支出账户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.ndrint}" label="未实现利息支出账户核算码"/>
+            <h:outputText value="未实现利息收入账户核算码:"/>
+            <h:inputText value="#{actapcAction.apc.ncrint}" label="未实现利息收入账户核算码" />
+            <h:outputText value="APCKID:"/>
+            <h:inputText id="apckid" value="#{actapcAction.apc.apckid}" label="APCKID" />
+        </h:panelGrid>
+        <p:separator/>
+
+            <h:panelGrid columns="1" style="text-align:left;padding-left:60px;padding-top:5px;" width="100%">
+                    <p:commandButton id="add" ajax="false" immediate="true" value="添加"
+                                     update="msgs" action="#{actapcAction.onAdd}"
+                                     style="padding-left:10px;padding-right:10px;margin-right:10px;">
+                            <f:param value="add" name="action"/>
+                    </p:commandButton>
+            </h:panelGrid>
+    </p:panel>
+</h:form>
+<br/>
+<h:form id="resultForm">
+    <p:dataTable id="resultDataTable" height="200" dblClickSelect="false"
+                 value="#{actapcAction.addapcList}" var="record" selectionMode="single"
+                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 paginator="true" rows="15" paginatorPosition="both" rowsPerPageTemplate="100,50,15,10,5"
+                 emptyMessage="数据记录为空...">
+
+        <p:column headerText="所属总账码" style="text-align:center">
+            <h:outputText value="#{record.glcode}"/>
+        </p:column>
+
+        <p:column headerText="核算码类别" style="text-align:center">
+            <h:outputText value="#{record.apctyp}"/>
+        </p:column>
+        <p:column headerText="核算码" style="text-align:center">
+            <h:outputText value="#{record.apcode}"/>
+        </p:column>
+        <p:column headerText="核算码名称" style="text-align:left">
+            <h:outputText value="#{record.apcnam}"/>
+        </p:column>
+
+    </p:dataTable>
+</h:form>
+</div>
+
+</ui:define>
+</ui:composition>

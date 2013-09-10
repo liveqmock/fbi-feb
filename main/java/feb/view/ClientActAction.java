@@ -146,8 +146,8 @@ public class ClientActAction implements Serializable {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T108".equalsIgnoreCase(formcode)) {
                     actInfo = (T108) form.getFormBody();
-                    BeanHelper.copyFields(actInfo, updateAct);
-                    updateable = true;
+                   // BeanHelper.copyFields(actInfo, updateAct);
+                   // updateable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
