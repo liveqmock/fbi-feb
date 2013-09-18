@@ -30,8 +30,8 @@ public class T813 extends SOFFormBody {
     }
     public class Bean extends AssembleModel {
         {
-            fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1};
-            fieldLengths = new int[]{3, 8, 3, 11, 4, 4, 1, 1, 24};
+            fieldTypes = new int[]{1, 1};
+            fieldLengths = new int[]{4, 34};
         }
 
         private String GLCODE	;          // змеЫТы
