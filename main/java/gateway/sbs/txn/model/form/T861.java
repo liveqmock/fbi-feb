@@ -1,15 +1,35 @@
 package gateway.sbs.txn.model.form;
 
 import gateway.sbs.core.domain.SOFFormBody;
+import gateway.sbs.core.domain.AssembleModel;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 9813总账码单笔查询、增删改-响应 T861
  */
+
 public class T861 extends SOFFormBody {
 
+    private List<Bean> beanList = new ArrayList<Bean>();
+    @Override
+    public void assembleFields(int offset, byte[] buffer) {
+        int index = offset;
+
+            Bean bean = new Bean();
+            bean.assembleFields(index, buffer);
+            beanList.add(bean);
+    }
+
+    public List<Bean> getBeanList() {
+        return beanList;
+    }
+    public class Bean extends AssembleModel {
     {
-        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-        fieldLengths = new int[]{3, 1, 2, 8, 24, 10, 4, 4, 1, 1, 3, 1, 4, 8};
+        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        fieldLengths = new int[]{4, 34, 1, 4, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 4, 8, 6};
     }
 
     private String GLCODE;          // 总账码
@@ -228,5 +248,6 @@ public class T861 extends SOFFormBody {
 
     public void setAMDTLR(String AMDTLR) {
         this.AMDTLR = AMDTLR;
+    }
     }
 }
