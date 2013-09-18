@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:focus for="glcode"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
+                                     value="#{actglcAction.irt}" var="record">
+                            <h:outputLabel value="总账码:"/>
+                            <p:inputText id="glcode" value="#{record.GLCODE}"/>
+                            <h:outputLabel value="总账码名称:"/>
+                            <p:inputText value="#{record.GLCNAM}" />
+                            <h:outputLabel value="科目级别:"/>
+                            <p:inputText value="#{record.GLCCLS}"/>
+                            <h:outputLabel value="并入科目:"/>
+                            <p:inputText value="#{record.GLCGRP}"/>
+                            <h:outputLabel value="科目属性:"/>
+                            <p:inputText value="#{record.GLCTYP}"/>
+                            <h:outputLabel value="科目类别:"/>
+                            <p:inputText value="#{record.GLCCAT}"/>
+                            <h:outputLabel value="允许货币标志:"/>
+                            <p:inputText value="#{record.GLCCCY}"/>
+                            <h:outputLabel value="余额方向标志:"/>
+                            <p:inputText value="#{record.GLCBAL}"/>
+                            <h:outputLabel value="发生额方向标志:"/>
+                            <p:inputText value="#{record.GLCOCC}"/>
+                            <h:outputLabel value="记息种类:"/>
+                            <p:inputText value="#{record.GLCINT}"/>
+                            <h:outputLabel value="利率种类:"/>
+                            <p:inputText value="#{record.GLCRAT}"/>
+                            <h:outputLabel value="自动开户允许标志:"/>
+                            <p:inputText value="#{record.GLCOPN}"/>
+                            <h:outputLabel value="冲帐允许标志:"/>
+                            <p:inputText value="#{record.GLCRVS}"/>
+                            <h:outputLabel value="备用标志1:"/>
+                            <p:inputText value="#{record.RSVFG1}"/>
+                            <h:outputLabel value="备用标志2:"/>
+                            <p:inputText value="#{record.RSVFG2}"/>
+                            <h:outputLabel value="备用标志3:"/>
+                            <p:inputText value="#{record.RSVFG3}"/>
+                            <h:outputLabel value="备用标志4:"/>
+                            <p:inputText value="#{record.RSVFG4}"/>
+                            <h:outputLabel value="备用标志5:"/>
+                            <p:inputText value="#{record.RSVFG5}"/>
+                            <h:outputLabel value="科目所属:"/>
+                            <p:inputText value="#{record.GLCBEL}"/>
+                            <h:outputLabel value="科目启用日期:"/>
+                            <p:inputText value="#{record.EFFDAT}"/>
+                            <h:outputLabel value="科目使用到期日:"/>
+                            <p:inputText value="#{record.EXPDAT}"/>
+                            <h:outputLabel value="建立柜员:"/>
+                            <p:inputText value="#{record.AMDTLR}"/>
+                            <h:outputLabel value="修改日期:"/>
+                            <p:inputText value="#{record.UPDDAT}"/>
+                            <h:outputLabel value="引用号:"/>
+                            <p:inputText value="#{record.GLCORD}"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
+                                             action="#{actglcAction.onUpdate}" ajax="true"
+                                             disabled="#{!actglcAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;margin-left:10px;" value="删除"
+                                             action="#{actglcAction.onDelete}" ajax="true"
+                                             disabled="#{!actglcAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                             action="#{actglcAction.onBack}"
+                                             style="margin-left:10px;width:80px;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="   借贷别：D-借，C-贷，B-双方使用；浮动标志：0-不浮动,1-上浮,2-下浮,3-上下浮；期限单位：M-月，Y-年，D-日。"/>
+                <p:separator/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
