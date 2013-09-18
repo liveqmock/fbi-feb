@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:focus for="glcode"/>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="总账码:"/>
+                            <p:inputText id="glcode" value="#{actglcAction.addirt.GLCODE}" required="true"
+                                         requiredMessage="必须输入总账码"/>
+                            <h:outputLabel value="总账码名称:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCNAM}" maxlength="34" required="true"
+                                         requiredMessage="必须输入总账码名称"/>
+                            <h:outputLabel value="并入科目:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCGRP}" required="true"
+                                         requiredMessage="必须输入并入科目"/>
+                            <h:outputLabel value="科目属性:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCTYP}" required="true"
+                                         requiredMessage="必须输入科目属性"/>
+                            <h:outputLabel value="科目类别:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCCAT}" required="true"
+                                         requiredMessage="必须输入科目类别"/>
+                            <h:outputLabel value="允许货币标志:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCCCY}" required="true"
+                                         requiredMessage="必须输入允许货币标志"/>
+                            <h:outputLabel value="余额方向标志:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCBAL}" required="true"
+                                         requiredMessage="必须输入余额方向标志"/>
+                            <h:outputLabel value="记息种类:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCINT}" required="true"
+                                         requiredMessage="必须输入记息种类"/>
+                            <h:outputLabel value="自动开户允许标志:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCOPN}" required="true"
+                                         requiredMessage="必须输入自动开户允许标志"/>
+                            <h:outputLabel value="冲账允许标志:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCRVS}" required="true"
+                                         requiredMessage="必须输入冲账允许标志"/>
+                            <h:outputLabel value="科目所属:"/>
+                            <p:inputText value="#{actglcAction.addirt.GLCBEL}" required="true"
+                                         requiredMessage="必须输入科目所属"/>
+                            <h:outputLabel value="科目启用日期:"/>
+                            <p:inputText value="#{actglcAction.addirt.EFFDAT}"
+                                         required="true" requiredMessage="必须输入科目启用日期"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="科目使用到期日:"/>
+                            <p:inputText value="#{actglcAction.addirt.EXPDAT}"
+                                         required="true" requiredMessage="必须输入科目使用到期日"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="添加"
+                                             action="#{actglcAction.onAdd}" ajax="true"
+                                             update="msgs,pg,btns,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="   借贷标志：D-借，C-贷，B-双方使用；浮动标志：0-不浮动,1-上浮,2-下浮,3-上下浮；期限单位：M-月，Y-年，D-日。"/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+
+                <p:dataTable id="dt" height="200"
+                             value="#{actglcAction.addirtList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="总账码" style="text-align:center">
+                        <h:outputText value="#{record.GLCODE}"/>
+                    </p:column>
+
+                    <p:column headerText="总账码名称" style="text-align:center">
+                        <h:outputText value="#{record.GLCNAM}"/>
+                    </p:column>
+
+                    <p:column headerText="科目级别" style="text-align:left">
+                        <h:outputText value="#{record.GLCCLS}"/>
+                    </p:column>
+
+                    <p:column headerText="并入科目" style="text-align:center">
+                        <h:outputText value="#{record.GLCGRP}"/>
+                    </p:column>
+
+                    <p:column headerText="科目属性" style="text-align:right">
+                        <h:outputText value="#{record.GLCTYP}"/>
+                    </p:column>
+
+                    <p:column headerText="科目类别" style="text-align:center">
+                        <h:outputText value="#{record.GLCCAT}"/>
+                    </p:column>
+
+                    <p:column headerText="允许货币标志" style="text-align:right">
+                        <h:outputText value="#{record.GLCCCY}"/>
+                    </p:column>
+
+                    <p:column headerText="余额方向标志" style="text-align:right">
+                        <h:outputText value="#{record.GLCBAL}"/>
+                    </p:column>
+
+                    <p:column headerText="发生额方向标志" style="text-align:right">
+                        <h:outputText value="#{record.GLCOCC}"/>
+                    </p:column>
+                    <p:column headerText="记息种类" style="text-align:right">
+                        <h:outputText value="#{record.GLCINT}"/>
+                    </p:column>
+                    <p:column headerText="利率种类" style="text-align:right">
+                        <h:outputText value="#{record.GLCRAT}"/>
+                    </p:column>
+                    <p:column headerText="自动允许开户标志" style="text-align:right">
+                        <h:outputText value="#{record.GLCOPN}"/>
+                    </p:column>
+                    <p:column headerText="冲账允许标志" style="text-align:right">
+                        <h:outputText value="#{record.GLCRVS}"/>
+                    </p:column>
+                    <p:column headerText="科目所属" style="text-align:right">
+                        <h:outputText value="#{record.GLCBEL}"/>
+                    </p:column>
+                    <p:column headerText="科目启用日期" style="text-align:right">
+                        <h:outputText value="#{record.EFFDAT}"/>
+                    </p:column>
+                    <p:column headerText="科目使用到期日" style="text-align:right">
+                        <h:outputText value="#{record.EXPDAT}"/>
+                    </p:column>
+                    <!--<p:column headerText="建立柜员" style="text-align:right">-->
+                        <!--<h:outputText value="#{record.AMDTLR}"/>-->
+                    <!--</p:column>-->
+                    <!--<p:column headerText="修改日期" style="text-align:right">-->
+                        <!--<h:outputText value="#{record.UPDDAT}"/>-->
+                    <!--</p:column>-->
+                    <!--<p:column headerText="引用号" style="text-align:right">-->
+                        <!--<h:outputText value="#{record.GLCORD}"/>-->
+                    <!--</p:column>-->
+                </p:dataTable>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
