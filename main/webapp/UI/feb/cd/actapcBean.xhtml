@@ -1,90 +1,124 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/ui.xhtml">
 
-<ui:define name="head">
-<link href="#{request.contextPath}/css/ccb.css" type="text/css" rel="stylesheet"/>
-<link href="#{request.contextPath}/css/form.css" type="text/css" rel="stylesheet"/>
-<script language="JavaScript" type="text/JavaScript">
-            function KeyDown() {
-                if (event.keyCode == 13) {
-                    if (event.srcElement.id == 'inputform:apckid') {
-                        event.returnValue = false;
-                        event.cancel = true;
-                        if(document.forms['inputform']['inputform:actionbtn']==null){
-                            document.forms['inputform']['inputform:back'].click();
-                        }else{
-                            document.forms['inputform']['inputform:actionbtn'].click();
-                        }                       
-                    } else {
-                        event.keyCode = 9;
-                    }
-                }
-        }
-        </script>
-</ui:define>
-<ui:define name="content">
-<div class="entry">
-<h:form id="inputform" onkeydown="KeyDown()" style="padding-left:10px;padding-top:8px;padding-right:10px">
-        <p:messages id="msgs" showSummary="false"  showDetail="true"/>
-        <p:focus for="apcode"/>
-             <p:panel id="basePanel" header="核算码信息">
-             <h:panelGrid id="pt" columns="4"  columnClasses="panel_label2,panel_value,panel_label2,panel_value">
-            <h:outputText value="核算码:*"/>
-            <h:inputText id="apcode" value="#{actapcAction.apc.apcode}" label="核算码"/>
-            <h:outputText value="核算码名称:*"/>
-            <h:inputText value="#{actapcAction.apc.apcnam}" label="核算码名称"  />
-            <h:outputText value="核算码类型:"/>
-            <h:inputText value="#{actapcAction.apc.apctyp}" label="核算码类型"/>
-            <h:outputText value="总账码:"/>
-            <h:inputText value="#{actapcAction.apc.glcode}" label="总账码"/>
-            <h:outputText value="对应损益码:"/>
-            <h:inputText value="#{actapcAction.apc.plcode}" label="对应损益码"/>
-            <h:outputText value="利息支出帐户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.intexp}" label="利息支出帐户核算码"/>
-            <h:outputText value="利息收入帐户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.intinc}" label="利息收入帐户核算码" />
-            <h:outputText value="对转核算码:"/>
-            <h:inputText value="#{actapcAction.apc.opsapc}" label="对转核算码" />
-            <h:outputText value="核算码描述:"/>
-            <h:inputText value="#{actapcAction.apc.apcdcr}" label="核算码描述"/>
-            <h:outputText value="应付利息帐户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.intdac}" label="应付利息帐户核算码"/>
-            <h:outputText value="应收利息帐户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.intcac}" label="应收利息帐户核算码"/>
-            <h:outputText value="未实现利息支出账户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.ndrint}" label="未实现利息支出账户核算码"/>
-            <h:outputText value="未实现利息收入账户核算码:"/>
-            <h:inputText value="#{actapcAction.apc.ncrint}" label="未实现利息收入账户核算码" />
-            <h:outputText value="APCKID:"/>
-            <h:inputText id="apckid" value="#{actapcAction.apc.apckid}" label="APCKID" />
-            </h:panelGrid>
-                 <p:separator/>
-            <h:panelGrid id="btns" columns="1" style="text-align:center;padding-top:10px;" width="98%">
-                <h:panelGroup>
-                 <!--   <p:commandButton id="actionbtn" ajax="false" value="确认保存" action="#{actapcAction.onAdd}"
-                    style="padding-left:10px;padding-right:10px;margin-right:10px;"/>
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
 
-                    <p:commandButton id="reset" value="重置" type="reset"
-                    style="padding-left:10px;padding-right:10px;margin-left:10px;"/>-->
-                    <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                        action="#{actapcAction.onBack}" style="padding-left:10px;
-                                        padding-right:10px;margin-left:10px;"/>
-                    <p:commandButton style="width:80px;margin-left:10px;" value="删除"
-                                     action="#{actapcAction.onDelete}" ajax="true"
-                                     disabled="#{!actapcAction.deleteable}" update="msgs,btns">
-                    </p:commandButton>
-                    <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
-                                     action="#{actapcAction.onUpdate}" ajax="true"
-                                     disabled="#{!actapcAction.updateable}" update="msgs,btns">
-                    </p:commandButton>
-                </h:panelGroup>
-            </h:panelGrid>
-            </p:panel>
-</h:form>
-</div>
-</ui:define>
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:focus for="glcode"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="所属总账码:" id="glcode"/>
+                            <p:inputText  value="#{actapcAction.apc.GLCODE}"/>
+                            <h:outputLabel value="核算码:" />
+                            <p:inputText value="#{actapcAction.apcode}"/>
+                            <h:outputLabel value="核算码类型:" />
+                            <p:inputText  value="#{actapcAction.apc.APCNAM}"/>
+                            <h:outputLabel value="核算码名称" />
+                            <p:inputText value="#{actapcAction.apc.APCTYP}"/>
+                            <h:outputLabel value="柜员号:" />
+                            <p:inputText value="#{actapcAction.apc.TM_CODE}"/>
+                            <!--<h:outputLabel value="对应损益码:" />
+                            <p:inputText  value="#{actapcAction.addapc.PLCODE}"/>
+                            <h:outputLabel value="利息支出账户核算码:"/>
+                            <p:inputText  value="#{actapcAction.addapc.INTEXP}"/>
+                            <h:outputLabel value="利息收入账户核算码:" />
+                            <p:inputText  value="#{actapcAction.addapc.INTINC}"/>
+                            <h:outputLabel value="未实现利息支出核算码:" />
+                            <p:inputText  value="#{actapcAction.addapc.TRNIDT}"/>
+                            <h:outputLabel value="未实现利息收入核算码:" />
+                            <p:inputText  value="#{actapcAction.addapc.FEEAPC}"/>
+                            <h:outputLabel value="核算码种类:" required="true"/>
+                            <p:inputText value="#{actapcAction.addapc.PDCTYP}"/>
+                            <h:outputLabel value="对应总行核算码:" />
+                            <p:inputText  value="#{actapcAction.addapc.EBKCDE}"/>
+                            <h:outputLabel value="所属标准核算码:" />
+                            <p:inputText value="#{actapcAction.addapc.OPSAPC}"/>
+                            <h:outputLabel value="核算码描述:" />
+                            <p:inputText value="#{actapcAction.addapc.APCDCR}"/>
+                            <h:outputLabel value="应付利息账户核算码:" />
+                            <p:inputText   value="#{actapcAction.addapc.INTDAC}"/>
+                            <h:outputLabel value="应收利息账户核算码:" />
+                            <p:inputText  value="#{actapcAction.addapc.INTCAC}"/>
+                            <h:outputLabel value="功能码:" />
+                            <p:inputText   value="#{actapcAction.addapc.FUNCDE}"/>
+                            <h:outputLabel value="开始序号:" />
+                            <p:inputText  value="#{actapcAction.addapc.DEGNUM}"/>
+                            <h:outputLabel value="引用号:" />
+                            <p:inputText value="#{actapcAction.addapc.CLRFLG}"/>
+                            -->
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
+                                             action="#{actapcAction.onUpdate}" ajax="true"
+                                             disabled="#{!actapcAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;margin-left:10px;" value="删除"
+                                             action="#{actapcAction.onDelete}" ajax="true"
+                                             disabled="#{!actapcAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                             action="#{actapcAction.onBack}"
+                                             style="margin-left:10px;width:80px;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="   借贷别：D-借，C-贷，B-双方使用；浮动标志：0-不浮动,1-上浮,2-下浮,3-上下浮；期限单位：M-月，Y-年，D-日。"/>
+                <p:separator/>
+            </h:form>
+        </div>
+    </ui:define>
 </ui:composition>
