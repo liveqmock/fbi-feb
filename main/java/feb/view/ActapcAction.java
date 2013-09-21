@@ -2,10 +2,14 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T404;
-import gateway.sbs.txn.model.form.T862;
+import gateway.sbs.txn.model.form.T804;
+import gateway.sbs.txn.model.form.T805;
+import gateway.sbs.txn.model.form.T814;
+import gateway.sbs.txn.model.form.T815;
 import gateway.sbs.txn.model.msg.M9804;
+import gateway.sbs.txn.model.msg.M9805;
 import gateway.sbs.txn.model.msg.M9814;
+import gateway.sbs.txn.model.msg.M9815;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,57 +22,61 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-9-12
- * Time: œ¬ŒÁ8:34
+ * Date: 13-9-3
+ * Time: œ¬ŒÁ2:15
  * To change this template use File | Settings | File Templates.
  */
 @ManagedBean
 @ViewScoped
-public class ActapcAction implements Serializable {
+public class ActapcAction  implements Serializable {
 
-    private static Logger logger = LoggerFactory.getLogger(ActirtAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActapcAction.class);
 
+    private String action;
     private String glcode;
     private String apcode;
+    private String apcnam;
     private String apctyp;
-    private String action;
+    private boolean updateable = false;
+    private boolean deleteable = false;
+    private boolean readonly = false;
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    private List<T862.Bean> dataList = new ArrayList<>();
-    private T404 apc = new T404();
-    private boolean updateable = false;
-    private boolean deleteable = false;
-    private boolean readonly = false;
-    private List<M9814> addapcList = new ArrayList<>();
+    private T814 apc = new T814();
     private M9814 addapc ;
+    private List<T815.Bean> dataList = new ArrayList<>();
+    private List<M9814> addapcList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
+        glcode = params.get("glcode");
         apcode = params.get("apcode");
+        apcnam = params.get("apcnam");
         apctyp = params.get("apctyp");
         action = params.get("action");
-        if (!StringUtils.isEmpty(apcode)) {
-            M9814 m9814 = new M9814(glcode, apcode);
+        if (!StringUtils.isEmpty(glcode)) {
+            M9814 m9814 = new M9814(glcode, apcode, apcnam, "0");
             SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
-            if (!"T862".equals(form.getFormHeader().getFormCode())) {
+            if (!"T814".equals(form.getFormHeader().getFormCode())) {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             } else {
-                apc = (T404) form.getFormBody();
+                apc = (T814) form.getFormBody();
             }
         } else {
-            // ÃÌº”apc ≥ı ºªØ addapc
-            initAddapc();
+            // ÃÌº”¿˚¬  ≥ı ºªØ addirt
+            initAddirt();
         }
         if ("update".equals(action)) {
             updateable = true;
@@ -78,40 +86,34 @@ public class ActapcAction implements Serializable {
             deleteable = true;
             readonly = true;
         }
-        if ("detail".equals(action)) {
-            deleteable = true;
-            readonly = true;
-        }
         if ("query".equals(action)) onAllQuery();
     }
 
-    private void initAddapc() {
+    private void initAddirt() {
         addapc = new M9814();
-        //addapc.setAPCODE("1119");
-        //addapc.setAPCNAM("WW");
-        addapc.setAPCTYP("0");
-        addapc.setGLCODE(glcode);
-        addapc.setCLRFLG("1");
+        addapc.setApctyp("0");
 
     }
+
     public String onAllQuery() {
         try {
-            //addapc.setFUNCDE("2");
-            M9814 m9814 = new M9814(glcode, apcode);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
+            M9815 m9815 = new M9815(glcode, apcode);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9815", m9815);
+            System.out.print(formList.size());
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if (!"T862".equals(form.getFormHeader().getFormCode()) &&
-                            !"W001".equals(form.getFormHeader().getFormCode())) {
-                       MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                       //System.out.print("form≥§∂»£∫"+form.length);
+                    if (!"T815".equals(form.getFormHeader().getFormCode()) &&
+                            !"W014".equals(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
-                    } else if ("T862".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T862 t862 = (T862) form.getFormBody();
-                        dataList.addAll(t862.getBeanList());
+                    } else if ("T815".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T815 t815 = (T815) form.getFormBody();
+                        dataList.addAll(t815.getBeanList());
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
-//                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
@@ -120,36 +122,53 @@ public class ActapcAction implements Serializable {
             }
         } catch (Exception e) {
             logger.error("≤È—Ø ß∞‹", e);
-            MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+            MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "null" : e.getMessage()));
         }
         return null;
+    }
+
+    public String onClick() {
+        return "actapcBean";
     }
 
     public String onAdd() {
         try {
             addapc.setMODFLG("1");
             addapc.setFUNCDE("4");
-            SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
+            SOFForm form = dataExchangeService.callSbsTxn("9814", addapc ).get(0);
             String formcode = form.getFormHeader().getFormCode();
-            if ("T404".equalsIgnoreCase(formcode)) {
+            if ("W005".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 addapcList.add(addapc);
-                initAddapc();
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
-            logger.error("∫ÀÀ„¬Î‘ˆº” ß∞‹", e);
-            MessageUtil.addError("∫ÀÀ„¬Î‘ˆº” ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("¿˚¬ ‘ˆº” ß∞‹", e);
+            MessageUtil.addError("¿˚¬ ‘ˆº” ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+    public String onDelete() {
+        try {
+            String formcode = txn9814ForUD();
+            if ("W014".equalsIgnoreCase(formcode)) {
+                MessageUtil.addInfoWithClientID("msgs", formcode);
+                deleteable = false;
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("…æ≥˝ ß∞‹", e);
+            MessageUtil.addError("…æ≥˝ ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
 
     public String onUpdate() {
         try {
-
             String formcode = txn9814ForUD();
-            if ("T862".equalsIgnoreCase(formcode)) {
+            if ("W001".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 updateable = false;
             } else {
@@ -162,24 +181,8 @@ public class ActapcAction implements Serializable {
         return null;
     }
 
-    public String onDelete() {
-        try {
-            String formcode = txn9814ForUD();
-            if ("W004".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfoWithClientID("msgs", formcode);
-                deleteable = false;
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("…æ≥˝ ß∞‹", e);
-            MessageUtil.addError("…æ≥˝ ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-    // ∫ÀÀ„¬Î–ﬁ∏ƒ∫Õ…æ≥˝
     private String txn9814ForUD() throws IllegalAccessException {
-        M9814 m9814 = new M9814(apc.getGLCODE(), apc.getAPCODE());
+        M9814 m9814 = new M9814(apc.getGlcode(), apc.getApcode() + apc.getApcnam(), apc.getApctyp(), null);
         BeanHelper.copyFields(apc, m9814);
         m9814.setMODFLG("1");
         if ("update".equals(action)) m9814.setFUNCDE("2");
@@ -188,14 +191,33 @@ public class ActapcAction implements Serializable {
         SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
         return form.getFormHeader().getFormCode();
     }
-    public String onClick() {
-        return "actapcBean";
-    }
-    public String onBack() {
-        return "actapcMng?faces-redirect=true&action=query";
+
+//===============================================================================
+
+    public boolean isUpdateable() {
+        return updateable;
     }
 
-//---------------------------------------------------------------------------
+    public void setUpdateable(boolean updateable) {
+        this.updateable = updateable;
+    }
+
+    public boolean isDeleteable() {
+        return deleteable;
+    }
+
+    public void setDeleteable(boolean deleteable) {
+        this.deleteable = deleteable;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     public String getGlcode() {
         return glcode;
     }
@@ -212,6 +234,14 @@ public class ActapcAction implements Serializable {
         this.apcode = apcode;
     }
 
+    public String getApcnam() {
+        return apcnam;
+    }
+
+    public void setApcnam(String apcnam) {
+        this.apcnam = apcnam;
+    }
+
     public String getApctyp() {
         return apctyp;
     }
@@ -220,44 +250,35 @@ public class ActapcAction implements Serializable {
         this.apctyp = apctyp;
     }
 
-    public String getAction() {
-        return action;
+    public boolean isReadonly() {
+        return readonly;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
-
-    public DataExchangeService getDataExchangeService() {
-        return dataExchangeService;
-    }
-
-    public void setDataExchangeService(DataExchangeService dataExchangeService) {
-        this.dataExchangeService = dataExchangeService;
-    }
-
-    public List<T862.Bean> getDataList() {
+    public List<T815.Bean> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<T862.Bean> dataList) {
+    public void setDataList(List<T815.Bean> dataList) {
         this.dataList = dataList;
     }
 
-    public T404 getApc() {
+    public String onBack() {
+        return "actapcMng?faces-redirect=true&action=query";
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public T814 getApc() {
         return apc;
     }
 
-    public void setApc(T404 apc) {
+    public void setApc(T814 apc) {
         this.apc = apc;
-    }
-
-    public List<M9814> getAddapcList() {
-        return addapcList;
-    }
-
-    public void setAddapcList(List<M9814> addapcList) {
-        this.addapcList = addapcList;
     }
 
     public M9814 getAddapc() {
@@ -268,28 +289,21 @@ public class ActapcAction implements Serializable {
         this.addapc = addapc;
     }
 
-    public boolean isReadonly() {
-        return readonly;
+    public List<M9814> getAddapcList() {
+        return addapcList;
     }
 
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
+    public void setAddapcList(List<M9814> addapcList) {
+        this.addapcList = addapcList;
     }
 
-    public boolean isUpdateable() {
-        return updateable;
+
+    public DataExchangeService getDataExchangeService() {
+        return dataExchangeService;
     }
 
-    public void setUpdateable(boolean updateable) {
-        this.updateable = updateable;
-    }
-
-    public boolean isDeleteable() {
-        return deleteable;
-    }
-
-    public void setDeleteable(boolean deleteable) {
-        this.deleteable = deleteable;
+    public void setDataExchangeService(DataExchangeService dataExchangeService) {
+        this.dataExchangeService = dataExchangeService;
     }
 
 }
