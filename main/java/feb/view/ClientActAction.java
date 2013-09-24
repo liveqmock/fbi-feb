@@ -22,7 +22,7 @@ import java.util.List;
  */
 @ManagedBean
 @ViewScoped
-public class ClientActAction implements Serializable {
+public class  ClientActAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ClientActAction.class);
 
     @ManagedProperty(value = "#{dataExchangeService}")

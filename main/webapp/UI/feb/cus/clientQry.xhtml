@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+<ui:define name="head">
+    <style type="text/css">
+        .col-95 {
+            width: 95%;
+        }
+
+        .col-5 {
+            width: 5%;
+        }
+
+        .col-label {
+            width: 148px;
+            text-align: right;
+        }
+
+        .col-input {
+            width: 180px;
+            text-align: left;
+        }
+
+        .col-label2 {
+            width: 180px;
+            text-align: right;
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+
+        .col-input2 {
+            width: 180px;
+            text-align: left;
+        }
+    </style>
+    <script language="JavaScript" type="text/JavaScript">
+        document.onkeydown = function TabReplace() {
+            if (event.keyCode == 13) {
+                event.keyCode = 9;
+            }
+        }
+    </script>
+</ui:define>
+<ui:define name="content">
+    <div style="margin:5px">
+        <h:form id="form">
+            <p:focus for="cusnum"/>
+            <p:messages id="msgs" showSummary="true" showDetail="true"/>
+            <p:fieldset id="panel">
+                <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
+                    <h:panelGrid columns="2" cellspacing="5"
+                                 columnClasses="col-label,col-input">
+                        <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                        <p:inputText required="true" size="25"
+                                     requiredMessage="客户号不能为空。"
+                                     id="cusnum" onkeydown="KeyDown()"
+                                     value="#{clientAction.updateQryCus.CUSIDT}"/>
+                        <!--<h:outputLabel value="客户名称:" style="font-weight: bold"/>
+                        <p:inputText value="#{clientAction.updateQryCus.CUSNAM}" size="25" onkeydown="KeyDown()"/>-->
+                    </h:panelGrid>
+                    <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
+                                 width="10%">
+                        <p:commandButton style="width:110px;" value="查询账户信息"
+                                         action="#{clientAction.onQryUpdateCus()}" ajax="true"
+                                         update="msgs,panel,dataPanel">
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:ajaxStatus style="height:18px;text-align:center">
+                <f:facet name="start">
+                    <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+            <p:panel id="dataPanel">
+                <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                             columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                    <h:outputLabel value="客户号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSIDT}"/>
+                    <h:outputLabel value="账户名称:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSNAM}"/>
+                    <h:outputLabel value="客户英文名:"/>
+                    <h:outputText value="#{clientAction.cusInfo.ENGNAM}"/>
+                    <h:outputLabel value="客户简称:"/>
+                    <h:outputText value="#{clientAction.cusInfo.SHTNAM}"/>
+                    <h:outputLabel value="简名索引:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSIDX}"/>
+                    <h:outputLabel value="注册国家码:"/>
+                    <h:outputText value="#{clientAction.cusInfo.RSDCTR}"/>
+                    <h:outputLabel value="所在国家码:"/>
+                    <h:outputText value="#{clientAction.cusInfo.OPRCTR}"/>
+
+                    <h:outputLabel value="地址:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CORADD}"/>
+                    <h:outputLabel value="邮编:"/>
+                    <h:outputText value="#{clientAction.cusInfo.ZIPCDE}"/>
+                    <h:outputLabel value="电话:"/>
+                    <h:outputText value="#{clientAction.cusInfo.TELNUM}"/>
+                    <h:outputLabel value="电传:"/>
+                    <h:outputText value="#{clientAction.cusInfo.TELEXN}"/>
+                    <h:outputLabel value="证件类别:"/>
+                    <h:outputText value="#{clientAction.cusInfo.PASTYP}"/>
+                    <h:outputLabel value="证件号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.PASSNO}"/>
+
+                    <h:outputLabel value="信用等级:"/>
+                    <h:outputText value="#{clientAction.cusInfo.TSTRNK}"/>
+                    <h:outputLabel value="信用额度:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CRDLIM}" />
+                    <h:outputLabel value="风险组别:"/>
+                    <h:outputText value="#{clientAction.cusInfo.RSKGRP}"/>
+                    <h:outputLabel value="相关客户:"/>
+                    <h:outputText value="#{clientAction.cusInfo.RELCUS}"/>
+                    <h:outputLabel value="开户日:"/>
+                    <h:outputText value="#{clientAction.cusInfo.OPNDAT}"/>
+                    <h:outputLabel value="密码:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSPWD}"/>
+                    <h:outputLabel value="客户类型码:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSKID}"/>
+                    <h:outputLabel value="机构号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.ORGIDT}"/>
+                    <h:outputLabel value="部门号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.DEPNUM}"/>
+                    <h:outputLabel value="性别:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSSEX}"/>
+                    <h:outputLabel value="出生日期:"/>
+                    <h:outputText value="#{clientAction.cusInfo.BIRDAY}"/>
+                    <h:outputLabel value="职业:"/>
+                    <h:outputText value="#{clientAction.cusInfo.PROFSN}" />
+                    <h:outputLabel value="职务:"/>
+                    <h:outputText value="#{clientAction.cusInfo.POSTON}"/>
+                    <h:outputLabel value="工作单位:"/>
+                    <h:outputText value="#{clientAction.cusInfo.WRKUNT}"/>
+                    <h:outputLabel value="月收入:"/>
+                    <h:outputText value="#{clientAction.cusInfo.MONSLA}"/>
+                    <h:outputLabel value="其他收入:"/>
+                    <h:outputText value="#{clientAction.cusInfo.OTHINC}"/>
+                    <h:outputLabel value="个人国民保险号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.ISRNUM}"/>
+                    <h:outputLabel value="税号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.TAXNUM}"/>
+
+                    <h:outputLabel value="婚姻状况:"/>
+                    <h:outputText value="#{clientAction.cusInfo.MARSTS}"/>
+                    <h:outputLabel value="家庭人口:"/>
+                    <h:outputText value="#{clientAction.cusInfo.FAMPER}" />
+                    <h:outputLabel value="损益归类码:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSTY1}"/>
+                    <h:outputLabel value="客户类别:"/>
+                    <h:outputText value="#{clientAction.cusInfo.CUSTY2}"/>
+                    <h:outputLabel value="功能参数:"/>
+                    <h:outputText value="#{clientAction.cusInfo.AMDTLR}"/>
+                    <h:outputLabel value="部门号:"/>
+                    <h:outputText value="#{clientAction.cusInfo.DEPNUM}"/>
+                    <h:outputLabel value="修改日期:"/>
+                    <h:outputText value="#{clientAction.cusInfo.UPDDAT}"/>
+                    <h:outputLabel value="记录状态:"/>
+                    <h:outputText value="#{clientAction.cusInfo.RECSTS}"/>
+                    <h:outputLabel value="系统标识:"/>
+                    <h:outputText value="#{clientAction.cusInfo.SYSIDT}"/>
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </div>
+</ui:define>
+</ui:composition>

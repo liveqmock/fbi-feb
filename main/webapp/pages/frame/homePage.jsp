@@ -141,10 +141,10 @@
             var isProd_Web = <%=isProduction_WebServer%>;
             var isProd_Sbs = <%=isProduction_SBSServer%>;
             if (isProd_Web == "0") {
-                alert("当前环境为开发测试环境！");
+                //alert("当前环境为开发测试环境！");
             }
             if (isProd_Sbs == "0") {
-                alert("当前环境连接的是SBS测试机！");
+               // alert("当前环境连接的是SBS测试机！");
             }
         }
 
