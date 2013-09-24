@@ -125,12 +125,12 @@
 
                     <p:column headerText="操作" style="text-align:center">
                         <p:commandLink value="修改" immediate="true" ajax="false" action="#{actirtAction.onClick()}"
-                                       style="color: blue">
-                            <f:param value="#{actirtAction.curcde}" name="curcde"/>
-                            <f:param value="#{record.EXTDAT}" name="extdat"/>
-                            <f:param value="#{record.IRTCDE}" name="irtcde"/>
-                            <f:param value="update" name="action"/>
-                        </p:commandLink>
+                                                                style="color: blue">
+                        <f:param value="#{actirtAction.curcde}" name="curcde"/>
+                        <f:param value="#{record.EXTDAT}" name="extdat"/>
+                        <f:param value="#{record.IRTCDE}" name="irtcde"/>
+                        <f:param value="update" name="action"/>
+                    </p:commandLink>
                         <p:spacer width="10px;"/>
                         <p:commandLink value="删除" immediate="true" ajax="false" action="#{actirtAction.onClick()}"
                                        style="color: blue">

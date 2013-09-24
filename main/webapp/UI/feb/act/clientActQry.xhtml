@@ -48,7 +48,7 @@
     <div style="margin:5px">
         <h:form id="form">
             <p:focus for="actnum"/>
-            <p:messages id="msgs" showSummary="true" showDetail="true"/>
+            <p:messages id="msgs" showSummary="false" showDetail="true"/>
             <p:fieldset id="panel">
                 <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
                     <h:panelGrid columns="2" cellspacing="5"
@@ -56,7 +56,7 @@
                         <h:outputLabel value="客户账号:" style="font-weight: bold"/>
                         <p:inputText required="true" size="25"
                                      requiredMessage="客户账号不能为空。"
-                                     id="actnum" onkeydown="KeyDown()"
+                                     id="actnum"
                                      value="#{clientActAction.updateQryAct.ACTNUM}"/>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
@@ -82,7 +82,7 @@
                     <h:outputLabel value="账号:"/>
                     <h:outputText value="#{clientActAction.actInfo.ACTNUM}"/>
                     <h:outputLabel value="账户名称:"/>
-                    <h:outputText value="#{clientActAction.actInfo.ACTNAM}" maxlength="36"/>
+                    <h:outputText value="#{clientActAction.actInfo.ACTNAM}"/>
                     <h:outputLabel value="账户余额:"/>
                     <h:outputText value="#{clientActAction.actInfo.BOKBAL}"/>
                     <h:outputLabel value="有效余额:"/>
@@ -136,25 +136,37 @@
                     <h:outputLabel value="邮编:"/>
                     <h:outputText value="#{clientActAction.actInfo.STMZIP}"/>
                     <h:outputLabel value="账页形式:"/>
-                    <h:outputText value="#{clientActAction.actInfo.STMFMT}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.STMFMT}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfStmfmtItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="出账份数:"/>
                     <h:outputText value="#{clientActAction.actInfo.STMSHT}"/>
                     <h:outputLabel value="对账单分发部门:"/>
                     <h:outputText value="#{clientActAction.actInfo.STMDEP}"/>
                     <h:outputLabel value="对账单出账周期:"/>
-                    <h:outputText value="#{clientActAction.actInfo.STMCYC}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.STMCYC}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfStmcycItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="出账日期:"/>
                     <h:outputText value="#{clientActAction.actInfo.STMCDT}"/>
                     <h:outputLabel value="账户类型:"/>
-                    <h:outputText value="#{clientActAction.actInfo.ACTTYP}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.ACTTYP}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="计息标志:"/>
-                    <h:outputText value="#{clientActAction.actInfo.INTFLG}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.INTFLG}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="计息周期:"/>
-                    <h:outputText value="#{clientActAction.actInfo.INTCYC}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.INTCYC}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="转息账户:"/>
                     <h:outputText value="#{clientActAction.actInfo.INTTRA}"/>
                     <h:outputLabel value="支票/存折标志:"/>
-                    <h:outputText value="#{clientActAction.actInfo.CQEFLG}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.CQEFLG}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfCqeflgItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="协定账户余额限度:"/>
                     <h:outputText value="#{clientActAction.actInfo.BALLIM}"/>
                     <h:outputLabel value="透支限额:"/>
@@ -166,11 +178,15 @@
                     <h:outputLabel value="贷方固定或浮动利率:"/>
                     <h:outputText value="#{clientActAction.actInfo.CRATSF}"/>
                     <h:outputLabel value="分户账出账周期:"/>
-                    <h:outputText value="#{clientActAction.actInfo.LEGCYC}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.LEGCYC}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfLegcycItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="分户账出账日期:"/>
                     <h:outputText value="#{clientActAction.actInfo.LEGCDT}"/>
                     <h:outputLabel value="分户账账页形式:"/>
-                    <h:outputText value="#{clientActAction.actInfo.LEGFMT}"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.LEGFMT}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfLegfmtItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="分户账地址:"/>
                     <h:outputText value="#{clientActAction.actInfo.LEGADD}"/>
                     <h:outputLabel value="分户账出账份数:"/>

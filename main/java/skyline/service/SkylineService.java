@@ -4,15 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.form.config.SystemAttributeNames;
 import pub.platform.security.OperatorManager;
-import skyline.repository.dao.PtenudetailMapper;
-import skyline.repository.model.Ptenudetail;
-import skyline.repository.model.PtenudetailExample;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +18,7 @@ import java.util.List;
 public class SkylineService {
     private static final Logger logger = LoggerFactory.getLogger(SkylineService.class);
 
-    private Selectable selectable;
+    private Selectable selectable; // 业务枚举类
 
     public static OperatorManager getOperatorManager() {
         ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();

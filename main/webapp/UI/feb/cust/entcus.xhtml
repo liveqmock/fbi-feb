@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+<ui:define name="head">
+<link href="#{request.contextPath}/css/ccb.css" type="text/css" rel="stylesheet"/>
+<link href="#{request.contextPath}/css/form.css" type="text/css" rel="stylesheet"/>
+<script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:sbknum') {
+                        event.returnValue = false;
+                        event.cancel = true;
+                        document.forms['inputform']['inputform:savbtn'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+             function pattern(obj,len) {
+                        var str = obj.value;
+                        var strTemp = "";
+                        if (str == "")
+                        return false;
+                        for (i=1;(len - str.length) >= i;i++)  {
+                            strTemp += "0";
+                        }
+                        if((strTemp + str) !="0000000"){
+                           obj.value=strTemp + str;
+                        }else{
+                            obj.value="";
+                        }
+                    }
+        </script>
+</ui:define>
+<ui:define name="content">
+<div class="entry">
+<h:form id="inputform" style="padding-left:10px;padding-top:8px;padding-right:10px">
+        <p:messages id="msgs" showSummary="false"  showDetail="true"/>
+
+        <p:panel header="客户基本信息">
+            <h:panelGrid columns="4"  columnClasses="panel_label1,panel_value,panel_label1,panel_value">
+
+                <h:outputText value="*客户号: " />
+                <p:inputText  value="#{clientCusAction.clientCus.cusidt}" >
+                </p:inputText>
+                <h:outputText value="*客户名称: " />
+                <p:inputText value="#{clientCusAction.clientCus.cusnam}" size="30"/>
+                <h:outputText value=" 客户简称: " />
+                <p:inputText value="#{clientCusAction.clientCus.shtnam}"/>
+                <h:outputText value="注册国家码: " />
+                <p:inputText value="#{clientCusAction.clientCus.rsdctr}"/>
+                <!--<h:selectOneMenu id="rsdCtr" value="#{clientCusAction.clientCus.rsdctr}" >
+                    <f:selectItems value="#{cusEntlist.ctrList}"/>
+                </h:selectOneMenu>-->
+                <h:outputText value="客户英文名: " />
+                <h:inputText value="#{clientCusAction.clientCus.engnam}"/>
+                <h:outputText value="所在国家码: " />
+                <p:inputText value="#{clientCusAction.clientCus.oprctr}"/>
+                <!--<h:selectOneMenu id="oprCtr" value="#{clientCusAction.clientCus.oprctr}" >
+                    <f:selectItems value="#{cusEntlist.ctrList}"></f:selectItems>
+                </h:selectOneMenu>-->
+                <h:outputText value="证件类型: " />
+                <p:inputText value="#{clientCusAction.clientCus.pastyp}"/>
+                <!--<h:selectOneMenu id="pasTyp" value="#{clientCusAction.clientCus.pastyp}" >
+                    <f:selectItems value="#{cusEntlist.pasTypList}"/>
+                </h:selectOneMenu>-->
+                <h:outputText value="* 证件号码: " />
+                <p:inputText id="passno" label="证件号码" maxlength="18" value="#{clientCusAction.clientCus.passno}"/>
+                <h:outputText value="客户类型: " />
+                <p:inputText value="#{clientCusAction.clientCus.cuskid}"/>
+                <!--<h:selectOneMenu id="cusKid" value="#{clientCusAction.clientCus.cuskid}" >
+                    <f:selectItems value="#{cusEntlist.cusKidList}"/>
+                </h:selectOneMenu>-->
+                <h:outputText value="* 电话号码: " />
+                <p:inputText label="电话号码" id="telnum" maxlength="18" value="#{clientCusAction.clientCus.telnum}">
+                </p:inputText>
+                <h:outputText value="电传: " />
+                <p:inputText id="telexn" maxlength="10" value="#{clientCusAction.clientCus.telexn}">
+                </p:inputText>
+                <h:outputText value="* 地址: " />
+                <p:inputText maxlength="122" value="#{clientCusAction.clientCus.coradd}" size="50"/>
+                <h:outputText value="邮编: " />
+                <p:inputMask id="zipcde" label="邮编" maxlength="6" mask="999999"
+                             value="#{clientCusAction.clientCus.zipcde}">
+                </p:inputMask>
+                <h:outputText value="信用级别: " />
+                <p:inputText value="#{clientCusAction.clientCus.tstrnk}"/>
+                <h:outputText value="授信额度(元): " />
+                <p:inputText value="#{clientCusAction.clientCus.crdlim}"/>
+                <h:outputText value="风险组别: " />
+                <p:inputText value="#{clientCusAction.clientCus.rskgrp}"/>
+                <h:outputText value="相关客户: " />
+                <p:inputText value="#{clientCusAction.clientCus.relcus}"/>
+                <h:outputText value="开户日期: " />
+                <p:inputMask id="opndat" mask="9999-99-99"    converterMessage="请输入正确的开户日期！" value="#{clientCusAction.clientCus.opndat}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </p:inputMask>
+
+            </h:panelGrid>
+        </p:panel>
+    <p:panel header="公司客户信息">
+        <h:panelGrid columns="4"  columnClasses="panel_label2,panel_value,panel_label2,panel_value">
+            <h:outputText value="法人姓名: "  />
+            <p:inputText value="#{clientCusAction.clientCus.legbdy}"/>
+
+            <h:outputText value="财务负责人姓名: " />
+            <p:inputText value="#{clientCusAction.clientCus.actbdy}"/>
+            <h:outputText value="注册外币资本: " />
+            <p:inputText value="#{clientCusAction.clientCus.reglap}">
+            </p:inputText>
+
+            <h:outputText value="注册外币: " />
+            <p:inputText value="#{clientCusAction.clientCus.regccy}"/>
+            <!--<h:selectOneMenu id="regccy" value="#{clientCusAction.clientCus.regccy}" >
+                <f:selectItems value="#{cusEntlist.ccyList}"/>
+            </h:selectOneMenu>-->
+
+
+            <h:outputText value="注册本币资本(元): " />
+            <p:inputText value="#{clientCusAction.clientCus.loccap}">
+            </p:inputText>
+
+            <h:outputText value="注册地址: " />
+            <p:inputText value="#{clientCusAction.clientCus.regadd}"/>
+
+            <h:outputText value="效期(月数): " />
+            <p:inputText value="#{clientCusAction.clientCus.sheff}">
+            </p:inputText>
+
+            <h:outputText value="注册日期: " />
+            <p:inputMask id="regdat" mask="9999-99-99" converterMessage="请输入正确的注册日期！" value="#{clientCusAction.clientCus.regdat}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </p:inputMask>
+
+            <h:outputText value="主管部门: " />
+            <h:inputText value="#{clientCusAction.clientCus.supdep}"/>
+
+            <h:outputText value="* 行业代码: " />
+            <p:inputText value="#{clientCusAction.clientCus.buscde}"/>
+            <!--<h:selectOneMenu id="busCde" value="#{clientCusAction.clientCus.buscde}" >
+                <f:selectItems value="#{cusEntlist.busCdeList}"/>
+            </h:selectOneMenu>-->
+
+            <h:outputText value="企业性质: " />
+            <p:inputText value="#{clientCusAction.clientCus.enttyp}"/>
+            <!--<h:selectOneMenu id="enttyp" value="#{clientCusAction.clientCus.enttyp}" >
+                <f:selectItems value="#{cusEntlist.entTypList}"/>
+            </h:selectOneMenu>-->
+
+            <h:outputText value="国家税务号: " />
+            <p:inputText value="#{clientCusAction.clientCus.ctxnum}">
+            </p:inputText>
+
+            <h:outputText value="地方税务号: " />
+            <p:inputText id="ltxnum" label="地方税务号"  maxlength="15" value="#{clientCusAction.clientCus.ltxnum}">
+            </p:inputText>
+
+            <h:outputText value="客户类型1: " />
+            <p:inputText value="#{clientCusAction.clientCus.custy1}"/>
+
+            <h:outputText value="客户类型2: " />
+            <p:inputText value="#{clientCusAction.clientCus.custy2}"/>
+
+            <h:outputText value="INTERNET号: " />
+            <p:inputText value="#{clientCusAction.clientCus.intnet}"/>
+
+            <h:outputText value="企业标准号: " />
+            <p:inputText value="#{clientCusAction.clientCus.entcde}"/>
+
+            <h:outputText value="联行行号: " />
+            <p:inputText value="#{clientCusAction.clientCus.ibkcde}"/>
+
+            <h:outputText value="辖内行号: " />
+            <p:inputText value="#{clientCusAction.clientCus.sbknum}"/>
+
+        </h:panelGrid>
+        <h:panelGrid id="btns" columns="1" style="text-align:center;padding-top:10px;" width="98%">
+            <h:panelGroup>
+                <p:commandButton id="savbtn" value="保存" action="#{clientCusAction.onCreate}"
+                                 ajax="true" update="msgs,btns"/>
+                <p:commandButton value="重置" type="reset" style="padding-left:10px;
+                        padding-right:10px;margin-left:10px;"/>
+            </h:panelGroup>
+        </h:panelGrid>
+    </p:panel>
+</h:form>
+</div>
+</ui:define>
+</ui:composition>

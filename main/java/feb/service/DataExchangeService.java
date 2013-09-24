@@ -11,6 +11,8 @@ import skyline.service.SkylineService;
 
 import java.util.List;
 
+import static skyline.service.SkylineService.*;
+
 /**
  * 对外交易发起
  */
@@ -23,7 +25,7 @@ public class DataExchangeService {
 
     // SBS交易执行点
     public List<SOFForm> callSbsTxn(String txnCode, MTia tia) {
-        String tellerid = SkylineService.getOperId();
+        String tellerid = getOperId();
         String termid = tellerid;
         return sbsTxnService.execute(termid, tellerid, txnCode, tia);
     }

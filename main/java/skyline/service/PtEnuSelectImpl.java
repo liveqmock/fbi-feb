@@ -27,7 +27,7 @@ public class PtEnuSelectImpl implements Selectable {
     public List<SelectItem> getSelectItems(String enuId, boolean isSelectNone, boolean isExpandID) {
         PtenudetailExample example = new PtenudetailExample();
         example.createCriteria().andEnutypeEqualTo(enuId);
-        example.setOrderByClause(" enuitemvalue ");
+        example.setOrderByClause(" DISPNO ");
         List<Ptenudetail> records = ptenudetailMapper.selectByExample(example);
         List<SelectItem> items = new ArrayList<SelectItem>();
         SelectItem item;
