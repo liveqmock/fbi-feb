@@ -44,7 +44,7 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
                 <p:focus for="actnum"/>
                 <p:panel>
                     <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
@@ -59,11 +59,17 @@
                             <h:outputLabel value="贷方利率代码:"/>
                             <p:inputText value="#{clientActAction.internalAct.CINRAT}" maxlength="3"/>
                             <h:outputLabel value="账户类型:"/>
-                            <p:inputText value="#{clientActAction.internalAct.ACTTYP}"/>
+                            <p:selectOneMenu value="#{clientActAction.internalAct.ACTTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="计息标志:"/>
-                            <p:inputText value="#{clientActAction.internalAct.INTFLG}"/>
+                            <p:selectOneMenu value="#{clientActAction.internalAct.INTFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="计息周期:"/>
-                            <p:inputText value="#{clientActAction.internalAct.INTCYC}"/>
+                            <p:selectOneMenu value="#{clientActAction.internalAct.INTCYC}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="转息账户:"/>
                             <p:inputText value="#{clientActAction.internalAct.INTTRA}"/>
                             <h:outputLabel value="借方利率代码:"/>
@@ -73,11 +79,15 @@
                             <h:outputLabel value="贷方固定或浮动利率:"/>
                             <p:inputText value="#{clientActAction.internalAct.CRATSF}"/>
                             <h:outputLabel value="分户账出账周期:"/>
-                            <p:inputText value="#{clientActAction.internalAct.LEGCYC}"/>
+                            <p:selectOneMenu value="#{clientActAction.internalAct.LEGCYC}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfLegcycItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="分户账出账日期:"/>
                             <p:inputText value="#{clientActAction.internalAct.LEGCDT}"/>
                             <h:outputLabel value="分户账账页形式:"/>
-                            <p:inputText value="#{clientActAction.internalAct.LEGFMT}"/>
+                            <p:selectOneMenu value="#{clientActAction.internalAct.LEGFMT}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfLegfmtItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="分户账地址:"/>
                             <p:inputText value="#{clientActAction.internalAct.LEGADD}"/>
                             <h:outputLabel value="分户账出账份数:"/>
@@ -104,7 +114,8 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:fieldset>
-                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="部门号:"/>
                         <h:outputText value="#{clientActAction.rtnActInfo.ORGIDT}"/>

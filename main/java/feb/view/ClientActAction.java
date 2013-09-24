@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
+import skyline.service.SkylineService;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -27,12 +28,13 @@ public class ClientActAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+
     private M8101 clientAct = new M8101();     // 开户
     private M8109 closeAct = new M8109();      // 关户查询
     private T101 rtnActInfo;                   // 开关户返回信息
-    private T109 closeActInfo;                 // 关户查询返回信息
+    private T109 closeActInfo = new T109();    // 关户查询返回信息
     private T109 updateActRtnInfo;             // 修改账户返回信息
-    private T108 actInfo;                      // 查询返回账户信息
+    private T108 actInfo = new T108();         // 查询返回账户信息
     private M8104 internalAct = new M8104();   // 内部账户
     private M8108 updateQryAct = new M8108();  // 账户查询
     private boolean updateable = false;        // 是否可修改
@@ -146,8 +148,8 @@ public class ClientActAction implements Serializable {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T108".equalsIgnoreCase(formcode)) {
                     actInfo = (T108) form.getFormBody();
-                   // BeanHelper.copyFields(actInfo, updateAct);
-                   // updateable = true;
+                   BeanHelper.copyFields(actInfo, updateAct);
+                   updateable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
@@ -285,4 +287,5 @@ public class ClientActAction implements Serializable {
     public void setInternalAct(M8104 internalAct) {
         this.internalAct = internalAct;
     }
+
 }
