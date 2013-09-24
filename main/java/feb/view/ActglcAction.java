@@ -4,9 +4,7 @@ import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T861;
 import gateway.sbs.txn.model.form.T813;
-import gateway.sbs.txn.model.msg.M9861;
 import gateway.sbs.txn.model.msg.M9813;
-import gateway.sbs.txn.model.msg.M9805;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,19 +29,21 @@ import java.util.Map;
 @ManagedBean
 @ViewScoped
 public class ActglcAction implements Serializable {
-    private static Logger logger = LoggerFactory.getLogger(ActirtAction.class);
+    private static Logger logger = LoggerFactory.getLogger(ActglcAction.class);
 
     private String action;
-    private String glcode;
+    private String glcode ="";
     private String extdat;
     private String glcnam;
     private String irtdate;
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-//    private List<T813.Bean> dataList = new ArrayList<>();
-    private List<T861.Bean> DdataList = new ArrayList<>();
+    private List<T813.Bean> dataList = new ArrayList<>();
+//    private List<T861.Bean> DdataList = new ArrayList<>();
     private T861 irt = new T861();
+    private T813 t813 = new T813();
+    private T861 t861 = new T861();
 
     private boolean updateable = false;
     private boolean deleteable = false;
@@ -55,6 +55,7 @@ public class ActglcAction implements Serializable {
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 //        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
+        glcode = params.get("glcode");
         extdat = params.get("extdat");
         glcnam = params.get("glcnam");
         action = params.get("action");
@@ -66,7 +67,7 @@ public class ActglcAction implements Serializable {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             } else {
                 irt = (T861) form.getFormBody();
-
+//                irt.getBeanList().addAll(DdataList);
             }
         } else {
             // 添加利率 初始化 addirt
@@ -81,13 +82,11 @@ public class ActglcAction implements Serializable {
             deleteable = true;
             readonly = true;
         }
-        if ("query".equals(action)) onAllQuery();
+        if ("query".equals(action)) onAllT813Query();
     }
 
     private void initAddirt() {
         addirt = new M9813();
-
-
     }
 
     public String onAllQuery() {
@@ -95,22 +94,54 @@ public class ActglcAction implements Serializable {
             M9813 m9813 = new M9813(glcode);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", m9813);
             if (formList != null && !formList.isEmpty()) {
-//                dataList = new ArrayList<>();
-                DdataList = new ArrayList<>();
+                dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if (!"T861".equals(form.getFormHeader().getFormCode()) && !"W001".equals(form.getFormHeader().getFormCode())) {
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                        return null;
-                    } else if ("T861".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T861 t861 = (T861) form.getFormBody();
-                        DdataList.addAll(t861.getBeanList());
-                    } else {
+                    if ("T861".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        irt = (T861) form.getFormBody();
+                    }
+                    else {
                         logger.info(form.getFormHeader().getFormCode());
                         // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
            }
-            if (DdataList == null || DdataList.isEmpty()) {
+
+            if (irt.getGLCCAT() == null|| irt.getGLCCAT().isEmpty() ) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
+           /* if (DdataList == null || DdataList.isEmpty()) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }*/
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+    public String onAllT813Query() {
+        try {
+            if (glcode == null) {
+                glcode = "";
+            }
+            M9813 m9813 = new M9813(glcode);
+            if (glcode.isEmpty()) {
+                m9813.setFUNCDE("1");
+            }
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", m9813);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if ("T813".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T813 t813 = (T813) form.getFormBody();
+                        dataList.addAll(t813.getBeanList());
+                    }
+                    else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+            if (dataList == null || dataList.isEmpty()) {
                 MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
@@ -143,11 +174,11 @@ public class ActglcAction implements Serializable {
     public String onDelete() {
         try {
             String formcode = txn9813ForUD();
-            if ("W004".equalsIgnoreCase(formcode)) {
+            if ("T813".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 deleteable = false;
             } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
+                MessageUtil.addInfoWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
             logger.error("删除失败", e);
@@ -161,7 +192,7 @@ public class ActglcAction implements Serializable {
         try {
             SOFForm form = dataExchangeService.callSbsTxn("9813", addirt).get(0);
             String formcode = form.getFormHeader().getFormCode();
-            if (!"W005".equalsIgnoreCase(formcode)) {
+            if (!"T861".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
                 addirtList.add(addirt);
                 initAddirt();
@@ -300,13 +331,35 @@ public class ActglcAction implements Serializable {
         this.glcnam = glcnam;
     }
 
-    public List<T861.Bean> getDdataList() {
+    /*public List<T861.Bean> getDdataList() {
         return DdataList;
     }
 
     public void setDdataList(List<T861.Bean> ddataList) {
         DdataList = ddataList;
+    }*/
+
+    public List<T813.Bean> getDataList() {
+        return dataList;
     }
 
+    public void setDataList(List<T813.Bean> dataList) {
+        this.dataList = dataList;
+    }
 
+    public T813 getT813() {
+        return t813;
+    }
+
+    public void setT813(T813 t813) {
+        this.t813 = t813;
+    }
+
+    public T861 getT861() {
+        return t861;
+    }
+
+    public void setT861(T861 t861) {
+        this.t861 = t861;
+    }
 }

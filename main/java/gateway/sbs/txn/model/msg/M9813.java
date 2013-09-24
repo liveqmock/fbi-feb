@@ -41,9 +41,6 @@ public class M9813 extends MTia {
     }
     public M9813(String GLCODE) {
         this.GLCODE = GLCODE;
-//        this.GLCNAM = GLCNAM;
-//        this.EFFDAT = EFFDAT;
-//        this.FUNCDE = FUNCDE;
     }
 
     public String getBATSEQ() {

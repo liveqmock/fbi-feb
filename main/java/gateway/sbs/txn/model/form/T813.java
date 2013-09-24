@@ -16,7 +16,7 @@ public class T813 extends SOFFormBody {
     @Override
     public void assembleFields(int offset, byte[] buffer) {
         int index = offset;
-        int beanLength = 59;
+        int beanLength = 38;
         do {
             Bean bean = new Bean();
             bean.assembleFields(index, buffer);

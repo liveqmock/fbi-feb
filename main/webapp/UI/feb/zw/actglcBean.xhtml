@@ -58,55 +58,55 @@
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
-                                     value="#{actglcAction.irt}" var="record">
+                                     >
                             <h:outputLabel value="总账码:"/>
-                            <p:inputText id="glcode" value="#{record.GLCODE}"/>
+                            <p:inputText id="glcode" value="#{actglcAction.irt.GLCODE}"/>
                             <h:outputLabel value="总账码名称:"/>
-                            <p:inputText value="#{record.GLCNAM}" />
+                            <p:inputText value="#{actglcAction.irt.GLCNAM}" />
                             <h:outputLabel value="科目级别:"/>
-                            <p:inputText value="#{record.GLCCLS}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCCLS}"/>
                             <h:outputLabel value="并入科目:"/>
-                            <p:inputText value="#{record.GLCGRP}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCGRP}"/>
                             <h:outputLabel value="科目属性:"/>
-                            <p:inputText value="#{record.GLCTYP}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCTYP}"/>
                             <h:outputLabel value="科目类别:"/>
-                            <p:inputText value="#{record.GLCCAT}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCCAT}"/>
                             <h:outputLabel value="允许货币标志:"/>
-                            <p:inputText value="#{record.GLCCCY}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCCCY}"/>
                             <h:outputLabel value="余额方向标志:"/>
-                            <p:inputText value="#{record.GLCBAL}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCBAL}"/>
                             <h:outputLabel value="发生额方向标志:"/>
-                            <p:inputText value="#{record.GLCOCC}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCOCC}"/>
                             <h:outputLabel value="记息种类:"/>
-                            <p:inputText value="#{record.GLCINT}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCINT}"/>
                             <h:outputLabel value="利率种类:"/>
-                            <p:inputText value="#{record.GLCRAT}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCRAT}"/>
                             <h:outputLabel value="自动开户允许标志:"/>
-                            <p:inputText value="#{record.GLCOPN}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCOPN}"/>
                             <h:outputLabel value="冲帐允许标志:"/>
-                            <p:inputText value="#{record.GLCRVS}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCRVS}"/>
                             <h:outputLabel value="备用标志1:"/>
-                            <p:inputText value="#{record.RSVFG1}"/>
+                            <p:inputText value="#{actglcAction.irt.RSVFG1}"/>
                             <h:outputLabel value="备用标志2:"/>
-                            <p:inputText value="#{record.RSVFG2}"/>
+                            <p:inputText value="#{actglcAction.irt.RSVFG2}"/>
                             <h:outputLabel value="备用标志3:"/>
-                            <p:inputText value="#{record.RSVFG3}"/>
+                            <p:inputText value="#{actglcAction.irt.RSVFG3}"/>
                             <h:outputLabel value="备用标志4:"/>
-                            <p:inputText value="#{record.RSVFG4}"/>
+                            <p:inputText value="#{actglcAction.irt.RSVFG4}"/>
                             <h:outputLabel value="备用标志5:"/>
-                            <p:inputText value="#{record.RSVFG5}"/>
+                            <p:inputText value="#{actglcAction.irt.RSVFG5}"/>
                             <h:outputLabel value="科目所属:"/>
-                            <p:inputText value="#{record.GLCBEL}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCBEL}"/>
                             <h:outputLabel value="科目启用日期:"/>
-                            <p:inputText value="#{record.EFFDAT}"/>
+                            <p:inputText value="#{actglcAction.irt.EFFDAT}"/>
                             <h:outputLabel value="科目使用到期日:"/>
-                            <p:inputText value="#{record.EXPDAT}"/>
+                            <p:inputText value="#{actglcAction.irt.EXPDAT}"/>
                             <h:outputLabel value="建立柜员:"/>
-                            <p:inputText value="#{record.AMDTLR}"/>
+                            <p:inputText value="#{actglcAction.irt.AMDTLR}"/>
                             <h:outputLabel value="修改日期:"/>
-                            <p:inputText value="#{record.UPDDAT}"/>
+                            <p:inputText value="#{actglcAction.irt.UPDDAT}"/>
                             <h:outputLabel value="引用号:"/>
-                            <p:inputText value="#{record.GLCORD}"/>
+                            <p:inputText value="#{actglcAction.irt.GLCORD}"/>
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">

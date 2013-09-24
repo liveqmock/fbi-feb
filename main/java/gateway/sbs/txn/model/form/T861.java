@@ -13,14 +13,17 @@ import java.util.List;
 
 public class T861 extends SOFFormBody {
 
-    private List<Bean> beanList = new ArrayList<Bean>();
+   /* private List<Bean> beanList = new ArrayList<Bean>();
     @Override
     public void assembleFields(int offset, byte[] buffer) {
         int index = offset;
-
+        int beanLength = 94;
+        do {
             Bean bean = new Bean();
             bean.assembleFields(index, buffer);
             beanList.add(bean);
+            index += beanLength;
+        } while (index < buffer.length);
     }
 
     public List<Bean> getBeanList() {
@@ -30,7 +33,11 @@ public class T861 extends SOFFormBody {
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
         fieldLengths = new int[]{4, 34, 1, 4, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 4, 8, 6};
-    }
+    }*/
+   {
+    fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    fieldLengths = new int[]{4, 34, 1, 4, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 4, 8, 6};
+   }
 
     private String GLCODE;          // ×ÜÕËÂë
     private String GLCNAM;          // ×ÜÕËÂëÃû³Æ
@@ -249,5 +256,5 @@ public class T861 extends SOFFormBody {
     public void setAMDTLR(String AMDTLR) {
         this.AMDTLR = AMDTLR;
     }
-    }
+//    }
 }
