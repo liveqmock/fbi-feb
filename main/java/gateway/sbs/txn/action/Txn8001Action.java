@@ -27,7 +27,7 @@ public class Txn8001Action extends AbstractTxnAction {
     @Autowired
     private CoreTxnService coreTxnService;
     @Override
-    protected List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    protected List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8001 m8001 = (M8001) tia;
         logger.info("’À∫≈£∫" + m8001.getCusidt()+"–’√˚£∫"+m8001.getCusnam());

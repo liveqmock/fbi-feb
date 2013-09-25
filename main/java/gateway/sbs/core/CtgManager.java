@@ -68,7 +68,9 @@ public class CtgManager {
             byte[] abytCommarea = new byte[iCommareaSize];
 
             //包头内容，xxxx交易，010网点，MPC1终端，MPC1柜员，包头定长51个字符
-            requestBuffer = "TPEI" + request.getTxncode() + "  010       " + request.getTermid() + request.getTellerid();
+            requestBuffer = "TPEI" + request.getTxncode() + "  010       "
+                    + request.getTermid() + request.getTellerid()
+                    + request.getAuttlr() + request.getAutpwd();
             //打包包头
             System.arraycopy(getBytes(requestBuffer), 0, abytCommarea, 0, requestBuffer.length());
             //打包包体

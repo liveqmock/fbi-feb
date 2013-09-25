@@ -28,7 +28,7 @@ public class Txn9815Action extends AbstractTxnAction{
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M9815 m9815 = (M9815) tia;
         logger.info("[9815-查询] 总账码：" + m9815.getGlcode() + " 核算码：");
@@ -42,7 +42,7 @@ public class Txn9815Action extends AbstractTxnAction{
         paramList.add(m9815.getFUNCDE());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "9805", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, "9805", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9815-查询] 总账码：" + m9815.getGlcode() + " 核算码："
                  + " 返回码：");

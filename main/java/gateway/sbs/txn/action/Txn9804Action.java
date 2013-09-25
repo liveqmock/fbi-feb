@@ -24,7 +24,7 @@ public class Txn9804Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M9804 m9804 = (M9804) tia;
         logger.info("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
@@ -50,7 +50,7 @@ public class Txn9804Action extends AbstractTxnAction {
         paramList.add(m9804.getBEGNUM());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "9804", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, "9804", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9804-利率CURD] 币别：" + m9804.getCURCDE() +
                 " 日期：" + m9804.getEFFDAT() + " 返回码：");

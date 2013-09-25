@@ -29,4 +29,11 @@ public class DataExchangeService {
         String termid = tellerid;
         return sbsTxnService.execute(termid, tellerid, txnCode, tia);
     }
+
+    // SBS交易执行点,需主管授权
+    public List<SOFForm> callSbsTxn(String auttlr, String autpwd, String txnCode, MTia tia) {
+        String tellerid = getOperId();
+        String termid = tellerid;
+        return sbsTxnService.execute(termid, tellerid, auttlr, autpwd, txnCode, tia);
+    }
 }

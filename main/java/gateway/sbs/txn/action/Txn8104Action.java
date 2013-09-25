@@ -25,7 +25,7 @@ public class Txn8104Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8104 m8104 = (M8104) tia;
         logger.info("[8104-客户开户] 账号：" + m8104.getACTNUM() + " 账户名称：" + m8104.getACTNAM());

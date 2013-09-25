@@ -24,7 +24,7 @@ public class Txn8102Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8102 m8102 = (M8102) tia;
         logger.info("[8102-客户账户修改] 账号：" + m8102.getACTNUM() + " 账户名称：" + m8102.getACTNAM());
@@ -73,7 +73,7 @@ public class Txn8102Action extends AbstractTxnAction {
         paramList.add(m8102.getGLCODE());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "8102", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, auttlr, autpwd, "8102", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[8102-客户账户修改] 账号：" + m8102.getACTNUM() + " 账户名称：" +
                 m8102.getACTNAM() + " 返回码：");
