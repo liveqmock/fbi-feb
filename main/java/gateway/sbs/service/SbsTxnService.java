@@ -18,6 +18,12 @@ import java.util.List;
 public class SbsTxnService {
     private static Logger logger = LoggerFactory.getLogger(SbsTxnService.class);
 
+    public List<SOFForm> execute(String termid, String tellid, String auttlr, String autpwd, String txnCode, MTia tia) {
+        WebApplicationContext springContext = ContextLoader.getCurrentWebApplicationContext();
+        AbstractTxnAction txnAction = (AbstractTxnAction) springContext.getBean("txn" + txnCode + "Action");
+        return txnAction.run(termid, tellid, auttlr, autpwd, tia);
+    }
+
     public List<SOFForm> execute(String termid, String tellid, String txnCode, MTia tia) {
         WebApplicationContext springContext = ContextLoader.getCurrentWebApplicationContext();
         AbstractTxnAction txnAction = (AbstractTxnAction) springContext.getBean("txn" + txnCode + "Action");

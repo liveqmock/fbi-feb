@@ -29,7 +29,11 @@ public class Txn8001Action extends AbstractTxnAction{
     private CoreTxnService coreTxnService;
 
     @Override
+<<<<<<< HEAD
     public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+=======
+    protected List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
+>>>>>>> c066d83120f0508b72cc3b4ffc5bf648dbd8d067
 
         M8001 m8001 = (M8001) tia;
         logger.info("[8001-客户创建] 客户名：" + m8001.getCUSNAM());

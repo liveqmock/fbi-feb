@@ -24,7 +24,7 @@ public class Txn8108Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8108 m8108 = (M8108) tia;
         logger.info("[8108-’Àªß≤È—Ø] ’À∫≈£∫" + m8108.getACTNUM());

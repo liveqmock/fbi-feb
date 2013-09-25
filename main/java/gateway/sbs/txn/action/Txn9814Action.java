@@ -28,8 +28,12 @@ public class Txn9814Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
+<<<<<<< HEAD
     public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
 
+=======
+    protected List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
+>>>>>>> c066d83120f0508b72cc3b4ffc5bf648dbd8d067
         M9814 m9814 = (M9814) tia;
         logger.info("总账码：" + m9814.getGLCODE() +
                               " 核算码：" + m9814.getAPCODE());
@@ -61,7 +65,7 @@ public class Txn9814Action extends AbstractTxnAction {
         paramList.add(m9814.getTLRNCDE());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "9814", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, "9814", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("总账码：" + m9814.getGLCODE() +
                                     " 核算码：" + m9814.getAPCODE()+ "返回码：");
