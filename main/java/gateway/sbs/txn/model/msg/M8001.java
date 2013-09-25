@@ -12,18 +12,17 @@ public class M8001 extends MTia {
     private String BATSEQ = "111111";        //平台顺序号
     private String ORGIDT = "010";        //机构号
     private String DEPNUM = "60";        //部门号
-    private String CUSIDT = "";
     private String CUSNAM = "";        //客户名称
     private String ENGNAM = "";        //客户英文名
     private String SHTNAM = "";        //客户简称
     private String CUSIDX = "";        //简名索引
-    private String RSDCTR = "";        //注册国家码
+    private String RSDCTR = "CN";       //注册国家码
     private String OPRCTR = "";        //所在国家码
     private String CORADD = "";        //地址
     private String ZIPCDE = "";        //邮编
     private String TELNUM = "";        //电话
     private String TELEXN = "";        //电传
-    private String PASTYP = "";        //证件类别
+    private String PASTYP = "4";        //证件类别
     private String PASSNO = "";        //证件号
     private String TSTRNK = "";        //信用等级
     private String CRDLIM = "";        //信用额度
@@ -34,8 +33,8 @@ public class M8001 extends MTia {
     private String DEPNU3 = "";        //部门号
     private String LEGBDY = "";        //法人代表姓名
     private String ACTBDY = "";        //财务负责人姓名
-    private String LOCCAP = "";        //注册外币资本
-    private String REGCAP = "";        //注册外币资本
+    private String LOCCAP = "";        //注册本币资本  单位为分，输入元，需要*100
+    private String REGCAP = "";        //注册外币资本   单位为分，输入元，需要*100
     private String REGCCY = "";        //第二货币
     private String REGADD = "";        //地址
     private String REGDAT = "";        //注册日期
@@ -45,7 +44,7 @@ public class M8001 extends MTia {
     private String BOCGRP = "";        //客户分类码
     private String SUPDEP = "";        //主管部门
     private String BUSCDE = "";        //行业代码
-    private String ENTTYP = "";        //企业性质
+    private String ENTTYP = "";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
     private String CUSTY1 = "";        //有无进口权
     private String CUSTY2 = "";        // 客户类别(控制开户)
     private String INTNET = "";        // INTERNET /SWIFT号
@@ -77,14 +76,6 @@ public class M8001 extends MTia {
 
     public void setDEPNUM(String DEPNUM) {
         this.DEPNUM = DEPNUM;
-    }
-
-    public String getCUSIDT() {
-        return CUSIDT;
-    }
-
-    public void setCUSIDT(String CUSIDT) {
-        this.CUSIDT = CUSIDT;
     }
 
     public String getCUSNAM() {

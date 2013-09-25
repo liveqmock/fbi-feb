@@ -17,60 +17,73 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-9-5
- * Time: 下午3:43
+ * Date: 13-9-12                   // 客户信息创建
+ * Time: 下午9:51
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class Txn8001Action extends AbstractTxnAction {
+public class Txn8001Action extends AbstractTxnAction{
+
     private static Logger logger = LoggerFactory.getLogger(Txn8001Action.class);
     @Autowired
     private CoreTxnService coreTxnService;
+
     @Override
-    protected List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
 
         M8001 m8001 = (M8001) tia;
-        logger.info("账号：" + m8001.getCusidt()+"姓名："+m8001.getCusnam());
+        logger.info("[8001-客户创建] 客户名：" + m8001.getCUSNAM());
 
         List<String> paramList = new ArrayList<>();
-        paramList.add(m8001.getActbdy());
-        paramList.add(m8001.getBuscde());
-        paramList.add(m8001.getCusnam());
-        paramList.add(m8001.getCusidt());
-        paramList.add(m8001.getCoradd());
-        paramList.add(m8001.getCtxnum());
-        paramList.add(m8001.getCuskid());
-        paramList.add(m8001.getCusty1());
-        paramList.add(m8001.getCusty2());
-        paramList.add(m8001.getCusnam());
-        paramList.add(m8001.getEngnam());
-        paramList.add(m8001.getEntcde());
-        paramList.add(m8001.getEnttyp());
-        paramList.add(m8001.getIbkcde());
-        paramList.add(m8001.getIntnet());
-        paramList.add(m8001.getLegbdy());
-        paramList.add(m8001.getLtxnum());
-        paramList.add(m8001.getOprctr());
-        paramList.add(m8001.getPassno());
-        paramList.add(m8001.getPastyp());
-        paramList.add(m8001.getRelcus());
-        paramList.add(m8001.getRsdctr());
-        paramList.add(m8001.getReglap());
-        paramList.add(m8001.getRegadd());
-        paramList.add(m8001.getRskgrp());
-        paramList.add(m8001.getRegccy());
-        paramList.add(m8001.getSbknum());
-        paramList.add(m8001.getShtnam());
-        paramList.add(m8001.getSupdep());
-        paramList.add(m8001.getTelexn());
-        paramList.add(m8001.getTelnum());
-        paramList.add(m8001.getTstrnk());
-        paramList.add(m8001.getZipcde());
+        paramList.add(m8001.getBATSEQ());
+        paramList.add(m8001.getORGIDT());
+        paramList.add(m8001.getDEPNUM());
+        paramList.add(m8001.getCUSNAM());
+        paramList.add(m8001.getENGNAM());
+        paramList.add(m8001.getSHTNAM());
+        paramList.add(m8001.getCUSIDX());
+        paramList.add(m8001.getRSDCTR());
+        paramList.add(m8001.getOPRCTR());
+        paramList.add(m8001.getCORADD());
+        paramList.add(m8001.getZIPCDE());
+        paramList.add(m8001.getTELNUM());
+        paramList.add(m8001.getTELEXN());
+        paramList.add(m8001.getPASTYP());
+        paramList.add(m8001.getPASSNO());
+        paramList.add(m8001.getTSTRNK());
+        paramList.add(m8001.getCRDLIM());
+        paramList.add(m8001.getRSKGRP());
+        paramList.add(m8001.getRELCUS());
+        paramList.add(m8001.getCUSPWD());
+        paramList.add(m8001.getCUSKID());
+        paramList.add(m8001.getDEPNU3());
+        paramList.add(m8001.getLEGBDY());
+        paramList.add(m8001.getACTBDY());
+        paramList.add(m8001.getLOCCAP());
+        paramList.add(m8001.getREGCAP());
+        paramList.add(m8001.getREGCCY());
+        paramList.add(m8001.getREGADD());
+        paramList.add(m8001.getREGDAT());
+        paramList.add(m8001.getEFFDUR());
+        paramList.add(m8001.getCTXNUM());
+        paramList.add(m8001.getLTXNUM());
+        paramList.add(m8001.getBOCGRP());
+        paramList.add(m8001.getSUPDEP());
+        paramList.add(m8001.getBUSCDE());
+        paramList.add(m8001.getENTTYP());
+        paramList.add(m8001.getCUSTY1());
+        paramList.add(m8001.getCUSTY2());
+        paramList.add(m8001.getINTNET());
+        paramList.add(m8001.getENTCDE());
+        paramList.add(m8001.getIBKCDE());
+        paramList.add(m8001.getSBKNUM());
+        paramList.add(m8001.getFUNCDE());
+        paramList.add(m8001.getSYSIDT());
+
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellid, "8001", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("账号：" + m8001.getCusidt() + " 账户名称：" +
-                m8001.getCusnam() + " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[8001-客户创建] 客户名：" + m8001.getCUSNAM()+ " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }
