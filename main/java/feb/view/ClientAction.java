@@ -5,6 +5,8 @@ import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.M8001;
 import gateway.sbs.txn.model.msg.M8002;
+import gateway.sbs.txn.model.msg.M8003;
+import gateway.sbs.txn.model.msg.M8103;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
@@ -30,12 +32,14 @@ public class ClientAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    private T005 cusInfo;                        //个人客户单笔查询
-    private M8002 updateQryCus = new M8002();
+    private T004 t004 = new T004();             //对公客户单笔查询
+    //private T005 t005;                          //对个人户单笔查询
+    private M8002 m8002 = new M8002();          //查询客户请求报文
     private M8001 m8001 = new M8001();          //对公账户开户
-    private T001 t001;
+    private T001 t001;                           //创建账户响应报文 与关闭账户查询公用
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
+    private String cusidt;
 
     public String onCreate() {
         try {
@@ -44,7 +48,7 @@ public class ClientAction implements Serializable {
             if ("T001".equalsIgnoreCase(formcode)) {
                 t001 = (T001) form.getFormBody();
                 // TODO 打印
-                MessageUtil.addInfo("客户账户建立成功，账号：" + m8001.getCUSIDT());
+                MessageUtil.addInfo("客户账户建立成功，名称：" + m8001.getCUSNAM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
@@ -57,12 +61,12 @@ public class ClientAction implements Serializable {
 
     public String onQryUpdateCus() {
         try {
-            List<SOFForm> forms = dataExchangeService.callSbsTxn("8002", updateQryCus);
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("8002", m8002);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
-                if ("T005".equalsIgnoreCase(formcode)) {
-                    cusInfo = (T005) form.getFormBody();
-                    BeanHelper.copyFields(cusInfo, updateQryCus);
+                if ("T004".equalsIgnoreCase(formcode)) {
+                    t004 = (T004) form.getFormBody();
+                    BeanHelper.copyFields(t004, m8002);
                     updateable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -75,6 +79,25 @@ public class ClientAction implements Serializable {
         return null;
     }
 
+    public String onClose() {
+        try {
+            M8003 m8003 = new M8003(m8002.getCUSNAM());
+            SOFForm form = dataExchangeService.callSbsTxn("8003", m8003).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("T001".equalsIgnoreCase(formcode)) {
+                t001 = (T001) form.getFormBody();
+                closeable = false;
+                // TODO 打印
+                MessageUtil.addInfo("客户账户关闭成功，账号：" + t001.getCUSNAM());
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("8103关闭账户失败", e);
+            MessageUtil.addError("8103关闭账户失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
     //----------------------------------------------------------------
 
     public DataExchangeService getDataExchangeService() {
@@ -85,21 +108,29 @@ public class ClientAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public T005 getCusInfo() {
-        return cusInfo;
+    public T004 getT004() {
+        return t004;
     }
 
-    public void setCusInfo(T005 cusInfo) {
-        this.cusInfo = cusInfo;
+    public void setT004(T004 t004) {
+        this.t004 = t004;
     }
 
-    public M8002 getUpdateQryCus() {
-        return updateQryCus;
+    public M8002 getM8002() {
+        return m8002;
     }
 
-    public void setUpdateQryCus(M8002 updateQryCus) {
-        this.updateQryCus = updateQryCus;
+    public void setM8002(M8002 m8002) {
+        this.m8002 = m8002;
     }
+/*
+    public T005 getT005() {
+        return t005;
+    }
+
+    public void setT005(T005 t005) {
+        this.t005 = t005;
+    }*/
 
     public boolean isCloseable() {
         return closeable;
@@ -115,5 +146,29 @@ public class ClientAction implements Serializable {
 
     public void setUpdateable(boolean updateable) {
         this.updateable = updateable;
+    }
+
+    public M8001 getM8001() {
+        return m8001;
+    }
+
+    public void setM8001(M8001 m8001) {
+        this.m8001 = m8001;
+    }
+
+    public T001 getT001() {
+        return t001;
+    }
+
+    public void setT001(T001 t001) {
+        this.t001 = t001;
+    }
+
+    public String getCusidt() {
+        return cusidt;
+    }
+
+    public void setCusidt(String cusidt) {
+        this.cusidt = cusidt;
     }
 }
