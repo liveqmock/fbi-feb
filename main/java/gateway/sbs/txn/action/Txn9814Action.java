@@ -28,7 +28,7 @@ public class Txn9814Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M9814 m9814 = (M9814) tia;
         logger.info("змеЫТыЃК" + m9814.getGLCODE() +

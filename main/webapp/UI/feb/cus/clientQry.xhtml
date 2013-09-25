@@ -48,7 +48,7 @@
     <div style="margin:5px">
         <h:form id="form">
             <p:focus for="cusnum"/>
-            <p:messages id="msgs" showSummary="true" showDetail="true"/>
+            <p:messages id="msgs" showSummary="false" showDetail="true"/>
             <p:fieldset id="panel">
                 <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
                     <h:panelGrid columns="2" cellspacing="5"
@@ -57,16 +57,18 @@
                         <p:inputText required="true" size="25"
                                      requiredMessage="客户号不能为空。"
                                      id="cusnum" onkeydown="KeyDown()"
-                                     value="#{clientAction.updateQryCus.CUSIDT}"/>
-                        <!--<h:outputLabel value="客户名称:" style="font-weight: bold"/>
-                        <p:inputText value="#{clientAction.updateQryCus.CUSNAM}" size="25" onkeydown="KeyDown()"/>-->
+                                     value="#{clientAction.m8002.CUSIDT}"/>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                  width="10%">
-                        <p:commandButton style="width:110px;" value="查询账户信息"
-                                         action="#{clientAction.onQryUpdateCus()}" ajax="true"
+                        <p:commandButton style="width:110px;" value="查询客户信息"
+                                         action="#{clientAction.onQryUpdateCus()}" ajax="false"
                                          update="msgs,panel,dataPanel">
                         </p:commandButton>
+                        <p:commandButton style="width:110px;" value="关闭账户"
+                                         action="#{clientAction.onClose}" ajax="true"
+                                         update="msgs,panel,dataPanel">
+                        </p:commandButton><!--disabled="#{!clientAction.closeable}"-->
                     </h:panelGrid>
                 </h:panelGrid>
             </p:fieldset>
@@ -82,88 +84,100 @@
                 <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                              columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                     <h:outputLabel value="客户号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSIDT}"/>
+                    <h:outputText value="#{clientAction.t004.CUSIDT}"/>
                     <h:outputLabel value="账户名称:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSNAM}"/>
+                    <h:outputText value="#{clientAction.t004.CUSNAM}"/>
                     <h:outputLabel value="客户英文名:"/>
-                    <h:outputText value="#{clientAction.cusInfo.ENGNAM}"/>
+                    <h:outputText value="#{clientAction.t004.ENGNAM}"/>
                     <h:outputLabel value="客户简称:"/>
-                    <h:outputText value="#{clientAction.cusInfo.SHTNAM}"/>
+                    <h:outputText value="#{clientAction.t004.SHTNAM}"/>
                     <h:outputLabel value="简名索引:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSIDX}"/>
+                    <h:outputText value="#{clientAction.t004.CUSIDX}"/>
                     <h:outputLabel value="注册国家码:"/>
-                    <h:outputText value="#{clientAction.cusInfo.RSDCTR}"/>
+                    <h:outputText value="#{clientAction.t004.RSDCTR}"/>
                     <h:outputLabel value="所在国家码:"/>
-                    <h:outputText value="#{clientAction.cusInfo.OPRCTR}"/>
+                    <h:outputText value="#{clientAction.t004.OPRCTR}"/>
 
-                    <h:outputLabel value="地址:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CORADD}"/>
+                    <h:outputLabel value="个人地址:"/>
+                    <h:outputText value="#{clientAction.t004.CORADD}"/>
                     <h:outputLabel value="邮编:"/>
-                    <h:outputText value="#{clientAction.cusInfo.ZIPCDE}"/>
+                    <h:outputText value="#{clientAction.t004.ZIPCDE}"/>
                     <h:outputLabel value="电话:"/>
-                    <h:outputText value="#{clientAction.cusInfo.TELNUM}"/>
+                    <h:outputText value="#{clientAction.t004.TELNUM}"/>
                     <h:outputLabel value="电传:"/>
-                    <h:outputText value="#{clientAction.cusInfo.TELEXN}"/>
+                    <h:outputText value="#{clientAction.t004.TELEXN}"/>
                     <h:outputLabel value="证件类别:"/>
-                    <h:outputText value="#{clientAction.cusInfo.PASTYP}"/>
+                    <h:outputText value="#{clientAction.t004.PASTYP}"/>
                     <h:outputLabel value="证件号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.PASSNO}"/>
+                    <h:outputText value="#{clientAction.t004.PASSNO}"/>
 
                     <h:outputLabel value="信用等级:"/>
-                    <h:outputText value="#{clientAction.cusInfo.TSTRNK}"/>
+                    <h:outputText value="#{clientAction.t004.TSTRNK}"/>
                     <h:outputLabel value="信用额度:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CRDLIM}" />
+                    <h:outputText value="#{clientAction.t004.CRDLIM}" />
                     <h:outputLabel value="风险组别:"/>
-                    <h:outputText value="#{clientAction.cusInfo.RSKGRP}"/>
+                    <h:outputText value="#{clientAction.t004.RSKGRP}"/>
                     <h:outputLabel value="相关客户:"/>
-                    <h:outputText value="#{clientAction.cusInfo.RELCUS}"/>
+                    <h:outputText value="#{clientAction.t004.RELCUS}"/>
                     <h:outputLabel value="开户日:"/>
-                    <h:outputText value="#{clientAction.cusInfo.OPNDAT}"/>
+                    <h:outputText value="#{clientAction.t004.OPNDAT}"/>
                     <h:outputLabel value="密码:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSPWD}"/>
+                    <h:outputText value="#{clientAction.t004.CUSPWD}"/>
                     <h:outputLabel value="客户类型码:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSKID}"/>
+                    <h:outputText value="#{clientAction.t004.CUSKID}"/>
                     <h:outputLabel value="机构号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.ORGIDT}"/>
+                    <h:outputText value="#{clientAction.t004.ORGIDT}"/>
                     <h:outputLabel value="部门号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.DEPNUM}"/>
-                    <h:outputLabel value="性别:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSSEX}"/>
-                    <h:outputLabel value="出生日期:"/>
-                    <h:outputText value="#{clientAction.cusInfo.BIRDAY}"/>
-                    <h:outputLabel value="职业:"/>
-                    <h:outputText value="#{clientAction.cusInfo.PROFSN}" />
-                    <h:outputLabel value="职务:"/>
-                    <h:outputText value="#{clientAction.cusInfo.POSTON}"/>
-                    <h:outputLabel value="工作单位:"/>
-                    <h:outputText value="#{clientAction.cusInfo.WRKUNT}"/>
-                    <h:outputLabel value="月收入:"/>
-                    <h:outputText value="#{clientAction.cusInfo.MONSLA}"/>
-                    <h:outputLabel value="其他收入:"/>
-                    <h:outputText value="#{clientAction.cusInfo.OTHINC}"/>
-                    <h:outputLabel value="个人国民保险号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.ISRNUM}"/>
-                    <h:outputLabel value="税号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.TAXNUM}"/>
+                    <h:outputText value="#{clientAction.t004.DEPNUM}"/>
+                    <h:outputLabel value="法人代表姓名:"/>
+                    <h:outputText value="#{clientAction.t004.LEGBDY}"/>
+                    <h:outputLabel value="财务负责人姓名:"/>
+                    <h:outputText value="#{clientAction.t004.ACTBDY}"/>
+                    <h:outputLabel value="注册本币资本:"/>
+                    <h:outputText value="#{clientAction.t004.LOCCAP}" />
+                    <h:outputLabel value="注册外币资本:"/>
+                    <h:outputText value="#{clientAction.t004.REGCAP}"/>
+                    <h:outputLabel value="第二货币:"/>
+                    <h:outputText value="#{clientAction.t004.REGCCY}"/>
+                    <h:outputLabel value="公司地址:"/>
+                    <h:outputText value="#{clientAction.t004.REGADD}"/>
+                    <h:outputLabel value="注册日期:"/>
+                    <h:outputText value="#{clientAction.t004.REGDAT}"/>
+                    <h:outputLabel value="有效期(月):"/>
+                    <h:outputText value="#{clientAction.t004.EFFDUR}"/>
+                    <h:outputLabel value="国税号码:"/>
+                    <h:outputText value="#{clientAction.t004.CTXNUM}"/>
 
-                    <h:outputLabel value="婚姻状况:"/>
-                    <h:outputText value="#{clientAction.cusInfo.MARSTS}"/>
-                    <h:outputLabel value="家庭人口:"/>
-                    <h:outputText value="#{clientAction.cusInfo.FAMPER}" />
+                    <h:outputLabel value="地税号码:"/>
+                    <h:outputText value="#{clientAction.t004.LTXNUM}"/>
+                    <h:outputLabel value="客户分类码:"/>
+                    <h:outputText value="#{clientAction.t004.BOCGRP}" />
+                    <h:outputLabel value="主管部门:"/>
+                    <h:outputText value="#{clientAction.t004.SUPDEP}"/>
+                    <h:outputLabel value="行业代码:"/>
+                    <h:outputText value="#{clientAction.t004.BUSCDE}" />
+                    <h:outputLabel value="企业性质:"/>
+                    <h:outputText value="#{clientAction.t004.ENTTYP}"/>
                     <h:outputLabel value="损益归类码:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSTY1}"/>
+                    <h:outputText value="#{clientAction.t004.CUSTY1}"/>
                     <h:outputLabel value="客户类别:"/>
-                    <h:outputText value="#{clientAction.cusInfo.CUSTY2}"/>
+                    <h:outputText value="#{clientAction.t004.CUSTY2}"/>
+                    <h:outputLabel value="INTERNET号:"/>
+                    <h:outputText value="#{clientAction.t004.INTNET}"/>
+                    <h:outputLabel value="企业标准号:"/>
+                    <h:outputText value="#{clientAction.t004.ENTCDE}" />
+                    <h:outputLabel value="联行代号:"/>
+                    <h:outputText value="#{clientAction.t004.IBKCDE}"/>
+                    <h:outputLabel value="行号:"/>
+                    <h:outputText value="#{clientAction.t004.SBKNUM}" />
                     <h:outputLabel value="功能参数:"/>
-                    <h:outputText value="#{clientAction.cusInfo.AMDTLR}"/>
-                    <h:outputLabel value="部门号:"/>
-                    <h:outputText value="#{clientAction.cusInfo.DEPNUM}"/>
+                    <h:outputText value="#{clientAction.t004.AMDTLR}"/>
                     <h:outputLabel value="修改日期:"/>
-                    <h:outputText value="#{clientAction.cusInfo.UPDDAT}"/>
+                    <h:outputText value="#{clientAction.t004.UPDDAT}"/>
                     <h:outputLabel value="记录状态:"/>
-                    <h:outputText value="#{clientAction.cusInfo.RECSTS}"/>
+                    <h:outputText value="#{clientAction.t004.RECSTS}"/>
                     <h:outputLabel value="系统标识:"/>
-                    <h:outputText value="#{clientAction.cusInfo.SYSIDT}"/>
+                    <h:outputText value="#{clientAction.t004.SYSIDT}"/>
 
                 </h:panelGrid>
             </p:panel>

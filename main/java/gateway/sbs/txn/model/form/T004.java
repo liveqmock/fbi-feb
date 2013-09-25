@@ -5,17 +5,18 @@ import gateway.sbs.core.domain.SOFFormBody;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-9-12        //内部或对公客户查询响应报文
+ * Date: 13-9-12        //内部或对公客户查询响应报文  修改返回报文
  * Time: 下午9:16
  * To change this template use File | Settings | File Templates.
  */
 public class T004 extends SOFFormBody{
+
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1 };//46
+                1, 1, 1, 1, 1, 1 ,1,1,1,1,1,1,1,1,1,1};//46
         fieldLengths = new int[]{7, 72, 120, 16, 4, 3, 3,122,6,18,10,1,18,
-                8,21,8,8,8,6,1,3,2,24,24,21,3,122,8,999,15,15,8,8,5,1,4,4,
+                8,21,8,8,8,6,1,3,2,24,24,21,21,3,122,8,999,15,15,8,8,5,1,4,4,
                 30,25,5,2,4,8,1,1};
     }
     private String CUSIDT;   //	客户号

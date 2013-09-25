@@ -10,18 +10,18 @@ package gateway.sbs.txn.model.msg;
 public class M8002 extends MTia{
 
     private String BATSEQ = "111111";      //	平台顺序号 "111111"
-    private String ORGIDT = "010";      //	机构号     "010"
-    private String DEPNUM = "60";      //	部门号     "60"
-    private String CUSIDT = "";         //	客户号
-    private String PASTYP="";      //	证件类别
-    private String PASSNO="";      //	证件号
-    private String CUSIDX="";      //	简名索引
-    private String LEGBDY="";      //	法人代表姓名
-    private String RELCUS="";      //	相关客户
-    private String INPFLG="";      //	形式
-    private String BEGNUM="000001";      //	起始笔数
-    private String CUSNAM="";      //	客户名称
-    private String SYSIDT="8";      //	系统标识
+    private String ORGIDT = "010";         //	机构号     "010"
+    private String DEPNUM = "60";          //	部门号     "60"
+    private String CUSIDT = "";           //	客户号
+    private String PASTYP="";             //	证件类别
+    private String PASSNO="";             //	证件号
+    private String CUSIDX="";            //	简名索引
+    private String LEGBDY="";           //	法人代表姓名
+    private String RELCUS="";           //	相关客户
+    private String INPFLG="1";          //	形式
+    private String BEGNUM="000001";   //	起始笔数
+    private String CUSNAM="";         //	客户名称
+    private String SYSIDT="8";        //	系统标识
 
     public String getBATSEQ() {
         return BATSEQ;

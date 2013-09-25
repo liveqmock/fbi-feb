@@ -10,6 +10,7 @@ import gateway.sbs.core.domain.SOFFormBody;
  * To change this template use File | Settings | File Templates.
  */
 public class T005 extends SOFFormBody {
+
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1};//39
