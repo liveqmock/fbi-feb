@@ -26,7 +26,7 @@ public class Txn8002Action extends AbstractTxnAction  {
     @Autowired
     private CoreTxnService coreTxnService;
     @Override
-    protected List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    protected List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8002 m8002 = (M8002) tia;
         logger.info("[8002-查询客户账户] 账号：" + m8002.getCusidt()+"姓名："+m8002.getCusnam());

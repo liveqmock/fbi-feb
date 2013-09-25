@@ -24,7 +24,7 @@ public class Txn8106Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8106 m8106 = (M8106) tia;
         logger.info("[8106-关闭内部账户] 账号：" + m8106.getACTNUM());
@@ -37,7 +37,7 @@ public class Txn8106Action extends AbstractTxnAction {
         paramList.add(m8106.getVCHAUT());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "8106", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, auttlr, autpwd, "8106", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[8106-关闭内部账户] 账号：" + m8106.getACTNUM() + " 返回码：");
         for (String formcode : response.getFormCodes()) {

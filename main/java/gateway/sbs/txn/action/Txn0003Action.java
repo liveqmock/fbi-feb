@@ -24,7 +24,7 @@ public class Txn0003Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M0003 m0003 = (M0003) tia;
         logger.info("[0003-«©ÕÀπÒ‘±] πÒ‘±∫≈£∫" + m0003.getTLRNUM());

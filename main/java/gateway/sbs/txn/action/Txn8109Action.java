@@ -24,7 +24,7 @@ public class Txn8109Action extends AbstractTxnAction {
     private CoreTxnService coreTxnService;
 
     @Override
-    public List<SOFForm> process(String termid, String tellid, MTia tia) throws Exception {
+    public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8109 m8109 = (M8109) tia;
         logger.info("[8109-关闭客户账户前的账户查询] 账号：" + m8109.getACTNUM());
