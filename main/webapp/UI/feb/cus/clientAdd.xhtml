@@ -75,7 +75,7 @@
                             <h:outputLabel value="*证件类别:"/>
                             <!--<h:inputText value="#{clientAction.m8001.PASTYP}"/>-->
                             <p:selectOneMenu value="#{clientAction.m8001.PASTYP}" style="width: 131px;">
-                                <f:selectItems value="#{selectEnumActFieldAction.cusPastypItems}"/>
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*证件号:"/>
                             <h:inputText value="#{clientAction.m8001.PASSNO}"/>
@@ -111,19 +111,31 @@
                             <h:inputText value="#{clientAction.m8001.EFFDUR}"/>
                             <h:outputLabel value="国税号码:"/>
                             <h:inputText value="#{clientAction.m8001.CTXNUM}"/>
-
                             <h:outputLabel value="地税号码:"/>
                             <h:inputText value="#{clientAction.m8001.LTXNUM}"/>
+
                             <h:outputLabel value="客户分类码:"/>
-                            <h:inputText value="#{clientAction.m8001.BOCGRP}" />
+                            <!--<h:inputText value="#{clientAction.m8001.BOCGRP}" />-->
+                            <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
+                            </p:selectOneMenu>
+
                             <h:outputLabel value="主管部门:"/>
                             <h:inputText value="#{clientAction.m8001.SUPDEP}"/>
                             <h:outputLabel value="行业代码:"/>
                             <h:inputText value="#{clientAction.m8001.BUSCDE}" />
+
                             <h:outputLabel value="企业性质:"/>
-                            <h:inputText value="#{clientAction.m8001.ENTTYP}"/>
+                            <!--<h:inputText value="#{clientAction.m8001.ENTTYP}"/>-->
+                            <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
+                            </p:selectOneMenu>
+
                             <h:outputLabel value="有无进口权:"/>
-                            <h:inputText value="#{clientAction.m8001.CUSTY1}"/>
+                            <!--<h:inputText value="#{clientAction.m8001.CUSTY1}"/>-->
+                            <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="客户类别:"/>
                             <h:inputText value="#{clientAction.m8001.CUSTY2}"/>
                             <h:outputLabel value="INTERNET号:"/>
@@ -159,20 +171,20 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <!--<p:fieldset>
-                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                    <h:panelGrid id="t001" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="部门号:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.ORGIDT}"/>
+                        <h:outputText value="#{clientAction.t001.ORGIDT}"/>
                         <h:outputLabel value="机构号:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.DEPNUM}"/>
-                        <h:outputLabel value="账号:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.ACTNUM}"/>
-                        <h:outputLabel value="账户名称:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.CUSNAM}"/>
+                        <h:outputText value="#{clientAction.t001.DEPNUM}"/>
+                        <h:outputLabel value="客户号:"/>
+                        <h:outputText value="#{clientAction.t001.CUSIDT}"/>
+                        <h:outputLabel value="客户名称:"/>
+                        <h:outputText value="#{clientAction.t001.CUSNAM}"/>
                         <h:outputLabel value="建立日期:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.OPNDAT}"/>
+                        <h:outputText value="#{clientAction.t001.OPNDAT}"/>
                         <h:outputLabel value="操作员:"/>
-                        <h:outputText value="#{clientActAction.rtnActInfo.AMDTLR}"/>
+                        <h:outputText value="#{clientAction.t001.AMDTLR}"/>
                     </h:panelGrid>
                 </p:fieldset>-->
             </h:form>

@@ -59,57 +59,62 @@
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
 
-                            <h:outputLabel value="*所属总账码:" />
+                            <h:outputLabel value="*所属总账码:"/>
                             <p:inputText required="true" requiredMessage="总账码不能为空。"
                                          value="#{actapcAction.t862.GLCODE}"/>
                             <h:outputLabel value="*核算码:" id="apcode" required="true" requiredMessage="核算码不能为空。"/>
                             <p:inputText value="#{actapcAction.apcode}" readonly="#{actapcAction.readonly}"/>
-                            <h:outputLabel value="*核算码名称:" />
-                            <p:inputText value="#{actapcAction.t862.APCNAM}" />
-                            <h:outputLabel value="*核算码类型" />
+                            <h:outputLabel value="*核算码名称:"/>
+                            <p:inputText value="#{actapcAction.t862.APCNAM}"/>
+                            <h:outputLabel value="*核算码类型"/>
                             <p:inputText value="#{actapcAction.t862.APCTYP}"/>
-                            <h:outputLabel value="对应损益码:" />
-                            <p:inputText  value="#{actapcAction.t862.PLCODE}"/>
-                            <h:outputLabel value="核算码描述:" />
+                            <h:outputLabel value="对应损益码:"/>
+                            <p:inputText value="#{actapcAction.t862.PLCODE}"/>
+                            <h:outputLabel value="核算码描述:"/>
                             <p:inputText value="#{actapcAction.t862.APCDCR}"/>
                             <h:outputLabel value="利息支出账户核算码:"/>
-                            <p:inputText  value="#{actapcAction.t862.INTEXP}"/>
-                            <h:outputLabel value="利息收入账户核算码:" />
-                            <p:inputText  value="#{actapcAction.t862.INTINC}"/>
+                            <p:inputText value="#{actapcAction.t862.INTEXP}"/>
+                            <h:outputLabel value="利息收入账户核算码:"/>
+                            <p:inputText value="#{actapcAction.t862.INTINC}"/>
                             <h:outputLabel value="所属标准核算码:"/>
                             <p:inputText value="#{actapcAction.t862.OPSAPC}"/>
-                            <h:outputLabel value="应付利息账户核算码:" />
-                            <p:inputText   value="#{actapcAction.t862.INTDAC}"/>
-                            <h:outputLabel value="应收利息账户核算码:" />
+                            <h:outputLabel value="应付利息账户核算码:"/>
+                            <p:inputText value="#{actapcAction.t862.INTDAC}"/>
+                            <h:outputLabel value="应收利息账户核算码:"/>
                             <p:inputText value="#{actapcAction.t862.INTCAC}"/>
-                            <h:outputLabel value="建立柜员:" />
+                            <h:outputLabel value="建立柜员:"/>
                             <p:inputText value="#{actapcAction.t862.AMDTLR}"/>
-                            <h:outputLabel value="修改日期:" />
+                            <h:outputLabel value="修改日期:"/>
                             <p:inputText value="#{actapcAction.t862.UPDDAT}"/>
-                            <h:outputLabel value="备用1:" />
+                            <h:outputLabel value="备用1:"/>
                             <p:inputText value="#{actapcAction.t862.DOMCDE}"/>
-                            <h:outputLabel value="备用2:" />
+                            <h:outputLabel value="备用2:"/>
                             <p:inputText value="#{actapcAction.t862.CCYFIL}"/>
-                            <h:outputLabel value="引用号:" />
+                            <h:outputLabel value="引用号:"/>
                             <p:inputText value="#{actapcAction.t862.CLRFLG}"/>
-                            <h:outputLabel value="*对应总行核算码:" />
-                            <p:inputText  required="true" requiredMessage="对应总行核算码应和核算码相同。"
+                            <h:outputLabel value="*对应总行核算码:"/>
+                            <p:inputText required="true" requiredMessage="对应总行核算码应和核算码相同。"
                                          value="#{actapcAction.t862.EBKCDE}"/>
                         </h:panelGrid>
 
                     </h:panelGrid>
-                    <h:panelGrid id="btns" columns="3" style="text-align:center;" width="20%">
-                    <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
-                                     action="#{actapcAction.onUpdate}" ajax="true"
-                                     disabled="#{!actapcAction.updateable}" update="msgs,btns">
-                    </p:commandButton>
-                    <p:commandButton style="width:80px;margin-left:10px;" value="删除"
-                                     action="#{actapcAction.onDelete}" ajax="true"
-                                     disabled="#{!actapcAction.deleteable}" update="msgs,btns">
-                    </p:commandButton>
-                    <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                     action="#{actapcAction.onBack}"
-                                     style="margin-left:10px;width:80px;"/>
+                    <h:panelGrid id="btns" columns="4" style="text-align:center;" width="20%">
+                        <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
+                                         action="#{actapcAction.onUpdate}" ajax="true"
+                                         disabled="#{!actapcAction.updateable}" update="msgs,btns">
+                        </p:commandButton>
+                        <p:commandButton style="width:80px;margin-left:10px;" value="删除"
+                                         action="#{actapcAction.onDelete}" ajax="true"
+                                         disabled="#{!actapcAction.deleteable}" update="msgs,btns">
+                        </p:commandButton>
+                        <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                         action="#{actapcAction.onBack}"
+                                         style="margin-left:10px;width:80px;"/>
+
+                        <p:commandButton value="打印" type="button" icon="ui-icon-print"
+                                         style="width:80px;margin-left:10px;">
+                            <p:printer target="pg"/>
+                        </p:commandButton>
                     </h:panelGrid>
                 </p:fieldset>
                 <br/>
