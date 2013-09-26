@@ -3,10 +3,7 @@ package feb.view;
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
-import gateway.sbs.txn.model.msg.M8001;
-import gateway.sbs.txn.model.msg.M8002;
-import gateway.sbs.txn.model.msg.M8003;
-import gateway.sbs.txn.model.msg.M8103;
+import gateway.sbs.txn.model.msg.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
@@ -35,6 +32,7 @@ public class ClientAction implements Serializable {
     private T004 t004 = new T004();             //对公客户单笔查询
     //private T005 t005;                          //对个人户单笔查询
     private M8002 m8002 = new M8002();          //查询客户请求报文
+    private M8004 m8004 = new M8004();          //修改客户
     private M8001 m8001 = new M8001();          //对公账户开户
     private T001 t001;                           //创建账户响应报文 与关闭账户查询公用
     private boolean closeable = false;         // 是否可关户
@@ -66,7 +64,7 @@ public class ClientAction implements Serializable {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T004".equalsIgnoreCase(formcode)) {
                     t004 = (T004) form.getFormBody();
-                    BeanHelper.copyFields(t004, m8002);
+                    BeanHelper.copyFields(t004, m8004);
                     updateable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -81,14 +79,14 @@ public class ClientAction implements Serializable {
 
     public String onClose() {
         try {
-            M8003 m8003 = new M8003(m8002.getCUSNAM());
+            M8003 m8003 = new M8003(m8002.getCUSIDT());
             SOFForm form = dataExchangeService.callSbsTxn("8003", m8003).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("T001".equalsIgnoreCase(formcode)) {
                 t001 = (T001) form.getFormBody();
                 closeable = false;
                 // TODO 打印
-                MessageUtil.addInfo("客户账户关闭成功，账号：" + t001.getCUSNAM());
+                MessageUtil.addInfo("客户账户关闭成功，账号：" + t001.getCUSIDT());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
@@ -97,7 +95,31 @@ public class ClientAction implements Serializable {
             MessageUtil.addError("8103关闭账户失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
+
     }
+
+    public String onUpdate() {
+        try {
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("8004", m8004);
+            for (SOFForm form : forms) {
+                String formcode = form.getFormHeader().getFormCode();
+                if ("T004".equalsIgnoreCase(formcode)) {
+                    t004 = (T004) form.getFormBody();
+                    updateable = false;
+                    MessageUtil.addInfo("客户账户修改成功，账号：" +
+                            t004.getCUSIDT() + t004.getCUSNAM() );
+                } else {
+                    MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                }
+            }
+        } catch (Exception e) {
+            logger.error("8004账户修改交易失败", e);
+            MessageUtil.addError("8004账户修改交易失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+
     //----------------------------------------------------------------
 
     public DataExchangeService getDataExchangeService() {
@@ -108,13 +130,6 @@ public class ClientAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public T004 getT004() {
-        return t004;
-    }
-
-    public void setT004(T004 t004) {
-        this.t004 = t004;
-    }
 
     public M8002 getM8002() {
         return m8002;
@@ -170,5 +185,21 @@ public class ClientAction implements Serializable {
 
     public void setCusidt(String cusidt) {
         this.cusidt = cusidt;
+    }
+
+    public M8004 getM8004() {
+        return m8004;
+    }
+
+    public void setM8004(M8004 m8004) {
+        this.m8004 = m8004;
+    }
+
+    public T004 getT004() {
+        return t004;
+    }
+
+    public void setT004(T004 t004) {
+        this.t004 = t004;
     }
 }

@@ -32,18 +32,18 @@ public class Txn8003Action extends AbstractTxnAction{
     public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8003 m8003 = (M8003) tia;
-        logger.info("[8003-客户关闭] 客户号：" + m8003.getCUSNAM());
+        logger.info("[8003-客户关闭] 客户号：" + m8003.getCUSIDT());
 
         List<String> paramList = new ArrayList<>();
         paramList.add(m8003.getBATSEQ());
         paramList.add(m8003.getORGIDT());
         paramList.add(m8003.getDEPNUM());
-        paramList.add(m8003.getCUSNAM());
+        paramList.add(m8003.getCUSIDT());
 
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8003", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[8003-客户关闭] 客户号：" + m8003.getCUSNAM()+ " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[8003-客户关闭] 客户号：" + m8003.getCUSIDT()+ " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

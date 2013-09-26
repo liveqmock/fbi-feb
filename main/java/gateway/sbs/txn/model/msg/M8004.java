@@ -1,70 +1,59 @@
-package gateway.sbs.txn.model.form;
-
-import gateway.sbs.core.domain.SOFFormBody;
+package gateway.sbs.txn.model.msg;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-9-12        //内部或对公客户查询响应报文  修改返回报文
- * Time: 下午9:16
+ * Date: 13-9-12          //查询客户请求报文
+ * Time: 下午9:06
  * To change this template use File | Settings | File Templates.
  */
-public class T004 extends SOFFormBody{
+public class M8004 extends MTia{
 
-    {
-        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1};//46,29
-         /*, 1 1, 1, 1, 1, 1, 1 ,1,1,1,1,1,1,1,1,1,1*/
-        fieldLengths = new int[]{7, 72, 120, 16, 4, 3, 3,122,6,18,10,1,18,
-                8,21,8,8,8,6,1,3,2,24,24,21,21,3,122,8};/*,999,15,15,8,8,5,1,4,4,
-            30,25,5,2,4,8,1,1*/
-    }
-    private String CUSIDT;   //	客户号
-    private String CUSNAM;   //	客户名称
-    private String ENGNAM;   //	客户英文名
-    private String SHTNAM;   //	客户简称
-    private String CUSIDX;   //	简名索引
-    private String RSDCTR;   //	注册国家码
-    private String OPRCTR;   //	所在国家码
-    private String CORADD;   //	地址
-    private String ZIPCDE;   //	邮编
-    private String TELNUM;   //	电话
-    private String TELEXN;   //	电传
-    private String PASTYP;   //	证件类别
-    private String PASSNO;   //	证件号
-    private String TSTRNK;   //	信用等级
-    private String CRDLIM;   //	信用额度
-    private String RSKGRP;   //	风险组别
-    private String RELCUS;   //	相关客户
-    private String OPNDAT;   //	开户日
-    private String CUSPWD;   //	密码
-    private String CUSKID;   //	客户类型码
-    private String ORGIDT;   //	机构号
-    private String DEPNUM;   //	部门号
-    private String LEGBDY;   //	法人代表姓名
-    private String ACTBDY;   //	财务负责人姓名
-    private String LOCCAP;   //	注册外币资本
-    private String REGCAP;   //	注册外币资本
-    private String REGCCY;   //	第二货币
-    private String REGADD;   //	地址
-    private String REGDAT;   //	注册日期
-    /*private String EFFDUR;   //	有效期(月)
-    private String CTXNUM;   //	国税号码
-    private String LTXNUM;   //	地税号码
-    private String BOCGRP;   //	客户分类码
-    private String SUPDEP;   //	主管部门
-    private String BUSCDE;   //	行业代码
-    private String ENTTYP;   //	企业性质
-    private String CUSTY1;   //	损益归类码
-    private String CUSTY2;   //	客户类别(控制开户)
-    private String INTNET;   //	INTERNET号
-    private String ENTCDE;   //	企业标准号
-    private String IBKCDE;   //	联行代号
-    private String SBKNUM;   //	行号
-    private String AMDTLR;   //	功能参数
-    private String UPDDAT;   //	修改日期
-    private String RECSTS;   //	记录状态
-    private String SYSIDT;   //	系统标识*/
+    private String BATSEQ = "111111";        //平台顺序号
+    private String ORGIDT = "010";        //机构号
+    private String DEPNUM = "60";        //部门号
+    private String CUSIDT = "";
+    private String CUSNAM = "";        //客户名称
+    private String ENGNAM = "";        //客户英文名
+    private String SHTNAM = "";        //客户简称
+    private String CUSIDX = "";        //简名索引
+    private String RSDCTR = "CN";       //注册国家码
+    private String OPRCTR = "";        //所在国家码
+    private String CORADD = "";        //地址
+    private String ZIPCDE = "";        //邮编
+    private String TELNUM = "";        //电话
+    private String TELEXN = "";        //电传
+    private String PASTYP = "4";        //证件类别
+    private String PASSNO = "";        //证件号
+    private String TSTRNK = "";        //信用等级
+    private String CRDLIM = "";        //信用额度
+    private String RSKGRP = "";        //风险组别
+    private String RELCUS = "";        //相关客户
+    private String CUSPWD = "";        //密码
+    private String CUSKID = "";        //客户类型码
+    private String DEPNU3 = "";        //部门号
+    private String LEGBDY = "";        //法人代表姓名
+    private String ACTBDY = "";        //财务负责人姓名
+    private String LOCCAP = "";        //注册本币资本  单位为分，输入元，需要*100
+    private String REGCAP = "";        //注册外币资本   单位为分，输入元，需要*100
+    private String REGCCY = "";        //第二货币
+    private String REGADD = "";        //地址
+    private String REGDAT = "";        //注册日期
+    private String EFFDUR = "";        //有效期(月)
+    private String CTXNUM = "";        //国税号码
+    private String LTXNUM = "";        //地税号码
+    private String BOCGRP = "";        //客户分类码
+    private String SUPDEP = "";        //主管部门
+    private String BUSCDE = "";        //行业代码
+    private String ENTTYP = "";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
+    private String CUSTY1 = "";        //有无进口权
+    private String CUSTY2 = "";        // 客户类别(控制开户)
+    private String INTNET = "";        // INTERNET /SWIFT号
+    private String ENTCDE = "";        // 组织机构代码
+    private String IBKCDE = "";        // 联行代号
+    private String SBKNUM = "";        // 行号
+    private String FUNCDE = "";        // 功能参数
+    private String SYSIDT = "";        // 系统标识
 
     public String getCUSIDT() {
         return CUSIDT;
@@ -72,6 +61,30 @@ public class T004 extends SOFFormBody{
 
     public void setCUSIDT(String CUSIDT) {
         this.CUSIDT = CUSIDT;
+    }
+
+    public String getBATSEQ() {
+        return BATSEQ;
+    }
+
+    public void setBATSEQ(String BATSEQ) {
+        this.BATSEQ = BATSEQ;
+    }
+
+    public String getORGIDT() {
+        return ORGIDT;
+    }
+
+    public void setORGIDT(String ORGIDT) {
+        this.ORGIDT = ORGIDT;
+    }
+
+    public String getDEPNUM() {
+        return DEPNUM;
+    }
+
+    public void setDEPNUM(String DEPNUM) {
+        this.DEPNUM = DEPNUM;
     }
 
     public String getCUSNAM() {
@@ -202,14 +215,6 @@ public class T004 extends SOFFormBody{
         this.RELCUS = RELCUS;
     }
 
-    public String getOPNDAT() {
-        return OPNDAT;
-    }
-
-    public void setOPNDAT(String OPNDAT) {
-        this.OPNDAT = OPNDAT;
-    }
-
     public String getCUSPWD() {
         return CUSPWD;
     }
@@ -226,20 +231,12 @@ public class T004 extends SOFFormBody{
         this.CUSKID = CUSKID;
     }
 
-    public String getORGIDT() {
-        return ORGIDT;
+    public String getDEPNU3() {
+        return DEPNU3;
     }
 
-    public void setORGIDT(String ORGIDT) {
-        this.ORGIDT = ORGIDT;
-    }
-
-    public String getDEPNUM() {
-        return DEPNUM;
-    }
-
-    public void setDEPNUM(String DEPNUM) {
-        this.DEPNUM = DEPNUM;
+    public void setDEPNU3(String DEPNU3) {
+        this.DEPNU3 = DEPNU3;
     }
 
     public String getLEGBDY() {
@@ -298,7 +295,7 @@ public class T004 extends SOFFormBody{
         this.REGDAT = REGDAT;
     }
 
-  /*  public String getEFFDUR() {
+    public String getEFFDUR() {
         return EFFDUR;
     }
 
@@ -402,28 +399,12 @@ public class T004 extends SOFFormBody{
         this.SBKNUM = SBKNUM;
     }
 
-    public String getAMDTLR() {
-        return AMDTLR;
+    public String getFUNCDE() {
+        return FUNCDE;
     }
 
-    public void setAMDTLR(String AMDTLR) {
-        this.AMDTLR = AMDTLR;
-    }
-
-    public String getUPDDAT() {
-        return UPDDAT;
-    }
-
-    public void setUPDDAT(String UPDDAT) {
-        this.UPDDAT = UPDDAT;
-    }
-
-    public String getRECSTS() {
-        return RECSTS;
-    }
-
-    public void setRECSTS(String RECSTS) {
-        this.RECSTS = RECSTS;
+    public void setFUNCDE(String FUNCDE) {
+        this.FUNCDE = FUNCDE;
     }
 
     public String getSYSIDT() {
@@ -432,5 +413,5 @@ public class T004 extends SOFFormBody{
 
     public void setSYSIDT(String SYSIDT) {
         this.SYSIDT = SYSIDT;
-    }*/
+    }
 }

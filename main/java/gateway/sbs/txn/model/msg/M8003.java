@@ -12,11 +12,11 @@ public class M8003 extends MTia {
    private String BATSEQ =  "111111" ;      //平台顺序号
    private String ORGIDT =  "010" ;      //机构号
    private String DEPNUM =  "60" ;      //部门号
-   private String CUSNAM =  "" ;      //客户号
+   private String CUSIDT =  "" ;      //客户号
 
     public M8003(){}
-    public M8003(String CUSNAM){
-        this.CUSNAM = CUSNAM;
+    public M8003(String CUSIDT){
+        this.CUSIDT = CUSIDT;
     }
     public String getBATSEQ() {
         return BATSEQ;
@@ -42,11 +42,11 @@ public class M8003 extends MTia {
         this.DEPNUM = DEPNUM;
     }
 
-    public String getCUSNAM() {
-        return CUSNAM;
+    public String getCUSIDT() {
+        return CUSIDT;
     }
 
-    public void setCUSNAM(String CUSNAM) {
-        this.CUSNAM = CUSNAM;
+    public void setCUSIDT(String CUSIDT) {
+        this.CUSIDT = CUSIDT;
     }
 }

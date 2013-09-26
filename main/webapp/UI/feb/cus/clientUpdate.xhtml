@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                width: 148px;
+                text-align: right;
+            }
+
+            .col-input {
+                width: 180px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 180px;
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                width: 180px;
+                text-align: left;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div style="margin:5px">
+            <h:form id="form">
+                <!--<p:focus for="actnum"/>-->
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="2" cellspacing="5"
+                                     columnClasses="col-label,col-input">
+                            <h:outputLabel value="客户:" style="font-weight: bold"/>
+                            <p:inputText required="true" size="25"
+                                         requiredMessage="客户不能为空。"
+                                         id="actnum" onkeydown="KeyDown()"
+                                         value="#{clientAction.m8002.CUSIDT}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
+                                     width="10%">
+                            <p:commandButton style="width:110px;" value="查询账户信息"
+                                             action="#{clientAction.onQryUpdateCus()}" ajax="true"
+                                             update="msgs,panel,dataPanel">
+                            </p:commandButton>
+                            <p:commandButton style="width:110px;" value="确认修改"
+                                             disabled="#{!clientAction.updateable}"
+                                             action="#{clientAction.onUpdate()}" ajax="true"
+                                             update="msgs,panel,dataPanel">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel id="dataPanel">
+                    <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="客户号:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSIDT}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSNAM}"/>
+                        <h:outputLabel value="客户英文名:"/>
+                        <h:inputText value="#{clientAction.m8004.ENGNAM}"/>
+                        <h:outputLabel value="客户简称:"/>
+                        <h:inputText value="#{clientAction.m8004.SHTNAM}"/>
+                        <h:outputLabel value="简名索引:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSIDX}"/>
+                        <h:outputLabel value="注册国家码:"/>
+                        <h:inputText value="#{clientAction.m8004.RSDCTR}"/>
+                        <h:outputLabel value="所在国家码:"/>
+                        <h:inputText value="#{clientAction.m8004.OPRCTR}"/>
+
+                        <h:outputLabel value="个人地址:"/>
+                        <h:inputText value="#{clientAction.m8004.CORADD}"/>
+                        <h:outputLabel value="邮编:"/>
+                        <h:inputText value="#{clientAction.m8004.ZIPCDE}"/>
+                        <h:outputLabel value="电话:"/>
+                        <h:inputText value="#{clientAction.m8004.TELNUM}"/>
+                        <h:outputLabel value="电传:"/>
+                        <h:inputText value="#{clientAction.m8004.TELEXN}"/>
+                        <h:outputLabel value="证件类别:"/>
+                        <h:inputText value="#{clientAction.m8004.PASTYP}"/>
+                        <h:outputLabel value="证件号:"/>
+                        <h:inputText value="#{clientAction.m8004.PASSNO}"/>
+
+                        <h:outputLabel value="信用等级:"/>
+                        <h:inputText value="#{clientAction.m8004.TSTRNK}"/>
+                        <h:outputLabel value="信用额度:"/>
+                        <h:inputText value="#{clientAction.m8004.CRDLIM}" />
+                        <h:outputLabel value="风险组别:"/>
+                        <h:inputText value="#{clientAction.m8004.RSKGRP}"/>
+                        <h:outputLabel value="相关客户:"/>
+                        <h:inputText value="#{clientAction.m8004.RELCUS}"/>
+                        <!--<h:outputLabel value="开户日:"/>
+                        <h:inputText value="#{clientAction.m8004.OPNDAT}"/>-->
+                        <h:outputLabel value="密码:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSPWD}"/>
+                        <h:outputLabel value="客户类型码:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSKID}"/>
+                        <h:outputLabel value="机构号:"/>
+                        <h:inputText value="#{clientAction.m8004.ORGIDT}"/>
+                        <h:outputLabel value="部门号:"/>
+                        <h:inputText value="#{clientAction.m8004.DEPNUM}"/>
+                        <h:outputLabel value="法人代表姓名:"/>
+                        <h:inputText value="#{clientAction.m8004.LEGBDY}"/>
+                        <h:outputLabel value="财务负责人姓名:"/>
+                        <h:inputText value="#{clientAction.m8004.ACTBDY}"/>
+                        <h:outputLabel value="注册本币资本:"/>
+                        <h:inputText value="#{clientAction.m8004.LOCCAP}" />
+                        <h:outputLabel value="注册外币资本:"/>
+                        <h:inputText value="#{clientAction.m8004.REGCAP}"/>
+                        <h:outputLabel value="第二货币:"/>
+                        <h:inputText value="#{clientAction.m8004.REGCCY}"/>
+                        <h:outputLabel value="公司地址:"/>
+                        <h:inputText value="#{clientAction.m8004.REGADD}"/>
+                        <h:outputLabel value="注册日期:"/>
+                        <h:inputText value="#{clientAction.m8004.REGDAT}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

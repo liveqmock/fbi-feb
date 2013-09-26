@@ -48,7 +48,7 @@
     <div style="margin:5px">
         <h:form id="form">
             <p:focus for="cusnum"/>
-            <p:messages id="msgs" showSummary="false" showDetail="true"/>
+            <p:messages id="msgs" showSummary="true" showDetail="true"/>
             <p:fieldset id="panel">
                 <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
                     <h:panelGrid columns="2" cellspacing="5"
@@ -80,8 +80,8 @@
                     <h:outputText value=""/>
                 </f:facet>
             </p:ajaxStatus>
-            <p:panel id="dataPanel">
-                <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+            <p:panel id="dataPanel" >
+                <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                              columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                     <h:outputLabel value="客户号:"/>
                     <h:outputText value="#{clientAction.t004.CUSIDT}"/>
@@ -143,7 +143,7 @@
                     <h:outputText value="#{clientAction.t004.REGADD}"/>
                     <h:outputLabel value="注册日期:"/>
                     <h:outputText value="#{clientAction.t004.REGDAT}"/>
-                    <h:outputLabel value="有效期(月):"/>
+                    <!--<h:outputLabel value="有效期(月):"/>
                     <h:outputText value="#{clientAction.t004.EFFDUR}"/>
                     <h:outputLabel value="国税号码:"/>
                     <h:outputText value="#{clientAction.t004.CTXNUM}"/>
@@ -177,7 +177,7 @@
                     <h:outputLabel value="记录状态:"/>
                     <h:outputText value="#{clientAction.t004.RECSTS}"/>
                     <h:outputLabel value="系统标识:"/>
-                    <h:outputText value="#{clientAction.t004.SYSIDT}"/>
+                    <h:outputText value="#{clientAction.t004.SYSIDT}"/>-->
 
                 </h:panelGrid>
             </p:panel>
