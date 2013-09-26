@@ -40,7 +40,7 @@ public class T814 extends SOFFormBody {
         private String APCODE;
         private String APCNAM;
 
-
+//=========================================
         public String getAPCODE() {
             return APCODE;
         }

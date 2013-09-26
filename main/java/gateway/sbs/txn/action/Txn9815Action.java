@@ -22,7 +22,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class Txn9815Action extends AbstractTxnAction{
+public class Txn9815Action extends AbstractTxnAction {
     private static Logger logger = LoggerFactory.getLogger(Txn9805Action.class);
     @Autowired
     private CoreTxnService coreTxnService;
@@ -45,7 +45,7 @@ public class Txn9815Action extends AbstractTxnAction{
         SBSResponse response = coreTxnService.execute(termid, tellerid, "9805", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[9815-≤È—Ø] ◊‹’À¬Î£∫" + m9815.getGlcode() + " ∫ÀÀ„¬Î£∫"
-                 + " ∑µªÿ¬Î£∫");
+                + " ∑µªÿ¬Î£∫");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

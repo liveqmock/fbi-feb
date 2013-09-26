@@ -12,16 +12,17 @@ import gateway.sbs.core.domain.SOFFormBody;
 public class T001 extends SOFFormBody {
 
     {
-        fieldTypes=new int[]{1,1,1,1,1,1,1};
-        fieldLengths=new int[]{3,2,7,72,8,8,4}  ;
+        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1};
+        fieldLengths = new int[]{3, 2, 7, 72, 8, 8, 4};
     }
-   private String ORGIDT;       //部门号
-   private String DEPNUM;       //机构号
-   private String CUSIDT;       //客户号
-   private String CUSNAM;       //客户名称
-   private String OPNDAT;       //建立日期
-   private String CLSDAT;       //注销日期
-   private String AMDTLR;       //操作员代号
+
+    private String ORGIDT;       //部门号
+    private String DEPNUM;       //机构号
+    private String CUSIDT;       //客户号
+    private String CUSNAM;       //客户名称
+    private String OPNDAT;       //建立日期
+    private String CLSDAT;       //注销日期
+    private String AMDTLR;       //操作员代号
 
     public String getORGIDT() {
         return ORGIDT;

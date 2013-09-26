@@ -55,6 +55,7 @@ public class M8004 extends MTia{
     private String FUNCDE = "";        // 功能参数
     private String SYSIDT = "";        // 系统标识
 
+    //===========================================================
     public String getCUSIDT() {
         return CUSIDT;
     }

@@ -23,6 +23,7 @@ public class M8002 extends MTia{
     private String CUSNAM="";         //	客户名称
     private String SYSIDT="8";        //	系统标识
 
+    //===========================================
     public String getBATSEQ() {
         return BATSEQ;
     }

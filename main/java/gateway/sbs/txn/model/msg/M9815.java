@@ -16,6 +16,7 @@ public class M9815 extends MTia{
     private String plcode="";       //对应损益吗
     private String FUNCDE = "6";       // 操作类别  5-多笔查询（按利率码）6-多笔查询（按日期
 
+    //-----------------------------------------------------------------------
     public M9815(String glcode,String apcode){
         this.glcode=glcode;
         this.apcode=apcode;

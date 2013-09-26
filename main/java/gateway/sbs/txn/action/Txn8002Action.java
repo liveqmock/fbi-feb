@@ -21,7 +21,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class Txn8002Action extends AbstractTxnAction{
+public class Txn8002Action extends AbstractTxnAction {
 
     private static Logger logger = LoggerFactory.getLogger(Txn8002Action.class);
     @Autowired
@@ -51,7 +51,7 @@ public class Txn8002Action extends AbstractTxnAction{
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8002", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[8002-客户查询] 客户号：" + m8002.getCUSIDT()+ " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[8002-客户查询] 客户号：" + m8002.getCUSIDT() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

@@ -29,6 +29,7 @@ public class ClientAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+
     private T004 t004 = new T004();             //对公客户单笔查询
     //private T005 t005;                          //对个人户单笔查询
     private M8002 m8002 = new M8002();          //查询客户请求报文
@@ -107,7 +108,7 @@ public class ClientAction implements Serializable {
                     t004 = (T004) form.getFormBody();
                     updateable = false;
                     MessageUtil.addInfo("客户账户修改成功，账号：" +
-                            t004.getCUSIDT() + t004.getCUSNAM() );
+                            t004.getCUSIDT() + t004.getCUSNAM());
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }

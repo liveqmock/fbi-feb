@@ -32,7 +32,7 @@ public class Txn9814Action extends AbstractTxnAction {
 
         M9814 m9814 = (M9814) tia;
         logger.info("×ÜÕËÂë£º" + m9814.getGLCODE() +
-                              " ºËËãÂë£º" + m9814.getAPCODE());
+                " ºËËãÂë£º" + m9814.getAPCODE());
         List<String> paramList = new ArrayList<>();
       /*  paramList.add(m9814.getBATSEQ());
         paramList.add(m9814.get());
@@ -64,7 +64,7 @@ public class Txn9814Action extends AbstractTxnAction {
         SBSResponse response = coreTxnService.execute(termid, tellid, "9814", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("×ÜÕËÂë£º" + m9814.getGLCODE() +
-                                    " ºËËãÂë£º" + m9814.getAPCODE()+ "·µ»ØÂë£º");
+                " ºËËãÂë£º" + m9814.getAPCODE() + "·µ»ØÂë£º");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

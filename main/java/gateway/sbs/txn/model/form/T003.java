@@ -9,12 +9,13 @@ import gateway.sbs.core.domain.SOFFormBody;
  * Time: 下午9:43
  * To change this template use File | Settings | File Templates.
  */
-public class T003 extends SOFFormBody{
+public class T003 extends SOFFormBody {
 
     {
-        fieldTypes=new int[]{1,1,1,1,1};
-        fieldLengths=new int[]{7,18,16,18,1}  ;
+        fieldTypes = new int[]{1, 1, 1, 1, 1};
+        fieldLengths = new int[]{7, 18, 16, 18, 1};
     }
+
     private String CUSIDT;  //	客户号
     private String PASSNO;  //	证件号
     private String SHTNAM;  //	客户简称

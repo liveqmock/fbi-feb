@@ -33,6 +33,7 @@ public class M9814 extends MTia {
     private String MODFLG= "0";        // 当前修改标志  0-不修改，1-修改
     private String TLRNCDE="";         //柜员号
 
+    //-----------------------------------------------------------
     public M9814() {
     }
 

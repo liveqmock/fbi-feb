@@ -22,7 +22,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class Txn8001Action extends AbstractTxnAction{
+public class Txn8001Action extends AbstractTxnAction {
 
     private static Logger logger = LoggerFactory.getLogger(Txn8001Action.class);
     @Autowired
@@ -83,7 +83,7 @@ public class Txn8001Action extends AbstractTxnAction{
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8001", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[8001-客户创建] 客户名：" + m8001.getCUSNAM()+ " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[8001-客户创建] 客户名：" + m8001.getCUSNAM() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

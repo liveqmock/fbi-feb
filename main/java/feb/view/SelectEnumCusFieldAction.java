@@ -23,7 +23,7 @@ public class SelectEnumCusFieldAction implements Serializable {
     @ManagedProperty(value = "#{skylineService}")
     private SkylineService skylineService;
 
-   // private List<SelectItem> ctfStmfmtItems;      // 对账单账页形式
+    // private List<SelectItem> ctfStmfmtItems;      // 对账单账页形式
     private List<SelectItem> cusPastypItems;      //证件类型
     private List<SelectItem> cusBocgrpItems;      //客户分类
     private List<SelectItem> cusEnttypItems;      //企业性质
