@@ -38,7 +38,6 @@ public class ActapcAction implements Serializable {
 
     private String glcode;
     private String apcode;
-    private String ebkcde;
     private String action;
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
@@ -56,9 +55,8 @@ public class ActapcAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        glcode = StringUtils.isEmpty(params.get("curcde")) ? "0140" :params.get("glcode");
+        glcode = StringUtils.isEmpty(params.get("curcde")) ? "0140" : params.get("glcode");
         apcode = params.get("apcode");
-        ebkcde = params.get("ebkcde");
         action = params.get("action");
         if (!StringUtils.isEmpty(apcode)) {
             M9814 m9814 = new M9814(glcode, apcode);
@@ -84,26 +82,20 @@ public class ActapcAction implements Serializable {
             deleteable = true;
             readonly = true;
         }
-        if ("query".equals(action)){
-            //t862.setAPCODE(t862.getAPCODE().isEmpty()? "":t862.getAPCODE());
-            onAllQuery();}
+        if ("query".equals(action)) {
+            onAllQuery();
+        }
     }
 
     private void initAddapc() {
         t862.setAPCODE("");
         addapc = new M9814();
-       // addapc.setAPCODE("");
-        //addapc.setAPCNAM("WW");
         addapc.setAPCTYP("0");
-        //addapc.setGLCODE(glcode);
         addapc.setCLRFLG("1");
-        //addapc.setPDCTYP("1041");
-        addapc.setEBKCDE(ebkcde);
     }
 
     public String onAllQuery() {
         try {
-
             apcode = (apcode == null ? "" : apcode);
             M9814 m9814 = new M9814(glcode, apcode);
             if (apcode.isEmpty() || glcode.isEmpty()) {
@@ -162,7 +154,7 @@ public class ActapcAction implements Serializable {
         try {
             String formcode = txn9814ForUD();
             if ("T404".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfoWithClientID("msgs", formcode+"修改成功");
+                MessageUtil.addInfoWithClientID("msgs", formcode + "修改成功");
                 updateable = false;
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -192,17 +184,15 @@ public class ActapcAction implements Serializable {
 
     // 利率修改和删除
     private String txn9814ForUD() throws IllegalAccessException {
-        M9814 m9814 = new M9814(glcode,apcode);
+        M9814 m9814 = new M9814(glcode, apcode);
         BeanHelper.copyFields(t862, m9814);
         m9814.setMODFLG("1");
-        if ("update".equals(action)){
+        if ("update".equals(action)) {
             m9814.setFUNCDE("2");
             m9814.setEBKCDE(apcode);
-        }
-        else if ("delete".equals(action)){
+        } else if ("delete".equals(action)) {
             m9814.setFUNCDE("3");
-        }
-        else m9814.setFUNCDE("4");
+        } else m9814.setFUNCDE("4");
         SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
         return form.getFormHeader().getFormCode();
     }
@@ -229,8 +219,12 @@ public class ActapcAction implements Serializable {
     }
 
     public String onBack() {
+        if ("detail".equals(action)) {
+            return "actapcQry?faces-redirect=true&action=query";
+        }
         return "actapcMng?faces-redirect=true&action=query";
     }
+
 //---------------------------------------------------------------------------
 
     public T814 getT814() {
@@ -343,14 +337,6 @@ public class ActapcAction implements Serializable {
 
     public void setT862(T862 t862) {
         this.t862 = t862;
-    }
-
-    public String getEbkcde() {
-        return ebkcde;
-    }
-
-    public void setEbkcde(String ebkcde) {
-        this.ebkcde = ebkcde;
     }
 
 }
