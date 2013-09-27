@@ -56,7 +56,7 @@ public class ActapcAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        glcode = StringUtils.isEmpty(params.get("glcode")) ? "0140" : params.get("glcode");
+        glcode = StringUtils.isEmpty(params.get("curcde")) ? "0140" :params.get("glcode");
         apcode = params.get("apcode");
         ebkcde = params.get("ebkcde");
         action = params.get("action");
@@ -84,12 +84,15 @@ public class ActapcAction implements Serializable {
             deleteable = true;
             readonly = true;
         }
-        if ("query".equals(action)) onAllQuery();
+        if ("query".equals(action)){
+            //t862.setAPCODE(t862.getAPCODE().isEmpty()? "":t862.getAPCODE());
+            onAllQuery();}
     }
 
     private void initAddapc() {
+        t862.setAPCODE("");
         addapc = new M9814();
-        //addapc.setAPCODE("1041");
+       // addapc.setAPCODE("");
         //addapc.setAPCNAM("WW");
         addapc.setAPCTYP("0");
         //addapc.setGLCODE(glcode);
@@ -100,30 +103,32 @@ public class ActapcAction implements Serializable {
 
     public String onAllQuery() {
         try {
-            M9814 m9814 = new M9814(glcode, apcode);
-            glcode = (glcode == null ? "" : glcode);
+
             apcode = (apcode == null ? "" : apcode);
-            if (apcode.isEmpty() || glcode.isEmpty()) m9814.setFUNCDE("1");
+            M9814 m9814 = new M9814(glcode, apcode);
+            if (apcode.isEmpty() || glcode.isEmpty()) {
+                m9814.setFUNCDE("1");
+            }
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if (!"T814".equals(form.getFormHeader().getFormCode()) &&
-                            !"W012".equals(form.getFormHeader().getFormCode())) {
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                        return null;
+                    if ("T862".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t862 = (T862) form.getFormBody();
                     } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         T814 t814 = (T814) form.getFormBody();
                         dataList.addAll(t814.getBeanList());
-                    } else if ("T862".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        t862 = (T862) form.getFormBody();
+                    } else if (!"T814".equals(form.getFormHeader().getFormCode()) &&
+                            !"W012".equals(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                        return null;
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (dataList == null || dataList.isEmpty()) {
+            if (dataList == null || dataList.isEmpty() && t862 == null) {
                 MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
@@ -155,9 +160,9 @@ public class ActapcAction implements Serializable {
 
     public String onUpdate() {
         try {
-            String formcode = txn9814ForU();
+            String formcode = txn9814ForUD();
             if ("T404".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfoWithClientID("msgs", formcode);
+                MessageUtil.addInfoWithClientID("msgs", formcode+"修改成功");
                 updateable = false;
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -171,7 +176,7 @@ public class ActapcAction implements Serializable {
 
     public String onDelete() {
         try {
-            String formcode = txn9814ForD();
+            String formcode = txn9814ForUD();
             if ("T404".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode + "删除成功");
                 deleteable = false;
@@ -186,17 +191,22 @@ public class ActapcAction implements Serializable {
     }
 
     // 利率修改和删除
-   /* private String txn9814ForUD() throws IllegalAccessException {
+    private String txn9814ForUD() throws IllegalAccessException {
         M9814 m9814 = new M9814(glcode,apcode);
         BeanHelper.copyFields(t862, m9814);
         m9814.setMODFLG("1");
-        if ("update".equals(action)) m9814.setFUNCDE("2");
-        else if ("delete".equals(action)) m9814.setFUNCDE("3");
+        if ("update".equals(action)){
+            m9814.setFUNCDE("2");
+            m9814.setEBKCDE(apcode);
+        }
+        else if ("delete".equals(action)){
+            m9814.setFUNCDE("3");
+        }
         else m9814.setFUNCDE("4");
         SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
         return form.getFormHeader().getFormCode();
-    }*/
-    private String txn9814ForU() throws IllegalAccessException {
+    }
+   /* private String txn9814ForU() throws IllegalAccessException {
         M9814 m9814 = new M9814(glcode, apcode);
         BeanHelper.copyFields(t862, m9814);
         m9814.setMODFLG("1");
@@ -212,7 +222,7 @@ public class ActapcAction implements Serializable {
         m9814.setFUNCDE("3");
         SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
         return form.getFormHeader().getFormCode();
-    }
+    }*/
 
     public String onClick() {
         return "actapcBean";
@@ -342,4 +352,5 @@ public class ActapcAction implements Serializable {
     public void setEbkcde(String ebkcde) {
         this.ebkcde = ebkcde;
     }
+
 }

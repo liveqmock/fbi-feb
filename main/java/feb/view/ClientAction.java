@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +40,7 @@ public class ClientAction implements Serializable {
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
     private String cusidt;
+    private List<T003.Bean> dataList = new ArrayList<>();
 
     public String onCreate() {
         try {
@@ -67,6 +69,7 @@ public class ClientAction implements Serializable {
                     t004 = (T004) form.getFormBody();
                     BeanHelper.copyFields(t004, m8004);
                     updateable = true;
+                    closeable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
@@ -74,6 +77,36 @@ public class ClientAction implements Serializable {
         } catch (Exception e) {
             logger.error("查询客户失败", e);
             MessageUtil.addError("查询客户失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    //浏览查询
+    public String onAllQuery() {
+        try {
+            M8002 m8002 = new M8002(cusidt);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if (!"T003".equals(form.getFormHeader().getFormCode()) ) {
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                        return null;
+                    } else if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T003 t003 = (T003) form.getFormBody();
+                        dataList.addAll(t003.getBeanList());
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+//                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+            if (dataList == null || dataList.isEmpty()) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -202,5 +235,13 @@ public class ClientAction implements Serializable {
 
     public void setT004(T004 t004) {
         this.t004 = t004;
+    }
+
+    public List<T003.Bean> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<T003.Bean> dataList) {
+        this.dataList = dataList;
     }
 }

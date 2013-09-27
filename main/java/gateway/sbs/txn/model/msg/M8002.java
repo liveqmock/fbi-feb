@@ -24,6 +24,11 @@ public class M8002 extends MTia{
     private String SYSIDT="8";        //	系统标识
 
     //===========================================
+
+    public M8002 (){}
+    public M8002(String CUSIDT){
+        this.CUSIDT = CUSIDT;
+    }
     public String getBATSEQ() {
         return BATSEQ;
     }
