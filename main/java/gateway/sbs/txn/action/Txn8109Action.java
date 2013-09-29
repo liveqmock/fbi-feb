@@ -38,7 +38,7 @@ public class Txn8109Action extends AbstractTxnAction {
         paramList.add(m8109.getVCHAUT());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "8109", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellid, auttlr, autpwd, "8109", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[8109-关闭客户账户前的账户查询] 账号：" + m8109.getACTNUM() + " 返回码：");
         for (String formcode : response.getFormCodes()) {

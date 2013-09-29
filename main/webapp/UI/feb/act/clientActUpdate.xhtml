@@ -58,6 +58,14 @@
                                          requiredMessage="客户账号不能为空。"
                                          id="actnum" onkeydown="KeyDown()"
                                          value="#{clientActAction.updateQryAct.ACTNUM}"/>
+                            <h:outputLabel value="授权主管:" style="font-weight: bold"/>
+                            <p:inputText size="25"
+                                         id="auttlr" disabled="#{!clientActAction.updateable}"
+                                         value="#{clientActAction.auttlr}"/>
+                            <h:outputLabel value="授权密码:" style="font-weight: bold"/>
+                            <p:password size="25"
+                                         id="autpwd" disabled="#{!clientActAction.updateable}"
+                                         value="#{clientActAction.autpwd}"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">

@@ -41,6 +41,8 @@ public class  ClientActAction implements Serializable {
     private M8102 updateAct = new M8102();     // 要修改的账户
     private boolean closeable = false;         // 是否可关户
     private String actnum;
+    private String auttlr;                     // 授权主管柜员号
+    private String autpwd;                     // 授权主管密码
 
     public String onCreate() {
         try {
@@ -80,7 +82,7 @@ public class  ClientActAction implements Serializable {
 
     public String onQryCloseAct() {
         try {
-            List<SOFForm> forms = dataExchangeService.callSbsTxn("8109", closeAct);
+            List<SOFForm> forms = dataExchangeService.callSbsTxn(auttlr, autpwd, "8109", closeAct);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T109".equalsIgnoreCase(formcode)) {
@@ -103,7 +105,7 @@ public class  ClientActAction implements Serializable {
     public String onClose() {
         try {
             M8103 m8103 = new M8103(closeAct.getACTNUM());
-            SOFForm form = dataExchangeService.callSbsTxn("8103", m8103).get(0);
+            SOFForm form = dataExchangeService.callSbsTxn(auttlr, autpwd, "8103", m8103).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
@@ -124,7 +126,7 @@ public class  ClientActAction implements Serializable {
         try {
             M8106 m8106 = new M8106();
             m8106.setACTNUM(closeAct.getACTNUM());
-            SOFForm form = dataExchangeService.callSbsTxn("8106", m8106).get(0);
+            SOFForm form = dataExchangeService.callSbsTxn(auttlr, autpwd, "8106", m8106).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
@@ -163,7 +165,7 @@ public class  ClientActAction implements Serializable {
 
     public String onUpdate() {
         try {
-            List<SOFForm> forms = dataExchangeService.callSbsTxn("8102", updateAct);
+            List<SOFForm> forms = dataExchangeService.callSbsTxn(auttlr, autpwd, "8102", updateAct);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T109".equalsIgnoreCase(formcode)) {
@@ -288,4 +290,19 @@ public class  ClientActAction implements Serializable {
         this.internalAct = internalAct;
     }
 
+    public String getAuttlr() {
+        return auttlr;
+    }
+
+    public void setAuttlr(String auttlr) {
+        this.auttlr = auttlr;
+    }
+
+    public String getAutpwd() {
+        return autpwd;
+    }
+
+    public void setAutpwd(String autpwd) {
+        this.autpwd = autpwd;
+    }
 }
