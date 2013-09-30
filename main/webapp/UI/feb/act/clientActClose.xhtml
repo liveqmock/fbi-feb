@@ -56,8 +56,16 @@
                             <h:outputLabel value="客户账号:" style="font-weight: bold"/>
                             <p:inputText required="true" size="25"
                                          requiredMessage="客户账号不能为空。"
-                                         id="actnum" onkeydown="KeyDown()"
+                                         id="actnum"
                                          value="#{clientActAction.closeAct.ACTNUM}"/>
+                            <h:outputLabel value="授权主管:" style="font-weight: bold"/>
+                            <p:inputText size="25"
+                                         id="auttlr"
+                                         value="#{clientActAction.auttlr}"/>
+                            <h:outputLabel value="授权密码:" style="font-weight: bold"/>
+                            <p:password size="25"
+                                         id="autpwd"
+                                         value="#{clientActAction.autpwd}"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
