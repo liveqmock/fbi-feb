@@ -23,7 +23,7 @@ public class M8004 extends MTia{
     private String ZIPCDE = "";        //邮编
     private String TELNUM = "";        //电话
     private String TELEXN = "";        //电传
-    private String PASTYP = "4";        //证件类别
+    private String PASTYP = "";        //证件类别
     private String PASSNO = "";        //证件号
     private String TSTRNK = "";        //信用等级
     private String CRDLIM = "";        //信用额度
@@ -45,8 +45,8 @@ public class M8004 extends MTia{
     private String BOCGRP = "";        //客户分类码
     private String SUPDEP = "";        //主管部门
     private String BUSCDE = "";        //行业代码
-    private String ENTTYP = "A";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
-    private String CUSTY1 = "00";       //有无进口权
+    private String ENTTYP = "";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
+    private String CUSTY1 = "";       //有无进口权
     private String CUSTY2 = "";        // 客户类别(控制开户)
     private String INTNET = "";        // INTERNET /SWIFT号
     private String ENTCDE = "";        // 组织机构代码
