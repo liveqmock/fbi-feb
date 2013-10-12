@@ -42,7 +42,7 @@ public class SOFForm {
                 formBody.assembleFields(0, bodyBytes);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("没有定义该Form：" + formHeader.getFormCode());
+                throw new RuntimeException("Form解析错误：" + formHeader.getFormCode());
             }
         }
     }
