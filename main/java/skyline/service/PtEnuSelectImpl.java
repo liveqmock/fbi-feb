@@ -8,7 +8,9 @@ import skyline.repository.model.PtenudetailExample;
 
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,5 +46,18 @@ public class PtEnuSelectImpl implements Selectable {
             items.add(item);
         }
         return items;
+    }
+
+    @Override
+    public Map<String, String> getMap(String enuId) {
+        Map<String, String> dataMap = new HashMap<>();
+        PtenudetailExample example = new PtenudetailExample();
+        example.createCriteria().andEnutypeEqualTo(enuId);
+        example.setOrderByClause(" DISPNO ");
+        List<Ptenudetail> records = ptenudetailMapper.selectByExample(example);
+        for (Ptenudetail record : records) {
+            dataMap.put(record.getEnuitemvalue(), record.getEnuitemvalue());
+        }
+        return dataMap;
     }
 }

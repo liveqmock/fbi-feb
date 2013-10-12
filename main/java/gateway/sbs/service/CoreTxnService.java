@@ -24,6 +24,7 @@ public class CoreTxnService {
         return sbsResponse;
     }
 
+    // 需主管授权
     public SBSResponse execute(String termid, String tellerid, String auttlr, String autpwd,
                                     String txnCode, List<String> paramList) {
         CtgManager ctgManager = new CtgManager();

@@ -9,7 +9,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Spring中做具体初始化配置
@@ -34,15 +37,30 @@ public class SkylineService {
         return getOperatorManager().getOperatorId();
     }
 
+    public String getSysdate8() {
+        SimpleDateFormat sdf8 = new SimpleDateFormat("yyyyMMdd");
+        String date8 = sdf8.format(new Date());
+        return date8;
+    }
+
     /**
-     * 根据枚举表的内容组下拉菜单
-     * @param enuId 枚举名
+     * 从枚举表的枚举项内容组装下拉菜单
+     * @param enuId 枚举ID
      * @param isSelectNone  true 添加空白选项， false 不添加
      * @param isExpandID   false:正常列表（不包含ID） true：列表中包含ID
      * @return
      */
     public List<SelectItem> getEnuSelectItemList(String enuId, boolean isSelectNone, boolean isExpandID) {
        return selectable.getSelectItems(enuId, isSelectNone, isExpandID);
+    }
+
+    /**
+     * 从枚举表的枚举项内容组装键值对
+     * @param enuId 枚举ID
+     * @return
+     */
+    public Map<String, String> getEnuSelectMap(String enuId) {
+        return selectable.getMap(enuId);
     }
 
     public Selectable getSelectable() {
