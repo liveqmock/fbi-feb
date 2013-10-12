@@ -20,7 +20,9 @@ public class M8409 extends MTia {
     private String NSTMPG = "";  //
     private String PROFLG = "";  //
 
-    public M8409(){}
+    public M8409(){
+
+    }
     public M8409(String VCHSET){
         this.VCHSET = VCHSET;
     }
