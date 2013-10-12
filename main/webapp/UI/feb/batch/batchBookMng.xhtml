@@ -1,0 +1,444 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+<ui:define name="head">
+    <style type="text/css">
+        .datalist-noborder .ui-widget-content {
+            border: none;
+            color: #999999;
+        }
+
+        .help-row {
+            vertical-align: top;
+        }
+
+        .input-col-s {
+            width: 45px;
+        }
+
+        .input-col-m {
+            width: 60px;
+        }
+
+        .input-col-l {
+            width: 80px;
+        }
+
+        .input-col-xl {
+            width: 140px;
+        }
+    </style>
+    <script language="JavaScript" type="text/JavaScript">
+        //<![CDATA[
+        function KeyDown() {
+            if (event.keyCode == 13) {
+                if (event.srcElement.id == 'inputform:tlrnum') {
+                    checktlrnum();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:vchset') {
+                    checkvchset();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:setseq') {
+                    checksetseq();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:actnum') {
+                    checkactnum();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:txnamt') {
+                    checktxnamt();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:rvslbl') {
+                    checkrvslbl();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:opnda2') {
+                    checkopnda2();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:prdcde') {
+                    checkprdcde();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:depnu3') {
+                    checkdepnu3();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:erytyp') {
+                    checkerytyp();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:erydat') {
+                    checkerydat();
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:funcde') {
+                    checkvchatt();
+                    document.forms['inputform']['inputform:actno'].focus();
+                    document.forms['inputform']['inputform:save'].click();
+                } else if (event.srcElement.id == 'vchsetform:vchset') {
+                    event.returnValue = false;
+                    event.cancel = true;
+                    document.forms['vchsetform']['vchsetform:modifyvchset'].click();
+                } else if (event.srcElement.id == 'authform:password') {
+                    event.returnValue = false;
+                    event.cancel = true;
+                    document.forms['authform']['authform:authlogin'].click();
+                } else {
+                    event.keyCode = 9;
+                }
+            }
+            if (event.keyCode == 38) {
+                if (event.srcElement.id == 'inputform:type') {
+                    document.forms['inputform']['inputform:actno'].focus();
+                } else if (event.srcElement.id == 'inputform:txnamt') {
+                    document.forms['inputform']['inputform:type'].focus();
+                } else if (event.srcElement.id == 'inputform:valdat') {
+                    document.forms['inputform']['inputform:txnamt'].focus();
+                } else if (event.srcElement.id == 'inputform:anacde') {
+                    document.forms['inputform']['inputform:valdat'].focus();
+                } else if (event.srcElement.id == 'inputform:furinf') {
+                    document.forms['inputform']['inputform:anacde'].focus();
+                } else if (event.srcElement.id == 'inputform:vchatt') {
+                    document.forms['inputform']['inputform:furinf'].focus();
+                }
+            }
+        }
+
+        function handleConfirmDeleteAll() {
+            confirmDeleteAll.show();
+            window.event.keyCode = 9;
+            //jQuery(PrimeFaces.escapeClientId('confirmform:canceldeleteall')).focus();
+        }
+
+        function handleInputComplete(xhr, status, args, id, nextid) {
+            if (args) {
+                var isValid = args.isValid;
+                if (!isValid) {
+                    document.forms['inputform']['inputform:' + id].focus();
+                } else {
+                    if (id == 'valdat') {
+                        var inputvaldat = document.forms['inputform']['inputform:valdat'].value;
+                        var lastvaldat = document.forms['inputform']['inputform:lastvaldat'].value;
+                        var vchaut = document.forms['inputform']['inputform:vchaut'].value;
+                        var sysdate = document.forms['inputform']['inputform:sysdate'].value;
+                        var tlrnum = document.forms['inputform']['inputform:tlrnum'].value;
+                        if ((inputvaldat != "") && (inputvaldat != sysdate)
+                                && (vchaut == "" || (vchaut != "" && inputvaldat != lastvaldat))) {
+                            document.forms['authform']['authform:workuser'].value = tlrnum;
+                            authdlg.show();
+                            //jQuery(function(){jQuery(PrimeFaces.escapeClientId('authform:username')).focus();});
+                            event.keyCode = 46;
+                            //document.forms['authform']['authform:username'].focus;
+                            jQuery(PrimeFaces.escapeClientId('authform:username')).focus();
+                        }
+                        if (inputvaldat == "") {
+                            document.forms['inputform']['inputform:vchaut'].value = "";
+                        }
+                    }
+                }
+            }
+        }
+
+        function handleVchsetRequest(xhr, status, args) {
+            if (args.validationFailed || !args.result) {
+                jQuery('#dialog').effect("shake", { times:3 }, 100);
+            } else {
+                vchsetdlg.hide();
+            }
+        }
+
+        function handleLoginRequest(xhr, status, args) {
+            if (args.validationFailed || !args.loggedIn) {
+                jQuery('#authdialog').effect("shake", { times:3 }, 100);
+            } else {
+                authdlg.hide();
+                var vchaut = document.forms['authform']['authform:username'].value;
+                document.forms['inputform']['inputform:lastvaldat'].value = document.forms['inputform']['inputform:valdat'].value;
+                document.forms['inputform']['inputform:vchaut'].value = vchaut;
+                document.forms['inputform']['inputform:anacde'].focus();
+            }
+        }
+
+        var submitted = false;
+
+        function checkDoubleSubmit(f) {
+            //alert(submitted);
+            if (submitted) {
+                window.alert("请勿重复提交!");
+                return false;
+            } else {
+                submitted = true;
+                return true;
+            }
+        }
+
+        //]]>
+    </script>
+</ui:define>
+<ui:define name="head">
+    <style type="text/css">
+        .col-95 {
+            width: 95%;
+        }
+
+        .col-5 {
+            width: 5%;
+        }
+
+        .col-label {
+            text-align: right;
+        }
+
+        .col-input {
+            width: 150px;
+            text-align: left;
+        }
+
+        .col-label2 {
+            width: 70px;
+            text-align: right;
+        }
+
+        .col-input2 {
+            width: 130px;
+            text-align: left;
+        }
+    </style>
+
+    <script language="JavaScript" type="text/JavaScript">
+        document.onkeydown = function TabReplace() {
+            if (event.keyCode == 13) {
+                document.forms['form']['form:btn'].click();
+                event.keyCode = 9;
+            }
+        }
+    </script>
+</ui:define>
+
+<ui:define name="content">
+    <div class="entry" id="top">
+
+        <p:messages id="msgs" showDetail="true"/>
+        <h:form onsubmit="return checkDoubleSubmit(this);"><!--id="inputform"-->
+            <!--<p:focus for="actnum"/>-->
+            <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
+                <h:panelGrid id="addtable" columns="2" style="width: 100%">
+                    <h:panelGrid width="85%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                                 columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
+                        <!--<h:outputLabel value="机构号* :" />
+                        <h:inputText autocomplete="off" value="#{batchBookAction.m8401.ORGID3}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>-->
+                        <h:outputLabel value="柜员号* :" for="tlrnum"/>
+                        <h:inputText autocomplete="off" id="tlrnum" value="#{batchBookAction.m8401.TLRNUM}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <!--<h:outputLabel value="传票套号* :" for="vchset"/>
+                        <h:inputText autocomplete="off" id="vchset" value="#{batchBookAction.m8401.VCHSET}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>-->
+                        <h:outputLabel value="传票序号* :" for="setseq"/>
+                        <h:inputText autocomplete="off" id="setseq" value="#{batchBookAction.m8401.SETSEQ}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <h:outputLabel value="帐号* :" for="actnum"/>
+                        <h:inputText autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+
+                        <h:outputLabel value="交易金额* :" for="txnamt"/>
+                        <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <h:outputLabel value="冲账标志* :" for="rvslbl"/>
+                        <h:inputText autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <h:outputLabel value="交易日期* :" for="opnda2"/>
+                        <h:inputText autocomplete="off" id="opnda2" value="#{batchBookAction.m8401.OPNDA2}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()"
+                                     onclick="WdatePicker({dateFmt:'yyyyMMdd'})">
+                        </h:inputText>
+
+                        <h:outputLabel value="产品码* :" for="prdcde"/>
+                        <h:inputText autocomplete="off" id="prdcde" value="#{batchBookAction.m8401.PRDCDE}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <!--<h:outputLabel value="部门号* :" for="depnu3"/>
+                        <h:inputText autocomplete="off" id="depnu3" value="#{batchBookAction.m8401.DEPNU3}"
+                                     onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>-->
+                        <h:outputLabel value="传票输入方式*:" for="erytyp"/>
+                        <h:inputText autocomplete="off" id="erytyp" value="#{batchBookAction.m8401.ERYTYP}"
+                                     onfocus="this.select()"
+                                     onkeydown="KeyDown()"/>
+                        <h:outputLabel value="记帐日期*:" for="erydat"/>
+                        <h:inputText autocomplete="off" id="erydat" value="#{batchBookAction.m8401.ERYDAT}"
+                                     onfocus="this.select()" onkeydown="KeyDown()"
+                                     onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                        <!--<h:outputLabel value="功能参数:" for="funcde"/>
+                        <h:inputText autocomplete="off" id="funcde" value="#{batchBookAction.m8401.FUNCDE}"
+                                     onfocus="this.select()"
+                                     onkeydown="KeyDown()">
+                        </h:inputText>-->
+                    </h:panelGrid>
+                    <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
+                        <p:commandButton id="save" value="确定" ajax="false"
+                                         action="#{batchBookAction.onCreateNewRecord}"
+                                         style="width:66px; " update="content,input,pdt,addtable,show">
+                        <!--<f:param value="#{batchBookAction.m8401.VCHSET}" name="vchset"/>-->
+                        </p:commandButton>
+                    </h:panelGrid><!--display:none-->
+                </h:panelGrid>
+                <p:separator/>
+                <!--<p:panel>-->
+                    <h:panelGrid id="show" columns="8" columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
+                    input-col-s,input-col-xl,input-col-l,input-col-xl">
+                        <h:outputLabel value="借方合计 :"/>
+                        <h:inputText id="debitamt" value="#{batchBookAction.totalDebitAmt}" disabled="true"
+                                     style="text-align:right">
+                            <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
+                        </h:inputText>
+                        <h:outputLabel value="贷方合计 :"/>
+                        <h:inputText id="creditamt" value="#{batchBookAction.totalCreditAmt}" disabled="true"
+                                     style="text-align:right">
+                            <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
+                        </h:inputText>
+                        <h:outputLabel value="轧差 :"/>
+                        <h:inputText id="totalamt" value="#{batchBookAction.totalAmt}" disabled="true"
+                                     style="text-align:right">
+                            <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
+                        </h:inputText>
+                        <h:outputLabel value="传票套号 :"/>
+                        <h:inputText value="#{batchBookAction.vchset}" disabled="true"
+                                     style="text-align:right;">
+                            <f:convertNumber type="number" pattern="0000"/>
+                        </h:inputText>
+                    </h:panelGrid>
+                <!--</h:panelGr>-->
+            </p:panel>
+        </h:form>
+        <br/>
+        <h:form id="dtform">
+            <p:menubar ><!--msgs,inputform-->
+                <p:menuitem value="【套平】" icon="ui-icon ui-icon-gear"
+                            actionListener="#{batchBookAction.onBalanceAct()}"
+                            ajax="false" update="dtform"/>
+                <!--onstart="balanceactdlg.show()"oncomplete="balanceactdlg.hide();"-->
+
+                <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil"
+                            onclick="vchsetdlg.show();document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
+
+                <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin"
+                            actionListener="#{batchBookAction.onDeleteVchset()}"
+                            ajax="true"/>
+                <!--<p:menuitem value="【多笔删除】" icon="ui-icon ui-icon-close"
+                            onclick="handleConfirmDeleteAll()"/>-->
+            </p:menubar>
+
+            <h:form id="confirmForm"><!--update="inputform:input,msgs"-->
+                <p:confirmDialog message="确认全部删除当前套的传票吗?" modal="true"
+                                 header="功能确认" severity="alert" widgetVar="confirmDeleteAll">
+                    <p:commandButton value="确认"
+                                     oncomplete="confirmDeleteAll.hide()"
+                                     actionListener="#{batchBookAction.onDeleteVchset}" style="margin-left:100px;"/>
+                    <p:commandButton id="canceldeleteall" value="取消" onclick="confirmDeleteAll.hide()" type="button"/>
+                </p:confirmDialog>
+            </h:form>
+
+            <!--<p:dialog id="balancedialog" header="套平中，请稍候..." draggable="false" closable="false" resizable="false"
+                      width="245" widgetVar="balanceactdlg" modal="true">
+                <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+            </p:dialog>-->
+
+            <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
+                <h:form id="vchsetform">
+                    <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <h:outputLabel for="vchset" value="请输入传票套号: *"/>
+                        <h:inputText value="#{batchBookAction.vchset}" onfocus="this.select()"
+                                     id="vchset" required="true" label="vchset" onkeydown="KeyDown()">
+                        </h:inputText>
+                        <f:facet name="footer"><!--update="dtform, vchsetgrowl"-->
+                            <p:commandButton id="modifyvchset" value="确定"  ajax="true"
+                                             actionListener="#{batchBookAction.onModifyVchset()}"
+                                             oncomplete="vchsetdlg.hide();"/>
+                            <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dataTable id="pdt" height="200"
+                        value="#{batchBookAction.dataList}" var="record"
+
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" rows="10" paginatorPosition="bottom" rowsPerPageTemplate="100,50,15,10,5"
+                         emptyMessage="传票记录为空..."
+                         style="margin-top:10px"><!-- selection="#{batchBookAction.selectedRecords}"-->
+
+                <!-- <p:column selectionMode="multiple"/>-->
+                <p:column  headerText="序号" style="width:150px;text-align:center">
+                    <h:outputText value="#{record.SETSEQ}"/>
+                </p:column>
+                <!--<p:column headerText=" 套号" style="width:150px;">
+                    <h:outputText value="#{record.VCHSET}"/>
+                </p:column>-->
+                <p:column headerText="帐号" style="width:150px;text-align:center">
+                    <h:outputText value="#{record.ACTNUM}"/>
+                </p:column>
+
+                <p:column headerText="冲账标志" style="width:150px;text-align:center">
+                    <h:outputText value="#{record.RVSLBL}"/>
+                </p:column>
+                <p:column headerText="金额">
+                    <h:outputText value="#{record.TXNAMT}" style="float: right ">
+                        <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="凭证号码" style="text-align:center">
+                    <h:outputText value="#{record.ERYTIM}"/>
+                </p:column>
+                <!--<p:column headerText="冲补/起息日" style="width:60px;text-align:center">
+                    <h:outputText value="#{record.valdat}">
+                    </h:outputText>
+                </p:column>
+                <p:column sortBy="#{record.anacde}" headerText="凭证种类" style="text-align:center">
+                    <h:outputText value="#{record.formatedAnacde}"/>
+                </p:column>
+
+                <p:column headerText="附件" style="width:25px;">
+                    <h:outputText value="#{record.vchatt}" style="float: right"/>
+                </p:column>-->
+
+                <p:column headerText="操作" style="width:60px;text-align:left ">
+                    <!--<h:commandLink immediate="true" value="修改" action="#{batchBookAction.onEditRecord}">
+                        <f:setPropertyActionListener value="#{record}" target="#{batchBookAction.selectedRecord}"/>
+                    </h:commandLink>
+                    <p:spacer width="10"/>-->
+                    <h:commandLink immediate="true" value="删除" style="color: blue"
+                                   action="#{batchBookAction.onDeleteRecord()}" update="pdt">
+                        <!--<f:setPropertyActionListener value="#{record}" target="#{batchBookAction.selectedRecord}"/>-->
+                        <f:param value="#{batchBookAction.vchset}" name="vchset"/>
+                        <f:param value="#{record.SETSEQ}" name="setseq"/>
+                    </h:commandLink>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </div>
+    <br/>
+    <div>
+        <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
+                       value="冲账标志：11-现金， 12-转账， 22-冲正， 52补账"/>
+        <br/><br/>
+        <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
+                       value="凭证种类：101-转账支票， 109-进账单， 114-利息单,
+        117-特转凭证， 118-电汇凭证, 119-税单, 120-其他凭证,121-其他公会经费，"/>
+        <br/><br/>
+        <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
+                       value="122-其他预算拨款， 123-其他社保费，124-其他公积金，
+         125-其他收费凭证， 126-其他银联业务， 202-现金支票， 225-现金交款单"/>
+        <p:separator/>
+    </div>
+
+</ui:define>
+</ui:composition>
