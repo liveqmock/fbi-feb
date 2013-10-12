@@ -55,7 +55,7 @@ public class ActapcAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        glcode = StringUtils.isEmpty(params.get("curcde")) ? "0140" : params.get("glcode");
+        glcode = StringUtils.isEmpty(params.get("glcode")) ? "0140" : params.get("glcode");
         apcode = params.get("apcode");
         action = params.get("action");
         if (!StringUtils.isEmpty(apcode)) {
