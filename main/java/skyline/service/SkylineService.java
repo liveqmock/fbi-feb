@@ -43,6 +43,11 @@ public class SkylineService {
         return date8;
     }
 
+    public String getSysdate6() {
+        SimpleDateFormat sdf6 = new SimpleDateFormat("yyyyMM");
+        String date6 = sdf6.format(new Date());
+        return date6;
+    }
     /**
      * 从枚举表的枚举项内容组装下拉菜单
      * @param enuId 枚举ID

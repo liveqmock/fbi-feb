@@ -87,7 +87,9 @@
                 <p:dataTable id="dt" height="200"
                              value="#{entPaymentAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
-                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}  总笔数：#{entPaymentAction.t536.totcnt}"
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
+                             总笔数：#{entPaymentAction.t536.totcnt}
+                             当前显示笔数：#{entPaymentAction.t536.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
 
