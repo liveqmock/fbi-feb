@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class AssembleModel implements Assemble {
     protected int offset = 0;
 
-    //字段类型  1：字符串 2：短整数 3:BigDecimal 4:BigDecimal 自动除以100.0
+    //字段类型  1：字符串 2：短整数 3:BigDecimal 4:BigDecimal 自动除以100.0  5:int
     protected int[] fieldTypes;
 
     //字段长度  字节数
@@ -37,6 +37,8 @@ public class AssembleModel implements Assemble {
                     fields[i].set(this, new BigDecimal(new String(bytes).trim()));
                 } else if (this.fieldTypes[i] == 4) {
                     fields[i].set(this, new BigDecimal(new String(bytes).trim()).divide(bd100));
+                } else if (this.fieldTypes[i] == 5) {
+                    fields[i].set(this, Integer.parseInt(new String(bytes).trim()));
                 } else {
                     throw new RuntimeException("不支持的解析数据类型：" + this.fieldTypes[i]);
                 }

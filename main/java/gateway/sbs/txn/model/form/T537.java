@@ -2,6 +2,8 @@ package gateway.sbs.txn.model.form;
 
 import gateway.sbs.core.domain.SOFFormBody;
 
+import java.math.BigDecimal;
+
 /**
  * 对公支付单笔查询
  */
@@ -9,8 +11,8 @@ public class T537 extends SOFFormBody {
 
     {
         fieldTypes = new int[]{
-                1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 4,
+                1, 1, 1, 4, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1};
         fieldLengths = new int[]{
@@ -26,11 +28,11 @@ public class T537 extends SOFFormBody {
     private String ORDDAT;       // 日期
     private String ORDTIM;       // 时间
     private String TXNCUR;       // 货币号
-    private String TXNAMT;       // 交易金额
+    private BigDecimal TXNAMT;       // 交易金额
     private String CUSTYP;       // 账户类别
     private String CUSACT;       // 汇款人帐号
     private String ACTNAM;       // 汇款人姓名
-    private String FEEAMT;       // 费用
+    private BigDecimal FEEAMT;       // 费用
     private String BENACT;       // 收款人账号
     private String BENNAM;       // 收款人姓名
     private String BENBNK;       // 收款行名称
@@ -92,14 +94,6 @@ public class T537 extends SOFFormBody {
         this.TXNCUR = TXNCUR;
     }
 
-    public String getTXNAMT() {
-        return TXNAMT;
-    }
-
-    public void setTXNAMT(String TXNAMT) {
-        this.TXNAMT = TXNAMT;
-    }
-
     public String getCUSTYP() {
         return CUSTYP;
     }
@@ -124,11 +118,19 @@ public class T537 extends SOFFormBody {
         this.ACTNAM = ACTNAM;
     }
 
-    public String getFEEAMT() {
+    public BigDecimal getTXNAMT() {
+        return TXNAMT;
+    }
+
+    public void setTXNAMT(BigDecimal TXNAMT) {
+        this.TXNAMT = TXNAMT;
+    }
+
+    public BigDecimal getFEEAMT() {
         return FEEAMT;
     }
 
-    public void setFEEAMT(String FEEAMT) {
+    public void setFEEAMT(BigDecimal FEEAMT) {
         this.FEEAMT = FEEAMT;
     }
 

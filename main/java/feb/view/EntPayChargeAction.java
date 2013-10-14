@@ -58,13 +58,13 @@ public class EntPayChargeAction implements Serializable {
                         t539 = (T539) form.getFormBody();
                         t539.setCurcnt(Integer.parseInt(t539.getCurcnt()) + "");
                         t539.setTotcnt(Integer.parseInt(t539.getTotcnt()) + "");
-//                        dataList = t539.getBeanList();
                         DecimalFormat df = new DecimalFormat("###,###,##0.00");
-                        for (T539.Bean record : t539.getBeanList()) {
+                        dataList = t539.getBeanList();
+                        /*for (T539.Bean record : t539.getBeanList()) {
                             record.setFEEAMT(df.format(new BigDecimal(record.getFEEAMT())));
                             record.setTXNCNT(Integer.parseInt(record.getTXNCNT()) + "");
                             dataList.add(record);
-                        }
+                        }*/
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
 //                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());

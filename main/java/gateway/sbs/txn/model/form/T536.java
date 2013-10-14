@@ -3,6 +3,7 @@ package gateway.sbs.txn.model.form;
 import gateway.sbs.core.domain.AssembleModel;
 import gateway.sbs.core.domain.SOFFormBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,13 +58,13 @@ public class T536 extends SOFFormBody {
 
     public class Bean extends AssembleModel {
         {
-            fieldTypes = new int[]{1, 1, 1, 1};
+            fieldTypes = new int[]{1, 1, 4, 1};
             fieldLengths = new int[]{18, 22, 15, 8};
         }
 
         private String FBTIDX;          // 索引号
         private String CUSACT;          // 付款账号
-        private String TXNAMT;          // 交易金额
+        private BigDecimal TXNAMT;      // 交易金额
         private String PRCSTS;          // 交易状态
 
         public String getFBTIDX() {
@@ -82,11 +83,11 @@ public class T536 extends SOFFormBody {
             this.CUSACT = CUSACT;
         }
 
-        public String getTXNAMT() {
+        public BigDecimal getTXNAMT() {
             return TXNAMT;
         }
 
-        public void setTXNAMT(String TXNAMT) {
+        public void setTXNAMT(BigDecimal TXNAMT) {
             this.TXNAMT = TXNAMT;
         }
 

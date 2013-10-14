@@ -71,10 +71,6 @@ public class EntPaymentAction implements Serializable {
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     } else {
                         t537 = (T537) form.getFormBody();
-                        BigDecimal bd100 = new BigDecimal("100");
-                        DecimalFormat df = new DecimalFormat("###,###,##0.00");
-                        t537.setTXNAMT(df.format(new BigDecimal(t537.getTXNAMT()).divide(bd100)));
-                        t537.setFEEAMT(df.format(new BigDecimal(t537.getFEEAMT()).divide(bd100)));
                     }
                 }
             } else if ("queryAll".equals(action)) {
@@ -99,12 +95,13 @@ public class EntPaymentAction implements Serializable {
                         t536 = (T536) form.getFormBody();
                         t536.setCurcnt(Integer.parseInt(t536.getCurcnt()) + "");
                         t536.setTotcnt(Integer.parseInt(t536.getTotcnt()) + "");
-                        BigDecimal bd100 = new BigDecimal("100");
-                        DecimalFormat df = new DecimalFormat("###,###,##0.00");
-                        for (T536.Bean record : t536.getBeanList()) {
+//                        BigDecimal bd100 = new BigDecimal("100");
+//                        DecimalFormat df = new DecimalFormat("###,###,##0.00");
+                        dataList = t536.getBeanList();
+                       /* for (T536.Bean record : t536.getBeanList()) {
                             record.setTXNAMT(df.format(new BigDecimal(record.getTXNAMT()).divide(bd100)));
                             dataList.add(record);
-                        }
+                        }*/
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
 //                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());

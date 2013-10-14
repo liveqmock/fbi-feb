@@ -69,7 +69,9 @@
                         <h:outputLabel value="货币号:"/>
                         <h:outputText value="#{entPaymentAction.t537.TXNCUR}"/>
                         <h:outputLabel value="交易金额:"/>
-                        <h:outputText value="#{entPaymentAction.t537.TXNAMT}"/>
+                        <h:outputText value="#{entPaymentAction.t537.TXNAMT}">
+                            <f:convertNumber pattern="###,###,##0.00"/>
+                        </h:outputText>
                         <h:outputLabel value="账户类别:"/>
                         <h:outputText value="#{entPaymentAction.t537.CUSTYP}"/>
                         <h:outputLabel value="状态:"/>
@@ -79,8 +81,9 @@
                         <h:outputLabel value="汇款人户名:"/>
                         <h:outputText value="#{entPaymentAction.t537.ACTNAM}"/>
                         <h:outputLabel value="费用:"/>
-                        <h:outputText value="#{entPaymentAction.t537.FEEAMT}"/>
-
+                        <h:outputText value="#{entPaymentAction.t537.FEEAMT}">
+                            <f:convertNumber pattern="###,###,##0.00"/>
+                        </h:outputText>
                         <h:outputLabel value="收款人账号:"/>
                         <h:outputText value="#{entPaymentAction.t537.BENACT}"/>
                         <h:outputLabel value="收款人姓名:"/>
