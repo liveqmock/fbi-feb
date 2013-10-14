@@ -57,64 +57,64 @@
                     <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:100%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="索引号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.FBTIDX}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.FBTIDX}"/>
                         <h:outputLabel value="日期:"/>
-                        <h:outputText value="#{entPaymentAction.t537.ORDDAT}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.ORDDAT}"/>
                         <h:outputLabel value="时间:"/>
-                        <h:outputText value="#{entPaymentAction.t537.ORDTIM}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.ORDTIM}"/>
                         <h:outputLabel value="柜员:"/>
-                        <h:outputText value="#{entPaymentAction.t537.ORDTLR}"/>
-                        <h:outputLabel value="渠道:"/>
-                        <h:outputText value="#{entPaymentAction.t537.TERMNM}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.ORDTLR}"/>
                         <h:outputLabel value="货币号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.TXNCUR}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.TXNCUR}"/>
                         <h:outputLabel value="交易金额:"/>
-                        <h:outputText value="#{entPaymentAction.t537.TXNAMT}">
+                        <h:outputText value="#{entBatchPayAction.t547.TXNAMT}">
                             <f:convertNumber pattern="###,###,##0.00"/>
                         </h:outputText>
                         <h:outputLabel value="账户类别:"/>
-                        <h:outputText value="#{entPaymentAction.t537.CUSTYP}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.CUSTYP}"/>
                         <h:outputLabel value="状态:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PRCSTS}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.PRCSTS}"/>
                         <h:outputLabel value="汇款人账号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.CUSACT}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.CUSACT}"/>
                         <h:outputLabel value="汇款人户名:"/>
-                        <h:outputText value="#{entPaymentAction.t537.ACTNAM}"/>
-                        <h:outputLabel value="费用:"/>
-                        <h:outputText value="#{entPaymentAction.t537.FEEAMT}">
+                        <h:outputText value="#{entBatchPayAction.t547.ACTNAM}"/>
+                        <h:outputLabel value="交易类别:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.ORDTNM}"/>
+                        <h:outputLabel value="请求序列号:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.REQNUM}"/>
+                        <h:outputLabel value="总笔数:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.TOTCNT}"/>
+                        <h:outputLabel value="失败笔数:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.FALCNT}"/>
+                        <h:outputLabel value="失败金额:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.FALAMT}">
                             <f:convertNumber pattern="###,###,##0.00"/>
                         </h:outputText>
-                        <h:outputLabel value="收款人账号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.BENACT}"/>
-                        <h:outputLabel value="收款人姓名:"/>
-                        <h:outputText value="#{entPaymentAction.t537.BENNAM}"/>
-                        <h:outputLabel value="收款行名称:"/>
-                        <h:outputText value="#{entPaymentAction.t537.BENBNK}"/>
-                        <h:outputLabel value="内部户账号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PBKACT}"/>
+                        <h:outputLabel value="银行代码:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.BNKCDE}"/>
+                        <h:outputLabel value="银行账号:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.BNKACT}"/>
 
-                        <h:outputLabel value="汇款人名称:"/>
-                        <h:outputText value="#{entPaymentAction.t537.RETNAM}"/>
-                        <h:outputLabel value="附言:"/>
-                        <h:outputText value="#{entPaymentAction.t537.RETAUX}"/>
-
-                        <h:outputLabel value="收款行行号:"/>
-                        <h:outputText value="#{entPaymentAction.t537.CHQNUM}"/>
-
+                        <h:outputLabel value="银行凭证号:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.VCHNUM}"/>
+                        <h:outputLabel value="代发代扣编码:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.BPWCDE}"/>
+                        <h:outputLabel value="转账日期:"/>
+                        <h:outputText value="#{entBatchPayAction.t547.TRNDAT}"/>
                         <h:outputLabel value="交易信息:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PRCMSG}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.PRCMSG}"/>
 
                         <h:outputLabel value="处理日期:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PRCDAT}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.PRCDAT}"/>
                         <h:outputLabel value="处理时间:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PRCTIM}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.PRCTIM}"/>
                         <h:outputLabel value="处理柜员:"/>
-                        <h:outputText value="#{entPaymentAction.t537.PRCTLR}"/>
+                        <h:outputText value="#{entBatchPayAction.t547.PRCTLR}"/>
                     </h:panelGrid>
                     <br/>
                     <h:panelGrid id="btns" columns="1" style="text-align:center;" width="100%">
                         <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                         action="#{entPaymentAction.onBack}"
+                                         action="#{entBatchPayAction.onBack}"
                                          style="margin-left:10px;width:80px;"/>
                     </h:panelGrid>
                 </p:fieldset>

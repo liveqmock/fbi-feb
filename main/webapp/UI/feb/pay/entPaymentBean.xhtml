@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:100%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="索引号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.FBTIDX}"/>
+                        <h:outputLabel value="日期:"/>
+                        <h:outputText value="#{entPaymentAction.t537.ORDDAT}"/>
+                        <h:outputLabel value="时间:"/>
+                        <h:outputText value="#{entPaymentAction.t537.ORDTIM}"/>
+                        <h:outputLabel value="柜员:"/>
+                        <h:outputText value="#{entPaymentAction.t537.ORDTLR}"/>
+                        <h:outputLabel value="渠道:"/>
+                        <h:outputText value="#{entPaymentAction.t537.TERMNM}"/>
+                        <h:outputLabel value="货币号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.TXNCUR}"/>
+                        <h:outputLabel value="交易金额:"/>
+                        <h:outputText value="#{entPaymentAction.t537.TXNAMT}">
+                            <f:convertNumber pattern="###,###,##0.00"/>
+                        </h:outputText>
+                        <h:outputLabel value="账户类别:"/>
+                        <h:outputText value="#{entPaymentAction.t537.CUSTYP}"/>
+                        <h:outputLabel value="状态:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PRCSTS}"/>
+                        <h:outputLabel value="汇款人账号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.CUSACT}"/>
+                        <h:outputLabel value="汇款人户名:"/>
+                        <h:outputText value="#{entPaymentAction.t537.ACTNAM}"/>
+                        <h:outputLabel value="费用:"/>
+                        <h:outputText value="#{entPaymentAction.t537.FEEAMT}">
+                            <f:convertNumber pattern="###,###,##0.00"/>
+                        </h:outputText>
+                        <h:outputLabel value="收款人账号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.BENACT}"/>
+                        <h:outputLabel value="收款人姓名:"/>
+                        <h:outputText value="#{entPaymentAction.t537.BENNAM}"/>
+                        <h:outputLabel value="收款行名称:"/>
+                        <h:outputText value="#{entPaymentAction.t537.BENBNK}"/>
+                        <h:outputLabel value="内部户账号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PBKACT}"/>
+
+                        <h:outputLabel value="汇款人名称:"/>
+                        <h:outputText value="#{entPaymentAction.t537.RETNAM}"/>
+                        <h:outputLabel value="附言:"/>
+                        <h:outputText value="#{entPaymentAction.t537.RETAUX}"/>
+
+                        <h:outputLabel value="收款行行号:"/>
+                        <h:outputText value="#{entPaymentAction.t537.CHQNUM}"/>
+
+                        <h:outputLabel value="交易信息:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PRCMSG}"/>
+
+                        <h:outputLabel value="处理日期:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PRCDAT}"/>
+                        <h:outputLabel value="处理时间:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PRCTIM}"/>
+                        <h:outputLabel value="处理柜员:"/>
+                        <h:outputText value="#{entPaymentAction.t537.PRCTLR}"/>
+                    </h:panelGrid>
+                    <br/>
+                    <h:panelGrid id="btns" columns="1" style="text-align:center;" width="100%">
+                        <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                         action="#{entPaymentAction.onBack}"
+                                         style="margin-left:10px;width:80px;"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:separator/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
