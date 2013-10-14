@@ -1,6 +1,7 @@
 package gateway.sbs.core.domain;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 
 /**
  * 可装配类
@@ -8,7 +9,7 @@ import java.lang.reflect.Field;
 public class AssembleModel implements Assemble {
     protected int offset = 0;
 
-    //字段类型  1：字符串 2：短整数
+    //字段类型  1：字符串 2：短整数 3:BigDecimal 4:BigDecimal 自动除以100.0
     protected int[] fieldTypes;
 
     //字段长度  字节数
@@ -20,6 +21,7 @@ public class AssembleModel implements Assemble {
         try {
             Field[] fields = clazz.getDeclaredFields();
             int pos = this.offset;
+            BigDecimal bd100 = new BigDecimal("100.0");
             for (int i = 0; i < this.fieldLengths.length; i++) {
                 byte[] bytes = new byte[fieldLengths[i]];
                 System.arraycopy(buffer, pos, bytes, 0, bytes.length);
@@ -31,8 +33,12 @@ public class AssembleModel implements Assemble {
                     short len = 0;
                     len = (short) ((bytes[0] << 8 & 0xFF00) | (bytes[1] & 0x00FF));
                     fields[i].set(this, len);
+                } else if (this.fieldTypes[i] == 3) {
+                    fields[i].set(this, new BigDecimal(new String(bytes).trim()));
+                } else if (this.fieldTypes[i] == 4) {
+                    fields[i].set(this, new BigDecimal(new String(bytes).trim()).divide(bd100));
                 } else {
-                    // TODO
+                    throw new RuntimeException("不支持的解析数据类型：" + this.fieldTypes[i]);
                 }
                 pos += bytes.length;
             }
