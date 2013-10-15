@@ -184,7 +184,9 @@ public class BatchBookAction implements Serializable {
     }
 
     //µ¥±ÊÉ¾³ý
-    public void onDeleteRecord() {
+    public String onDeleteRecord() {
+        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        setseq = param.get("setseq");
         try {
             M8409 m8409 = new M8409(vchset, setseq);
             m8409.setFUNCDE("1");    //0Ì×É¾³ý 1 µ¥±ÊÉ¾³ý
@@ -192,7 +194,6 @@ public class BatchBookAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
                 MessageUtil.addInfo("Ì×Æ±µ¥±ÊÉ¾³ý³É¹¦£º");
-                flushTotalData();
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
@@ -200,6 +201,8 @@ public class BatchBookAction implements Serializable {
             logger.error("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü", e);
             MessageUtil.addError("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
         }
+        flushTotalData();
+        return null;
     }
 
     //µ¥±ÊÏêÏ¸ÐÞ¸Ä
