@@ -10,8 +10,6 @@ import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pub.platform.form.config.SystemAttributeNames;
-import pub.platform.security.OperatorManager;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
@@ -44,12 +42,13 @@ public class BatchBookAction implements Serializable {
     private String tlrnum;//¹ñÔ±ºÅ
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
+    private T898[] selectedRecords;
     private M8402 m8402 = new M8402();
     //private M8409 m8409 = new M8409();
     private List<T898.Bean> dataList = new ArrayList<>();
-    private float totalDebitAmt = 0f;    //½è·½
-    private float totalCreditAmt = 0f;   //´û·½
-    private float totalAmt = 0f;         //Ôþ²î
+    private float totalDebitAmt;    //½è·½
+    private float totalCreditAmt;   //´û·½
+    private float totalAmt;         //Ôþ²î
 
     @PostConstruct
     public void init() {
@@ -58,8 +57,8 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
         onBatchQry();
         //initAddBat();
-        flushTotalData();
     }
+
     //Â¼Èë³õÊ¼»¯
     public void initAddBat() {
         M8401 m8401 = new M8401();
@@ -74,6 +73,143 @@ public class BatchBookAction implements Serializable {
     //Ì×Æ±²éÑ¯
     public String onBatchQry() {
         try {
+            M85a2 m85a2 = new M85a2("0000");
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t898 = (T898) form.getFormBody();
+                        dataList.addAll(t898.getBeanList());
+                        tlrnum = t898.getFormBodyHeader().getTLRNUM();
+                        vchset = t898.getFormBodyHeader().getVCHSET();
+                        flushTotalData();
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+            if (dataList == null || dataList.isEmpty()) {
+                MessageUtil.addWarn("Ã»ÓÐ²éÑ¯µ½Êý¾Ý¡£");
+            }
+        } catch (Exception e) {
+            logger.error("²éÑ¯Ê§°Ü", e);
+            MessageUtil.addError("²éÑ¯Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    //´«Æ±Â¼Èë
+    public String onCreateNewRecord() {
+        try {
+            m8401.setVCHSET(vchset);
+            SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+
+                //MessageUtil.addInfo("´«Æ±Â¼Èë³É¹¦£º");
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("8401´«Æ±Â¼ÈëÊ§°Ü", e);
+            MessageUtil.addError("8401´«Æ±Â¼ÈëÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        onBatchQry();
+        initAddBat();
+        flushTotalData();
+        return null;
+    }
+
+    //¼ÆËãÔþ²î
+    public void flushTotalData() {
+        float amt = 0f;
+        totalDebitAmt = 0f;
+        totalCreditAmt = 0f;
+        totalAmt = 0f;
+        for (T898.Bean t898s : dataList) {
+            amt = Float.parseFloat(t898s.getTXNAMT());
+            if (amt > 0) {
+                totalDebitAmt = totalDebitAmt + amt;
+            }
+            if (amt < 0) {
+                totalCreditAmt = totalCreditAmt + (-amt);
+            }
+        }
+        totalAmt = totalCreditAmt - totalDebitAmt;
+    }
+
+    //Ì×Æ½
+    public String onBalanceAct() {
+        try {
+            String str = totalAmt + "";
+            m8402 = new M8402(vchset, str);
+            m8402.setTLRNUM(tlrnum);
+            SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                MessageUtil.addInfo("´«Æ±Ì×Æ½³É¹¦£º");
+
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("8401´«Æ±Ì×Æ½Ê§°Ü", e);
+            MessageUtil.addError("8401´«Æ±Ì×Æ½Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        onBatchQry();
+        initAddBat();
+        return null;
+    }
+
+    //Ì×É¾³ý
+    public String onDeleteVchset() {
+        try {
+            M8409 m8409 = new M8409(vchset);
+            m8409.setFUNCDE("0");    //0Ì×É¾³ý 1 µ¥±ÊÉ¾³ý
+            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                MessageUtil.addInfo("Ì×Æ± É¾³ý³É¹¦£º");
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("Ì×Æ±É¾³ýÊ§°Ü", e);
+            MessageUtil.addError("Ì×Æ±É¾³ýÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        onBatchQry();
+        return null;
+    }
+
+    //µ¥±ÊÉ¾³ý
+    public void onDeleteRecord() {
+        try {
+            M8409 m8409 = new M8409(vchset, setseq);
+            m8409.setFUNCDE("1");    //0Ì×É¾³ý 1 µ¥±ÊÉ¾³ý
+            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                MessageUtil.addInfo("Ì×Æ±µ¥±ÊÉ¾³ý³É¹¦£º");
+                flushTotalData();
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü", e);
+            MessageUtil.addError("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
+    //µ¥±ÊÏêÏ¸ÐÞ¸Ä
+    public String onEditRecord() {
+        return null;
+    }
+
+    //Ì×ºÅÐÞ¸Ä
+    public String onModifyVchset() {
+        try {
             M85a2 m85a2 = new M85a2(vchset);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
             if (formList != null && !formList.isEmpty()) {
@@ -82,7 +218,7 @@ public class BatchBookAction implements Serializable {
                     if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t898 = (T898) form.getFormBody();
                         dataList.addAll(t898.getBeanList());
-                       tlrnum = t898.getFormBodyHeader().getTLRNUM();
+                        tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -99,110 +235,6 @@ public class BatchBookAction implements Serializable {
             logger.error("²éÑ¯Ê§°Ü", e);
             MessageUtil.addError("²éÑ¯Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        return null;
-    }
-    //´«Æ±Â¼Èë
-    public String onCreateNewRecord() {
-        try {
-            m8401.setVCHSET(vchset);
-            SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                onBatchQry();
-                initAddBat();
-                flushTotalData();
-                MessageUtil.addInfo("´«Æ±Â¼Èë³É¹¦£º");
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("8401´«Æ±Â¼ÈëÊ§°Ü", e);
-            MessageUtil.addError("8401´«Æ±Â¼ÈëÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-
-    //¼ÆËãÔþ²î
-    public void flushTotalData() {
-        float amt = 0f;
-        totalDebitAmt = 0f;
-        totalCreditAmt = 0f;
-        totalAmt = 0f;
-        for (T898.Bean t898s : dataList){
-            amt = Float.parseFloat(t898s.getTXNAMT());
-            if (amt > 0) {
-                totalDebitAmt = totalDebitAmt + amt;
-            } if (amt<0){
-                totalCreditAmt =totalCreditAmt + (-amt);
-            }
-        }
-        totalAmt = totalCreditAmt - totalDebitAmt;
-    }
-
-    //Ì×Æ½
-    public String onBalanceAct() {
-        try {
-            String str = totalAmt +"";
-            m8402 = new M8402(vchset,str);
-            m8402.setTLRNUM(tlrnum);
-            SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("´«Æ±Ì×Æ½³É¹¦£º");
-                int a = Integer.parseInt(vchset) + 0001;
-                vchset = a+"";
-                onBatchQry();
-                initAddBat();
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("8401´«Æ±Ì×Æ½Ê§°Ü", e);
-            MessageUtil.addError("8401´«Æ±Ì×Æ½Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-
-    //Ì×É¾³ý
-    public String onDeleteVchset() {
-        try {
-            M8409 m8409 = new M8409();
-            m8409.setFUNCDE("0");    //0Ì×É¾³ý 1 µ¥±ÊÉ¾³ý
-            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                // TODO ´òÓ¡
-                MessageUtil.addInfo("Ì×Æ± É¾³ý³É¹¦£º");
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("Ì×Æ±É¾³ýÊ§°Ü", e);
-            MessageUtil.addError("Ì×Æ±É¾³ýÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-    //µ¥±ÊÉ¾³ý
-    public void onDeleteRecord(){
-        try {
-            M8409 m8409 = new M8409(vchset,setseq);
-            m8409.setFUNCDE("1");    //0Ì×É¾³ý 1 µ¥±ÊÉ¾³ý
-            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("Ì×Æ±µ¥±ÊÉ¾³ý³É¹¦£º");
-                flushTotalData();
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü", e);
-            MessageUtil.addError("Ì×Æ±µ¥±ÊÉ¾³ýÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }
-    public String onModifyVchset (){
-       // m8402.setVCHSET(vchset);
-        System.out.print("0");
         return null;
     }
 
@@ -296,4 +328,13 @@ public class BatchBookAction implements Serializable {
         this.tlrnum = tlrnum;
     }
 
+    public T898[] getSelectedRecords() {
+        return selectedRecords;
+    }
+
+    public void setSelectedRecords(T898[] selectedRecords) {
+        this.selectedRecords = selectedRecords;
+    }
 }
+
+

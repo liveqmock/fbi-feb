@@ -49,7 +49,7 @@ public class T898 extends SOFFormBody {
         private String TLRNUM;          //柜员号
         private String VCHSET;          //传票套号
         private String TOTNUM;          //总笔数
-        private String SETFLG;             //
+        private String SETFLG;          //0-未用，1-已用
 
         public String getORGIDT() {
             return ORGIDT;
