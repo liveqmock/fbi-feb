@@ -55,20 +55,20 @@
                                      columnClasses="col-label,col-input,col-label,col-input">
                             <h:outputLabel value="日期:" style="font-weight: bold"/>
                             <p:inputText id="qrydate" size="25" required="true"
-                                         value="#{entPaymentAction.mn036.ORDDAT}"
+                                         value="#{entBatchPayAction.mn046.ORDDAT}"
                                          requiredMessage="日期不能为空。"
                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                             <h:outputLabel value="状态:" style="font-weight: bold"/>
                             <p:selectOneMenu style="width: 145px;"
-                                             id="prcsts"
-                                             value="#{entPaymentAction.mn036.PRCSTS}">
-                                <f:selectItems value="#{entPaymentAction.entPaymentStsItems}"/>
+                                             id="prcsts" disabled="true"
+                                             value="#{entBatchPayAction.mn046.PRCSTS}">
+                                <f:selectItems value="#{entBatchPayAction.entPaymentStsItems}"/>
                             </p:selectOneMenu>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:110px;" value="查询"
-                                             action="#{entPaymentAction.onMultiQuery()}" ajax="true"
+                                             action="#{entBatchPayAction.onMultiQuery()}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
@@ -84,17 +84,17 @@
                 </p:ajaxStatus>
 
                 <p:menubar>
-                    <p:menuitem type="push" value="多笔撤销" icon="ui-icon ui-icon-disk"  ajax="true"
-                                action="#{entPaymentAction.onMultiCancel()}" update="msgs, dt"/>
-                    <p:menuitem type="push" value="全部撤销" icon="ui-icon ui-icon-document"  ajax="true"
-                                action="#{entPaymentAction.onAllCancel()}" update="msgs, dt"/>
+                    <p:menuitem type="push" value="多笔确认" icon="ui-icon ui-icon-disk" ajax="true"
+                                action="#{entBatchPayAction.onMultiConfirm}" update="msgs, dt"/>
+                    <p:menuitem type="push" value="全部确认" icon="ui-icon ui-icon-document" ajax="true"
+                                action="#{entBatchPayAction.onAllConfirm}" update="msgs, dt"/>
 
                 </p:menubar>
-                <p:dataTable id="dt" height="200" selection="#{entPaymentAction.selectedRecords}"
-                             value="#{entPaymentAction.dataList}" var="record"
+                <p:dataTable id="dt" height="200" selection="#{entBatchPayAction.selectedRecords}"
+                             value="#{entBatchPayAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
                              {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
-                             总笔数：#{entPaymentAction.t536.totcnt}  当前显示笔数：#{entPaymentAction.t536.curcnt}"
+                             总笔数：#{entBatchPayAction.t536.totcnt}  当前显示笔数：#{entBatchPayAction.t536.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15"
                              rowKey="#{record.FBTIDX}"
                              rowsPerPageTemplate="100,50,15,10,5"
@@ -125,13 +125,13 @@
 
                     <p:column headerText="操作" style="text-align:center">
                         <p:commandLink value="查看详细" immediate="true" ajax="false"
-                                       action="#{entPaymentAction.onSingleQuery()}"
+                                       action="#{entBatchPayAction.onSingleQuery()}"
                                        style="color: blue">
                             <f:param value="#{record.FBTIDX}" name="fbtidx"/>
-                            <f:param value="#{entPaymentAction.mn036.ORDDAT}" name="orddat"/>
+                            <f:param value="#{entBatchPayAction.mn046.ORDDAT}" name="orddat"/>
                             <f:param value="query" name="action"/>
-                            <f:param value="entPaymentCncl" name="srcpage"/>
-                            <f:param value="#{entPaymentAction.mn036.PRCSTS}" name="prcsts"/>
+                            <f:param value="entBatchPayCfm" name="srcpage"/>
+                            <f:param value="#{entBatchPayAction.mn046.PRCSTS}" name="prcsts"/>
                         </p:commandLink>
                     </p:column>
 
