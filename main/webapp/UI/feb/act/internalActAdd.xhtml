@@ -52,9 +52,13 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="*账号:"/>
                             <p:inputText id="actnum" value="#{clientActAction.internalAct.ACTNUM}" required="true"
-                                         requiredMessage="必须输入14位账号" maxlength="14"/>
+                                         requiredMessage="必须输入14位账号" maxlength="14">
+                                <p:ajax event="blur" update="msgs,actnam"
+                                        listener="#{clientActAction.onQryApc()}"/>
+                            </p:inputText>
                             <h:outputLabel value="*账户名称:"/>
-                            <p:inputText value="#{clientActAction.internalAct.ACTNAM}" maxlength="36" required="true"
+                            <p:inputText id="actnam" value="#{clientActAction.internalAct.ACTNAM}" maxlength="36"
+                                         required="true"
                                          requiredMessage="必须输入账户名称"/>
                             <h:outputLabel value="贷方利率代码:"/>
                             <p:inputText value="#{clientActAction.internalAct.CINRAT}" maxlength="3"/>

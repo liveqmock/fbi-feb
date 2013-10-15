@@ -2,9 +2,7 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T101;
-import gateway.sbs.txn.model.form.T108;
-import gateway.sbs.txn.model.form.T109;
+import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +21,7 @@ import java.util.List;
  */
 @ManagedBean
 @ViewScoped
-public class  ClientActAction implements Serializable {
+public class ClientActAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ClientActAction.class);
 
     @ManagedProperty(value = "#{dataExchangeService}")
@@ -150,8 +148,8 @@ public class  ClientActAction implements Serializable {
                 String formcode = form.getFormHeader().getFormCode();
                 if ("T108".equalsIgnoreCase(formcode)) {
                     actInfo = (T108) form.getFormBody();
-                   BeanHelper.copyFields(actInfo, updateAct);
-                   updateable = true;
+                    BeanHelper.copyFields(actInfo, updateAct);
+                    updateable = true;
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
@@ -180,6 +178,51 @@ public class  ClientActAction implements Serializable {
         } catch (Exception e) {
             logger.error("8102账户修改交易失败", e);
             MessageUtil.addError("8102账户修改交易失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    public String onQryCustom() {
+        try {
+            String cusidt = clientAct.getACTNUM().substring(0, 7);
+            M8002 m8002 = new M8002();
+            m8002.setCUSIDT(cusidt);
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("8002", m8002);
+            SOFForm form = forms.get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("T004".equalsIgnoreCase(formcode)) {
+                T004 t004 = (T004) form.getFormBody();
+                clientAct.setACTNAM(t004.getCUSNAM());
+                clientAct.setSTMADD(t004.getCORADD());
+                clientAct.setSTMZIP(t004.getZIPCDE());
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        } catch (Exception e) {
+            logger.error("联动查询客户信息失败", e);
+            MessageUtil.addError("联动查询客户信息失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    public String onQryApc() {
+        try {
+            String apcode = internalAct.getACTNUM().substring(7, 11);
+            M9814 m9814 = new M9814();
+            m9814.setAPCODE(apcode);
+            m9814.setFUNCDE("0");
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("9814", m9814);
+            SOFForm form = forms.get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("T862".equalsIgnoreCase(formcode)) {
+                T862 t862 = (T862) form.getFormBody();
+                internalAct.setACTNAM(t862.getAPCNAM());
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        } catch (Exception e) {
+            logger.error("联动查询核算码信息失败", e);
+            MessageUtil.addError("联动查询核算码信息失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
