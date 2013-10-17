@@ -35,7 +35,7 @@
     <script language="JavaScript" type="text/JavaScript">
         //<![CDATA[
         function KeyDown() {
-            if (event.keyCode == 13) {
+            if (event.keyCode == 13) {//keyCode = 13 -> Enter
                 if (event.srcElement.id == 'inputform:tlrnum') {
                     checktlrnum();
                     event.keyCode = 9;
@@ -82,10 +82,10 @@
                     event.cancel = true;
                     document.forms['authform']['authform:authlogin'].click();
                 } else {
-                    event.keyCode = 9;
+                    event.keyCode = 9;//keyCode = 9 -> Tab
                 }
             }
-            if (event.keyCode == 38) {
+            if (event.keyCode == 38) {//keyCode = 38 -> Up
                 if (event.srcElement.id == 'inputform:type') {
                     document.forms['inputform']['inputform:actno'].focus();
                 } else if (event.srcElement.id == 'inputform:txnamt') {
@@ -125,7 +125,7 @@
                             document.forms['authform']['authform:workuser'].value = tlrnum;
                             authdlg.show();
                             //jQuery(function(){jQuery(PrimeFaces.escapeClientId('authform:username')).focus();});
-                            event.keyCode = 46;
+                            event.keyCode = 46; //keycode   46 = Delete
                             //document.forms['authform']['authform:username'].focus;
                             jQuery(PrimeFaces.escapeClientId('authform:username')).focus();
                         }
@@ -216,8 +216,8 @@
 <ui:define name="content">
     <div class="entry" id="top">
 
-        <p:messages id="msgs" showDetail="true" showSummary="true"/>
-        <h:form onsubmit="return checkDoubleSubmit(this);" id="inputform"><!---->
+        <p:messages id="msgs" showDetail="true" />
+        <h:form  id="inputform" onsubmit="return checkDoubleSubmit(this);"><!---->
             <!--<p:focus for="actnum"/>-->
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
@@ -242,7 +242,10 @@
                         <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()">
                         </h:inputText>
-                        <h:outputLabel value="冲账标志* :" for="rvslbl"/>
+                        <h:outputLabel value="冲正标志* :" for="rvslbl"/>
+                        <!--<p:selectOneMenu id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}" style="width: 131px;">
+                            <f:selectItems value="#{selectEnumCusFieldAction.ctfRvslblItems}"/>
+                        </p:selectOneMenu>-->
                         <h:inputText autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()">
                         </h:inputText>
@@ -305,29 +308,33 @@
         <br/>
         <h:form id="dtform">
             <p:menubar>
-                <p:menuitem value="【套平】" icon="ui-icon ui-icon-gear"
+                <p:menuitem value="【套平】" icon="ui-icon ui-icon-gear" type="push"
                             actionListener="#{batchBookAction.onBalanceAct()}"
-                            ajax="true" update="pdt"/><!--msgs,inputform-->
-                <!--onstart="balanceactdlg.show()"oncomplete="balanceactdlg.hide();"-->
-                <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil"
+                            ajax="true" update="pdt,dtform"/>
+                <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push"
                             onclick="vchsetdlg.show();document.forms['vchsetform']['vchsetform:vchset'].focus();"/><!---->
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin"
-                            ajax="true" update="pdt,dtform"
+                            ajax="true" update="pdt,dtform" type="push"
                             actionListener="#{batchBookAction.onDeleteVchset()}"/>
-                <!--onclick="confirmDeleteAll.show()"-->
                 <p:menuitem value="【多笔删除】" icon="ui-icon ui-icon-close"
-                            onclick="handleConfirmDeleteAll()"/>
+                            action="#{batchBookAction.onMultiConfirm}" type="push"
+                            ajax="true" update="pdt,dtform"/>
             </p:menubar>
 
-            <p:dataTable id="pdt" height="200"
+            <p:dataTable id="pdt" height="200" selection="#{batchBookAction.selectedRecords}"
                          value="#{batchBookAction.dataList}" var="record"
-                         selection="#{batchBookAction.selectedRecords}" rowKey="#{record}"
-                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         paginator="true" rows="10" paginatorPosition="bottom" rowsPerPageTemplate="100,50,15,10,5"
-                         emptyMessage="传票记录为空..." style="margin-top:10px"><!-- -->
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                          {NextPageLink} {LastPageLink} {RowsPerPageDropdown} 最大总笔数：#{99}"
+                         paginator="true" rows="10" paginatorPosition="bottom"
+                         rowKey="#{record.SETSEQ}" rowsPerPageTemplate="100,50,15,10,5"
+                         emptyMessage="传票记录为空..." style="margin-top:10px">
 
-                 <!--<p:column selectionMode="multiple"/>-->
-                <p:column headerText="序号" style="width:50px;text-align:center">
+                <p:column style="display:none;" headerText="pkid">
+                    <h:outputText value="#{record.SETSEQ}"/>
+                </p:column>
+                <p:column selectionMode="multiple" style="color:#91A7B4; width:30px;text-align:center;"/>
+
+                <p:column headerText="序号"  style="width:50px;text-align:center" sortBy="#{record.SETSEQ}">
                     <h:outputText id="setseq" value="#{record.SETSEQ}"/>
                 </p:column>
 
@@ -335,7 +342,7 @@
                     <h:outputText value="#{record.ACTNUM}"/>
                 </p:column>
 
-                <p:column headerText="金额" style="width:100px;text-align:center">
+                <p:column headerText="金额" style="width:100px;text-align:center" sortBy="#{record.TXNAMT}">
                     <h:outputText value="#{record.TXNAMT}" style="float: right ">
                         <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
                     </h:outputText>
@@ -358,11 +365,14 @@
                 </p:column>
 
                 <p:column headerText="操作" style="width:60px;text-align:center">
-                    <h:commandLink immediate="true" value="修改" style="color: blue"
-                                   action="#{batchBookAction.onEditRecord}">
-                        <!--<f:setPropertyActionListener value="#{record}" target="#{batchBookAction.selectedRecord}"/>-->
+                   <!-- <h:commandLink immediate="true" value="修改" style="color: blue"
+                                   action="#{batchBookAction.onClick()}">
+                        <f:param value="#{batchBookAction.vchset}" name="vchset"/>
+                        <f:param value="#{record.SETSEQ}" name="setseq"/>
+                        <f:param value="#{record}" name="record"/>
+                        &lt;!&ndash;<f:setPropertyActionListener value="#{record}" target="#{batchBookAction.selectedRecord}"/>&ndash;&gt;
                     </h:commandLink>
-                    <p:spacer width="10"/>
+                    <p:spacer width="10"/>-->
                     <h:commandLink immediate="true" value="删除" style="color: blue"
                                    action="#{batchBookAction.onDeleteRecord()}">
                         <f:param value="#{batchBookAction.vchset}" name="vchset"/>
@@ -372,28 +382,26 @@
                 </p:column>
             </p:dataTable>
         </h:form>
-
         <br/>
-        <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
-            <h:form id="vchsetform">
-                <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
-                <h:panelGrid columns="1" cellpadding="5">
-                    <h:outputLabel for="vchset" value="请输入传票套号: *"/>
-                    <h:inputText value="#{batchBookAction.vchset}" onfocus="this.select()"
-                                 id="vchset" required="true" label="vchset" onkeydown="KeyDown()">
-                    </h:inputText>
-                    <f:facet name="footer">
-                        <p:commandButton id="modifyvchset" value="确定" update="vchsetgrowl"
-                                         ajax="true"
-                                         actionListener="#{batchBookAction.onModifyVchset}"
-                                         oncomplete="vchsetdlg.hide();"/>
-                        <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
-                    </f:facet>
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
-
     </div>
+    <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
+        <h:form id="vchsetform">
+            <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
+            <h:panelGrid columns="1" cellpadding="5">
+                <h:outputLabel for="vchset" value="请输入传票套号: *"/>
+                <h:inputText value="#{batchBookAction.vchset}" onfocus="this.select()"
+                             id="vchset" required="true" label="vchset" onkeydown="KeyDown()">
+                </h:inputText>
+                <f:facet name="footer">
+                    <p:commandButton id="modifyvchset" value="确定" update="vchsetgrowl"
+                                     ajax="true"
+                                     actionListener="#{batchBookAction.onModifyVchset}"
+                                     oncomplete="vchsetdlg.hide();"/>
+                    <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
     <div>
         <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
                        value="冲账标志：11-现金， 12-转账， 22-冲正， 52补账"/>
@@ -407,6 +415,5 @@
          125-其他收费凭证， 126-其他银联业务， 202-现金支票， 225-现金交款单"/>
         <p:separator/>
     </div>
-
 </ui:define>
 </ui:composition>
