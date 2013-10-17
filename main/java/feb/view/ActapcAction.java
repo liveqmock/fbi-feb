@@ -93,30 +93,40 @@ public class ActapcAction implements Serializable {
         addapc.setAPCTYP("0");
         addapc.setCLRFLG("1");
     }
-
+    public String onQuery(){
+        try {
+            M9814 m9814 = new M9814(glcode,apcode);
+            m9814.setFUNCDE("0");
+            SOFForm form = dataExchangeService.callSbsTxn("9814",m9814).get(0);
+            if ("T862".equals(form.getFormHeader().getFormCode())){
+                t862 = (T862)form.getFormBody();
+            }else {
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        }catch (Exception e){
+            logger.error("≤È—Ø ß∞‹", e);
+            MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
     public String onAllQuery() {
         try {
-            apcode = (apcode == null ? "" : apcode);
+            apcode = apcode==null ? "" : apcode;
             M9814 m9814 = new M9814(glcode, apcode);
-            if (apcode.isEmpty() || glcode.isEmpty()) {
-                m9814.setFUNCDE("1");
-            }
+            m9814.setFUNCDE("1");
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if ("T862".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        t862 = (T862) form.getFormBody();
-                    } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T814 t814 = (T814) form.getFormBody();
-                        dataList.addAll(t814.getBeanList());
-                    } else if (!"T814".equals(form.getFormHeader().getFormCode()) &&
+                    if (!"T814".equals(form.getFormHeader().getFormCode()) &&
                             !"W012".equals(form.getFormHeader().getFormCode())) {
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
+                    } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T814 t814 = (T814) form.getFormBody();
+                        dataList.addAll(t814.getBeanList());
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
