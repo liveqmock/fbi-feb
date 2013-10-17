@@ -19,6 +19,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +41,22 @@ public class BatchBookAction implements Serializable {
     private String vchset;//传票套号
     private String setseq;//套内序号
     private String tlrnum;//柜员号
+    private String totnum;//总笔数
+
+    private String actnum;         // 账号
+    private String prdcde;          //产品码
+    private String txnamt;          //金额
+    private String rvslbl;          //冲正标志
+    private String opnda2;          //交易日期
+    private String erytyp;          //传票输入方式
+    private String erydat;           //记账日期
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
-    private T898[] selectedRecords;
+    private T898.Bean[] selectedRecords;
     private M8402 m8402 = new M8402();
     //private M8409 m8409 = new M8409();
     private List<T898.Bean> dataList = new ArrayList<>();
+    private List<T898.Bean> allList = new ArrayList<>();
     private float totalDebitAmt;    //借方
     private float totalCreditAmt;   //贷方
     private float totalAmt;         //轧差
@@ -55,8 +66,28 @@ public class BatchBookAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
-        onBatchQry();
-        //initAddBat();
+        if (!StringUtils.isEmpty(vchset)) {
+            M85a2 m85a2 = new M85a2(vchset);
+            SOFForm form = dataExchangeService.callSbsTxn("85a2", m85a2).get(0);
+            if ("T898".equals(form.getFormHeader().getFormCode())) {
+                t898 = (T898) form.getFormBody();
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+            onBatchQry();  // 初始化查询
+            for (T898.Bean bean : allList) {
+                if (bean.getSETSEQ().equals(setseq)) {
+                    actnum = bean.getACTNUM();
+                    prdcde = bean.getPRDCDE();
+                    txnamt = bean.getTXNAMT();
+                    rvslbl = bean.getRVSLBL();
+                    erydat = bean.getERYDAT();
+                    erytyp = bean.getERYTYP();
+                    opnda2 = bean.getVALDAT();
+                }
+            }
+            //initAddBat();
+        }
     }
 
     //录入初始化
@@ -77,12 +108,19 @@ public class BatchBookAction implements Serializable {
             List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
+                allList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t898 = (T898) form.getFormBody();
-                        dataList.addAll(t898.getBeanList());
+                        allList.addAll(t898.getBeanList());
+                        for (T898.Bean bean : allList) {
+                            if (!bean.getRECSTS().equals("I")) {
+                                dataList.add(bean);
+                            }
+                        }
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
+                        totnum = t898.getFormBodyHeader().getTOTNUM();
                         flushTotalData();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -149,9 +187,10 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("传票套平成功：");
 
+                MessageUtil.addInfo("传票套平成功：");
             } else {
+
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
@@ -183,30 +222,31 @@ public class BatchBookAction implements Serializable {
         return null;
     }
 
-    //单笔删除
-    public String onDeleteRecord() {
-        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        setseq = param.get("setseq");
-        try {
-            M8409 m8409 = new M8409(vchset, setseq);
-            m8409.setFUNCDE("1");    //0套删除 1 单笔删除
-            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("套票单笔删除成功：");
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("套票单笔删除失败", e);
-            MessageUtil.addError("套票单笔删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        flushTotalData();
-        return null;
+    public String onClick() {
+        return "batchBookBean";
+    }
+
+    public String onBack() {
+        return "batchBookMng";
     }
 
     //单笔详细修改
     public String onEditRecord() {
+        try {
+
+            m8401.setVCHSET(vchset);
+            m8401.setSETSEQ(setseq);
+            SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                onDeleteRecord();
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("8401传票修改失败", e);
+            MessageUtil.addError("8401传票修改失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
         return null;
     }
 
@@ -223,6 +263,7 @@ public class BatchBookAction implements Serializable {
                         dataList.addAll(t898.getBeanList());
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
+                        totnum = t898.getFormBodyHeader().getTOTNUM();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
                         // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -241,8 +282,67 @@ public class BatchBookAction implements Serializable {
         return null;
     }
 
-    //=============================================================================
+    //单笔删除
+    public String onDeleteRecord() {
+        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        setseq = param.get("setseq");
+        try {
+            M8409 m8409 = new M8409(vchset, setseq);
+            m8409.setFUNCDE("1");    //0套删除 1 单笔删除
+            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                MessageUtil.addInfo("套票单笔删除成功：");
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("套票单笔删除失败", e);
+            MessageUtil.addError("套票单笔删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        onBatchQry();
+        flushTotalData();
+        return null;
+    }
+    //---------------------------多笔删除-----------------------------------------------------
+//    public String onAllConfirm() {
+//        selectedRecords = dataList.toArray(selectedRecords);
+//        onMultiConfirm();
+//        return null;
+//    }
 
+    public String onMultiConfirm() {
+        if (selectedRecords == null || selectedRecords.length == 0) {
+            MessageUtil.addWarn("至少选择一笔数据记录！");
+            return null;
+        }
+        try {
+            // 确认
+            int cnt = 0;
+            for (T898.Bean bean : selectedRecords) {
+                M8409 m8409 = new M8409(vchset,bean.getSETSEQ());
+                m8409.setFUNCDE("1");
+                List<SOFForm> formList = dataExchangeService.callSbsTxn("8409",m8409);
+                if (formList != null && !formList.isEmpty()) {
+                    String formcode = formList.get(0).getFormHeader().getFormCode();
+                    if (!"W001".equals(formcode)) {
+                        MessageUtil.addErrorWithClientID("msgs", formcode);
+                        break;
+                    } else cnt++;
+                } else {
+                    MessageUtil.addError("SBS系统响应超时。");
+                }
+            }
+            MessageUtil.addInfo("完成确认笔数： " + cnt);
+            onBatchQry();
+        } catch (Exception e) {
+            logger.error("多笔删除失败", e);
+            MessageUtil.addError("多笔删除异常.");
+        }
+        return null;
+    }
+
+    //=================================================================================
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
@@ -331,12 +431,76 @@ public class BatchBookAction implements Serializable {
         this.tlrnum = tlrnum;
     }
 
-    public T898[] getSelectedRecords() {
+    public void setSelectedRecords(T898.Bean[] selectedRecords) {
+        this.selectedRecords = selectedRecords;
+    }
+
+    public T898.Bean[] getSelectedRecords() {
         return selectedRecords;
     }
 
-    public void setSelectedRecords(T898[] selectedRecords) {
-        this.selectedRecords = selectedRecords;
+    public String getTotnum() {
+        return totnum;
+    }
+
+    public void setTotnum(String totnum) {
+        this.totnum = totnum;
+    }
+
+    public String getPrdcde() {
+        return prdcde;
+    }
+
+    public void setPrdcde(String prdcde) {
+        this.prdcde = prdcde;
+    }
+
+    public String getTxnamt() {
+        return txnamt;
+    }
+
+    public void setTxnamt(String txnamt) {
+        this.txnamt = txnamt;
+    }
+
+    public String getRvslbl() {
+        return rvslbl;
+    }
+
+    public void setRvslbl(String rvslbl) {
+        this.rvslbl = rvslbl;
+    }
+
+    public String getActnum() {
+        return actnum;
+    }
+
+    public void setActnum(String actnum) {
+        this.actnum = actnum;
+    }
+
+    public String getOpnda2() {
+        return opnda2;
+    }
+
+    public void setOpnda2(String opnda2) {
+        this.opnda2 = opnda2;
+    }
+
+    public String getErytyp() {
+        return erytyp;
+    }
+
+    public void setErytyp(String erytyp) {
+        this.erytyp = erytyp;
+    }
+
+    public String getErydat() {
+        return erydat;
+    }
+
+    public void setErydat(String erydat) {
+        this.erydat = erydat;
     }
 }
 
