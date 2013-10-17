@@ -67,16 +67,20 @@
                                          id="autpwd"
                                          value="#{clientActAction.autpwd}"/>
                         </h:panelGrid>
-                        <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:110px;" value="查询账户信息"
                                              action="#{clientActAction.onQryCloseAct}" ajax="true"
-                                             update="msgs,panel,dataPanel">
+                                             update="msgs,btns,panel,dataPanel">
                             </p:commandButton>
                             <p:commandButton style="width:110px;" value="确认关户"
                                              disabled="#{!clientActAction.closeable}"
                                              action="#{clientActAction.onClose}" ajax="true"
-                                             update="msgs,panel,dataPanel">
+                                             update="msgs,btns,panel,dataPanel">
+                            </p:commandButton>
+                            <p:commandButton style="width:110px;" value="打印凭证" disabled="#{!clientActAction.printable}"
+                                             action="#{clientActAction.onPrintCloseAct()}" ajax="false"
+                                             update="msgs,btns,rtnActInfo">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>

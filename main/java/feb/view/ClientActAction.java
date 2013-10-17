@@ -1,6 +1,7 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.service.PdfPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.*;
@@ -10,6 +11,7 @@ import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
 import skyline.service.SkylineService;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -27,6 +29,9 @@ public class ClientActAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
+    @ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;
+
     private M8101 clientAct = new M8101();     // 开户
     private M8109 closeAct = new M8109();      // 关户查询
     private T101 rtnActInfo;                   // 开关户返回信息
@@ -41,6 +46,13 @@ public class ClientActAction implements Serializable {
     private String actnum;
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
+    private boolean isPrintable;               // 是否可打印凭证
+    private String tellerid;
+
+    @PostConstruct
+    public void init() {
+        tellerid = SkylineService.getOperId();
+    }
 
     public String onCreate() {
         try {
@@ -48,7 +60,6 @@ public class ClientActAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
-                // TODO 打印
                 MessageUtil.addInfo("客户账户建立成功，账号：" + rtnActInfo.getACTNUM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -60,13 +71,37 @@ public class ClientActAction implements Serializable {
         return null;
     }
 
+    // 打印开户确认书
+    public void onPrintOpenAct() {
+        try {
+            pdfPrintService.printVch4OpenClsAct(
+                    "       开户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
+                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), "", tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
+    // 打印开户确认书
+    public void onPrintCloseAct() {
+        try {
+            pdfPrintService.printVch4OpenClsAct(
+                    "       销户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
+                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), rtnActInfo.getCLSDAT(), tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
     public String onCreateInternalAct() {
         try {
             SOFForm form = dataExchangeService.callSbsTxn("8104", internalAct).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
-                // TODO 打印
+                isPrintable = true;
                 MessageUtil.addInfo("内部账户建立成功，账号：" + rtnActInfo.getACTNUM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -108,7 +143,7 @@ public class ClientActAction implements Serializable {
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
                 closeable = false;
-                // TODO 打印
+                isPrintable = true;
                 MessageUtil.addInfo("客户账户关闭成功，账号：" + rtnActInfo.getACTNUM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -129,7 +164,7 @@ public class ClientActAction implements Serializable {
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
                 closeable = false;
-                // TODO 打印
+                isPrintable = true;
                 MessageUtil.addInfo("账户关闭成功，账号：" + rtnActInfo.getACTNUM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -228,6 +263,14 @@ public class ClientActAction implements Serializable {
     }
 
     // ------------------------------
+
+    public PdfPrintService getPdfPrintService() {
+        return pdfPrintService;
+    }
+
+    public void setPdfPrintService(PdfPrintService pdfPrintService) {
+        this.pdfPrintService = pdfPrintService;
+    }
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -347,5 +390,21 @@ public class ClientActAction implements Serializable {
 
     public void setAutpwd(String autpwd) {
         this.autpwd = autpwd;
+    }
+
+    public boolean isPrintable() {
+        return isPrintable;
+    }
+
+    public void setPrintable(boolean printable) {
+        isPrintable = printable;
+    }
+
+    public String getTellerid() {
+        return tellerid;
+    }
+
+    public void setTellerid(String tellerid) {
+        this.tellerid = tellerid;
     }
 }

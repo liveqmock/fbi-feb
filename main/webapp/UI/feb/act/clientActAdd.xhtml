@@ -60,7 +60,8 @@
                             <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}" maxlength="36" required="true"
                                          requiredMessage="必须输入账户名称"/>
                             <h:outputLabel value="贷方利率代码:"/>
-                            <p:inputText value="#{clientActAction.clientAct.CINRAT}" maxlength="3"/>
+                            <p:inputText value="#{clientActAction.clientAct.CINRAT}"
+                                         maxlength="3"/>
                             <h:outputLabel value="对账单地址:"/>
                             <p:inputText id="stmadd" value="#{clientActAction.clientAct.STMADD}"/>
                             <h:outputLabel value="邮编:"/>
@@ -129,6 +130,10 @@
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
                                              action="#{clientActAction.onCreate}" ajax="true"
+                                             update="msgs,btns,rtnActInfo">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证" disabled="#{!clientActAction.printable}"
+                                             action="#{clientActAction.onPrintOpenAct}" ajax="false"
                                              update="msgs,btns,rtnActInfo">
                             </p:commandButton>
                         </h:panelGrid>

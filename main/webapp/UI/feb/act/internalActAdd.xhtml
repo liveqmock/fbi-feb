@@ -104,6 +104,10 @@
                                              action="#{clientActAction.onCreateInternalAct()}" ajax="true"
                                              update="msgs,btns,rtnActInfo">
                             </p:commandButton>
+                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证" disabled="#{!clientActAction.printable}"
+                                             action="#{clientActAction.onPrintOpenAct}" ajax="false"
+                                             update="msgs,btns,rtnActInfo">
+                            </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:panel>
