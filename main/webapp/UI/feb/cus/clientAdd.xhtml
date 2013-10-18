@@ -115,7 +115,6 @@
                             <h:inputText value="#{clientAction.m8001.LTXNUM}"/>
 
                             <h:outputLabel value="客户分类码:"/>
-                            <!--<h:inputText value="#{clientAction.m8001.BOCGRP}" />-->
                             <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
                             </p:selectOneMenu>
@@ -126,13 +125,11 @@
                             <h:inputText value="#{clientAction.m8001.BUSCDE}"/>
 
                             <h:outputLabel value="企业性质:"/>
-                            <!--<h:inputText value="#{clientAction.m8001.ENTTYP}"/>-->
                             <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel value="有无进口权:"/>
-                            <!--<h:inputText value="#{clientAction.m8001.CUSTY1}"/>-->
                             <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
                             </p:selectOneMenu>
@@ -153,7 +150,7 @@
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
-                            <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认建立"
                                              action="#{clientAction.onCreate}" ajax="true"
                                              update="msgs,btns">
                             </p:commandButton>
