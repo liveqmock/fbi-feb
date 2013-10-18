@@ -69,16 +69,18 @@
 <head>
     <title>财务公司核心业务系统</title>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=5" />
+    <meta http-equiv="X-UA-Compatible" content="IE=5"/>
 
     <script src="../../dhtmlx/dhtmlxTabbar/codebase/dhtmlxcommon.js" type="text/javascript"></script>
     <script src="../../dhtmlx/dhtmlxTabbar/codebase/dhtmlxcontainer.js" type="text/javascript"></script>
 
     <link rel="stylesheet" type="text/css" href="../../dhtmlx/dhtmlxLayout/codebase/dhtmlxlayout.css"/>
-    <link rel="stylesheet" type="text/css" href="../../dhtmlx/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_skyblue.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../../dhtmlx/dhtmlxLayout/codebase/skins/dhtmlxlayout_dhx_skyblue.css"/>
     <script src="../../dhtmlx/dhtmlxLayout/codebase/dhtmlxlayout.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" type="text/css" href="../../dhtmlx/dhtmlxAccordion/codebase/skins/dhtmlxaccordion_dhx_skyblue.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../../dhtmlx/dhtmlxAccordion/codebase/skins/dhtmlxaccordion_dhx_skyblue.css"/>
     <script src="../../dhtmlx/dhtmlxAccordion/codebase/dhtmlxaccordion.js" type="text/javascript"></script>
 
     <link rel="stylesheet" type="text/css" href="../../dhtmlx/dhtmlxTree/codebase/dhtmlxtree.css"/>
@@ -141,10 +143,10 @@
             var isProd_Web = <%=isProduction_WebServer%>;
             var isProd_Sbs = <%=isProduction_SBSServer%>;
             if (isProd_Web == "0") {
-                //alert("当前环境为开发测试环境！");
+                alert("当前环境为开发测试环境！");
             }
             if (isProd_Sbs == "0") {
-               // alert("当前环境连接的是SBS测试机！");
+                alert("当前环境连接的是SBS测试机！");
             }
         }
 
@@ -195,6 +197,11 @@
                 <div onclick="tabbarclk(this);" active="false" id="ver" class="tabs-item"
                      style="float:left;width:80px;">
                     <span style="width:100%;">版本历史</span>
+                </div>
+                <div style="float:left;width:2px;"></div>
+                <div onclick="tabbarclk(this);" active="false" id="sctdat" class="tabs-item"
+                     style="float:left;width:100px;">
+                    <span style="width:100%;"><%=om.getSysBusinessDate()%></span>
                 </div>
             </td>
         </tr>
