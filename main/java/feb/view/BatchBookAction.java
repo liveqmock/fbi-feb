@@ -66,28 +66,19 @@ public class BatchBookAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
-        if (!StringUtils.isEmpty(vchset)) {
-            M85a2 m85a2 = new M85a2(vchset);
-            SOFForm form = dataExchangeService.callSbsTxn("85a2", m85a2).get(0);
-            if ("T898".equals(form.getFormHeader().getFormCode())) {
-                t898 = (T898) form.getFormBody();
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+        onBatchQry();  // 初始化查询
+        for (T898.Bean bean : allList) {
+            if (bean.getSETSEQ().equals(setseq)) {
+                actnum = bean.getACTNUM();
+                prdcde = bean.getPRDCDE();
+                txnamt = bean.getTXNAMT();
+                rvslbl = bean.getRVSLBL();
+                erydat = bean.getERYDAT();
+                erytyp = bean.getERYTYP();
+                opnda2 = bean.getVALDAT();
             }
-            onBatchQry();  // 初始化查询
-            for (T898.Bean bean : allList) {
-                if (bean.getSETSEQ().equals(setseq)) {
-                    actnum = bean.getACTNUM();
-                    prdcde = bean.getPRDCDE();
-                    txnamt = bean.getTXNAMT();
-                    rvslbl = bean.getRVSLBL();
-                    erydat = bean.getERYDAT();
-                    erytyp = bean.getERYTYP();
-                    opnda2 = bean.getVALDAT();
-                }
-            }
-            //initAddBat();
         }
+        //initAddBat();
     }
 
     //录入初始化
@@ -120,7 +111,7 @@ public class BatchBookAction implements Serializable {
                         }
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
-                        totnum = t898.getFormBodyHeader().getTOTNUM();
+                        //totnum = t898.getFormBodyHeader().getTOTNUM();
                         flushTotalData();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -133,7 +124,7 @@ public class BatchBookAction implements Serializable {
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
-            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            //MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -142,10 +133,10 @@ public class BatchBookAction implements Serializable {
     public String onCreateNewRecord() {
         try {
             m8401.setVCHSET(vchset);
+            m8401.setTLRNUM(tlrnum);
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-
                 //MessageUtil.addInfo("传票录入成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -320,9 +311,10 @@ public class BatchBookAction implements Serializable {
             // 确认
             int cnt = 0;
             for (T898.Bean bean : selectedRecords) {
-                M8409 m8409 = new M8409(vchset,bean.getSETSEQ());
+                M8409 m8409 = new M8409(vchset, bean.getSETSEQ());
                 m8409.setFUNCDE("1");
-                List<SOFForm> formList = dataExchangeService.callSbsTxn("8409",m8409);
+                List<SOFForm> formList = dataExchangeService.callSbsTxn("8409", m8409);
+                m8409.setFUNCDE("1");
                 if (formList != null && !formList.isEmpty()) {
                     String formcode = formList.get(0).getFormHeader().getFormCode();
                     if (!"W001".equals(formcode)) {
