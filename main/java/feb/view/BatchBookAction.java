@@ -325,11 +325,12 @@ public class BatchBookAction implements Serializable {
                 }
             }
             MessageUtil.addInfo("完成确认笔数： " + cnt);
-            onBatchQry();
         } catch (Exception e) {
             logger.error("多笔删除失败", e);
             MessageUtil.addError("多笔删除异常.");
         }
+        onBatchQry();
+        flushTotalData();
         return null;
     }
 
