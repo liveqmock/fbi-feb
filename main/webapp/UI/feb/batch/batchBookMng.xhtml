@@ -214,6 +214,9 @@
         document.onkeydown = function TabReplace() {
             if (event.keyCode == 13) {
                 event.keyCode = 9;
+            } if (event.srcElement.id == 'btns') {
+                document.forms['btns']['btns:save'].focus();
+                document.forms['btns']['btn:save'].click();
             }
         }
     </script>
@@ -257,7 +260,7 @@
                                      onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
-                        <p:commandButton id="save" value="确定" ajax="false"
+                        <p:commandButton id="save" value="确定" ajax="false" onfocus="this.select()"
                                          action="#{batchBookAction.onCreateNewRecord}"
                                          style="width:66px; " update="pdt,show">
                         </p:commandButton>
@@ -296,7 +299,7 @@
                             actionListener="#{batchBookAction.onBalanceAct()}"
                             ajax="false" update="pdt,dtform"/>
                 <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push"
-                            onclick="vchsetdlg.show();"/>
+                            onclick="vchsetdlg.show(); document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin"
                             ajax="false" update="pdt,dtform" type="push"
                             actionListener="#{batchBookAction.onDeleteVchset()}"/>

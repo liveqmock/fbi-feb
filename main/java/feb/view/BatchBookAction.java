@@ -67,7 +67,7 @@ public class BatchBookAction implements Serializable {
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
         onBatchQry();  // 初始化查询
-        for (T898.Bean bean : allList) {
+       /* for (T898.Bean bean : allList) { //单笔修改
             if (bean.getSETSEQ().equals(setseq)) {
                 actnum = bean.getACTNUM();
                 prdcde = bean.getPRDCDE();
@@ -77,7 +77,7 @@ public class BatchBookAction implements Serializable {
                 erytyp = bean.getERYTYP();
                 opnda2 = bean.getVALDAT();
             }
-        }
+        }*/
         //initAddBat();
     }
 
@@ -324,7 +324,8 @@ public class BatchBookAction implements Serializable {
                     MessageUtil.addError("SBS系统响应超时。");
                 }
             }
-            MessageUtil.addInfo("完成确认笔数： " + cnt);
+            MessageUtil.addInfo("删除笔数： " + cnt);
+
         } catch (Exception e) {
             logger.error("多笔删除失败", e);
             MessageUtil.addError("多笔删除异常.");
