@@ -57,9 +57,9 @@ public class BatchBookAction implements Serializable {
     //private M8409 m8409 = new M8409();
     private List<T898.Bean> dataList = new ArrayList<>();
     private List<T898.Bean> allList = new ArrayList<>();
-    private float totalDebitAmt;    //½è·½
-    private float totalCreditAmt;   //´û·½
-    private float totalAmt;         //Ôþ²î
+    private double totalDebitAmt;    //½è·½
+    private double totalCreditAmt;   //´û·½
+    private double totalAmt;         //Ôþ²î
 
     @PostConstruct
     public void init() {
@@ -153,20 +153,19 @@ public class BatchBookAction implements Serializable {
 
     //¼ÆËãÔþ²î
     public void flushTotalData() {
-        float amt = 0f;
-        totalDebitAmt = 0f;
-        totalCreditAmt = 0f;
-        totalAmt = 0f;
+        double amt = 0.00;
+        totalDebitAmt = 0.00;
+        totalCreditAmt = 0.00;
+        totalAmt = 0.00;
         for (T898.Bean t898s : dataList) {
-            amt = Float.parseFloat(t898s.getTXNAMT());
+            amt = Double.parseDouble(t898s.getTXNAMT());
             if (amt > 0) {
-                totalDebitAmt = totalDebitAmt + amt;
-            }
-            if (amt < 0) {
-                totalCreditAmt = totalCreditAmt + (-amt);
+                totalCreditAmt += amt;
+            } else {
+                totalDebitAmt += (-amt);
             }
         }
-        totalAmt = totalCreditAmt - totalDebitAmt;
+        totalAmt = totalDebitAmt - totalCreditAmt;
     }
 
     //Ì×Æ½
@@ -383,24 +382,28 @@ public class BatchBookAction implements Serializable {
         this.m8402 = m8402;
     }
 
-    public float getTotalDebitAmt() {
+    public double getTotalDebitAmt() {
         return totalDebitAmt;
     }
 
-    public void setTotalDebitAmt(float totalDebitAmt) {
+    public void setTotalDebitAmt(double totalDebitAmt) {
         this.totalDebitAmt = totalDebitAmt;
     }
 
-    public float getTotalCreditAmt() {
+    public double getTotalCreditAmt() {
         return totalCreditAmt;
     }
 
-    public void setTotalCreditAmt(float totalCreditAmt) {
+    public void setTotalCreditAmt(double totalCreditAmt) {
         this.totalCreditAmt = totalCreditAmt;
     }
 
-    public float getTotalAmt() {
+    public double getTotalAmt() {
         return totalAmt;
+    }
+
+    public void setTotalAmt(double totalAmt) {
+        this.totalAmt = totalAmt;
     }
 
     public void setTotalAmt(float totalAmt) {
