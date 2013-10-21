@@ -4,7 +4,6 @@ import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T121;
 import gateway.sbs.txn.model.form.T007;
-import gateway.sbs.txn.model.form.Th804;
 //import gateway.sbs.txn.model.form.T861;
 import gateway.sbs.txn.model.msg.Mh805;
 import gateway.sbs.txn.model.msg.Mh803;
@@ -38,7 +37,7 @@ public class ActidmAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ActidmAction.class);
 
     private String action;
-    private String vchtyp ="";
+    private String vchtyp;
 
     private String irtdate;
 
@@ -47,7 +46,6 @@ public class ActidmAction implements Serializable {
     private List<T121.Bean> dataList = new ArrayList<>();
     private T121 irt = new T121();
     private T007 idm = new T007();
-    private Th804 idmer = new Th804();
 
 
     private boolean updateable = false;
@@ -63,12 +61,13 @@ public class ActidmAction implements Serializable {
         vchtyp = params.get("vchtyp");
         action = params.get("action");
         if (!StringUtils.isEmpty(vchtyp)) {
-            Mh805 mh805 = new Mh805();
-            SOFForm form = dataExchangeService.callSbsTxn("h805", mh805).get(0);
+            Mh803 mh803 = new Mh803(vchtyp);
+            SOFForm form = dataExchangeService.callSbsTxn("h803", mh803).get(0);
             if (!"T007".equals(form.getFormHeader().getFormCode())) {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                idm = (T007) form.getFormBody();
             } else {
-                irt = (T121) form.getFormBody();
+                idm = (T007) form.getFormBody();
 //                irt.getBeanList().addAll(DdataList);
             }
         } else {
@@ -90,32 +89,29 @@ public class ActidmAction implements Serializable {
     private void initAddirt() {
         addirt = new Mh801();
     }
-public String onAllQuery() {
-    try {
-        double amt = 0;
-        Mh803 mh803 = new Mh803(vchtyp);
-        List<SOFForm> formList = dataExchangeService.callSbsTxn("h803", mh803);
-        if (formList != null && !formList.isEmpty()) {
-            dataList = new ArrayList<>();
-            for (SOFForm form : formList) {
-                if ("T007".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                    idm = (T007) form.getFormBody();
-//                    amt = Float.parseFloat(idm.getVCHAMT());
-
-                }
-                else {
-                    logger.info(form.getFormHeader().getFormCode());
-                    // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+    public String onAllQuery() {
+        try {
+            double amt = 0;
+            Mh803 mh803 = new Mh803(vchtyp);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("h803", mh803);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if ("T007".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        idm = (T007) form.getFormBody();
+                    }
+                    else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
                 }
             }
-        }
-
-        if (idm.getSCTMAK() == null|| idm.getSCTMAK().isEmpty() ) {
-            MessageUtil.addWarn("没有查询到数据。");
-        }
-    } catch (Exception e) {
-        logger.error("查询失败", e);
-        MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            if (idm.getSCTMAK() == null|| idm.getSCTMAK().isEmpty() ) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
     }
     return null;
 }
@@ -167,13 +163,14 @@ public String onAllQuery() {
     }
     private String txnh804ForUD() throws IllegalAccessException {
         Mh804 mh804 = new Mh804();
-//        BeanHelper.copyFields(idmer, mh804);
+        BeanHelper.copyFields(idm, mh804);
+        mh804.setVCHTYP(vchtyp);
         SOFForm form = dataExchangeService.callSbsTxn("h804", mh804).get(0);
         return form.getFormHeader().getFormCode();
     }
     private String txnh802ForUD() throws IllegalAccessException {
 
-        Mh802 mh802 = new Mh802();
+        Mh802 mh802 = new Mh802(vchtyp);
         SOFForm form = dataExchangeService.callSbsTxn("h802", mh802).get(0);
         return form.getFormHeader().getFormCode();
     }
@@ -207,8 +204,8 @@ public String onAllQuery() {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
-            logger.error("利率增加失败", e);
-            MessageUtil.addError("利率增加失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("增加失败", e);
+            MessageUtil.addError("增加失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -329,6 +326,7 @@ public String onAllQuery() {
     public void setIdm(T007 idm) {
         this.idm = idm;
     }
+
 
 /*public List<T861.Bean> getDdataList() {
         return DdataList;
