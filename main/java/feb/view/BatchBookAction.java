@@ -19,7 +19,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +42,13 @@ public class BatchBookAction implements Serializable {
     private String tlrnum;//柜员号
     private String totnum;//总笔数
 
-    private String actnum;         // 账号
-    private String prdcde;          //产品码
-    private String txnamt;          //金额
-    private String rvslbl;          //冲正标志
-    private String opnda2;          //交易日期
-    private String erytyp;          //传票输入方式
-    private String erydat;           //记账日期
+    //    private String actnum;       // 账号
+//    private String prdcde;          //产品码
+//    private String txnamt;          //金额
+//    private String rvslbl;          //冲正标志
+//    private String opnda2;          //交易日期
+//    private String erytyp;          //传票输入方式
+//    private String erydat;           //记账日期
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
     private T898.Bean[] selectedRecords;
@@ -67,18 +66,6 @@ public class BatchBookAction implements Serializable {
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
         onBatchQry();  // 初始化查询
-       /* for (T898.Bean bean : allList) { //单笔修改
-            if (bean.getSETSEQ().equals(setseq)) {
-                actnum = bean.getACTNUM();
-                prdcde = bean.getPRDCDE();
-                txnamt = bean.getTXNAMT();
-                rvslbl = bean.getRVSLBL();
-                erydat = bean.getERYDAT();
-                erytyp = bean.getERYTYP();
-                opnda2 = bean.getVALDAT();
-            }
-        }*/
-        //initAddBat();
     }
 
     //录入初始化
@@ -104,9 +91,11 @@ public class BatchBookAction implements Serializable {
                     if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t898 = (T898) form.getFormBody();
                         allList.addAll(t898.getBeanList());
-                        for (T898.Bean bean : allList) {
-                            if (!bean.getRECSTS().equals("I")) {
-                                dataList.add(bean);
+                        if (!allList.get(0).getSETSEQ().equals("")) {
+                            for (T898.Bean bean : allList) {
+                                if (!bean.getRECSTS().equals("I")) {
+                                    dataList.add(bean);
+                                }
                             }
                         }
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
@@ -115,16 +104,16 @@ public class BatchBookAction implements Serializable {
                         flushTotalData();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
             if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
+                //MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
-            //MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -153,10 +142,10 @@ public class BatchBookAction implements Serializable {
 
     //计算轧差
     public void flushTotalData() {
-        double amt = 0.00;
-        totalDebitAmt = 0.00;
-        totalCreditAmt = 0.00;
-        totalAmt = 0.00;
+        double amt = 0.0;
+        totalDebitAmt = 0.0;
+        totalCreditAmt = 0.0;
+        totalAmt = 0.0;
         for (T898.Bean t898s : dataList) {
             amt = Double.parseDouble(t898s.getTXNAMT());
             if (amt > 0) {
@@ -165,7 +154,7 @@ public class BatchBookAction implements Serializable {
                 totalDebitAmt += (-amt);
             }
         }
-        totalAmt = totalDebitAmt - totalCreditAmt;
+        totalAmt = totalCreditAmt - totalDebitAmt;
     }
 
     //套平
@@ -177,10 +166,8 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-
                 MessageUtil.addInfo("传票套平成功：");
             } else {
-
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
@@ -200,7 +187,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("套票 删除成功：");
+                MessageUtil.addInfo("套票删除成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
@@ -220,26 +207,6 @@ public class BatchBookAction implements Serializable {
         return "batchBookMng";
     }
 
-    //单笔详细修改
-    public String onEditRecord() {
-        try {
-
-            m8401.setVCHSET(vchset);
-            m8401.setSETSEQ(setseq);
-            SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
-            String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
-                onDeleteRecord();
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
-        } catch (Exception e) {
-            logger.error("8401传票修改失败", e);
-            MessageUtil.addError("8401传票修改失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-
     //套号修改
     public String onModifyVchset() {
         try {
@@ -247,27 +214,35 @@ public class BatchBookAction implements Serializable {
             List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
+                allList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t898 = (T898) form.getFormBody();
-                        dataList.addAll(t898.getBeanList());
+                        allList.addAll(t898.getBeanList());
+                        for (T898.Bean bean : allList) {
+                            if (!bean.getRECSTS().equals("I")) {
+                                dataList.add(bean);
+                            }
+                        }
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
-                        totnum = t898.getFormBodyHeader().getTOTNUM();
+                        //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
+                        flushTotalData();
                     } else {
+//                        if ("M319".equals(form.getFormHeader().getFormCode())) {
+//                            onBatchQry();
+//                        }
                         logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-
             if (dataList == null || dataList.isEmpty()) {
                 MessageUtil.addWarn("没有查询到数据。");
             }
-
         } catch (Exception e) {
             logger.error("查询失败", e);
-            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            //MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -442,62 +417,6 @@ public class BatchBookAction implements Serializable {
 
     public void setTotnum(String totnum) {
         this.totnum = totnum;
-    }
-
-    public String getPrdcde() {
-        return prdcde;
-    }
-
-    public void setPrdcde(String prdcde) {
-        this.prdcde = prdcde;
-    }
-
-    public String getTxnamt() {
-        return txnamt;
-    }
-
-    public void setTxnamt(String txnamt) {
-        this.txnamt = txnamt;
-    }
-
-    public String getRvslbl() {
-        return rvslbl;
-    }
-
-    public void setRvslbl(String rvslbl) {
-        this.rvslbl = rvslbl;
-    }
-
-    public String getActnum() {
-        return actnum;
-    }
-
-    public void setActnum(String actnum) {
-        this.actnum = actnum;
-    }
-
-    public String getOpnda2() {
-        return opnda2;
-    }
-
-    public void setOpnda2(String opnda2) {
-        this.opnda2 = opnda2;
-    }
-
-    public String getErytyp() {
-        return erytyp;
-    }
-
-    public void setErytyp(String erytyp) {
-        this.erytyp = erytyp;
-    }
-
-    public String getErydat() {
-        return erydat;
-    }
-
-    public void setErydat(String erydat) {
-        this.erydat = erydat;
     }
 }
 

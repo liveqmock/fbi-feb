@@ -223,9 +223,8 @@
 </ui:define>
 <ui:define name="content">
     <div class="entry" id="top">
-
-        <p:messages id="msgs" showDetail="true"/>
-        <h:form id="inputform" onsubmit="return checkDoubleSubmit(this);"><!---->
+        <p:messages id="msgs" showDetail="true" showSummary="true"/>
+        <h:form id="inputform" onsubmit="return checkDoubleSubmit(this);">
             <p:focus for="actnum"/>
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
@@ -269,13 +268,13 @@
                 <p:separator/>
                 <h:panelGrid id="show" columns="8" columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
                     input-col-s,input-col-xl,input-col-l,input-col-xl">
-                    <h:outputLabel value="借方合计 :"/>
-                    <h:inputText id="debitamt" value="#{batchBookAction.totalDebitAmt}" disabled="true"
+                    <h:outputLabel value="贷方合计 :"/>
+                    <h:inputText id="creditamt" value="#{batchBookAction.totalCreditAmt}" disabled="true"
                                  style="text-align:right">
                         <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
                     </h:inputText>
-                    <h:outputLabel value="贷方合计 :"/>
-                    <h:inputText id="creditamt" value="#{batchBookAction.totalCreditAmt}" disabled="true"
+                    <h:outputLabel value="借方合计 :"/>
+                    <h:inputText id="debitamt" value="#{batchBookAction.totalDebitAmt}" disabled="true"
                                  style="text-align:right">
                         <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
                     </h:inputText>
@@ -292,16 +291,16 @@
                 </h:panelGrid>
             </p:panel>
         </h:form>
-        <br/>
-        <h:form id="dtform">
+        <h:form id="dtform" style="margin-top: 10px">
             <p:menubar>
                 <p:menuitem value="【套平】" icon="ui-icon ui-icon-gear" type="push"
                             actionListener="#{batchBookAction.onBalanceAct()}"
-                            ajax="false" update="pdt,dtform"/>
-                <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push"
-                            onclick="vchsetdlg.show(); document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
-                <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin"
-                            ajax="false" update="pdt,dtform" type="push"
+                            ajax="false" update="pdt,dtform,msgs"  process="@form"/>
+                <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push" onclick="vchsetdlg.show();
+                             document.forms['vchsetform']['vchsetform:vchset'].focus();"
+                             ajax="false" update="pdt,show,msgs" process="@form"/>
+                <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin" type="push"
+                            ajax="false" update="pdt,dtform,msgs"  process="@form"
                             actionListener="#{batchBookAction.onDeleteVchset()}"/>
                 <p:menuitem value="【多笔删除】" icon="ui-icon ui-icon-close"
                             action="#{batchBookAction.onMultiConfirm}" type="push"
@@ -333,80 +332,50 @@
                 <p:column style="display:none;" headerText="pkid">
                     <h:outputText value="#{record.SETSEQ}"/>
                 </p:column>
-                <p:column selectionMode="multiple" style=" width:30px;text-align:center;"/>
+                <p:column selectionMode="multiple" style=" text-align:center;"/>
 
-                <p:column headerText="序号" style="width:50px;text-align:center" sortBy="#{record.SETSEQ}">
+                <p:column headerText="序号" style="text-align:center" sortBy="#{record.SETSEQ}">
                     <h:outputText id="setseq" value="#{record.SETSEQ}"/>
                 </p:column>
 
-                <p:column headerText="帐号" style="width:150px;text-align:center">
+                <p:column headerText="帐号" style="text-align:center">
                     <h:outputText value="#{record.ACTNUM}"/>
                 </p:column>
 
-                <p:column headerText="金额" style="width:100px;text-align:center" sortBy="#{record.TXNAMT}">
+                <p:column headerText="金额" style="text-align:center" sortBy="#{record.TXNAMT}">
                     <h:outputText value="#{record.TXNAMT}" style="float: right ">
                         <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="冲正标志" style="width:80px;text-align:center">
+                <p:column headerText="冲正标志" style="text-align:center">
                     <h:outputText value="#{record.RVSLBL}"/>
                 </p:column>
 
-                <p:column headerText="凭证号码" style="width:60px;text-align:center">
+                <p:column headerText="凭证号码" style="text-align:center">
                     <h:outputText value="#{record.ERYTIM}"/>
                 </p:column>
-                <p:column headerText="冲补/起息日" style="width:60px;text-align:center">
+                <p:column headerText="冲补/起息日" style="text-align:center">
 
                     <h:outputText value="#{record.VALDAT}">
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="附件" style="width:50px;text-align:center">
+                <p:column headerText="附件" style="text-align:center">
                     <h:outputText value="#{record.VCHATT}"/>
                 </p:column>
 
-                <p:column headerText="操作" style="width:60px;text-align:center">
-                    <!-- <h:commandLink immediate="true" value="修改" style="color: blue"
-                                   action="#{batchBookAction.onClick()}">
-                        <f:param value="#{batchBookAction.vchset}" name="vchset"/>
-                        <f:param value="#{record.SETSEQ}" name="setseq"/>
-                        <f:param value="#{record}" name="record"/>
-                        &lt;!&ndash;<f:setPropertyActionListener value="#{record}" target="#{batchBookAction.selectedRecord}"/>&ndash;&gt;
-                    </h:commandLink>
-                    <p:spacer width="10"/>-->
-                    <h:commandLink immediate="true" value="删除" style="color: blue"
+                <p:column headerText="操作" style="text-align:center">
+                    <h:commandLink immediate="true" value="删除" style="color: blue" ajax="false"
                                    action="#{batchBookAction.onDeleteRecord()}">
                         <f:param value="#{batchBookAction.vchset}" name="vchset"/>
                         <f:param value="#{record.SETSEQ}" name="setseq"/>
-
                     </h:commandLink>
                 </p:column>
             </p:dataTable>
         </h:form>
         <br/>
     </div>
-
-    <!--<p:dialog id="authdialog" header="主管授权" widgetVar="authdlg" modal="true">
-        <h:form id="authform">
-            <p:growl id="authgrowl" globalOnly="true" showDetail="true"/>
-            <h:inputHidden value="#{authLoginBean.workuser}" id="workuser"/>
-            <h:panelGrid columns="2" cellpadding="5">
-                <h:outputLabel for="username" value="主管柜员号: *"/>
-                <h:inputText value="#{authLoginBean.username}"
-                             id="username" required="true" label="username" onkeydown="KeyDown()"/>
-                <h:outputLabel for="password" value="密码: * "/>
-                <h:inputSecret value="#{authLoginBean.password}"
-                               id="password" required="true" label="password" onkeydown="KeyDown()"/>
-                <f:facet name="footer">
-                    <p:commandButton id="authlogin" value="确定" update="authgrowl"
-                                     actionListener="#{authLoginBean.authLogin}"
-                                     oncomplete="handleLoginRequest(xhr, status, args)"/>
-                    <p:commandButton value="取消" onclick="authdlg.hide()" type="button"/>
-                </f:facet>
-            </h:panelGrid>
-        </h:form>
-    </p:dialog>-->
     <div>
         <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
                        value="冲正标志：11-现金， 12-转账， 22-冲正， 52补账"/>
