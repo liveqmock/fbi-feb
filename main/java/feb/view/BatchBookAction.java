@@ -41,19 +41,10 @@ public class BatchBookAction implements Serializable {
     private String setseq;//套内序号
     private String tlrnum;//柜员号
     private String totnum;//总笔数
-
-    //    private String actnum;       // 账号
-//    private String prdcde;          //产品码
-//    private String txnamt;          //金额
-//    private String rvslbl;          //冲正标志
-//    private String opnda2;          //交易日期
-//    private String erytyp;          //传票输入方式
-//    private String erydat;           //记账日期
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
     private T898.Bean[] selectedRecords;
     private M8402 m8402 = new M8402();
-    //private M8409 m8409 = new M8409();
     private List<T898.Bean> dataList = new ArrayList<>();
     private List<T898.Bean> allList = new ArrayList<>();
     private double totalDebitAmt;    //借方
@@ -66,11 +57,11 @@ public class BatchBookAction implements Serializable {
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
         onBatchQry();  // 初始化查询
+        //initAddBat();
     }
 
     //录入初始化
     public void initAddBat() {
-        M8401 m8401 = new M8401();
         m8401.setTLRNUM(tlrnum);
         m8401.setVCHSET(vchset);
         m8401.setPRDCDE("VCH1");
@@ -208,6 +199,14 @@ public class BatchBookAction implements Serializable {
     }
 
     //套号修改
+    public String onBoolVchset(){
+        if (this.dataList.size()>0){
+            MessageUtil.addError("存在未套平传票...");
+        }else {
+            onModifyVchset();
+        }
+        return  null;
+    }
     public String onModifyVchset() {
         try {
             M85a2 m85a2 = new M85a2(vchset);
@@ -232,6 +231,7 @@ public class BatchBookAction implements Serializable {
 //                        if ("M319".equals(form.getFormHeader().getFormCode())) {
 //                            onBatchQry();
 //                        }
+                        MessageUtil.addWarn(".....！");
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
@@ -309,6 +309,19 @@ public class BatchBookAction implements Serializable {
         flushTotalData();
         return null;
     }
+    /*
+      ----------------------得到当前用户名（柜员号）---------------------------------
+      public static OperatorManager getOperatorManager() {
+            ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) extContext.getSession(true);
+            OperatorManager om = (OperatorManager) session.getAttribute(SystemAttributeNames.USER_INFO_NAME);
+            if (om == null) {
+                throw new RuntimeException("用户未登录！");
+            }
+            System.out.println("===============================>"+ om.getOperatorName());
+            return om;
+        }
+    */
 
     //=================================================================================
     public DataExchangeService getDataExchangeService() {

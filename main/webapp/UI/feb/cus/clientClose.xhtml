@@ -61,11 +61,11 @@
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="查询客户信息"
+                            <p:commandButton style="width:110px;" value="客户信息查询"
                                              action="#{clientAction.onQryUpdateCus()}" ajax="true"
                                              update="msgs,panel,dataPanel">
                             </p:commandButton>
-                            <p:commandButton style="width:110px;" value="确认关户"
+                            <p:commandButton style="width:110px;" value="确认关闭"
                                              disabled="#{!clientAction.closeable}"
                                              action="#{clientAction.onClose}" ajax="true"
                                              update="msgs,panel,dataPanel">

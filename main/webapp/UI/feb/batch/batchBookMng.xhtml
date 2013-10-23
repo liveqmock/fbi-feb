@@ -239,7 +239,6 @@
                         <h:inputText autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()">
                         </h:inputText>
-
                         <h:outputLabel value="交易金额* :" for="txnamt"/>
                         <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()">
@@ -258,8 +257,9 @@
                                      onfocus="this.select()" onkeydown="KeyDown()"
                                      onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                     </h:panelGrid>
-                    <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
+                    <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"  width="10%" >
                         <p:commandButton id="save" value="确定" ajax="false" onfocus="this.select()"
+                                         onkeydown="KeyDown()"
                                          action="#{batchBookAction.onCreateNewRecord}"
                                          style="width:66px; " update="pdt,show">
                         </p:commandButton>
@@ -298,7 +298,7 @@
                             ajax="false" update="pdt,dtform,msgs"  process="@form"/>
                 <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push" onclick="vchsetdlg.show();
                              document.forms['vchsetform']['vchsetform:vchset'].focus();"
-                             ajax="false" update="pdt,show,msgs" process="@form"/>
+                             /><!--ajax="false" update="pdt,dtform,msgs" process="@form"-->
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin" type="push"
                             ajax="false" update="pdt,dtform,msgs"  process="@form"
                             actionListener="#{batchBookAction.onDeleteVchset()}"/>
@@ -315,7 +315,7 @@
                     </h:inputText>
                     <f:facet name="footer">
                         <p:commandButton id="modifyvchset" value="确定" update="pdt" ajax="true"
-                                         actionListener="#{batchBookAction.onModifyVchset}"
+                                         actionListener="#{batchBookAction.onBoolVchset()}"
                                          oncomplete="vchsetdlg.hide();"/>
                         <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
                     </f:facet>
@@ -329,9 +329,9 @@
                          rowKey="#{record.SETSEQ}" rowsPerPageTemplate="100,50,15,10,5"
                          emptyMessage="传票记录为空..." style="margin-top:10px">
 
-                <p:column style="display:none;" headerText="pkid">
+                <!--<p:column style="display:none;" headerText="pkid">
                     <h:outputText value="#{record.SETSEQ}"/>
-                </p:column>
+                </p:column>-->
                 <p:column selectionMode="multiple" style=" text-align:center;"/>
 
                 <p:column headerText="序号" style="text-align:center" sortBy="#{record.SETSEQ}">
