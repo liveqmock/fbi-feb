@@ -36,7 +36,10 @@
         <script language="JavaScript" type="text/JavaScript">
             document.onkeydown = function TabReplace() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
                 }
             }
         </script>
