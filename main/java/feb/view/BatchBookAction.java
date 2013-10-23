@@ -228,17 +228,13 @@ public class BatchBookAction implements Serializable {
                         //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
                     } else {
-//                        if ("M319".equals(form.getFormHeader().getFormCode())) {
-//                            onBatchQry();
-//                        }
-                        MessageUtil.addWarn(".....！");
+                       if ("M319".equals(form.getFormHeader().getFormCode())) {
+                            onBatchQry();
+                        }
                         logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-            }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
             logger.error("查询失败", e);

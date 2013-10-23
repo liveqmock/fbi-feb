@@ -223,8 +223,8 @@
 </ui:define>
 <ui:define name="content">
     <div class="entry" id="top">
-        <p:messages id="msgs" showDetail="true" showSummary="true"/>
         <h:form id="inputform" onsubmit="return checkDoubleSubmit(this);">
+            <p:messages id="msgs" showDetail="true" showSummary="true"/>
             <p:focus for="actnum"/>
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
@@ -297,14 +297,13 @@
                             actionListener="#{batchBookAction.onBalanceAct()}"
                             ajax="false" update="pdt,dtform,msgs"  process="@form"/>
                 <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push" onclick="vchsetdlg.show();
-                             document.forms['vchsetform']['vchsetform:vchset'].focus();"
-                             /><!--ajax="false" update="pdt,dtform,msgs" process="@form"-->
+                             document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin" type="push"
                             ajax="false" update="pdt,dtform,msgs"  process="@form"
                             actionListener="#{batchBookAction.onDeleteVchset()}"/>
                 <p:menuitem value="【多笔删除】" icon="ui-icon ui-icon-close"
                             action="#{batchBookAction.onMultiConfirm}" type="push"
-                            ajax="true" update="pdt,dtform"/>
+                            ajax="false" />
             </p:menubar>
             <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
                 <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
@@ -314,7 +313,7 @@
                                  id="vchset" required="true" label="vchset" onkeydown="KeyDown()">
                     </h:inputText>
                     <f:facet name="footer">
-                        <p:commandButton id="modifyvchset" value="确定" update="pdt" ajax="true"
+                        <p:commandButton id="modifyvchset" value="确定" update="pdt" ajax="false"
                                          actionListener="#{batchBookAction.onBoolVchset()}"
                                          oncomplete="vchsetdlg.hide();"/>
                         <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
