@@ -4,7 +4,6 @@ import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T121;
 import gateway.sbs.txn.model.form.T007;
-//import gateway.sbs.txn.model.form.T861;
 import gateway.sbs.txn.model.msg.Mh805;
 import gateway.sbs.txn.model.msg.Mh803;
 import gateway.sbs.txn.model.msg.Mh804;
@@ -101,6 +100,10 @@ public class ActidmAction implements Serializable {
                         idm = (T007) form.getFormBody();
                     }
                     else {
+                        idm.setOUTITM("");
+                        idm.setSCTMAK("");
+                        idm.setVCHAMT(null);
+                        idm.setVCHNAM("");
                         logger.info(form.getFormHeader().getFormCode());
                         // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
@@ -110,7 +113,7 @@ public class ActidmAction implements Serializable {
                 MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
-            logger.error("查询失败", e);
+//            logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
     }
     return null;
@@ -243,18 +246,6 @@ public class ActidmAction implements Serializable {
     public void setAction(String action) {
         this.action = action;
     }
-
-//    public List<T813.Bean> getDataList() {
-//        return dataList;
-//    }
-//
-//    public void setDataList(List<T813.Bean> dataList) {
-//        this.dataList = dataList;
-//    }
-
-
-
-
     public T121 getIrt() {
         return irt;
     }

@@ -44,7 +44,7 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <!--<p:focus for="vchtyp"/>-->
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
@@ -60,8 +60,6 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
 
                                      >
-                            <!--<h:outputLabel value="凭证种类:"/>-->
-                            <!--<p:inputText id="vchtyp" value="#{actidmAction.idm.VCHTYP}"/>-->
                             <h:outputLabel value="表外核算码:"/>
                             <p:inputText value="#{actidmAction.idm.OUTITM}" />
                             <h:outputLabel value="凭证名称:"/>

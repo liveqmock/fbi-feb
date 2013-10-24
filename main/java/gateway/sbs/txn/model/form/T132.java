@@ -3,22 +3,22 @@ package gateway.sbs.txn.model.form;
 import gateway.sbs.core.domain.SOFFormBody;
 
 /**
- * T132-定期转帐开户-查询
+ *
  */
 public class T132 extends SOFFormBody {
 
-    {
-        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1};
-        fieldLengths = new int[]{7, 20, 1, 18, 30, 15, 3};
-    }
+        {
+            fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1};
+            fieldLengths = new int[]{7, 20, 1, 18, 30, 15, 3};
+        }
 
-    private String CUSIDT;          // 客户号
-    private String ACTNAM;          // 账户名称
-    private String PASTYP;          // 证件类别
-    private String PASSNO;          // 证件号码
-    private String CORADD;          // 地址
-    private String TELNUM;          // 电话
-    private String CURCDE;          // 币别码
+        private String CUSIDT;       // 客户号
+        private String ACTNAM;       // 账户名称
+        private String PASTYP;       // 证件类别
+        private String PASSNO;       // 证件号码
+        private String CORADD;       // 地址
+        private String TELNUM;       //   电话
+        private String CURCDE;       //   币别码
 
     public String getCUSIDT() {
         return CUSIDT;
@@ -75,4 +75,9 @@ public class T132 extends SOFFormBody {
     public void setCURCDE(String CURCDE) {
         this.CURCDE = CURCDE;
     }
+
+
+    //    public int offset = 0;
+
+
 }

@@ -30,9 +30,9 @@ public class Txnh820Action extends AbstractTxnAction {
         logger.info("Æ¾Ö¤£º" + mh820.getVCHTYP());
         List<String> paramList = new ArrayList<>();
         paramList.add(mh820.getVCHTYP());
+        paramList.add(mh820.getIOFLAG());
         paramList.add(mh820.getBEGNUM());
         paramList.add(mh820.getENDNUM());
-        paramList.add(mh820.getIOFLAG());
         paramList.add(mh820.getVCHCNT());
 
 

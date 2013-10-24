@@ -31,8 +31,8 @@ public class Txnh801Action extends AbstractTxnAction {
         List<String> paramList = new ArrayList<>();
         paramList.add(mh801.getVCHTYP());
         paramList.add(mh801.getOUTITM());
-        paramList.add(mh801.getSCTMAK());
         paramList.add(mh801.getVCHNAM());
+        paramList.add(mh801.getSCTMAK());
         paramList.add(mh801.getVCHAMT());
 
 

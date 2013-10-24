@@ -7,11 +7,11 @@ public class Mh830 extends MTia {
 
 
 
-    private String VCHTYP;            //凭证种类
-    private String ALLONE;            //是否单种
-    private String ORGIDT = "010";     //机构号
-    private String DEPNUM = "60";     //部门号
-    private String TXNTLR;            //柜员号
+    private String VCHTYP;
+    private String ALLONE;
+    private String ORGIDT = "010";
+    private String DEPNUM = "60";
+    private String TXNTLR;
 
 
     public Mh830(){

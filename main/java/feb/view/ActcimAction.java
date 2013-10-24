@@ -39,18 +39,24 @@ public class ActcimAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    private T208 cim = new T208();
+//    private T208 cim = new T208();
     private T009 cimqry = new T009();
     private Mh830 addcim = new Mh830();
+    private Mh820 cim = new Mh820();
     private String vchtyp;
     private String allone;
     private String orgidt;
     private String depnum;
     private String txntlr;
+
+    private String ioflag;
+    private String begnum;
+    private String endnum;
+    private String vchcnt;
     private List<Mh830> addcimList = new ArrayList<>();
     private List<T302.Bean> dataList = new ArrayList<>();
-    private List<T009.Bean> dataListOne = new ArrayList<>();
-    private List<?> data = new ArrayList<>();
+//    private List<T009.Bean> dataListOne = new ArrayList<>();
+//    private List<?> data = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -64,16 +70,15 @@ public class ActcimAction implements Serializable {
         try {
             if (allone.contentEquals("1")){
             Mh830 mh830 = new Mh830(vchtyp,allone,orgidt,depnum,txntlr);
-
             List<SOFForm> formList = dataExchangeService.callSbsTxn("h830", mh830);
             if (formList != null && !formList.isEmpty()) {
-                dataListOne = new ArrayList<>();
+//                dataListOne = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T009".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         cimqry = (T009) form.getFormBody();
-                        T009 t009 = (T009) form.getFormBody();
-                        dataListOne.addAll(t009.getBeanList());
-                        data = new ArrayList<>(dataListOne);
+//                        T009 t009 = (T009) form.getFormBody();
+//                        dataListOne.addAll(t009.getBeanList());
+//                        data = new ArrayList<>(dataListOne);
 
                     }
                     else {
@@ -109,8 +114,10 @@ public class ActcimAction implements Serializable {
                 for (SOFForm form : formList) {
                     if ("T302".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         T302 t302 = (T302) form.getFormBody();
+
                         dataList.addAll(t302.getBeanList());
-                        data = new ArrayList<>(dataList);
+
+//                        data = new ArrayList<>(dataList);
                     }
                     else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -146,8 +153,13 @@ public class ActcimAction implements Serializable {
 
     // 利率修改和删除
     private String txnh820ForUD() throws IllegalAccessException {
-//        M9813 m9813 = new M9813(irt.getGLCODE(), irt.getGLCNAM(), irt.getEFFDAT(), null);
+
         Mh820 mh820 = new Mh820();
+
+        int a = Integer.parseInt(cim.getBEGNUM());
+        int b = Integer.parseInt(cim.getENDNUM());
+        int c = b - a + 1;
+        cim.setVCHCNT(Integer.toString(c));
         BeanHelper.copyFields(cim, mh820);
         SOFForm form = dataExchangeService.callSbsTxn("h820", mh820).get(0);
         return form.getFormHeader().getFormCode();
@@ -230,13 +242,13 @@ public class ActcimAction implements Serializable {
         this.depnum = depnum;
     }
 
-    public T208 getCim() {
-        return cim;
-    }
-
-    public void setCim(T208 cim) {
-        this.cim = cim;
-    }
+//    public T208 getCim() {
+//        return cim;
+//    }
+//
+//    public void setCim(T208 cim) {
+//        this.cim = cim;
+//    }
 
     public List<Mh830> getAddcimList() {
         return addcimList;
@@ -254,19 +266,44 @@ public class ActcimAction implements Serializable {
         this.dataList = dataList;
     }
 
-    public List<T009.Bean> getDataListOne() {
-        return dataListOne;
+    public String getIoflag() {
+        return ioflag;
     }
 
-    public void setDataListOne(List<T009.Bean> dataListOne) {
-        this.dataListOne = dataListOne;
+    public void setIoflag(String ioflag) {
+        this.ioflag = ioflag;
     }
 
-    public List<?> getData() {
-        return data;
+    public String getBegnum() {
+        return begnum;
     }
 
-    public void setData(List<?> data) {
-        this.data = data;
+    public void setBegnum(String begnum) {
+        this.begnum = begnum;
     }
+
+    public String getEndnum() {
+        return endnum;
+    }
+
+    public void setEndnum(String endnum) {
+        this.endnum = endnum;
+    }
+
+    public String getVchcnt() {
+        return vchcnt;
+    }
+
+    public void setVchcnt(String vchcnt) {
+        this.vchcnt = vchcnt;
+    }
+
+    public Mh820 getCim() {
+        return cim;
+    }
+
+    public void setCim(Mh820 cim) {
+        this.cim = cim;
+    }
+
 }

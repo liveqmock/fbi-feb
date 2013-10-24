@@ -44,7 +44,7 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:focus for="vchtyp"/>
                 <p:fieldset>
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
@@ -53,15 +53,19 @@
                             <h:outputLabel value="凭证种类:"/>
                             <p:inputText id="vchtyp" value="#{actidmAction.addirt.VCHTYP}" required="true"
                                          requiredMessage="必须输入凭证种类"/>
+
                             <h:outputLabel value="表外核算码:"/>
                             <p:inputText value="#{actidmAction.addirt.OUTITM}"  required="true"
                                          requiredMessage="必须输入表外核算码"/>
+
                             <h:outputLabel value="凭证名称:"/>
                             <p:inputText value="#{actidmAction.addirt.VCHNAM}" required="true"
                                          requiredMessage="必须输入凭证名称"/>
+
                             <h:outputLabel value="是否有价证券:"/>
                             <p:inputText value="#{actidmAction.addirt.SCTMAK}" required="true"
                                          requiredMessage="必须输入是否有价证券"/>
+
                             <h:outputLabel value="凭证金额:"/>
                             <p:inputText value="#{actidmAction.addirt.VCHAMT}" required="true"
                                          requiredMessage="必须输入凭证金额"/>

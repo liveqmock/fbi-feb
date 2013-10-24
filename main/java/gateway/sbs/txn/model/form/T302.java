@@ -24,7 +24,10 @@ public class T302 extends SOFFormBody {
         do {
             Bean bean = new Bean();
             bean.assembleFields(index, buffer);
-            beanList.add(bean);
+            if (!bean.VCHTYP.equals("")){
+                beanList.add(bean);
+            }
+
             index += beanLength;
         } while (index < buffer.length);
     }

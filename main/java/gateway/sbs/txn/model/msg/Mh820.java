@@ -14,7 +14,6 @@ public class Mh820 extends MTia {
     private String VCHCNT;
 
 
-
     public String getVCHTYP() {
         return VCHTYP;
     }

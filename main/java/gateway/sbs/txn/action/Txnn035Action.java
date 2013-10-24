@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * n035-对公支付撤销
+ * n035-对公支付确认
  */
 @Component
 public class Txnn035Action extends AbstractTxnAction {
@@ -28,7 +28,7 @@ public class Txnn035Action extends AbstractTxnAction {
     public List<SOFForm> process(String termid, String tellid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         Mn035 mn035 = (Mn035) tia;
-        logger.info("[n035-对公支付撤销] 索引：" + mn035.getFBTIDX());
+        logger.info("[n035-对公支付确认] 索引：" + mn035.getFBTIDX());
 
         List<String> paramList = new ArrayList<>();
         paramList.add(mn035.getFBTIDX());
@@ -36,7 +36,7 @@ public class Txnn035Action extends AbstractTxnAction {
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellid, "n035", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[n035-对公支付撤销] 索引：：" + mn035.getFBTIDX() + " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[n035-对公支付确认] 索引：：" + mn035.getFBTIDX() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

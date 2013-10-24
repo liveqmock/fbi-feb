@@ -1,43 +1,46 @@
 package gateway.sbs.txn.model.msg;
 
+import java.math.BigDecimal;
+
 /**
- * 定期转账开户查询
+ * 定期转帐开户-查询
  */
 public class Ma270 extends MTia {
 
-    private String SYSIDT = "8";       // 8-单位定期存款
-    private String CUSIDT = "";        // 客户号
-    private String DRAMD2 = "0";       // 取款方式
-    private String CUSPW2 = "";        // 客户密码
-    private String ACTNM2 = "";        // 户名
-    private String PASTYP = "";        // 证件种类
-    private String PASSNO = "";        // 证件号
-    private String CORADD = "3";       // 地址
-    private String TELNUM = "";        // 电话
-    private String TXNAMT = "";        // 交易金额
-    private String VALDAT = "";        // 起息日期
-    private String ACTTYP = "00";        // 账户类型
-    private String DPTTYP = "20";        // 存款种类
 
-    private String DPTPRD = "";        // 存期
-    private String DRICYC = "00";        // 取息周期
-    private String ATOFLG = "1";        // 自动转存标志
-    private String VCHTYP = "";        // 凭证种类
-    private String VCHNUM = "";        // 凭证号
-    private String ACTTY1 = "";        // 账号类型
 
-    private String IPTAC1 = "";        // 账号
-    private String DRAMD1 = "0";        // 取款方式
-    private String CUSPW1 = "";        // 客户密码
-    private String PAPTYP = "";        // 支票种类
-    private String PAPCDE = "";        // 支票号
-    private String PAPMAC = "";        // 支票密码
-    private String SGNDAT = "";        // 签发日
-    private String REMARK = "";        // 摘要
-    private String ACTTY2 = "";        // 转息账户号类型
-    private String IPTAC2 = "";        // 转息账户
-    private String VCHUSERATE = "";    // 协议利率
-    private String MAGFL1 = "";        // 账号输入方式
+    private String SYSIDT;            //系统标识
+    private String CUSIDT;           //客户号
+    private String DRAMD2;           //取款方式
+    private String CUSPW2;           //客户密码
+    private String ACTNM2;           //户名
+    private String PASTYP;           //证件种类
+    private String PASSNO;           //证件号
+    private String CORADD;           //地址
+    private String TELNUM;           //电话
+    private BigDecimal TXNAMT;           //交易金额
+    private String VALDAT;           //起息日期
+    private String ACTTYP;           //账户类型
+    private String DPTTYP;           //存款种类
+    private String DPTPRD;           //存期
+    private String DRICYC;           //取息周期
+    private String ATOFLG;           //自动转存标志
+    private String VCHTYP;           //凭证种类
+    private String VCHNUM;           //凭证号
+    private String ACTTY1;           //账号类型
+    private String IPTAC1;           //账号
+    private String DRAMD1;           //取款方式
+    private String CUSPW1;           //客户密码
+    private String PAPTYP;           //支票种类
+    private String PAPCDE;           //支票号
+    private String PAPMAC;           //支票密码
+    private String SGNDAT;           //签发日
+    private String REMARK;           //摘要
+    private String ACTTY2;           //转息账户号类型
+    private String IPTAC2;           //转息账户
+    private String VCHUSERATE;       //协议利率
+    private String MAGFL1;           //账号输入方式
+
 
     public String getSYSIDT() {
         return SYSIDT;
@@ -111,11 +114,11 @@ public class Ma270 extends MTia {
         this.TELNUM = TELNUM;
     }
 
-    public String getTXNAMT() {
+    public BigDecimal getTXNAMT() {
         return TXNAMT;
     }
 
-    public void setTXNAMT(String TXNAMT) {
+    public void setTXNAMT(BigDecimal TXNAMT) {
         this.TXNAMT = TXNAMT;
     }
 

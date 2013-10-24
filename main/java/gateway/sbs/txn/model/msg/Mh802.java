@@ -13,9 +13,6 @@ public class Mh802 extends MTia {
     public Mh802(String vchtyp){
         this.VCHTYP = vchtyp;
     }
-    public Mh802(){
-
-    }
 
     public String getVCHTYP() {
         return VCHTYP;

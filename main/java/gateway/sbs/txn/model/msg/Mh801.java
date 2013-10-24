@@ -8,7 +8,7 @@ public class Mh801 extends MTia {
 
 
 
-    private String VCHTYP = ""	;          // 凭证种类
+    private String VCHTYP = "";          // 凭证种类
     private String OUTITM	= "";          // 表外核算码
     private String VCHNAM	= "";          // 凭证名称
     private String SCTMAK	= "";          // 是否有价证券

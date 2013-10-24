@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:focus for="actnum"/>
+                <p:panel>
+                    <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*账号:"/>
+                            <p:inputText id="actnum" value="#{clientActAction.clientAct.ACTNUM}" required="true"
+                                         requiredMessage="必须输入14位账号" maxlength="14"/>
+                            <h:outputLabel value="*账户名称:"/>
+                            <p:inputText value="#{clientActAction.clientAct.ACTNAM}" maxlength="36" required="true"
+                                         requiredMessage="必须输入账户名称"/>
+                            <h:outputLabel value="贷方利率代码:"/>
+                            <p:inputText value="#{clientActAction.clientAct.CINRAT}" maxlength="3"/>
+                            <h:outputLabel value="对账单地址:"/>
+                            <p:inputText value="#{clientActAction.clientAct.STMADD}"/>
+                            <h:outputLabel value="邮编:"/>
+                            <p:inputText value="#{clientActAction.clientAct.STMZIP}"/>
+                            <h:outputLabel value="账页形式:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.STMFMT}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfStmfmtItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="出账份数:"/>
+                            <p:inputText value="#{clientActAction.clientAct.STMSHT}"/>
+                            <h:outputLabel value="对账单分发部门:"/>
+                            <p:inputText value="#{clientActAction.clientAct.STMDEP}"/>
+                            <h:outputLabel value="对账单出账周期:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.STMCYC}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfStmcycItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="出账日期:"/>
+                            <p:inputText value="#{clientActAction.clientAct.STMCDT}"/>
+                            <h:outputLabel value="账户类型:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="计息标志:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="计息周期:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.INTCYC}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="转息账户:"/>
+                            <p:inputText value="#{clientActAction.clientAct.INTTRA}"/>
+                            <h:outputLabel value="支票/存折标志:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.CQEFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfCqeflgItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="协定账户余额限度:"/>
+                            <p:inputText value="#{clientActAction.clientAct.BALLIM}"/>
+                            <h:outputLabel value="透支限额:"/>
+                            <p:inputText value="#{clientActAction.clientAct.OVELIM}"/>
+                            <h:outputLabel value="额度到期日:"/>
+                            <p:inputText value="#{clientActAction.clientAct.OVEEXP}"/>
+                            <h:outputLabel value="借方利率代码:"/>
+                            <p:inputText value="#{clientActAction.clientAct.DINRAT}"/>
+                            <h:outputLabel value="借方固定或浮动利率:"/>
+                            <p:inputText value="#{clientActAction.clientAct.DRATSF}"/>
+                            <h:outputLabel value="贷方固定或浮动利率:"/>
+                            <p:inputText value="#{clientActAction.clientAct.CRATSF}"/>
+                            <h:outputLabel value="分户账出账周期:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGCYC}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfLegcycItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="分户账出账日期:"/>
+                            <p:inputText value="#{clientActAction.clientAct.LEGCDT}"/>
+                            <h:outputLabel value="分户账账页形式:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGFMT}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfLegfmtItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="分户账地址:"/>
+                            <p:inputText value="#{clientActAction.clientAct.LEGADD}"/>
+                            <h:outputLabel value="分户账出账份数:"/>
+                            <p:inputText value="#{clientActAction.clientAct.LEGSHT}"/>
+                            <h:outputLabel value="分户账分发部门:"/>
+                            <p:inputText value="#{clientActAction.clientAct.LEGDEP}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
+                                             action="#{clientActAction.onCreate}" ajax="true"
+                                             update="msgs,btns,rtnActInfo">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="部门号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.ORGIDT}"/>
+                        <h:outputLabel value="机构号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.DEPNUM}"/>
+                        <h:outputLabel value="账号:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.ACTNUM}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.CUSNAM}"/>
+                        <h:outputLabel value="建立日期:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.OPNDAT}"/>
+                        <h:outputLabel value="操作员:"/>
+                        <h:outputText value="#{clientActAction.rtnActInfo.AMDTLR}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
