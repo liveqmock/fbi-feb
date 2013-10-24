@@ -149,16 +149,13 @@
 <ui:define name="content">
     <div class="entry" id="top">
         <h:form id="inputform" onsubmit="return checkDoubleSubmit(this);">
-            <p:messages id="msgs" showDetail="true" showSummary="true"/>
+            <p:messages id="msgs" showDetail="true"/>
             <p:focus for="actnum"/>
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
-                    <h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                    <h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;" columns="4" cellspacing="2"
                                  columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
-                        <!--<h:outputLabel value="传票序号* :" for="setseq"/>
-                        <p:inputMask autocomplete="off" id="setseq" value="#{batchBookAction.m8401.SETSEQ}"
-                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99">
-                        </p:inputMask>-->
+
                         <h:outputLabel value="帐号* :" for="actnum"/>
                         <p:inputMask autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
                                      required="true" requiredMessage="必须输入14位账号" onkeydown="KeyDown()"
@@ -173,9 +170,11 @@
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99">
                         </p:inputMask>
                         <h:outputLabel value="冲补/起息日* :" for="opnda2"/>
-                        <p:inputMask autocomplete="off" id="opnda2" value="#{batchBookAction.m8401.OPNDA2}"
-                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99999999">
-                        </p:inputMask>
+                        <h:inputText autocomplete="off" id="opnda2" value="#{batchBookAction.m8401.OPNDA2}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()"
+                                     requiredMessage="日期不能为空。"
+                                     onclick="WdatePicker({dateFmt:'yyyyMMdd'})" >
+                        </h:inputText>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                         <p:commandButton id="save" value="确定" ajax="ture" onfocus="this.select()"

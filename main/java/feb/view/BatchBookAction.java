@@ -18,7 +18,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +59,7 @@ public class BatchBookAction implements Serializable {
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
         onBatchQry();  // 初始化查询
-        //initAddBat();
+        initAddBat();
     }
 
     //录入初始化
@@ -66,8 +68,8 @@ public class BatchBookAction implements Serializable {
         m8401.setVCHSET(vchset);
         m8401.setPRDCDE("VCH1");
         m8401.setORGID3("010");
-        m8401.setFUNCDE("1");
-        m8401.setERYTYP("0");
+        m8401.setRVSLBL("12");
+        m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
     }
 
     //套票查询

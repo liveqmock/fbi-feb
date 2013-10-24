@@ -77,7 +77,7 @@
                             <h:outputLabel value="核算码种类:" required="true"/>
                             <p:inputText value="#{actapcAction.addapc.PDCTYP}"/>
 
-                            <h:outputLabel value="*对应总行核算码:"/>
+                            <h:outputLabel value="对应总行核算码*:"/>
                             <p:inputText required="true"
                                          requiredMessage="对应总行核算码应和核算码相同。"
                                          value="#{actapcAction.addapc.EBKCDE}"/>
@@ -100,7 +100,7 @@
 
                         </h:panelGrid>
 
-                    <h:panelGrid id="btns" columns="1" style="text-align:center;" width="10%">
+                    <h:panelGrid id="btns" columns="1" style="text-align:center;">
                         <p:commandButton style="width:80px;margin-left:10px;" value="添加"
                                          action="#{actapcAction.onAdd}" ajax="true"
                                          update="msgs,pg,btns,dt">
