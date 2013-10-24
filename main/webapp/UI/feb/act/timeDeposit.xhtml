@@ -1,0 +1,176 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:focus for="cusidt"/>
+                <p:panel>
+                    <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*客户号:"/>
+                            <p:inputText id="cusidt" value="#{timeDepositAction.ma271.CUSIDT}" required="true"
+                                         requiredMessage="必须输入7位客户号" maxlength="7">
+                                <p:ajax event="blur" update="msgs,dataPanel,showpanel"
+                                        listener="#{timeDepositAction.onQry}"/>
+                            </p:inputText>
+                            <h:outputLabel value="*取款方式:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.DRAMD2}" required="true"
+                                         requiredMessage="必须输入取款方式!"/>
+                            <h:outputLabel value="客户密码:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.CUSPW2}"/>
+
+                            <h:outputLabel value="*存款金额:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.TXNAMT}" required="true"
+                                         requiredMessage="必须输入存款金额!">
+                                <f:convertNumber pattern="###,###,##0.00"/>
+                            </p:inputText>
+                            <h:outputLabel value="*起息日期:"/>
+                            <p:inputText id="valdat" value="#{timeDepositAction.ma271.VALDAT}"
+                                         required="true" requiredMessage="必须输入起息日期！"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="*账户类型:"/>
+                            <p:inputText id="stmzip" value="#{timeDepositAction.ma271.ACTTYP}" required="true"
+                                         requiredMessage="必须输入账户类型！"/>
+                            <h:outputLabel value="*存款种类:"/>
+                            <p:inputText id="dpttyp" value="#{timeDepositAction.ma271.DPTTYP}" required="true"
+                                         requiredMessage="必须输入存款种类!"/>
+                            <p:columnGroup>
+                                <h:outputLabel style="color: red;" value="*"/>
+                                <h:outputLabel value="*存期:"/>
+                            </p:columnGroup>
+                            <p:inputText value="#{timeDepositAction.ma271.DPTPRD}" required="true"
+                                         requiredMessage="必须输入存期！"/>
+                            <h:outputLabel value="取息周期:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.DRICYC}"/>
+                            <h:outputLabel value="*自动转存标志:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.ATOFLG}" required="true"
+                                         requiredMessage="必须输入自动转存标志！"/>
+                            <h:outputLabel value="*凭证种类:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.VCHTYP}" required="true"
+                                         requiredMessage="必须输入凭证种类!"/>
+                            <h:outputLabel value="*凭证号:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.VCHNUM}" required="true"
+                                         requiredMessage="必须输入凭证号!"/>
+                            <h:outputLabel value="*账号类型:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.ACTTY1}" required="true"
+                                         requiredMessage="必须输入账号类型!"/>
+                            <h:outputLabel value="*账号:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.IPTAC1}" required="true"
+                                         requiredMessage="必须输入账号！"/>
+                            <h:outputLabel value="*取款方式:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.DRAMD1}" required="true"
+                                         requiredMessage="必须输入取款方式!">
+                            </p:inputText>
+                            <h:outputLabel value="客户密码:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.CUSPW1}"/>
+                            <h:outputLabel value="支票种类:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.PAPTYP}"/>
+                            <h:outputLabel value="支票号:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.PAPCDE}"/>
+                            <h:outputLabel value="支票密码:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.PAPMAC}"/>
+                            <h:outputLabel value="签发日:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.SGNDAT}"/>
+                            <h:outputLabel value="摘要:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
+                            <h:outputLabel value="转息账户类型:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.ACTTY2}"/>
+                            <h:outputLabel value="转息账户:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.IPTAC2}"/>
+                            <h:outputLabel value="协议利率:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.VCHUSERATE}"/>
+                            <h:outputLabel value="账号输入方式:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.MAGFL1}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
+                                             disabled="#{timeDepositAction.printable}"
+                                             action="#{timeDepositAction.onCreate}" ajax="true"
+                                             update="msgs,btns,showpanel">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证"
+                                             disabled="#{!timeDepositAction.printable}"
+                                             action="#{timeDepositAction.onPrint}" ajax="false"
+                                             update="msgs,btns,showpanel">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="showpanel" columns="6" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="客户号:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.CUSIDT}"/>
+                        <h:outputLabel value="户名:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.ACTNAM}"/>
+                        <h:outputLabel value="证件类型:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.PASTYP}"/>
+                        <h:outputLabel value="证件号码:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.PASSNO}"/>
+                        <h:outputLabel value="地址:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.CORADD}"/>
+                        <h:outputLabel value="电话:"/>
+                        <h:outputText value="#{timeDepositAction.qryT132.TELNUM}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

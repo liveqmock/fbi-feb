@@ -57,7 +57,7 @@
                         <h:panelGrid columns="2" cellspacing="5"
                                      columnClasses="col-label,col-input">
                             <h:outputLabel value="客户账号:" style="font-weight: bold"/>
-                            <p:inputText required="true" size="25"
+                            <p:inputText required="true" size="25" maxlength="14"
                                          requiredMessage="客户账号不能为空。"
                                          id="actnum"
                                          value="#{clientActAction.closeAct.ACTNUM}"/>

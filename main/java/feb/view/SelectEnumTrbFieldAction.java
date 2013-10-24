@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 账户相关的枚举类
+ * 定期存款开户相关的枚举类
  */
 @ManagedBean
 @ViewScoped
@@ -23,28 +23,22 @@ public class SelectEnumTrbFieldAction implements Serializable {
     @ManagedProperty(value = "#{skylineService}")
     private SkylineService skylineService;
     private List<SelectItem> ctfStmsigItems;      // 系统标识
-    private List<SelectItem> ctfAutrenItems;      // 自动转存标志
-    private List<SelectItem> ctfActtypItems;      // 账户类型*
-    private List<SelectItem> ctfTratatItems;      // 转出账号类型
-    private List<SelectItem> ctfDraawwItems;      // 取款方式1
-    private List<SelectItem> ctfDepdepItems;      // 存款种类
-    private List<SelectItem> ctfVoukinItems;      // 凭证种类
-    private List<SelectItem> ctfDratwoItems;      // 取款方式2
+    private List<SelectItem> ctfAtoflgItems;      // 自动转存标志
+    private List<SelectItem> ctfActtypItems;      // 账户类型
+    private List<SelectItem> ctfActty2Items;      // 转息账号类型
+    private List<SelectItem> ctfDramdItems;      // 取款方式
+    private List<SelectItem> ctfDpttypItems;      // 存款种类
+    private List<SelectItem> ctfVchtypItems;      // 凭证种类
 
     @PostConstruct
     public void init() {
-        ctfStmsigItems = skylineService.getEnuSelectItemList("CTF-SYSIDT", true, false);
-        ctfAutrenItems = skylineService.getEnuSelectItemList("CTF-ATOFLG", true, false);
+        ctfAtoflgItems = skylineService.getEnuSelectItemList("CTF-ATOFLG", true, false);
         ctfActtypItems = skylineService.getEnuSelectItemList("CTF-ACTTYP", true, false);
-        ctfTratatItems = skylineService.getEnuSelectItemList("CTF-ACTTY2", true, false);
-        ctfDraawwItems = skylineService.getEnuSelectItemList("CTF-DRAMD1", true, false);
-        ctfDepdepItems = skylineService.getEnuSelectItemList("CTF-DPTTYP", true, false);
-        ctfVoukinItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, false);
-        ctfDratwoItems = skylineService.getEnuSelectItemList("CTF-DRAMD2", true, false);
-
+        ctfActty2Items = skylineService.getEnuSelectItemList("CTF-ACTTY2", true, false);
+        ctfDramdItems = skylineService.getEnuSelectItemList("CTF-DRAMD", true, false);
+        ctfDpttypItems = skylineService.getEnuSelectItemList("CTF-DPTTYP", true, false);
+        ctfVchtypItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, false);
     }
-
-
 
     public SkylineService getSkylineService() {
         return skylineService;
@@ -62,12 +56,12 @@ public class SelectEnumTrbFieldAction implements Serializable {
         this.ctfStmsigItems = ctfStmsigItems;
     }
 
-    public List<SelectItem> getCtfAutrenItems() {
-        return ctfAutrenItems;
+    public List<SelectItem> getCtfAtoflgItems() {
+        return ctfAtoflgItems;
     }
 
-    public void setCtfAutrenItems(List<SelectItem> ctfAutrenItems) {
-        this.ctfAutrenItems = ctfAutrenItems;
+    public void setCtfAtoflgItems(List<SelectItem> ctfAtoflgItems) {
+        this.ctfAtoflgItems = ctfAtoflgItems;
     }
 
     public List<SelectItem> getCtfActtypItems() {
@@ -78,43 +72,35 @@ public class SelectEnumTrbFieldAction implements Serializable {
         this.ctfActtypItems = ctfActtypItems;
     }
 
-    public List<SelectItem> getCtfTratatItems() {
-        return ctfTratatItems;
+    public List<SelectItem> getCtfActty2Items() {
+        return ctfActty2Items;
     }
 
-    public void setCtfTratatItems(List<SelectItem> ctfTratatItems) {
-        this.ctfTratatItems = ctfTratatItems;
+    public void setCtfActty2Items(List<SelectItem> ctfActty2Items) {
+        this.ctfActty2Items = ctfActty2Items;
     }
 
-    public List<SelectItem> getCtfDraawwItems() {
-        return ctfDraawwItems;
+    public List<SelectItem> getCtfDramdItems() {
+        return ctfDramdItems;
     }
 
-    public void setCtfDraawwItems(List<SelectItem> ctfDraawwItems) {
-        this.ctfDraawwItems = ctfDraawwItems;
+    public void setCtfDramdItems(List<SelectItem> ctfDramdItems) {
+        this.ctfDramdItems = ctfDramdItems;
     }
 
-    public List<SelectItem> getCtfDepdepItems() {
-        return ctfDepdepItems;
+    public List<SelectItem> getCtfDpttypItems() {
+        return ctfDpttypItems;
     }
 
-    public void setCtfDepdepItems(List<SelectItem> ctfDepdepItems) {
-        this.ctfDepdepItems = ctfDepdepItems;
+    public void setCtfDpttypItems(List<SelectItem> ctfDpttypItems) {
+        this.ctfDpttypItems = ctfDpttypItems;
     }
 
-    public List<SelectItem> getCtfVoukinItems() {
-        return ctfVoukinItems;
+    public List<SelectItem> getCtfVchtypItems() {
+        return ctfVchtypItems;
     }
 
-    public void setCtfVoukinItems(List<SelectItem> ctfVoukinItems) {
-        this.ctfVoukinItems = ctfVoukinItems;
-    }
-
-    public List<SelectItem> getCtfDratwoItems() {
-        return ctfDratwoItems;
-    }
-
-    public void setCtfDratwoItems(List<SelectItem> ctfDratwoItems) {
-        this.ctfDratwoItems = ctfDratwoItems;
+    public void setCtfVchtypItems(List<SelectItem> ctfVchtypItems) {
+        this.ctfVchtypItems = ctfVchtypItems;
     }
 }

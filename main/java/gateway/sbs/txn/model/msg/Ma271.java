@@ -12,7 +12,7 @@ public class Ma271 extends MTia {
     private String ACTNM2 = "";        // 户名
     private String PASTYP = "";        // 证件种类
     private String PASSNO = "";        // 证件号
-    private String CORADD = "3";       // 地址
+    private String CORADD = "";       // 地址
     private String TELNUM = "";        // 电话
     private String TXNAMT = "";        // 交易金额
     private String VALDAT = "";        // 起息日期
@@ -37,7 +37,7 @@ public class Ma271 extends MTia {
     private String ACTTY2 = "";        // 转息账户号类型
     private String IPTAC2 = "";        // 转息账户
     private String VCHUSERATE = "";    // 协议利率
-    private String MAGFL1 = "";        // 账号输入方式
+    private String MAGFL1 = "0";        // 账号输入方式
 
     public String getSYSIDT() {
         return SYSIDT;
