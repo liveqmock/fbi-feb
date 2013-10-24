@@ -36,7 +36,10 @@
         <script language="JavaScript" type="text/JavaScript">
             document.onkeydown = function TabReplace() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
                 }
             }
         </script>
@@ -57,7 +60,8 @@
                                         listener="#{clientActAction.onQryCustom}"/>
                             </p:inputText>
                             <h:outputLabel value="*账户名称:"/>
-                            <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}" maxlength="36" required="true"
+                            <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}" maxlength="36"
+                                         required="true"
                                          requiredMessage="必须输入账户名称"/>
                             <h:outputLabel value="贷方利率代码:"/>
                             <p:inputText value="#{clientActAction.clientAct.CINRAT}"
@@ -132,7 +136,8 @@
                                              action="#{clientActAction.onCreate}" ajax="true"
                                              update="msgs,btns,rtnActInfo">
                             </p:commandButton>
-                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证" disabled="#{!clientActAction.printable}"
+                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证"
+                                             disabled="#{!clientActAction.printable}"
                                              action="#{clientActAction.onPrintOpenAct}" ajax="false"
                                              update="msgs,btns,rtnActInfo">
                             </p:commandButton>
