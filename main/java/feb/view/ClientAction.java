@@ -36,7 +36,7 @@ public class ClientAction implements Serializable {
     private M8002 m8002 = new M8002();          //查询客户请求报文
     private M8004 m8004 = new M8004();          //修改客户
     private M8001 m8001 = new M8001();          //对公账户开户
-    private T001 t001 ;                          //创建账户响应报文 与关闭账户查询公用
+    private T001 t001;                          //创建账户响应报文 与关闭账户查询公用
     private T004 t004 = new T004();             //对公客户单笔查询
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
@@ -46,14 +46,16 @@ public class ClientAction implements Serializable {
         try {
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001);
             System.out.println(forms.size());
-            /*String formcode = form.getFormHeader().getFormCode();
-            if ("T001".equalsIgnoreCase(formcode)) {
-                t001 = (T001) form.getFormBody();
-                // TODO 打印
-                MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
-            } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            }*/
+            for (SOFForm form : forms) {
+                String formcode = form.getFormHeader().getFormCode();
+                if ("T001".equalsIgnoreCase(formcode)) {
+                    t001 = (T001) form.getFormBody();
+                    // TODO 打印
+                    MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
+                } else {
+                    MessageUtil.addErrorWithClientID("msgs", formcode);
+                }
+            }
         } catch (Exception e) {
             logger.error("8001客户信息建立失败", e);
             MessageUtil.addError("8001客户信息建立失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -90,7 +92,7 @@ public class ClientAction implements Serializable {
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if (!"T003".equals(form.getFormHeader().getFormCode()) ) {
+                    if (!"T003".equals(form.getFormHeader().getFormCode())) {
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
                     } else if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
