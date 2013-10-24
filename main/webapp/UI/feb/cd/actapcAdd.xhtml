@@ -47,21 +47,21 @@
                 <p:messages id="msgs" showSummary="true" showDetail="false"/>
                 <p:focus for="glcode"/>
                 <p:fieldset>
-                    <h:panelGrid id="pg" columns="1" style="width: 100%;">
-                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:100%;"
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:96%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
 
-                            <h:outputLabel id="glcode" value="*所属总账码:"/>
+                            <h:outputLabel id="glcode" value="所属总账码*:"/>
                             <p:inputText required="true" requiredMessage="总账码不能为空。"
                                          value="#{actapcAction.addapc.GLCODE}"/>
-                            <h:outputLabel value="*核算码:"/>
+                            <h:outputLabel value="核算码*:"/>
                             <p:inputText required="true"
                                          value="#{actapcAction.addapc.APCODE}"
                                          requiredMessage="核算码不能为空。"/>
-                            <h:outputLabel value="*核算码名称:"/>
+                            <h:outputLabel value="核算码名称*:"/>
                             <p:inputText required="true" requiredMessage="核算码名称不能为空。"
                                          value="#{actapcAction.addapc.APCNAM}"/>
-                            <h:outputLabel value="*核算码类型"/>
+                            <h:outputLabel value="核算码类型*:"/>
                             <p:inputText required="true" requiredMessage="核算类型不能为空。"
                                          value="#{actapcAction.addapc.APCTYP}"/>
                             <h:outputLabel value="对应损益码:"/>
@@ -81,7 +81,7 @@
                             <p:inputText required="true"
                                          requiredMessage="对应总行核算码应和核算码相同。"
                                          value="#{actapcAction.addapc.EBKCDE}"/>
-                            <h:outputLabel value="*所属标准核算码:"/>
+                            <h:outputLabel value="所属标准核算码*:"/>
                             <p:inputText required="true"
                                          requiredMessage="所属标准核算码应和核算码相同。"
                                          value="#{actapcAction.addapc.OPSAPC}"/>
@@ -99,12 +99,13 @@
                             <p:inputText value="#{actapcAction.addapc.CLRFLG}"/>-->
 
                         </h:panelGrid>
-                    </h:panelGrid>
-                    <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+
+                    <h:panelGrid id="btns" columns="1" style="text-align:center;" width="10%">
                         <p:commandButton style="width:80px;margin-left:10px;" value="添加"
                                          action="#{actapcAction.onAdd}" ajax="true"
                                          update="msgs,pg,btns,dt">
                         </p:commandButton>
+                    </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
                 <br/>
@@ -112,14 +113,7 @@
                         style="font-size: 12px !important;font-weight: bold;color: grey;"
                         value="核算码类型：0-普通类 4-999临时存欠 5-外汇买卖人民币 6-933外币 7-自动对转类 8-临时类 9-催收类"/>
                 <p:separator/>
-                <p:ajaxStatus style="height:18px;text-align:center">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value=""/>
-                    </f:facet>
-                </p:ajaxStatus>
+
                 <p:dataTable id="dt" height="200"
                              value="#{actapcAction.addapcList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

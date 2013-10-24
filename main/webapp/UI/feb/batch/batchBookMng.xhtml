@@ -40,7 +40,9 @@
                     event.keyCode = 9;
                 } else if (event.srcElement.id == 'inputform:txnamt') {
                     event.keyCode = 9;
-                } if (event.srcElement.id == 'inputform:rvslbl') {
+                }  else if (event.srcElement.id == 'inputform:rvslbl') {
+                    event.keyCode = 9;
+                } if (event.srcElement.id == 'inputform:opnda2') {
                     document.forms['inputform']['inputform:actno'].focus();
                     document.forms['inputform']['inputform:save'].click();
                 } else if (event.srcElement.id == 'vchsetform:vchset') {
@@ -170,10 +172,10 @@
                         <p:inputMask autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99">
                         </p:inputMask>
-                        <!--<h:outputLabel value="冲补/起息日* :" for="opnda2"/>
+                        <h:outputLabel value="冲补/起息日* :" for="opnda2"/>
                         <p:inputMask autocomplete="off" id="opnda2" value="#{batchBookAction.m8401.OPNDA2}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99999999">
-                        </p:inputMask>-->
+                        </p:inputMask>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                         <p:commandButton id="save" value="确定" ajax="ture" onfocus="this.select()"
@@ -296,14 +298,7 @@
     <div>
         <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
                        value="冲正标志：11-现金， 12-转账， 22-冲正， 52补账"/>
-        <br/><br/>
-        <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
-                       value="凭证种类：101-转账支票， 109-进账单， 114-利息单,
-        117-特转凭证， 118-电汇凭证, 119-税单, 120-其他凭证,121-其他公会经费，"/>
-        <br/><br/>
-        <p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
-                       value="122-其他预算拨款， 123-其他社保费，124-其他公积金，
-         125-其他收费凭证， 126-其他银联业务， 202-现金支票， 225-现金交款单"/>
+        <br/>
         <p:separator/>
     </div>
 </ui:define>
