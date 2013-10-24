@@ -111,9 +111,16 @@ public class BatchBookAction implements Serializable {
 
     //´«Æ±Â¼Èë
     public String onCreateNewRecord() {
+        String tmp = "";
+        if (allList.size()==1&&dataList.size()==0){
+            tmp = allList.size()+"";
+        }else {
+            tmp = allList.size()+1+"";
+        }
         try {
             m8401.setVCHSET(vchset);
             m8401.setTLRNUM(tlrnum);
+            m8401.setSETSEQ(tmp);
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
