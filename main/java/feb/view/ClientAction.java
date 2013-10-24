@@ -31,36 +31,37 @@ public class ClientAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    private T004 t004 = new T004();             //对公客户单笔查询
-    //private T005 t005;                          //对个人户单笔查询
+    private String cusidt;
+    private String cusnam;
     private M8002 m8002 = new M8002();          //查询客户请求报文
     private M8004 m8004 = new M8004();          //修改客户
     private M8001 m8001 = new M8001();          //对公账户开户
-    private T001 t001;                           //创建账户响应报文 与关闭账户查询公用
+    private T001 t001 ;                          //创建账户响应报文 与关闭账户查询公用
+    private T004 t004 = new T004();             //对公客户单笔查询
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
-    private String cusidt;
     private List<T003.Bean> dataList = new ArrayList<>();
 
     public String onCreate() {
         try {
-            SOFForm form = dataExchangeService.callSbsTxn("8001", m8001).get(0);
-            String formcode = form.getFormHeader().getFormCode();
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001);
+            System.out.println(forms.size());
+            /*String formcode = form.getFormHeader().getFormCode();
             if ("T001".equalsIgnoreCase(formcode)) {
                 t001 = (T001) form.getFormBody();
                 // TODO 打印
-                MessageUtil.addInfo("客户账户建立成功，名称：" + m8001.getCUSNAM());
+                MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
-            }
+            }*/
         } catch (Exception e) {
-            logger.error("8001客户开户失败", e);
-            MessageUtil.addError("8001客户开户失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("8001客户信息建立失败", e);
+            MessageUtil.addError("8001客户信息建立失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
 
-    public String onQryUpdateCus() {
+    public String onQryCus() {
         try {
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8002", m8002);
             for (SOFForm form : forms) {
@@ -84,7 +85,7 @@ public class ClientAction implements Serializable {
     //浏览查询
     public String onAllQuery() {
         try {
-            M8002 m8002 = new M8002(cusidt);
+            m8002 = new M8002(cusidt);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
@@ -172,14 +173,6 @@ public class ClientAction implements Serializable {
     public void setM8002(M8002 m8002) {
         this.m8002 = m8002;
     }
-/*
-    public T005 getT005() {
-        return t005;
-    }
-
-    public void setT005(T005 t005) {
-        this.t005 = t005;
-    }*/
 
     public boolean isCloseable() {
         return closeable;
@@ -244,4 +237,13 @@ public class ClientAction implements Serializable {
     public void setDataList(List<T003.Bean> dataList) {
         this.dataList = dataList;
     }
+
+    public String getCusnam() {
+        return cusnam;
+    }
+
+    public void setCusnam(String cusnam) {
+        this.cusnam = cusnam;
+    }
+
 }
