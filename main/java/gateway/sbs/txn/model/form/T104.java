@@ -8,9 +8,10 @@ import gateway.sbs.core.domain.SOFFormBody;
 public class T104 extends SOFFormBody {
 
     {
-        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1};
+        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1};
         fieldLengths = new int[]{7, 16, 8, 34, 72, 18, 8,
-                                 8, 3, 15, 2, 2, 9};
+                8, 3, 15, 2, 2, 9};
     }
 
     private String CUSIDT;          // ¿Í»§ºÅ

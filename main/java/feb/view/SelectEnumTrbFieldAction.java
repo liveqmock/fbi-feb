@@ -40,7 +40,7 @@ public class SelectEnumTrbFieldAction implements Serializable {
         ctfDramdItems = skylineService.getEnuSelectItemList("CTF-DRAMD", true, false);
         ctfDpttypItems = skylineService.getEnuSelectItemList("CTF-DPTTYP", true, false);
         ctfDptprdItems = skylineService.getEnuSelectItemList("CTF-DPTPRD", true, false);
-        ctfVchtypItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, false);
+        ctfVchtypItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, true);
     }
 
     public SkylineService getSkylineService() {

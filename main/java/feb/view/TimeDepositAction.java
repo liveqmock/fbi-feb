@@ -76,26 +76,34 @@ public class TimeDepositAction implements Serializable {
     }
 
     public String onCreate() {
-        ma271.setACTTY1("01");
-        if (!StringUtils.isEmpty(ma271.getIPTAC1()) && !ma271.getIPTAC1().startsWith("8010")) {
-            ma271.setIPTAC1("8010" + ma271.getIPTAC1());
-        }
-        List<SOFForm> forms = dataExchangeService.callSbsTxn("a271", ma271);
-        for (SOFForm form : forms) {
-            String formcode = form.getFormHeader().getFormCode();
-            if (!"T132".equals(formcode) && !"T016".equals(formcode) && !"T104".equals(formcode)) {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
-            } else {
-                MessageUtil.addInfoWithClientID("msgs", "W001");
-                if ("T016".equals(formcode)) {
-                    t016 = (T016) form.getFormBody();
-                    printable = true;
-                }
-                if ("T104".equals(formcode)) {
-                    t104 = (T104) form.getFormBody();
-                    printable = true;
+        try {
+            ma271.setACTTY1("01");
+            if (!StringUtils.isEmpty(ma271.getIPTAC1()) && !ma271.getIPTAC1().startsWith("8010")) {
+                ma271.setIPTAC1("8010" + ma271.getIPTAC1());
+            }
+            List<SOFForm> forms = dataExchangeService.callSbsTxn("a271", ma271);
+
+            for (SOFForm form : forms) {
+                String formcode = form.getFormHeader().getFormCode();
+                if (!"T132".equals(formcode) && !"T016".equals(formcode) && !"T104".equals(formcode)) {
+                    MessageUtil.addErrorWithClientID("msgs", formcode);
+                } else {
+                    if ("T016".equals(formcode)) {
+                        t016 = (T016) form.getFormBody();
+                        printable = true;
+                    }
+                    if ("T104".equals(formcode)) {
+                        t104 = (T104) form.getFormBody();
+                        printable = true;
+                    }
                 }
             }
+            if (printable) {
+                MessageUtil.addInfoWithClientID("msgs", "W001");
+            }
+        } catch (Exception e) {
+            logger.error("定期存款开户查询失败", e);
+            MessageUtil.addError("定期存款开户查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
@@ -103,14 +111,18 @@ public class TimeDepositAction implements Serializable {
     public void onPrint() {
         try {
             List<Vch> vchs = new ArrayList<>();
-            for (T016.Bean bean : t016.getBeanList()) {
+            /*for (T016.Bean bean : t016.getBeanList()) {
+                logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
                 Vch vch = new Vch();
                 BeanHelper.copyFields(bean, vch);
                 vchs.add(vch);
             }
             pdfPrintService.printVch(
                     "       联机传票/复核（授权）清单", t016.getWATNUM(), t016.getVCHSET(), t016.getTRNDAT(),
-                    t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);
+                    t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);*/
+            pdfPrintService.printVch(
+                    "       联机传票/复核（授权）清单", "wat","vchset", "20131025",
+                    "a271", "171539", "010", "", "", vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
