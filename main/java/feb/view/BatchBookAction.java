@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.MessageUtil;
+import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -58,16 +59,19 @@ public class BatchBookAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
+        tlrnum = SkylineService.getOperId();//============>得到当前柜员号
         onBatchQry();  // 初始化查询
         initAddBat();
     }
-
+   /*
+    * String date = new SimpleDateFormat("yyyyMMdd").format(new Date())
+    */
     //录入初始化
     public void initAddBat() {
-        m8401.setTLRNUM(tlrnum);
-        m8401.setVCHSET(vchset);
         m8401.setPRDCDE("VCH1");
         m8401.setORGID3("010");
+        m8401.setTLRNUM(tlrnum);
+        m8401.setVCHSET(vchset);
         m8401.setRVSLBL("12");
         m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
     }
@@ -91,9 +95,9 @@ public class BatchBookAction implements Serializable {
                                 }
                             }
                         }
-                        tlrnum = t898.getFormBodyHeader().getTLRNUM();
+                        //tlrnum = t898.getFormBodyHeader().getTLRNUM();//柜员号
                         vchset = t898.getFormBodyHeader().getVCHSET();
-                        //totnum = t898.getFormBodyHeader().getTOTNUM();
+                        //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -120,8 +124,6 @@ public class BatchBookAction implements Serializable {
             tmp = allList.size()+1+"";
         }
         try {
-            m8401.setVCHSET(vchset);
-            m8401.setTLRNUM(tlrnum);
             m8401.setSETSEQ(tmp);
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
