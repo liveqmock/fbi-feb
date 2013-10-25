@@ -25,7 +25,6 @@ public class Ma271 extends MTia {
     private String VCHTYP = "";        // 凭证种类
     private String VCHNUM = "";        // 凭证号
     private String ACTTY1 = "";        // 账号类型
-
     private String IPTAC1 = "";        // 账号
     private String DRAMD1 = "0";        // 取款方式
     private String CUSPW1 = "";        // 客户密码

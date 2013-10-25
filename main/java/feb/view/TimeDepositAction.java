@@ -1,11 +1,16 @@
 package feb.view;
 
+import feb.print.model.Vch;
 import feb.service.DataExchangeService;
+import feb.service.PdfPrintService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.T016;
+import gateway.sbs.txn.model.form.T104;
 import gateway.sbs.txn.model.form.T132;
 import gateway.sbs.txn.model.msg.M0003;
 import gateway.sbs.txn.model.msg.Ma270;
 import gateway.sbs.txn.model.msg.Ma271;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
@@ -18,7 +23,9 @@ import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 定期存款
@@ -30,8 +37,12 @@ public class TimeDepositAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+    @ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;
     private Ma271 ma271;
     private T132 qryT132;
+    private T016 t016;
+    private T104 t104;
     private boolean printable = false;
     private BigDecimal bdTxnamt;   // 交易金额
 
@@ -42,10 +53,9 @@ public class TimeDepositAction implements Serializable {
         qryT132 = new T132();
     }
 
-    public String onQry() {
+    public void onQry() {
         try {
             Ma270 ma270 = new Ma270();
-//            ma271.setTXNAMT(bdTxnamt.toString());
             BeanHelper.copyFields(ma271, ma270);
             SOFForm form = dataExchangeService.callSbsTxn("a270", ma270).get(0);
             String formcode = form.getFormHeader().getFormCode();
@@ -63,17 +73,48 @@ public class TimeDepositAction implements Serializable {
             logger.error("定期存款开户查询失败", e);
             MessageUtil.addError("定期存款开户查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        return null;
     }
 
     public String onCreate() {
-
-        printable = true;
+        ma271.setACTTY1("01");
+        if (!StringUtils.isEmpty(ma271.getIPTAC1()) && !ma271.getIPTAC1().startsWith("8010")) {
+            ma271.setIPTAC1("8010" + ma271.getIPTAC1());
+        }
+        List<SOFForm> forms = dataExchangeService.callSbsTxn("a271", ma271);
+        for (SOFForm form : forms) {
+            String formcode = form.getFormHeader().getFormCode();
+            if (!"T132".equals(formcode) && !"T016".equals(formcode) && !"T104".equals(formcode)) {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            } else {
+                MessageUtil.addInfoWithClientID("msgs", "W001");
+                if ("T016".equals(formcode)) {
+                    t016 = (T016) form.getFormBody();
+                    printable = true;
+                }
+                if ("T104".equals(formcode)) {
+                    t104 = (T104) form.getFormBody();
+                    printable = true;
+                }
+            }
+        }
         return null;
     }
 
     public void onPrint() {
-
+        try {
+            List<Vch> vchs = new ArrayList<>();
+            for (T016.Bean bean : t016.getBeanList()) {
+                Vch vch = new Vch();
+                BeanHelper.copyFields(bean, vch);
+                vchs.add(vch);
+            }
+            pdfPrintService.printVch(
+                    "       联机传票/复核（授权）清单", t016.getWATNUM(), t016.getVCHSET(), t016.getTRNDAT(),
+                    t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
     }
 
     // ------------------------------------------------------
@@ -84,6 +125,14 @@ public class TimeDepositAction implements Serializable {
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
+    }
+
+    public PdfPrintService getPdfPrintService() {
+        return pdfPrintService;
+    }
+
+    public void setPdfPrintService(PdfPrintService pdfPrintService) {
+        this.pdfPrintService = pdfPrintService;
     }
 
     public Ma271 getMa271() {

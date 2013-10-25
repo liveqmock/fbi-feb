@@ -7,21 +7,8 @@
 
     <ui:define name="head">
         <style type="text/css">
-            .col-label {
-                text-align: right;
-                font-size: 12px !important;
-                font-weight: bold;
-            }
-
-            .col-input {
-                width: 150px;
-                font-size: 12px !important;
-                text-align: left;
-                font-weight: bold;
-            }
-
             .col-label2 {
-                width: 150px;
+                width: 120px;
                 font-size: 12px !important;
                 text-align: right;
                 font-weight: bold;
@@ -55,18 +42,32 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="*客户号:"/>
                             <p:inputText id="cusidt" value="#{timeDepositAction.ma271.CUSIDT}" required="true"
-                                         requiredMessage="必须输入7位客户号" maxlength="7">
+                                         requiredMessage="必须输入7位客户号" maxlength="7" onblur="document.getElementById('form:txnamt').focus();">
                                 <p:ajax event="blur" update="msgs,dataPanel,showpanel"
                                         listener="#{timeDepositAction.onQry}"/>
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.DRAMD2}" required="true"
-                                         requiredMessage="必须输入取款方式!"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD2}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDramdItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.CUSPW2}"/>
+                            <p:password value="#{timeDepositAction.ma271.CUSPW2}"/>
+
+                            <h:outputLabel value="户名:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.ACTNM2}"/>
+                            <h:outputLabel value="证件类型:"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.PASTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfPastypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="证件号码:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.PASSNO}"/>
+                            <h:outputLabel value="地址:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.CORADD}"/>
+                            <h:outputLabel value="电话:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.TELNUM}"/>
 
                             <h:outputLabel value="*存款金额:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.TXNAMT}" required="true"
+                            <p:inputText id="txnamt" value="#{timeDepositAction.ma271.TXNAMT}" required="true"
                                          requiredMessage="必须输入存款金额!">
                                 <f:convertNumber pattern="###,###,##0.00"/>
                             </p:inputText>
@@ -75,60 +76,51 @@
                                          required="true" requiredMessage="必须输入起息日期！"
                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                             <h:outputLabel value="*账户类型:"/>
-                            <p:inputText id="stmzip" value="#{timeDepositAction.ma271.ACTTYP}" required="true"
-                                         requiredMessage="必须输入账户类型！"/>
+                            <p:selectOneMenu id="acttyp" value="#{timeDepositAction.ma271.ACTTYP}"
+                                             style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfActtypItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="*存款种类:"/>
-                            <p:inputText id="dpttyp" value="#{timeDepositAction.ma271.DPTTYP}" required="true"
-                                         requiredMessage="必须输入存款种类!"/>
+                            <p:selectOneMenu id="dpttyp" value="#{timeDepositAction.ma271.DPTTYP}"
+                                             style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDpttypItems}"/>
+                            </p:selectOneMenu>
                             <p:columnGroup>
                                 <h:outputLabel style="color: red;" value="*"/>
-                                <h:outputLabel value="*存期:"/>
+                                <h:outputLabel value="存期:"/>
                             </p:columnGroup>
-                            <p:inputText value="#{timeDepositAction.ma271.DPTPRD}" required="true"
-                                         requiredMessage="必须输入存期！"/>
-                            <h:outputLabel value="取息周期:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.DRICYC}"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDptprdItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="*自动转存标志:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.ATOFLG}" required="true"
-                                         requiredMessage="必须输入自动转存标志！"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.ATOFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfAtoflgItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="*凭证种类:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.VCHTYP}" required="true"
-                                         requiredMessage="必须输入凭证种类!"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.VCHTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfVchtypItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="*凭证号:"/>
                             <p:inputText value="#{timeDepositAction.ma271.VCHNUM}" required="true"
                                          requiredMessage="必须输入凭证号!"/>
-                            <h:outputLabel value="*账号类型:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.ACTTY1}" required="true"
-                                         requiredMessage="必须输入账号类型!"/>
-                            <h:outputLabel value="*账号:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.IPTAC1}" required="true"
-                                         requiredMessage="必须输入账号！"/>
-                            <h:outputLabel value="*取款方式:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.DRAMD1}" required="true"
-                                         requiredMessage="必须输入取款方式!">
+                            <h:outputLabel value="*转账账号:"/>
+                            <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
+                                         requiredMessage="必须输入转账账号！">
+
                             </p:inputText>
+                            <h:outputLabel value="*取款方式:"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD1}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDramdItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.CUSPW1}"/>
-                            <h:outputLabel value="支票种类:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.PAPTYP}"/>
-                            <h:outputLabel value="支票号:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.PAPCDE}"/>
-                            <h:outputLabel value="支票密码:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.PAPMAC}"/>
-                            <h:outputLabel value="签发日:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.SGNDAT}"/>
-                            <h:outputLabel value="摘要:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
-                            <h:outputLabel value="转息账户类型:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.ACTTY2}"/>
-                            <h:outputLabel value="转息账户:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.IPTAC2}"/>
+                            <p:password value="#{timeDepositAction.ma271.CUSPW1}"/>
+
                             <h:outputLabel value="协议利率:"/>
                             <p:inputText value="#{timeDepositAction.ma271.VCHUSERATE}"/>
-                            <h:outputLabel value="账号输入方式:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.MAGFL1}"/>
+                            <h:outputLabel value="摘要:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
                         </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="5%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
                                              disabled="#{timeDepositAction.printable}"
                                              action="#{timeDepositAction.onCreate}" ajax="true"
