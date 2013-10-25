@@ -162,9 +162,10 @@
                                      onfocus="this.select()" mask="99999999999999">
                         </p:inputMask>
                         <h:outputLabel value="交易金额* :" for="txnamt"/>
-                        <p:inputMask autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
-                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="">
-                        </p:inputMask>
+                        <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" style="text-align:right">
+                            <f:convertNumber type="number" pattern="###,###,###,###,###"/>
+                        </h:inputText>
                         <h:outputLabel value="冲正标志* :" for="rvslbl"/>
                         <p:inputMask autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="99">
