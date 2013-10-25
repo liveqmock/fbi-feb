@@ -93,40 +93,56 @@ public class ActapcAction implements Serializable {
         addapc.setAPCTYP("0");
         addapc.setCLRFLG("1");
     }
-    public String onQuery(){
+
+    public String onQuery() {
         try {
-            M9814 m9814 = new M9814(glcode,apcode);
+            M9814 m9814 = new M9814(glcode, apcode);
             m9814.setFUNCDE("0");
-            SOFForm form = dataExchangeService.callSbsTxn("9814",m9814).get(0);
-            if ("T862".equals(form.getFormHeader().getFormCode())){
-                t862 = (T862)form.getFormBody();
-            }else {
+            SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
+            if ("T862".equals(form.getFormHeader().getFormCode())) {
+                t862 = (T862) form.getFormBody();
+            } else {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("≤È—Ø ß∞‹", e);
             MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
+
     public String onAllQuery() {
         try {
-            apcode = apcode==null ? "" : apcode;
             M9814 m9814 = new M9814(glcode, apcode);
-            m9814.setFUNCDE("1");
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
-            if (formList != null && !formList.isEmpty()) {
+            if (!StringUtils.isEmpty(apcode)) {
                 dataList = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if (!"T814".equals(form.getFormHeader().getFormCode()) &&
-                            !"W012".equals(form.getFormHeader().getFormCode())) {
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                        return null;
-                    } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T814 t814 = (T814) form.getFormBody();
-                        dataList.addAll(t814.getBeanList());
-                    } else {
-                        logger.info(form.getFormHeader().getFormCode());
+                List list = new ArrayList();
+                SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
+                if (!"T862".equals(form.getFormHeader().getFormCode())) {
+                    MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                } else {
+                    t862 = (T862) form.getFormBody();
+                    list.add(t862);
+                    dataList.addAll(list);
+                }
+            } else {
+                apcode = apcode==null ? "" : apcode;
+                m9814 = new M9814(glcode, apcode);
+                m9814.setFUNCDE("1");
+                List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
+                if (formList != null && !formList.isEmpty()) {
+                    dataList = new ArrayList<>();
+                    for (SOFForm form : formList) {
+                        if (!"T814".equals(form.getFormHeader().getFormCode()) &&
+                                !"W012".equals(form.getFormHeader().getFormCode())) {
+                            MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                            return null;
+                        } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                            T814 t814 = (T814) form.getFormBody();
+                            dataList.addAll(t814.getBeanList());
+                        } else {
+                            logger.info(form.getFormHeader().getFormCode());
+                        }
                     }
                 }
             }
@@ -260,14 +276,6 @@ public class ActapcAction implements Serializable {
     public void setApcode(String apcode) {
         this.apcode = apcode;
     }
-/*
-    public String getApcnam() {
-        return apcnam;
-    }
-
-    public void setApcnam(String apcnam) {
-        this.apcnam = apcnam;
-    }*/
 
     public String getAction() {
         return action;
@@ -348,5 +356,4 @@ public class ActapcAction implements Serializable {
     public void setT862(T862 t862) {
         this.t862 = t862;
     }
-
 }
