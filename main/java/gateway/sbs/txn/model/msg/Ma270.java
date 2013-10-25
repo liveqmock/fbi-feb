@@ -18,7 +18,7 @@ public class Ma270 extends MTia {
     private String PASSNO;           //证件号
     private String CORADD;           //地址
     private String TELNUM;           //电话
-    private BigDecimal TXNAMT;           //交易金额
+    private String TXNAMT;       //交易金额
     private String VALDAT;           //起息日期
     private String ACTTYP;           //账户类型
     private String DPTTYP;           //存款种类
@@ -114,11 +114,11 @@ public class Ma270 extends MTia {
         this.TELNUM = TELNUM;
     }
 
-    public BigDecimal getTXNAMT() {
+    public String getTXNAMT() {
         return TXNAMT;
     }
 
-    public void setTXNAMT(BigDecimal TXNAMT) {
+    public void setTXNAMT(String TXNAMT) {
         this.TXNAMT = TXNAMT;
     }
 

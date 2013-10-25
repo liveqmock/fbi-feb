@@ -47,13 +47,13 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
                 <p:focus for="actnum"/>
                 <p:panel>
                     <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                            <h:outputLabel value="*账号:"/>
+                            <h:outputLabel value="*客户号:"/>
                             <p:inputText id="actnum" value="#{clientActAction.clientAct.ACTNUM}" required="true"
                                          requiredMessage="必须输入14位账号" maxlength="14">
                                 <p:ajax event="blur" update="msgs,actnam,stmadd,stmzip"
