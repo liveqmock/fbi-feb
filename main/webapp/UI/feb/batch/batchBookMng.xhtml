@@ -42,7 +42,11 @@
                     event.keyCode = 9;
                 }  else if (event.srcElement.id == 'inputform:rvslbl') {
                     event.keyCode = 9;
-                } if (event.srcElement.id == 'inputform:opnda2') {
+                } else if (event.srcElement.id == 'inputform:opnda2') {
+                    event.keyCode = 9;
+                } else if (event.srcElement.id == 'inputform:anacde') {
+                    event.keyCode = 9;
+                } if (event.srcElement.id == 'inputform:furinf') {
                     document.forms['inputform']['inputform:actno'].focus();
                     document.forms['inputform']['inputform:save'].click();
                 } else if (event.srcElement.id == 'vchsetform:vchset') {
@@ -153,7 +157,7 @@
             <p:focus for="actnum"/>
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
-                    <h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;" columns="4" cellspacing="2"
+                    <h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
                                  columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
 
                         <h:outputLabel value="帐号* :" for="actnum"/>
@@ -175,6 +179,14 @@
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()"
                                      requiredMessage="日期不能为空。"
                                      onclick="WdatePicker({dateFmt:'yyyyMMdd'})" >
+                        </h:inputText>
+                        <h:outputLabel value="统计码* :" for="anacde"/>
+                        <h:inputText autocomplete="off" id="anacde" value="#{batchBookAction.m8401.ANACDE}"
+                                     onkeydown="KeyDown()" onfocus="this.select()" >
+                        </h:inputText>
+                        <h:outputLabel value="摘要* :" for="furinf"/>
+                        <h:inputText autocomplete="off" id="furinf" value="#{batchBookAction.m8401.FURINF}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" >
                         </h:inputText>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
@@ -256,30 +268,24 @@
                 <p:column headerText="序号" style="text-align:center" sortBy="#{record.SETSEQ}">
                     <h:outputText id="setseq" value="#{record.SETSEQ}"/>
                 </p:column>
-
                 <p:column headerText="帐号" style="text-align:center">
                     <h:outputText value="#{record.ACTNUM}"/>
                 </p:column>
-
                 <p:column headerText="金额" style="text-align:center" sortBy="#{record.TXNAMT}">
                     <h:outputText value="#{record.TXNAMT}" style="float: right ">
                         <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
                     </h:outputText>
                 </p:column>
-
                 <p:column headerText="冲正标志" style="text-align:center">
                     <h:outputText value="#{record.RVSLBL}"/>
                 </p:column>
-
-                <p:column headerText="凭证号码" style="text-align:center">
-                    <h:outputText value="#{record.ERYTIM}"/>
-                </p:column>
                 <p:column headerText="冲补/起息日" style="text-align:center">
-
                     <h:outputText value="#{record.VALDAT}">
                     </h:outputText>
                 </p:column>
-
+                <p:column headerText="摘要" style="text-align:center">
+                    <h:outputText value="#{record.FURINF}"/>
+                </p:column>
                 <p:column headerText="附件" style="text-align:center">
                     <h:outputText value="#{record.VCHATT}"/>
                 </p:column>
