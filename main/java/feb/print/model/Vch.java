@@ -8,10 +8,10 @@ package feb.print.model;
  * To change this template use File | Settings | File Templates.
  */
 public class Vch {
-    private String DEBACT;          // 借方账号
-    private String DEBAMT;          // 借方金额
-    private String CREACT;          // 贷方账号
-    private String CREAMT;          // 贷方金额
+    private String DEBACT = "";          // 借方账号
+    private String DEBAMT = "";          // 借方金额
+    private String CREACT = "";          // 贷方账号
+    private String CREAMT = "";          // 贷方金额
 
     public String getDEBACT() {
         return DEBACT;

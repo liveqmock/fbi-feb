@@ -42,7 +42,8 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="*客户号:"/>
                             <p:inputText id="cusidt" value="#{timeDepositAction.ma271.CUSIDT}" required="true"
-                                         requiredMessage="必须输入7位客户号" maxlength="7" onblur="document.getElementById('form:txnamt').focus();">
+                                         requiredMessage="必须输入7位客户号" maxlength="7"
+                                         onblur="document.getElementById('form:txnamt').focus();">
                                 <p:ajax event="blur" update="msgs,dataPanel,showpanel"
                                         listener="#{timeDepositAction.onQry}"/>
                             </p:inputText>
@@ -89,7 +90,9 @@
                                 <h:outputLabel style="color: red;" value="*"/>
                                 <h:outputLabel value="存期:"/>
                             </p:columnGroup>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 131px;"
+                                             required="true"
+                                             requiredMessage="必须选择存期!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDptprdItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*自动转存标志:"/>
