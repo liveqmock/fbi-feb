@@ -180,13 +180,13 @@
                                      requiredMessage="日期不能为空。"
                                      onclick="WdatePicker({dateFmt:'yyyyMMdd'})" >
                         </h:inputText>
-                        <h:outputLabel value="统计码* :" for="anacde"/>
-                        <h:inputText autocomplete="off" id="anacde" value="#{batchBookAction.m8401.ANACDE}"
-                                     onkeydown="KeyDown()" onfocus="this.select()" >
-                        </h:inputText>
-                        <h:outputLabel value="摘要* :" for="furinf"/>
+                        <h:outputLabel value="统计码 :" for="anacde"/>
+                        <p:inputMask autocomplete="off" id="anacde" value="#{batchBookAction.m8401.ANACDE}"
+                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" mask="****">
+                        </p:inputMask>
+                        <h:outputLabel value="摘要 :" for="furinf"/>
                         <h:inputText autocomplete="off" id="furinf" value="#{batchBookAction.m8401.FURINF}"
-                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" >
+                                     onkeydown="KeyDown()" onfocus="this.select()" >
                         </h:inputText>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
@@ -232,15 +232,18 @@
                              document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin" type="push"
                             ajax="false" update="pdt,dtform,msgs" process="@form"
-                            actionListener="#{batchBookAction.onDeleteVchset()}"/>
+                            onclick="vchsetdellg.show();
+                            document.forms['vchsetform']['vchsetform:vchset'].focus();"
+                            /><!--actionListener="#{batchBookAction.onDeleteVchset()}"-->
                 <p:menuitem value="【多笔删除】" icon="ui-icon ui-icon-close"
                             action="#{batchBookAction.onMultiConfirm}" type="push"
                             ajax="false"/>
             </p:menubar>
+
             <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
                 <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
                 <h:panelGrid columns="1" cellpadding="5">
-                    <h:outputLabel for="vchset" value="请输入传票套号: *"/>
+                    <h:outputLabel for="vchset" value="请输入传票套号: *" style="font-weight: bold"/>
                     <h:inputText value="#{batchBookAction.vchset}" onfocus="this.select()"
                                  id="vchset" required="true" label="vchset" onkeydown="KeyDown()">
                     </h:inputText>
@@ -249,6 +252,19 @@
                                          actionListener="#{batchBookAction.onBoolVchset()}"
                                          oncomplete="vchsetdlg.hide();"/>
                         <p:commandButton value="取消" onclick="vchsetdlg.hide()" type="button"/>
+                    </f:facet>
+                </h:panelGrid>
+            </p:dialog>
+            <p:dialog id="dialog2" header="确认删除该套传票?" widgetVar="vchsetdellg" modal="true">
+                <p:growl id="vchsetgrowl2" globalOnly="true" showDetail="true"/>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="vchset2" value="传票套号*: " style="font-weight: bold"/>
+                    <h:outputText  id="vchset2" value="#{batchBookAction.vchset}"/>
+                    <f:facet name="footer">
+                        <p:commandButton id="modifyvchset2" value="确定" update="pdt" ajax="false"
+                                         actionListener="#{batchBookAction.onDeleteVchset()}"
+                                         oncomplete="vchsetdlg.hide();"/>
+                        <p:commandButton value="取消" onclick="vchsetdellg.hide()" type="button"/>
                     </f:facet>
                 </h:panelGrid>
             </p:dialog>
@@ -282,6 +298,9 @@
                 <p:column headerText="冲补/起息日" style="text-align:center">
                     <h:outputText value="#{record.VALDAT}">
                     </h:outputText>
+                </p:column>
+                <p:column headerText="统计码" style="text-align:center">
+                    <h:outputText value="#{record.ANACDE}"/>
                 </p:column>
                 <p:column headerText="摘要" style="text-align:center">
                     <h:outputText value="#{record.FURINF}"/>
