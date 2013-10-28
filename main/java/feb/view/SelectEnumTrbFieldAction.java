@@ -22,22 +22,25 @@ public class SelectEnumTrbFieldAction implements Serializable {
 
     @ManagedProperty(value = "#{skylineService}")
     private SkylineService skylineService;
-    private List<SelectItem> ctfStmsigItems;      // 系统标识
+    private List<SelectItem> ctfPastypItems;      // 证件类型
     private List<SelectItem> ctfAtoflgItems;      // 自动转存标志
     private List<SelectItem> ctfActtypItems;      // 账户类型
     private List<SelectItem> ctfActty2Items;      // 转息账号类型
     private List<SelectItem> ctfDramdItems;      // 取款方式
+    private List<SelectItem> ctfDptprdItems;      // 存期
     private List<SelectItem> ctfDpttypItems;      // 存款种类
     private List<SelectItem> ctfVchtypItems;      // 凭证种类
 
     @PostConstruct
     public void init() {
+        ctfPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
         ctfAtoflgItems = skylineService.getEnuSelectItemList("CTF-ATOFLG", true, false);
-        ctfActtypItems = skylineService.getEnuSelectItemList("CTF-ACTTYP", true, false);
+        ctfActtypItems = skylineService.getEnuSelectItemList("CTF-ACTTYP-TD", true, false);
         ctfActty2Items = skylineService.getEnuSelectItemList("CTF-ACTTY2", true, false);
         ctfDramdItems = skylineService.getEnuSelectItemList("CTF-DRAMD", true, false);
         ctfDpttypItems = skylineService.getEnuSelectItemList("CTF-DPTTYP", true, false);
-        ctfVchtypItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, false);
+        ctfDptprdItems = skylineService.getEnuSelectItemList("CTF-DPTPRD", true, false);
+        ctfVchtypItems = skylineService.getEnuSelectItemList("CTF-VCHTYP", true, true);
     }
 
     public SkylineService getSkylineService() {
@@ -48,12 +51,12 @@ public class SelectEnumTrbFieldAction implements Serializable {
         this.skylineService = skylineService;
     }
 
-    public List<SelectItem> getCtfStmsigItems() {
-        return ctfStmsigItems;
+    public List<SelectItem> getCtfPastypItems() {
+        return ctfPastypItems;
     }
 
-    public void setCtfStmsigItems(List<SelectItem> ctfStmsigItems) {
-        this.ctfStmsigItems = ctfStmsigItems;
+    public void setCtfPastypItems(List<SelectItem> ctfPastypItems) {
+        this.ctfPastypItems = ctfPastypItems;
     }
 
     public List<SelectItem> getCtfAtoflgItems() {
@@ -102,5 +105,13 @@ public class SelectEnumTrbFieldAction implements Serializable {
 
     public void setCtfVchtypItems(List<SelectItem> ctfVchtypItems) {
         this.ctfVchtypItems = ctfVchtypItems;
+    }
+
+    public List<SelectItem> getCtfDptprdItems() {
+        return ctfDptprdItems;
+    }
+
+    public void setCtfDptprdItems(List<SelectItem> ctfDptprdItems) {
+        this.ctfDptprdItems = ctfDptprdItems;
     }
 }

@@ -2,15 +2,16 @@ package feb.service;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import feb.print.model.Vch;
 import org.springframework.stereotype.Service;
 import pub.platform.advance.utils.PropertyManager;
 import pub.platform.security.OperatorManager;
-import pub.platform.utils.StringUtil;
 import pub.tools.StringPad;
 import skyline.service.SkylineService;
 
+import java.util.List;
+
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -23,10 +24,11 @@ import java.io.IOException;
 public class PdfPrintService {
 
     private static final String BASE_FONT = PropertyManager.getProperty("print.pdf.font");
+
     // 开销户确认书
     public void printVch4OpenClsAct(String title, String orgid, String deptid, String actnum,
                                     String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
-        PdfPTable table = initPdfPTable(title);     // 生成Pdf文件
+        PdfPTable table = initCmnPdfPTable(title);     // 生成Pdf文件
 
         String[] labels = {"机构号：", "部门号：", "账号：", "账户名称：", "开户日期：", "销户日期：", "交易柜员："};
         String[] values = {orgid, deptid, actnum, actnam, opndat, clsdat, teller};
@@ -45,9 +47,91 @@ public class PdfPrintService {
         printPdfTable(table);
     }
 
-    private PdfPTable initPdfPTable(String title) throws IOException, DocumentException {
+    public void printVch(String title, String watnum, String vchno, String txndat,
+                         String txncde, String txntim, String bankno, String termid,
+                         String abstra, List<Vch> vchList) throws IOException, DocumentException {
+        PdfPTable table = initVchPdfPTable(title, watnum, vchno, txndat, txncde, txntim);     // 生成Pdf文件
+        PdfPCell cell = null;
+        BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font headFont2 = new Font(bfChinese, 10, Font.NORMAL);// 设置字体大小
+        for (Vch vch : vchList) {
+            String row = StringPad.pad4ChineseToByteLength(true, vch.getDEBACT(), 22, " ") +
+                    StringPad.pad4ChineseToByteLength(false, "    " + vch.getDEBAMT(), 32, " ") +
+                    StringPad.pad4ChineseToByteLength(false, vch.getCREACT(), 26, " ") +  vch.getCREAMT();
+            cell = new PdfPCell(new Paragraph(row, headFont2));
+            cell.setBorder(0);
+            cell.setFixedHeight(12);//单元格高度
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            table.addCell(cell);
+        }
+       String vchAbstract = StringPad.pad4ChineseToByteLength(true, "摘要：" + abstra, 42, " ");
+        cell = new PdfPCell(new Paragraph(vchAbstract, headFont2));
+        cell.setBorder(0);
+        cell.setFixedHeight(12);//单元格高度
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.addCell(cell);
+        String lastrow = StringPad.pad4ChineseToByteLength(false, "行号：" + bankno, 12, " ") +
+                StringPad.pad4ChineseToByteLength(false, "终端号：" + termid, 12, " ") +
+                StringPad.pad4ChineseToByteLength(false, "复核：" , 12, " ") + "经办:";
+        cell = new PdfPCell(new Paragraph(lastrow, headFont2));
+        cell.setBorder(0);
+        cell.setFixedHeight(12);//单元格高度
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.addCell(cell);
+        printPdfTable(table);
+    }
+
+    /**
+     * 传票凭证
+     *
+     * @param title  标题
+     * @param watnum 流水号
+     * @param vchno  传票号
+     * @param txndat 日期
+     * @param txncde 交易码
+     * @param txntim 时间
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private PdfPTable initVchPdfPTable(String title, String watnum, String vchno, String txndat,
+                                       String txncde, String txntim) throws IOException, DocumentException {
         PdfPTable table = new PdfPTable(new float[]{1000f});// 建立一个pdf表格
+        table.setSpacingBefore(160f);// 设置表格上面空白宽度
+        table.setTotalWidth(835);// 设置表格的宽度
+        table.setLockedWidth(false);// 设置表格的宽度固定
+        table.getDefaultCell().setBorder(0);//设置表格默认为无边框
+        BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font headFont1 = new Font(bfChinese, 8, Font.BOLD);// 设置字体大小
+//        String[] labels = new String[]{"aaaaa", "bbbbb", "ccccc", "ddddd", "eeeee"};
         OperatorManager om = SkylineService.getOperatorManager();
+        String row1 = StringPad.pad4ChineseToByteLength(true, "交易码：", 20, " ") + txncde +
+                StringPad.pad4ChineseToByteLength(true, "流水号:", 70, " ") + watnum;
+        String row2 = StringPad.pad4ChineseToByteLength(true, "交易时间：", 20, " ") + txntim +
+                StringPad.pad4ChineseToByteLength(true, "柜员号:", 70, " ") + om.getOperatorId();
+        String row3 = StringPad.pad4ChineseToByteLength(true, title, 60, " ") +
+                StringPad.pad4ChineseToByteLength(true, "传票号:", 30, " ") + vchno;
+        String row4 = StringPad.pad4ChineseToByteLength(true, "日期：" + txndat, 90, " ");
+        String row5 = StringPad.pad4ChineseToByteLength(true, "借DR", 20, " ") +
+                StringPad.pad4ChineseToByteLength(true, "贷CR", 30, " ");
+        String[] labels = new String[]{row1, row2, row3, row4, row5};
+
+        PdfPCell cell = null;
+        for (String row : labels) {
+            cell = new PdfPCell(new Paragraph(row, headFont1));
+            cell.setBorder(0);
+            cell.setFixedHeight(15);//单元格高度
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setVerticalAlignment(Element.ALIGN_LEFT);
+            table.addCell(cell);
+        }
+        return table;
+    }
+
+
+    // 通用空白凭证
+    private PdfPTable initCmnPdfPTable(String title) throws IOException, DocumentException {
+        PdfPTable table = new PdfPTable(new float[]{1000f});// 建立一个pdf表格
         table.setSpacingBefore(160f);// 设置表格上面空白宽度
         table.setTotalWidth(835);// 设置表格的宽度
         table.setLockedWidth(false);// 设置表格的宽度固定
@@ -69,6 +153,7 @@ public class PdfPrintService {
 
         return table;
     }
+
     // 打印表格
     private void printPdfTable(PdfPTable table) throws DocumentException, IOException {
         FacesContext ctx = FacesContext.getCurrentInstance();
@@ -86,7 +171,6 @@ public class PdfPrintService {
         response.setHeader("Content-disposition", "inline");
         response.setContentLength(bos.size());
         response.setHeader("Cache-Control", "max-age=30");
-        bos.write("javascript:window.print();".getBytes());
         bos.writeTo(out);
         out.flush();
         out.close();
