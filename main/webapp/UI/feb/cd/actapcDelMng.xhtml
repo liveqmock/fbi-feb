@@ -49,7 +49,6 @@
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:95%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-
                             <h:outputLabel value="*所属总账码:"/>
                             <p:inputText required="true" requiredMessage="总账码不能为空。"
                                          value="#{actapcAction.t862.GLCODE}"/>
@@ -82,10 +81,10 @@
                             <h:outputLabel value="备用2:"/>
                             <p:inputText value="#{actapcAction.t862.CCYFIL}"/>
                     </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" style="text-align:center;" >
-                            <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
-                                             action="#{actapcAction.onUpdate}" ajax="true"
-                                             disabled="#{!actapcAction.updateable}" update="msgs,btns">
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认删除"
+                                             action="#{actapcAction.onDelete}" ajax="true"
+                                             disabled="#{!actapcAction.deleteable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                              action="#{actapcAction.onBack}"

@@ -43,7 +43,7 @@ public class ActapcAction implements Serializable {
     private DataExchangeService dataExchangeService;
 
     private List<T814.Bean> dataList = new ArrayList<>();
-    private T404 apc = new T404();
+    private T404 t404 = new T404();
     private T814 t814 = new T814();
     private T862 t862 = new T862();
     private boolean updateable = false;
@@ -124,7 +124,7 @@ public class ActapcAction implements Serializable {
                 if (form.getFormBody() != null) {
                     T814 t814 = (T814) form.getFormBody();
                     dataList.addAll(t814.getBeanList());
-                    if ("W012".equals(form.getFormHeader().getFormCode())) {
+                    if (form.getFormHeader().getFormCode().contains("W012")) {
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
                     }
@@ -144,7 +144,7 @@ public class ActapcAction implements Serializable {
             List list = new ArrayList();
             SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
             if (!"T862".equals(form.getFormHeader().getFormCode())) {
-                MessageUtil.addWarn("没有查询到数据。");
+                MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
             } else {
                 t862 = (T862) form.getFormBody();
                 list.add(t862);
@@ -215,7 +215,7 @@ public class ActapcAction implements Serializable {
     // 利率修改和删除
     private String txn9814ForUD() throws IllegalAccessException {
         M9814 m9814 = new M9814(glcode, apcode);
-        BeanHelper.copyFields(t862, m9814);
+        BeanHelper.copyFields(t404, m9814);
         m9814.setMODFLG("1");
         if ("update".equals(action)) {
             m9814.setFUNCDE("2");
@@ -229,6 +229,26 @@ public class ActapcAction implements Serializable {
 
     public String onClick() {
         return "actapcBean";
+    }
+    public String onDelClick() {
+        return "actapcDelMng";
+    }
+
+    public String onUpClick() {
+        try {
+            addapc = new M9814("0220", "0222");
+            addapc.setFUNCDE("2");
+            SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
+            if ("T404".equals(form.getFormHeader().getFormCode())) {
+                t404 = (T404) form.getFormBody();
+            } else {
+                MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        } catch (Exception e) {
+            logger.error("修改失败", e);
+            MessageUtil.addError("修改失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return "actBean";
     }
 
     public String onBack() {
@@ -296,12 +316,12 @@ public class ActapcAction implements Serializable {
         this.dataList = dataList;
     }
 
-    public T404 getApc() {
-        return apc;
+    public T404 getT404() {
+        return t404;
     }
 
-    public void setApc(T404 apc) {
-        this.apc = apc;
+    public void setT404(T404 t404) {
+        this.t404 = t404;
     }
 
     public List<M9814> getAddapcList() {

@@ -61,11 +61,11 @@
                                      columnClasses="col-label,col-input,col-label,col-input">
                             <!--<h:outputLabel value="总账码:" style="font-weight: bold"/>
                             <p:inputText id="glcode" value="#{actapcAction.glcode}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>-->
+                                         onkeydown="KeyDown()"  onfocus="this.select()"/>-->
                             <h:outputLabel value="核算码:" style="font-weight: bold"/>
                             <p:inputText id="apcode" size="25" onkeydown="KeyDown()"
                                          onfocus="this.select()" value="#{actapcAction.apcode}"
-                                    required="true" requiredMessage="核算码不能为空"/>
+                                         required="true" requiredMessage="核算码不能为空"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
@@ -91,12 +91,13 @@
                         <h:outputText value="#{record.APCNAM}"/>
                     </p:column>
                     <p:column headerText="操作" style="text-align:center">
-                        <p:commandLink value="删除" immediate="true" ajax="false" action="#{actapcAction.onDelClick()}"
+                        <p:commandLink value="修改" immediate="true" ajax="false" action="#{actapcAction.onClick()}"
                                        style="color: blue">
                             <f:param value="#{actapcAction.glcode}" name="glcode"/>
                             <f:param value="#{record.APCODE}" name="apcode"/>
-                            <f:param value="delete" name="action"/>
+                            <f:param value="update" name="action"/>
                         </p:commandLink>
+
                     </p:column>
                 </p:dataTable>
             </h:form>
