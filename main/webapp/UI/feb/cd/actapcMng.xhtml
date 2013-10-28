@@ -36,9 +36,17 @@
         </style>
 
         <script language="JavaScript" type="text/JavaScript">
-            document.onkeydown = function TabReplace() {
+            function KeyDown() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if(event.srcElement.id == 'inputform:glcode'){
+                        event.keyCode = 9;
+                    }else if (event.srcElement.id == 'inputform:apcode') {
+                        event.returnValue = false;
+                        event.cancel = true;
+                        document.forms['inputform']['inputform:query'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
                 }
             }
         </script>
@@ -48,58 +56,43 @@
         <div class="entry">
             <h:form id="form">
                 <p:focus for="glcode"/>
-                <p:messages id="msgs" showDetail="true"/>
+                <p:messages id="msgs" showDetail="false" showSummary="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid columns="4" cellspacing="5"
                                      columnClasses="col-label,col-input,col-label,col-input">
-                            <h:outputLabel value="所属总账码:" style="font-weight: bold"/>
-                            <p:inputText id="glcode" value="#{actapcAction.glcode}"/>
+                            <h:outputLabel value="总账码:" style="font-weight: bold"/>
+                            <p:inputText id="glcode" value="#{actapcAction.glcode}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="核算码:" style="font-weight: bold"/>
-                            <p:inputText id="apcode" value="#{actapcAction.apcode}"/>
+                            <p:inputText id="apcode" size="25" onkeydown="KeyDown()"
+                                         onfocus="this.select()" value="#{actapcAction.apcode}"
+                                    required="true" requiredMessage="核算码不能为空"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="查询核算码"
-                                             action="#{actapcAction.onAllQuery}" ajax="true"
-                                             update="msgs,dt">
+                            <p:commandButton id="query" style="width:110px;" value="核算码查询"
+                                             action="#{actapcAction.onAllQuery}"
+                                             ajax="true" update="msgs,dt,panel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:ajaxStatus style="height:18px;text-align:center">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value=""/>
-                    </f:facet>
-                </p:ajaxStatus>
-                <p:dataTable id="dt" height="200"
+                <p:dataTable id="dt" height="200" style="margin-top: 10px"
                              value="#{actapcAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
 
                     <p:column headerText="核算码"
-                              style="text-align:center"><!--sortBy="apcode" filterBy="#{record.APCODE}"-->
+                              style="text-align:center">
                         <h:outputText value="#{record.APCODE}"/>
                     </p:column>
 
-                    <p:column headerText="核算码名称" style="text-align:center">
+                    <p:column headerText="核算码名称" style="text-align:left">
                         <h:outputText value="#{record.APCNAM}"/>
                     </p:column>
-
-
                     <p:column headerText="操作" style="text-align:center">
-                        <p:commandLink value="修改" immediate="true" ajax="false" action="#{actapcAction.onClick()}"
-                                       style="color: blue">
-                            <f:param value="#{actapcAction.glcode}" name="glcode"/>
-                            <f:param value="#{record.APCODE}" name="ebkcde"/>
-                            <f:param value="#{record.APCODE}" name="apcode"/>
-                            <f:param value="update" name="action"/>
-                        </p:commandLink>
-                        <p:spacer width="10px;"/>
                         <p:commandLink value="删除" immediate="true" ajax="false" action="#{actapcAction.onClick()}"
                                        style="color: blue">
                             <f:param value="#{actapcAction.glcode}" name="glcode"/>

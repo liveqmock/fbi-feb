@@ -46,14 +46,7 @@
             <h:form id="form">
                 <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:focus for="apcode"/>
-                <p:ajaxStatus style="height:18px;text-align:center">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value=""/>
-                    </f:facet>
-                </p:ajaxStatus>
+
                 <p:fieldset>
                     <h:panelGrid id="pg" columns="1" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
@@ -110,12 +103,6 @@
                         <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                          action="#{actapcAction.onBack}"
                                          style="margin-left:10px;width:80px;"/>
-
-                        <p:commandButton value="打印" type="button" icon="ui-icon-print"
-                                         style="width:80px;margin-left:10px;">
-                            <p:printer target="pg"/>
-
-                        </p:commandButton>
                     </h:panelGrid>
                 </p:fieldset>
                 <br/>

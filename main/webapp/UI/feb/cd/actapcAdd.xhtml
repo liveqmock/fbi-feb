@@ -50,14 +50,12 @@
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:96%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-
+                            <h:outputLabel value="核算码*:"/>
+                            <p:inputText required="true" value="#{actapcAction.addapc.APCODE}"
+                                         requiredMessage="核算码不能为空。"/>
                             <h:outputLabel id="glcode" value="所属总账码*:"/>
                             <p:inputText required="true" requiredMessage="总账码不能为空。"
                                          value="#{actapcAction.addapc.GLCODE}"/>
-                            <h:outputLabel value="核算码*:"/>
-                            <p:inputText required="true"
-                                         value="#{actapcAction.addapc.APCODE}"
-                                         requiredMessage="核算码不能为空。"/>
                             <h:outputLabel value="核算码名称*:"/>
                             <p:inputText required="true" requiredMessage="核算码名称不能为空。"
                                          value="#{actapcAction.addapc.APCNAM}"/>
@@ -101,7 +99,7 @@
                         </h:panelGrid>
 
                     <h:panelGrid id="btns" columns="1" style="text-align:center;">
-                        <p:commandButton style="width:80px;margin-left:10px;" value="添加"
+                        <p:commandButton style="width:80px;margin-left:10px;" value="增加"
                                          action="#{actapcAction.onAdd}" ajax="true"
                                          update="msgs,pg,btns,dt">
                         </p:commandButton>
