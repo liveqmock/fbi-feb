@@ -89,7 +89,7 @@ public class ActapcAction implements Serializable {
     }
 
     private void initAddapc() {
-        t862.setAPCODE("");
+        //t862.setAPCODE("");
         addapc = new M9814();
         addapc.setAPCTYP("0");
         addapc.setCLRFLG("1");
@@ -99,9 +99,7 @@ public class ActapcAction implements Serializable {
         try {
             apcode = (apcode == null ? "" : apcode);
             M9814 m9814 = new M9814(glcode, apcode);
-            if (apcode.isEmpty() || glcode.isEmpty()) {
-                m9814.setFUNCDE("1");
-            }
+            m9814.setFUNCDE("1");
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
@@ -111,8 +109,7 @@ public class ActapcAction implements Serializable {
                     } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         T814 t814 = (T814) form.getFormBody();
                         dataList.addAll(t814.getBeanList());
-                    } else if (!"T814".equals(form.getFormHeader().getFormCode()) &&
-                            !"W012".equals(form.getFormHeader().getFormCode())) {
+                    } else if (form.getFormHeader().getFormCode().contains("W012")) {
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                         return null;
                     } else {
@@ -121,8 +118,17 @@ public class ActapcAction implements Serializable {
                     }
                 }
             }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
+            m9814.setBEGNUM("000451");
+            List<SOFForm> formList2 = dataExchangeService.callSbsTxn("9814", m9814);
+            for (SOFForm form : formList2) {
+                if (form.getFormBody() != null) {
+                    T814 t814 = (T814) form.getFormBody();
+                    dataList.addAll(t814.getBeanList());
+                    if ("W012".equals(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        return null;
+                    }
+                }
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
@@ -133,10 +139,10 @@ public class ActapcAction implements Serializable {
 
     public String onAllQuery() {
         try {
-            M9814 m9814 = new M9814(glcode, apcode);
+            addapc = new M9814(glcode, apcode);
             dataList = new ArrayList<>();
             List list = new ArrayList();
-            SOFForm form = dataExchangeService.callSbsTxn("9814", m9814).get(0);
+            SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
             if (!"T862".equals(form.getFormHeader().getFormCode())) {
                 MessageUtil.addWarn("没有查询到数据。");
             } else {
