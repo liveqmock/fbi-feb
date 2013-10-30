@@ -63,9 +63,9 @@
                             <p:inputText id="glcode" value="#{actapcAction.glcode}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>-->
                             <h:outputLabel value="核算码:" style="font-weight: bold"/>
-                            <p:inputText id="apcode" size="25" onkeydown="KeyDown()"
-                                         onfocus="this.select()" value="#{actapcAction.apcode}"
-                                    required="true" requiredMessage="核算码不能为空"/>
+                            <p:inputText id="apcode" size="25"  value="#{actapcAction.apcode}"
+                                    required="true" requiredMessage="核算码不能为空"
+                                    onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">

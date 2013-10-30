@@ -39,7 +39,7 @@
             function KeyDown() {
                 if (event.keyCode == 13) {
                     if (event.srcElement.id == 'inputform:apcode') {
-                        document.forms['inputform']['inputform:query'].click();
+                        document.forms['inputform']['inputform:btns'].click();
                     } else {
                         event.keyCode = 9;
                     }
@@ -62,8 +62,8 @@
                                     onkeydown="KeyDown()" onfocus="this.select()"/>-->
                             <h:outputLabel value="核算码:" style="font-weight: bold"/>
                             <p:inputText id="apcode" size="25" value="#{actapcAction.apcode}"
-                                    onkeydown="KeyDown()" onfocus="this.select()"
-                                    required="true" requiredMessage="核算码不能为空"/>
+                                    required="true" requiredMessage="核算码不能为空"
+                                    onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">

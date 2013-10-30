@@ -34,9 +34,13 @@
             }
         </style>
         <script language="JavaScript" type="text/JavaScript">
-            document.onkeydown = function TabReplace() {
+            function KeyDown() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if (event.srcElement.id == 'inputform:intcac') {
+                        document.forms['inputform']['inputform:save'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
                 }
             }
         </script>
@@ -45,50 +49,64 @@
         <div class="entry">
             <h:form id="form">
                 <p:messages id="msgs" showSummary="true" showDetail="false"/>
-                <p:focus for="glcode"/>
+                <p:focus for="apcode"/>
                 <p:fieldset>
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:96%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                            <h:outputLabel value="核算码*:"/>
+                            <h:outputLabel value="核算码*:" for="apcode"/>
                             <p:inputText required="true" value="#{actapcAction.addapc.APCODE}"
+                                         onkeydown="KeyDown()" onfocus="this.select()" id="apcode"
                                          requiredMessage="核算码不能为空。"/>
                             <h:outputLabel id="glcode" value="所属总账码*:"/>
                             <p:inputText required="true" requiredMessage="总账码不能为空。"
-                                         value="#{actapcAction.addapc.GLCODE}"/>
+                                         value="#{actapcAction.addapc.GLCODE}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="核算码名称*:"/>
                             <p:inputText required="true" requiredMessage="核算码名称不能为空。"
-                                         value="#{actapcAction.addapc.APCNAM}"/>
+                                         value="#{actapcAction.addapc.APCNAM}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="核算码类型*:"/>
                             <p:inputText required="true" requiredMessage="核算类型不能为空。"
-                                         value="#{actapcAction.addapc.APCTYP}"/>
+                                         value="#{actapcAction.addapc.APCTYP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()" />
                             <h:outputLabel value="对应损益码:"/>
-                            <p:inputText value="#{actapcAction.addapc.PLCODE}"/>
+                            <p:inputText value="#{actapcAction.addapc.PLCODE}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="利息支出账户核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.INTEXP}"/>
+                            <p:inputText value="#{actapcAction.addapc.INTEXP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="利息收入账户核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.INTINC}"/>
+                            <p:inputText value="#{actapcAction.addapc.INTINC}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="未实现利息支出核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.TRNIDT}"/>
+                            <p:inputText value="#{actapcAction.addapc.TRNIDT}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="未实现利息收入核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.FEEAPC}"/>
+                            <p:inputText value="#{actapcAction.addapc.FEEAPC}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="核算码种类:" required="true"/>
-                            <p:inputText value="#{actapcAction.addapc.PDCTYP}"/>
+                            <p:inputText value="#{actapcAction.addapc.PDCTYP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
 
                             <h:outputLabel value="对应总行核算码*:"/>
                             <p:inputText required="true"
                                          requiredMessage="对应总行核算码应和核算码相同。"
-                                         value="#{actapcAction.addapc.EBKCDE}"/>
+                                         value="#{actapcAction.addapc.EBKCDE}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="所属标准核算码*:"/>
                             <p:inputText required="true"
                                          requiredMessage="所属标准核算码应和核算码相同。"
-                                         value="#{actapcAction.addapc.OPSAPC}"/>
+                                         value="#{actapcAction.addapc.OPSAPC}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="核算码描述:"/>
-                            <p:inputText value="#{actapcAction.addapc.APCDCR}"/>
+                            <p:inputText value="#{actapcAction.addapc.APCDCR}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="应付利息账户核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.INTDAC}"/>
-                            <h:outputLabel value="应收利息账户核算码:"/>
-                            <p:inputText value="#{actapcAction.addapc.INTCAC}"/>
+                            <p:inputText value="#{actapcAction.addapc.INTDAC}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="应收利息账户核算码:" for="intcac"/>
+                            <p:inputText value="#{actapcAction.addapc.INTCAC}"  id="intcac"/>
                             <!--<h:outputLabel value="功能码:"/>
                             <p:inputText value="#{actapcAction.addapc.FUNCDE}"/>
                             <h:outputLabel value="开始序号:"/>
@@ -99,10 +117,11 @@
                         </h:panelGrid>
 
                     <h:panelGrid id="btns" columns="1" style="text-align:center;">
-                        <p:commandButton style="width:80px;margin-left:10px;" value="增加"
+                        <p:commandButton id="save" style="width:80px;margin-left:10px;" value="增加"
                                          action="#{actapcAction.onAdd}" ajax="true"
                                          update="msgs,pg,btns,dt">
                         </p:commandButton>
+                        <p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;"/>
                     </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>

@@ -37,9 +37,13 @@
             }
         </style>
         <script language="JavaScript" type="text/JavaScript">
-            document.onkeydown = function TabReplace() {
+            function KeyDown() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if (event.srcElement.id == 'inputform:cusnum') {
+                        document.forms['inputform']['inputform:btns'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
                 }
             }
         </script>
@@ -53,17 +57,15 @@
                     <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid columns="2" cellspacing="5"
                                      columnClasses="col-label,col-input">
-                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
-                            <p:inputText required="true" size="25"
-                                         requiredMessage="客户号不能为空。"
-                                         id="cusnum" onkeydown="KeyDown()"
+                            <h:outputLabel for="cusnum" value="客户号:" style="font-weight: bold"/>
+                            <p:inputText required="true" size="25" requiredMessage="客户号不能为空。"
+                                         id="cusnum" onkeydown="KeyDown()" onfocus="this.select()"
                                          value="#{clientAction.m8002.CUSIDT}"/>
                         </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
-                                     width="10%">
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                             <p:commandButton style="width:110px;" value="查询客户信息"
-                                             action="#{clientAction.onQryUpdateCus()}" ajax="false"
-                                             update="msgs,panel,dataPanel">
+                                             action="#{clientAction.onQryCus()}" ajax="true"
+                                    update="msgs,dataPanel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>

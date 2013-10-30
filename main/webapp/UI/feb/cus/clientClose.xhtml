@@ -37,9 +37,13 @@
             }
         </style>
         <script language="JavaScript" type="text/JavaScript">
-            document.onkeydown = function TabReplace() {
+            function KeyDown() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                    if (event.srcElement.id == 'inputform:cusnum') {
+                        document.forms['inputform']['inputform:btns'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
                 }
             }
         </script>
@@ -54,18 +58,17 @@
                         <h:panelGrid columns="2" cellspacing="5"
                                      columnClasses="col-label,col-input">
                             <h:outputLabel value="客户号:" style="font-weight: bold"/>
-                            <p:inputText required="true" size="25"
-                                         requiredMessage="客户号不能为空。"
-                                         id="cusnum" onkeydown="KeyDown()"
-                                         value="#{clientAction.m8002.CUSIDT}"/>
+                            <p:inputText required="true" size="25" requiredMessage="客户号不能为空。"
+                                         id="cusnum" value="#{clientAction.m8002.CUSIDT}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:110px;" value="客户信息查询"
-                                             action="#{clientAction.onQryUpdateCus()}" ajax="true"
-                                             update="msgs,panel,dataPanel">
+                                             action="#{clientAction.onQryCus()}" ajax="true"
+                                             update="msgs,panel,dataPanel" id="query">
                             </p:commandButton>
-                            <p:commandButton style="width:110px;" value="确认关闭"
+                            <p:commandButton style="width:110px;" value="确认关闭" id="del"
                                              disabled="#{!clientAction.closeable}"
                                              action="#{clientAction.onClose}" ajax="true"
                                              update="msgs,panel,dataPanel">
@@ -144,10 +147,26 @@
                         <h:outputText value="#{clientAction.t004.REGADD}"/>
                         <h:outputLabel value="注册日期:"/>
                         <h:outputText value="#{clientAction.t004.REGDAT}"/>
-
-
                     </h:panelGrid>
                 </p:panel>
+                <p:fieldset style="margin-top: 18px">
+                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="部门号:"/>
+                        <h:outputText value="#{clientAction.t001.ORGIDT}"/>
+                        <h:outputLabel value="机构号:"/>
+                        <h:outputText value="#{clientAction.t001.DEPNUM}"/>
+                        <h:outputLabel value="客户号:"/>
+                        <h:outputText value="#{clientAction.t001.CUSIDT}"/>
+                        <h:outputLabel value="客户名称:"/>
+                        <h:outputText value="#{clientAction.t001.CUSNAM}"/>
+                        <h:outputLabel value="注销日期:"/>
+                        <h:outputText value="#{clientAction.t001.CLSDAT}"/>
+                        <h:outputLabel value="操作员:"/>
+                        <h:outputText value="#{clientAction.t001.AMDTLR}"/>
+                    </h:panelGrid>
+                </p:fieldset>
             </h:form>
         </div>
     </ui:define>
