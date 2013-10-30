@@ -47,6 +47,9 @@ public class PdfPrintService {
         printPdfTable(table);
     }
 
+    // 同时打印传票和定期存款单
+
+    // 打印传票
     public void printVch(String title, String watnum, String vchno, String txndat,
                          String txncde, String txntim, String bankno, String termid,
                          String abstra, List<Vch> vchList) throws IOException, DocumentException {
@@ -56,26 +59,26 @@ public class PdfPrintService {
         Font headFont2 = new Font(bfChinese, 10, Font.NORMAL);// 设置字体大小
         for (Vch vch : vchList) {
             String row = StringPad.pad4ChineseToByteLength(true, vch.getDEBACT(), 22, " ") +
-                    StringPad.pad4ChineseToByteLength(false, "    " + vch.getDEBAMT(), 32, " ") +
-                    StringPad.pad4ChineseToByteLength(false, vch.getCREACT(), 26, " ") +  vch.getCREAMT();
+                    StringPad.pad4ChineseToByteLength(false, "    " + vch.getDEBAMT(), 22, " ") +
+                    StringPad.pad4ChineseToByteLength(false, vch.getCREACT(), 22, " ") + vch.getCREAMT();
             cell = new PdfPCell(new Paragraph(row, headFont2));
             cell.setBorder(0);
-            cell.setFixedHeight(12);//单元格高度
+            cell.setFixedHeight(15);//单元格高度
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             table.addCell(cell);
         }
-       String vchAbstract = StringPad.pad4ChineseToByteLength(true, "摘要：" + abstra, 42, " ");
+        String vchAbstract = StringPad.pad4ChineseToByteLength(true, "摘要：" + abstra, 62, " ");
         cell = new PdfPCell(new Paragraph(vchAbstract, headFont2));
         cell.setBorder(0);
-        cell.setFixedHeight(12);//单元格高度
+        cell.setFixedHeight(15);//单元格高度
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         table.addCell(cell);
-        String lastrow = StringPad.pad4ChineseToByteLength(false, "行号：" + bankno, 12, " ") +
-                StringPad.pad4ChineseToByteLength(false, "终端号：" + termid, 12, " ") +
-                StringPad.pad4ChineseToByteLength(false, "复核：" , 12, " ") + "经办:";
+        String lastrow = StringPad.pad4ChineseToByteLength(false, "        行号：" + bankno, 32, " ") +
+                StringPad.pad4ChineseToByteLength(false, "终端号：" + termid, 24, " ") +
+                StringPad.pad4ChineseToByteLength(false, "复核：", 20, " ") + "经办：";
         cell = new PdfPCell(new Paragraph(lastrow, headFont2));
         cell.setBorder(0);
-        cell.setFixedHeight(12);//单元格高度
+        cell.setFixedHeight(15);//单元格高度
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         table.addCell(cell);
         printPdfTable(table);
@@ -102,18 +105,18 @@ public class PdfPrintService {
         table.setLockedWidth(false);// 设置表格的宽度固定
         table.getDefaultCell().setBorder(0);//设置表格默认为无边框
         BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        Font headFont1 = new Font(bfChinese, 8, Font.BOLD);// 设置字体大小
+        Font headFont1 = new Font(bfChinese, 10, Font.NORMAL);// 设置字体大小
 //        String[] labels = new String[]{"aaaaa", "bbbbb", "ccccc", "ddddd", "eeeee"};
         OperatorManager om = SkylineService.getOperatorManager();
-        String row1 = StringPad.pad4ChineseToByteLength(true, "交易码：", 20, " ") + txncde +
-                StringPad.pad4ChineseToByteLength(true, "流水号:", 70, " ") + watnum;
-        String row2 = StringPad.pad4ChineseToByteLength(true, "交易时间：", 20, " ") + txntim +
-                StringPad.pad4ChineseToByteLength(true, "柜员号:", 70, " ") + om.getOperatorId();
+        String row1 = StringPad.pad4ChineseToByteLength(true, "交易代码：", 15, " ") + txncde + "  " +
+                StringPad.pad4ChineseToByteLength(true, "流水号：", 60, " ") + watnum;
+        String row2 = StringPad.pad4ChineseToByteLength(true, "交易时间：", 15, " ") + txntim +
+                StringPad.pad4ChineseToByteLength(true, "柜员号：", 60, " ") + om.getOperatorId();
         String row3 = StringPad.pad4ChineseToByteLength(true, title, 60, " ") +
-                StringPad.pad4ChineseToByteLength(true, "传票号:", 30, " ") + vchno;
-        String row4 = StringPad.pad4ChineseToByteLength(true, "日期：" + txndat, 90, " ");
-        String row5 = StringPad.pad4ChineseToByteLength(true, "借DR", 20, " ") +
-                StringPad.pad4ChineseToByteLength(true, "贷CR", 30, " ");
+                StringPad.pad4ChineseToByteLength(true, "传票号：", 21, " ") + vchno;
+        String row4 = StringPad.pad4ChineseToByteLength(true, "记账日：" + txndat, 89, " ");
+        String row5 = StringPad.pad4ChineseToByteLength(true, "借DR", 15, " ") +
+                StringPad.pad4ChineseToByteLength(true, "贷CR", 37, " ");
         String[] labels = new String[]{row1, row2, row3, row4, row5};
 
         PdfPCell cell = null;
@@ -154,7 +157,7 @@ public class PdfPrintService {
         return table;
     }
 
-    // 打印表格
+    // 单页打印
     private void printPdfTable(PdfPTable table) throws DocumentException, IOException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
@@ -164,6 +167,7 @@ public class PdfPrintService {
         writer.setPageEvent(new PdfPageEventHelper());
         document.open();
         document.add(table);
+        writer.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
         document.close();
         response.reset();
         ServletOutputStream out = response.getOutputStream();

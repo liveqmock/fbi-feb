@@ -111,18 +111,25 @@ public class TimeDepositAction implements Serializable {
     public void onPrint() {
         try {
             List<Vch> vchs = new ArrayList<>();
-            /*for (T016.Bean bean : t016.getBeanList()) {
-                logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
-                Vch vch = new Vch();
-                BeanHelper.copyFields(bean, vch);
-                vchs.add(vch);
+            int printCnt = 0;
+            for (T016.Bean bean : t016.getBeanList()) {
+                if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
+                    printCnt++;
+                    logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
+                    Vch vch = new Vch();
+                    BeanHelper.copyFields(bean, vch);
+                    vchs.add(vch);
+                }
+            }
+            for (; printCnt < 11; printCnt++) {
+                vchs.add(new Vch());
             }
             pdfPrintService.printVch(
                     "       联机传票/复核（授权）清单", t016.getWATNUM(), t016.getVCHSET(), t016.getTRNDAT(),
-                    t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);*/
-            pdfPrintService.printVch(
-                    "       联机传票/复核（授权）清单", "wat","vchset", "20131025",
-                    "a271", "171539", "010", "", "", vchs);
+                    t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);
+//            pdfPrintService.printVch(
+//                    "       联机传票/复核（授权）清单", "wat","vchset", "20131025",
+//                    "a271", "171539", "010", "", "", vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
