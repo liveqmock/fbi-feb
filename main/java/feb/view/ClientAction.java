@@ -76,7 +76,7 @@ public class ClientAction implements Serializable {
         action = StringUtils.isEmpty(params.get("action")) ? "" : params.get("action");
         tellerid = SkylineService.getOperId();
         if ("detail".equals(action)) onQryCus();
-        //if ("query".equals(action)) onAllQuery();
+        if ("query".equals(action)) onAllQuery();
     }
 
     public String onCreate() {
@@ -116,33 +116,6 @@ public class ClientAction implements Serializable {
         }
     }
 
-    public String initQry() {
-        try {
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
-            if (formList != null && !formList.isEmpty()) {
-                dataList = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T003 t003 = (T003) form.getFormBody();
-                        dataList.addAll(t003.getBeanList());
-                    } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        //logger.info("查询完成");
-                    } else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                    }
-                }
-            }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }
-        } catch (Exception e) {
-            logger.error("查询失败", e);
-            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
-
     public String onQryCus() {
         try {
             m8002 = new M8002(cusidt);
@@ -169,28 +142,41 @@ public class ClientAction implements Serializable {
     public String onAllQuery() {
             try {
                 m8002 = new M8002(cusidt, cusnam, pastyp, passno, cusidx, legbdy, relcus);
-                if (cusnam != "" && passno == "" && pastyp == "" && cusidx == "" && legbdy == "" && relcus == "") {
+                if (!cusnam.equals("")  && passno.equals("") && pastyp.equals("") &&
+                        cusidx.equals("") && legbdy.equals("")  && relcus.equals("")) {
                     m8002.setINPFLG("6");
-                } else if (pastyp != "" && passno == "" && cusnam == "" && cusidx == "" && legbdy == "" && relcus == "") {
+                } else if (!pastyp.equals("") && !passno.equals("") && cusnam.equals("") &&
+                        cusidx.equals("") && legbdy.equals("") && relcus.equals("")) {
                     m8002.setINPFLG("2");
-                } else if (cusidx != "" && cusnam == "" && passno == "" && pastyp == "" && legbdy == "" && relcus == "") {
+                } else if (!cusidx.equals("") && cusnam.equals("") && passno.equals("") &&
+                        pastyp.equals("") && legbdy.equals("") && relcus.equals("")) {
                     m8002.setINPFLG("3");
-                } else if (legbdy != "" && cusnam == "" && passno == "" && pastyp == "" && cusidx == "" && relcus == "") {
+                } else if (!legbdy.equals("") && cusnam.equals("") && passno.equals("") &&
+                        pastyp.equals("") && cusidx.equals("") && relcus.equals("")) {
                     m8002.setINPFLG("4");
-                } else if (relcus != "" && cusnam == "" && passno == "" && pastyp == "" && cusidx == "" && legbdy == "") {
+                } else if (!relcus.equals("") && cusnam.equals("") && passno.equals("") &&
+                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") ) {
                     m8002.setINPFLG("5");
+                } else if (!cusidt.equals("")&&relcus.equals("") && cusnam.equals("") && passno.equals("") &&
+                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") ) {
+                    m8002.setINPFLG("1");
                 } else {
-                    MessageUtil.addWarn("没有这种组合" );
+                    MessageUtil.addWarn("没有这种组合，请检查输入项。" );
                     return null;
                 }
                 List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
                 if (formList != null && !formList.isEmpty()) {
                     dataList = new ArrayList<>();
+                    List list = new ArrayList();
                     for (SOFForm form : formList) {
                         if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                             T003 t003 = (T003) form.getFormBody();
                             dataList.addAll(t003.getBeanList());
-                        } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        }else if ("T004".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                            T004 t004 = (T004) form.getFormBody();
+                            list.add(t004);
+                            dataList.addAll(list);
+                        }else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                             //logger.info("查询完成");
                         } else {
                             logger.info(form.getFormHeader().getFormCode());
@@ -202,7 +188,7 @@ public class ClientAction implements Serializable {
                     MessageUtil.addWarn("没有查询到数据。");
                 }
             } catch (Exception e) {
-                //logger.error("查询失败", e);
+                logger.error("查询失败", e);
                 MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
             }
         return null;
@@ -213,9 +199,8 @@ public class ClientAction implements Serializable {
     }
 
     public String onBack() {
-        //return "clientAllQry?faces-redirect=true&action=query";
-        dataList.addAll(tmpList);
         return "clientAllQry";
+        //return "clientAllQry?faces-redirect=true&action=query";
     }
 
     public String onClose() {

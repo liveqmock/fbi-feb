@@ -51,20 +51,12 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:focus for="cusnam"/>
+                <p:focus for="cusidt"/>
                 <p:messages id="msgs" showDetail="false" showSummary="true"/>
                 <p:fieldset id="panel">
-                    <!--<h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
-                        <h:panelGroup columns="2">
-                            <p:spacer width="30px" height="5"/>
-                            <h:outputLabel value="查询形式:   " style="font-weight: bold"/>
-                            <p:inputText id="inpflg" size="25" value="#{clientAction.inpflg}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                        </h:panelGroup>
-                    </h:panelGrid>-->
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
-                        <h:panelGrid columns="6" cellspacing="5"
-                                     columnClasses="col-label,col-input,col-label,col-input" style="width: 95%">
+                        <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                                     columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
                             <h:outputLabel value="客户名称:" style="font-weight: bold"/>
                             <p:inputText id="cusnam" size="25" value="#{clientAction.cusnam}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
@@ -74,7 +66,7 @@
                             <h:outputLabel value="证件号:" style="font-weight: bold"/>
                             <p:inputText id="passno" size="25" value="#{clientAction.passno}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户简名:" style="font-weight: bold"/>
+                            <h:outputLabel value="简名索引:" style="font-weight: bold"/>
                             <p:inputText id="cusidx" size="25" value="#{clientAction.cusidx}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="法人姓名:" style="font-weight: bold"/>
@@ -82,6 +74,9 @@
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="相关客户:" style="font-weight: bold"/>
                             <p:inputText id="relcus" size="25" value="#{clientAction.relcus}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                            <p:inputText id="cusidt" size="25" value="#{clientAction.cusidt}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
@@ -95,7 +90,7 @@
                 <br/>
                 <p:outputLabel
                         style="font-size: 12px !important;font-weight: bold;color: grey;"
-                        value="查询形式：2-输入证件种类、证件号码  3-输入客户简名索引  4-输入法人姓名  5-输入相关客户号  6-输入客户名称"/>
+                        value="查询形式：1-输入客户号 2-输入证件种类、证件号码  3-输入客户简名索引  4-输入法人姓名  5-输入相关客户号  6-输入客户名称"/>
                 <p:separator/>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
@@ -123,15 +118,12 @@
                     <p:column headerText="电话" style="text-align:left">
                         <h:outputText value="#{record.TELNUM}"/>
                     </p:column>
-                    <p:column headerText="系统标志" style="text-align:left">
-                        <h:outputText value="#{record.SYSIDT}"/>
-                    </p:column>
+
                     <p:column headerText="操作" style="text-align:center">
                         <p:commandLink value="详细" immediate="true" ajax="false" action="#{clientAction.onClick()}"
                                        style="color: blue">
                             <!--<f:param value="#{clientAction.cusidt}" name="cusidt"/>-->
                             <f:param value="#{record.CUSIDT}" name="cusidt"/>
-                            <!--<f:param value="#{record.APCNAM}" name="apcnam"/>-->
                             <f:param value="detail" name="action"/>
                         </p:commandLink>
                     </p:column>
