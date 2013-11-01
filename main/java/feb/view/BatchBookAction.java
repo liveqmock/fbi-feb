@@ -44,6 +44,14 @@ public class BatchBookAction implements Serializable {
     private String setseq;//套内序号
     private String tlrnum;//柜员号
     private String totnum;//总笔数
+    //--------------------------------------
+    private String actnum;//ACTNUM账号
+    private String txnamt;//TXNAMT金额
+    private String rvslbl;//RVSLBL冲正标志
+    private String valdat;//VALDAT起息日
+    private String anacde;//ANACDE统计码
+    private String furinf;//FURINF摘要
+    //--------------------------------------
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
     private T898.Bean[] selectedRecords;
@@ -59,13 +67,15 @@ public class BatchBookAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
+
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
         onBatchQry();  // 初始化查询
         initAddBat();
     }
-   /*
-    * String date = new SimpleDateFormat("yyyyMMdd").format(new Date())
-    */
+
+    /*
+     * String date = new SimpleDateFormat("yyyyMMdd").format(new Date())
+     */
     //录入初始化
     public void initAddBat() {
         m8401.setPRDCDE("VCH1");
@@ -97,7 +107,7 @@ public class BatchBookAction implements Serializable {
                         }
                         //tlrnum = t898.getFormBodyHeader().getTLRNUM();//柜员号
                         vchset = t898.getFormBodyHeader().getVCHSET();
-                        //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
+                        totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
@@ -117,14 +127,15 @@ public class BatchBookAction implements Serializable {
 
     //传票录入
     public String onCreateNewRecord() {
-        String tmp = "";
-        if (allList.size()==1&&dataList.size()==0){
+        int tmp = Integer.parseInt(totnum) + 1;
+        String str = tmp + "";
+        /*if (allList.size()==1&&dataList.size()==0){
             tmp = allList.size()+"";
         }else {
             tmp = allList.size()+1+"";
-        }
+        }*/
         try {
-            m8401.setSETSEQ(tmp);
+            m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
@@ -168,7 +179,9 @@ public class BatchBookAction implements Serializable {
             m8402.setTLRNUM(tlrnum);
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equalsIgnoreCase(formcode)) {
+            if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
+                onBatchQry();
+                initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -177,8 +190,6 @@ public class BatchBookAction implements Serializable {
             logger.error("8401传票套平失败", e);
             MessageUtil.addError("8401传票套平失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        onBatchQry();
-        initAddBat();
         return null;
     }
 
@@ -190,6 +201,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
+                onBatchQry();
                 MessageUtil.addInfo("套票删除成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -198,7 +210,7 @@ public class BatchBookAction implements Serializable {
             logger.error("套票删除失败", e);
             MessageUtil.addError("套票删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        onBatchQry();
+
         return null;
     }
 
@@ -210,15 +222,40 @@ public class BatchBookAction implements Serializable {
         return "batchBookMng";
     }
 
+    public String onModifyRecord() {
+        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        setseq = param.get("setseq");
+        // - - - - - - - - - - - - - - - - - -
+        m8401.setACTNUM(param.get("actnum"));
+        m8401.setTXNAMT(param.get("txnamt"));
+        m8401.setRVSLBL(param.get("rvslbl"));
+        m8401.setOPNDA2(param.get("valdat"));
+        m8401.setANACDE(param.get("anacde"));
+        m8401.setFURINF(param.get("furinf"));
+        // - - - - - - - - - - - - - - - - - -
+        M8409 m8409 = new M8409(vchset, setseq);
+        m8409.setFUNCDE("1");    //0套删除 1 单笔删除
+        SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+        String formcode = form.getFormHeader().getFormCode();
+        if ("W001".equalsIgnoreCase(formcode)) {
+        } else {
+            MessageUtil.addErrorWithClientID("msgs", formcode);
+        }
+        onModifyVchset();
+        flushTotalData();
+        return null;
+    }
+
     //套号修改
-    public String onBoolVchset(){
-        if (this.dataList.size()>0){
+    public String onBoolVchset() {
+        if (this.dataList.size() > 0) {
             MessageUtil.addError("存在未套平传票...");
-        }else {
+        } else {
             onModifyVchset();
         }
-        return  null;
+        return null;
     }
+
     public String onModifyVchset() {
         try {
             M85a2 m85a2 = new M85a2(vchset);
@@ -240,7 +277,7 @@ public class BatchBookAction implements Serializable {
                         //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
                     } else {
-                       if ("M319".equals(form.getFormHeader().getFormCode())) {
+                        if ("M319".equals(form.getFormHeader().getFormCode())) {
                             onBatchQry();
                         }
                         logger.info(form.getFormHeader().getFormCode());
@@ -273,7 +310,7 @@ public class BatchBookAction implements Serializable {
             logger.error("套票单笔删除失败", e);
             MessageUtil.addError("套票单笔删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        onBatchQry();
+        onModifyVchset();
         flushTotalData();
         return null;
     }
@@ -313,7 +350,7 @@ public class BatchBookAction implements Serializable {
             logger.error("多笔删除失败", e);
             MessageUtil.addError("多笔删除异常.");
         }
-        onBatchQry();
+        onModifyVchset();
         flushTotalData();
         return null;
     }
@@ -438,6 +475,54 @@ public class BatchBookAction implements Serializable {
 
     public void setTotnum(String totnum) {
         this.totnum = totnum;
+    }
+
+    public String getActnum() {
+        return actnum;
+    }
+
+    public void setActnum(String actnum) {
+        this.actnum = actnum;
+    }
+
+    public String getTxnamt() {
+        return txnamt;
+    }
+
+    public void setTxnamt(String txnamt) {
+        this.txnamt = txnamt;
+    }
+
+    public String getRvslbl() {
+        return rvslbl;
+    }
+
+    public void setRvslbl(String rvslbl) {
+        this.rvslbl = rvslbl;
+    }
+
+    public String getValdat() {
+        return valdat;
+    }
+
+    public void setValdat(String valdat) {
+        this.valdat = valdat;
+    }
+
+    public String getAnacde() {
+        return anacde;
+    }
+
+    public void setAnacde(String anacde) {
+        this.anacde = anacde;
+    }
+
+    public String getFurinf() {
+        return furinf;
+    }
+
+    public void setFurinf(String furinf) {
+        this.furinf = furinf;
     }
 }
 

@@ -310,6 +310,18 @@
                 </p:column>
 
                 <p:column headerText="操作" style="text-align:center">
+                    <h:commandLink immediate="true" value="修改" style="color: blue" ajax="false"
+                                   action="#{batchBookAction.onModifyRecord()}">
+                        <f:param value="#{batchBookAction.vchset}" name="vchset"/>
+                        <f:param value="#{record.SETSEQ}" name="setseq"/>
+                        <f:param value="#{record.ACTNUM}" name="actnum"/>
+                        <f:param value="#{record.TXNAMT}" name="txnamt"/>
+                        <f:param value="#{record.RVSLBL}" name="rvslbl"/>
+                        <f:param value="#{record.VALDAT}" name="valdat"/>
+                        <f:param value="#{record.ANACDE}" name="anacde"/>
+                        <f:param value="#{record.FURINF}" name="furinf"/>
+                    </h:commandLink>
+                    <p:spacer width="10px;"/>
                     <h:commandLink immediate="true" value="删除" style="color: blue" ajax="false"
                                    action="#{batchBookAction.onDeleteRecord()}">
                         <f:param value="#{batchBookAction.vchset}" name="vchset"/>
