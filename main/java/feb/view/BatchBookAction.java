@@ -222,12 +222,15 @@ public class BatchBookAction implements Serializable {
         return "batchBookMng";
     }
 
-    public String onModifyRecord() {
+    public String onModifyRecord() { //套票单笔修改 =》单笔删除再添加
         Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         setseq = param.get("setseq");
+        txnamt = param.get("txnamt");
+        int d = (int)(Double.parseDouble(txnamt)*100);
+        String str = d+"";
         // - - - - - - - - - - - - - - - - - -
         m8401.setACTNUM(param.get("actnum"));
-        m8401.setTXNAMT(param.get("txnamt"));
+        m8401.setTXNAMT(str);
         m8401.setRVSLBL(param.get("rvslbl"));
         m8401.setOPNDA2(param.get("valdat"));
         m8401.setANACDE(param.get("anacde"));
