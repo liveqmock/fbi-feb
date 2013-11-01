@@ -143,19 +143,19 @@ public class ClientAction implements Serializable {
             try {
                 m8002 = new M8002(cusidt, cusnam, pastyp, passno, cusidx, legbdy, relcus);
                 if (!cusnam.equals("")  && passno.equals("") && pastyp.equals("") &&
-                        cusidx.equals("") && legbdy.equals("")  && relcus.equals("")) {
+                        cusidx.equals("") && legbdy.equals("")  && relcus.equals("")&&cusidt.equals("")) {
                     m8002.setINPFLG("6");
                 } else if (!pastyp.equals("") && !passno.equals("") && cusnam.equals("") &&
-                        cusidx.equals("") && legbdy.equals("") && relcus.equals("")) {
+                        cusidx.equals("") && legbdy.equals("") && relcus.equals("")&&cusidt.equals("")) {
                     m8002.setINPFLG("2");
                 } else if (!cusidx.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && legbdy.equals("") && relcus.equals("")) {
+                        pastyp.equals("") && legbdy.equals("") && relcus.equals("")&&cusidt.equals("")) {
                     m8002.setINPFLG("3");
                 } else if (!legbdy.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && cusidx.equals("") && relcus.equals("")) {
+                        pastyp.equals("") && cusidx.equals("") && relcus.equals("")&&cusidt.equals("")) {
                     m8002.setINPFLG("4");
                 } else if (!relcus.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") ) {
+                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") &&cusidt.equals("")) {
                     m8002.setINPFLG("5");
                 } else if (!cusidt.equals("")&&relcus.equals("") && cusnam.equals("") && passno.equals("") &&
                         pastyp.equals("") && cusidx.equals("") && legbdy.equals("") ) {
@@ -199,8 +199,8 @@ public class ClientAction implements Serializable {
     }
 
     public String onBack() {
-        return "clientAllQry";
-        //return "clientAllQry?faces-redirect=true&action=query";
+        //return "clientAllQry";
+        return "clientAllQry?faces-redirect=true&action=query";
     }
 
     public String onClose() {
@@ -232,8 +232,7 @@ public class ClientAction implements Serializable {
                 if ("T004".equalsIgnoreCase(formcode)) {
                     t004 = (T004) form.getFormBody();
                     updateable = false;
-                    MessageUtil.addInfo("客户账户修改成功，账号：" +
-                            t004.getCUSIDT() + t004.getCUSNAM());
+                    MessageUtil.addInfo("客户账户修改成功，客户号：" + t004.getCUSIDT());
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
