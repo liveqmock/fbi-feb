@@ -7,6 +7,33 @@
 
 <ui:define name="head">
     <style type="text/css">
+        .col-label {
+            text-align: right;
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+
+        .col-input {
+            width: 150px;
+            font-size: 12px !important;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .col-label2 {
+            width: 150px;
+            font-size: 12px !important;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .col-input2 {
+            font-size: 12px !important;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+    <!--<style type="text/css">
         .datalist-noborder .ui-widget-content {
             border: none;
             color: #999999;
@@ -31,7 +58,7 @@
         .input-col-xl {
             width: 140px;
         }
-    </style>
+    </style>-->
     <script language="JavaScript" type="text/JavaScript">
         //<![CDATA[
         function KeyDown() {
@@ -62,18 +89,16 @@
                 }
             }
             if (event.keyCode == 38) {
-                if (event.srcElement.id == 'inputform:type') {
-                    document.forms['inputform']['inputform:actno'].focus();
-                } else if (event.srcElement.id == 'inputform:txnamt') {
-                    document.forms['inputform']['inputform:type'].focus();
-                } else if (event.srcElement.id == 'inputform:valdat') {
+                if (event.srcElement.id == 'inputform:txnamt') {
+                    document.forms['inputform']['inputform:actnum'].focus();
+                } else if (event.srcElement.id == 'inputform:rvslbl') {
                     document.forms['inputform']['inputform:txnamt'].focus();
+                } else if (event.srcElement.id == 'inputform:opnda2') {
+                    document.forms['inputform']['inputform:rvslbl'].focus();
                 } else if (event.srcElement.id == 'inputform:anacde') {
-                    document.forms['inputform']['inputform:valdat'].focus();
+                    document.forms['inputform']['inputform:opnda2'].focus();
                 } else if (event.srcElement.id == 'inputform:furinf') {
                     document.forms['inputform']['inputform:anacde'].focus();
-                } else if (event.srcElement.id == 'inputform:vchatt') {
-                    document.forms['inputform']['inputform:furinf'].focus();
                 }
             }
         }
@@ -157,9 +182,10 @@
             <p:focus for="actnum"/>
             <p:panel header="【传票录入】 当前套号:[#{batchBookAction.vchset}]" id="input">
                 <h:panelGrid id="addtable" columns="2" style="width: 100%">
-                    <h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
-                                 columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
-
+                    <!--<h:panelGrid width="90%" style="padding-top:5px;padding-bottom:2px;font-weight: bold" columns="6" cellspacing="2"
+                                 columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">-->
+                    <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="帐号* :" for="actnum"/>
                         <p:inputMask autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
                                      required="true" requiredMessage="必须输入14位账号" onkeydown="KeyDown()"
@@ -169,6 +195,7 @@
                         <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
                                      required="true" onkeydown="KeyDown()" onfocus="this.select()" style="text-align:right">
                             <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
+                            <p:ajax event="blur"  listener="#{batchBookAction.onChange}" update="txnamt"/>
                         </h:inputText>
                         <h:outputLabel value="冲正标志* :" for="rvslbl"/>
                         <p:inputMask autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
@@ -197,9 +224,9 @@
                         </p:commandButton>
                     </h:panelGrid><!--display:none-->
                 </h:panelGrid>
-                <p:separator/>
-                <h:panelGrid id="show" columns="8" columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
-                    input-col-s,input-col-xl,input-col-l,input-col-xl">
+                <p:separator/><!--columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
+                input-col-s,input-col-xl,input-col-l,input-col-xl"-->
+                <h:panelGrid id="show" style="width: 80%" columns="8" columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,col-label2, col-input2">
                     <h:outputLabel value="贷方合计 :"/>
                     <h:inputText id="creditamt" value="#{batchBookAction.totalCreditAmt}" disabled="true"
                                  style="text-align:right">

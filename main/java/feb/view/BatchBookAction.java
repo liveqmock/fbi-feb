@@ -67,12 +67,16 @@ public class BatchBookAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
-
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
         onBatchQry();  // 初始化查询
         initAddBat();
     }
 
+    public void onChange(){
+        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        txnamt = m8401.getTXNAMT();
+        m8401.setTXNAMT(txnamt);
+    }
     /*
      * String date = new SimpleDateFormat("yyyyMMdd").format(new Date())
      */
@@ -129,11 +133,6 @@ public class BatchBookAction implements Serializable {
     public String onCreateNewRecord() {
         int tmp = Integer.parseInt(totnum) + 1;
         String str = tmp + "";
-        /*if (allList.size()==1&&dataList.size()==0){
-            tmp = allList.size()+"";
-        }else {
-            tmp = allList.size()+1+"";
-        }*/
         try {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
@@ -141,16 +140,16 @@ public class BatchBookAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
                 //MessageUtil.addInfo("传票录入成功：");
-            } else {
+                onModifyVchset();
+                initAddBat();
+                flushTotalData();
+            }else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
             logger.error("8401传票录入失败", e);
             MessageUtil.addError("8401传票录入失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        onBatchQry();
-        initAddBat();
-        flushTotalData();
         return null;
     }
 
@@ -226,8 +225,24 @@ public class BatchBookAction implements Serializable {
         Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         setseq = param.get("setseq");
         txnamt = param.get("txnamt");
-        int d = (int)(Double.parseDouble(txnamt)*100);
-        String str = d+"";
+        M8409 m8409 = new M8409(vchset, setseq);
+        m8409.setFUNCDE("1");    //0套删除 1 单笔删除
+        SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+        String formcode = form.getFormHeader().getFormCode();
+        if ("W001".equalsIgnoreCase(formcode)) {
+            //onModifyVchset();
+            //flushTotalData();
+        } else {
+            MessageUtil.addErrorWithClientID("msgs", formcode);
+        }
+        double d = Double.parseDouble(txnamt)*100;
+        String str = "";
+        if (d>2147483646||d<-2147483645){
+            str = d+"";  //前台会用科学计数法表示2.147483647E9
+        }else {
+            int i = (int)(d);
+            str = i+"";
+        }
         // - - - - - - - - - - - - - - - - - -
         m8401.setACTNUM(param.get("actnum"));
         m8401.setTXNAMT(str);
@@ -236,16 +251,6 @@ public class BatchBookAction implements Serializable {
         m8401.setANACDE(param.get("anacde"));
         m8401.setFURINF(param.get("furinf"));
         // - - - - - - - - - - - - - - - - - -
-        M8409 m8409 = new M8409(vchset, setseq);
-        m8409.setFUNCDE("1");    //0套删除 1 单笔删除
-        SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
-        String formcode = form.getFormHeader().getFormCode();
-        if ("W001".equalsIgnoreCase(formcode)) {
-        } else {
-            MessageUtil.addErrorWithClientID("msgs", formcode);
-        }
-        onModifyVchset();
-        flushTotalData();
         return null;
     }
 
@@ -277,7 +282,7 @@ public class BatchBookAction implements Serializable {
                         }
                         tlrnum = t898.getFormBodyHeader().getTLRNUM();
                         vchset = t898.getFormBodyHeader().getVCHSET();
-                        //totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
+                        totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
                     } else {
                         if ("M319".equals(form.getFormHeader().getFormCode())) {
