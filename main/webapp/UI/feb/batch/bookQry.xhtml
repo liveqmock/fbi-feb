@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:cusidt') {
+                        //document.forms['inputform']['inputform:query'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:focus for="cusnam"/>
+                <p:messages id="msgs" showDetail="false" showSummary="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                                     columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
+                            <h:outputLabel value="传票号:" style="font-weight: bold"/>
+                            <p:inputText id="cusnam" size="25" value="#{bookAction.vchset}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="柜员号:" style="font-weight: bold"/>
+                            <p:inputText id="pastyp" size="25" value="#{bookAction.tlrnum}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
+                            <p:commandButton style="width:110px;" value="查询传票信息"
+                                             action="#{bookAction.onVchsetQry()}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="查询形式：1-输入客户号 2-输入证件种类、证件号码  3-输入客户简名索引  4-输入法人姓名  5-输入相关客户号  6-输入客户名称"/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{bookAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+                    <p:column headerText="客户号" style="text-align:center">
+                        <h:outputText value="#{record.CUSIDT}"/>
+                    </p:column>
+
+                    <p:column headerText="核算码" style="text-align:left">
+                        <h:outputText value="#{record.APCODE}"/>
+                    </p:column>
+                    <p:column headerText="币别" style="text-align:left">
+                        <h:outputText value="#{record.CURCDE}"/>
+                    </p:column>
+                    <p:column headerText="传票套号" style="text-align:left">
+                        <h:outputText value="#{record.VCHSET}"/>
+                    </p:column>
+                    <p:column headerText="套内序号" style="text-align:left">
+                        <h:outputText value="#{record.SETSEQ}"/>
+                    </p:column>
+                    <p:column headerText="借方发生额" style="text-align:left">
+                        <h:outputText value="#{record.DRBALA}"/>
+                    </p:column>
+                    <p:column headerText="贷方发生额" style="text-align:left">
+                        <h:outputText value="#{record.CRBALA}"/>
+                    </p:column>
+                    <p:column headerText="起息日期" style="text-align:left">
+                        <h:outputText value="#{record.VALDAT}"/>
+                    </p:column>
+                    <p:column headerText="冲账标志" style="text-align:left">
+                        <h:outputText value="#{record.RVSLBL}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

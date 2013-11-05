@@ -187,15 +187,16 @@
                     <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="帐号* :" for="actnum"/>
-                        <p:inputMask autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
-                                     required="true" requiredMessage="必须输入14位账号" onkeydown="KeyDown()"
-                                     onfocus="this.select()" mask="99999999999999">
-                        </p:inputMask>
+                        <p:inputText autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
+                                     onkeydown="KeyDown()" onfocus="this.select()"
+                                     required="true" requiredMessage="请正确输入账号" >
+                        </p:inputText>
                         <h:outputLabel value="交易金额* :" for="txnamt"/>
                         <h:inputText autocomplete="off" id="txnamt" value="#{batchBookAction.m8401.TXNAMT}"
-                                     required="true" onkeydown="KeyDown()" onfocus="this.select()" style="text-align:right">
+                                     onkeydown="KeyDown()" onfocus="this.select()" style="text-align:right"
+                                     required="true" requiredMessage="请正确输入金额">
                             <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
-                            <p:ajax event="blur"  listener="#{batchBookAction.onChange}" update="txnamt"/>
+                            <p:ajax event="blur" listener="#{batchBookAction.txnEvent}" update="msgs" />
                         </h:inputText>
                         <h:outputLabel value="冲正标志* :" for="rvslbl"/>
                         <p:inputMask autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
@@ -249,6 +250,7 @@
                     </h:inputText>
                 </h:panelGrid>
             </p:panel>
+
         </h:form>
         <h:form id="dtform" style="margin-top: 10px">
             <p:menubar>
@@ -311,7 +313,7 @@
                 <p:column headerText="序号" style="text-align:center" sortBy="#{record.SETSEQ}">
                     <h:outputText id="setseq" value="#{record.SETSEQ}"/>
                 </p:column>
-                <p:column headerText="帐号" style="text-align:center">
+                <p:column headerText="帐号" style="text-align:center" sortBy="#{record.ACTNUM}">
                     <h:outputText value="#{record.ACTNUM}"/>
                 </p:column>
                 <p:column headerText="金额" style="text-align:center" sortBy="#{record.TXNAMT}">
@@ -319,7 +321,7 @@
                         <f:convertNumber type="number" pattern="#,###,###,###,##0.00"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="冲正标志" style="text-align:center">
+                <p:column headerText="冲正标志" style="text-align:center" sortBy="#{record.RVSLBL}">
                     <h:outputText value="#{record.RVSLBL}"/>
                 </p:column>
                 <p:column headerText="冲补/起息日" style="text-align:center">

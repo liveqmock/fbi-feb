@@ -72,11 +72,6 @@ public class BatchBookAction implements Serializable {
         initAddBat();
     }
 
-    public void onChange(){
-        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        txnamt = m8401.getTXNAMT();
-        m8401.setTXNAMT(txnamt);
-    }
     /*
      * String date = new SimpleDateFormat("yyyyMMdd").format(new Date())
      */
@@ -89,6 +84,27 @@ public class BatchBookAction implements Serializable {
         m8401.setRVSLBL("12");
         m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
     }
+
+    //-------------------event判断----------------------------
+    public String actEvent() {
+        if (m8401.getACTNUM().length()==14&&m8401.getACTNUM().matches("[0-9]+")){
+            return null;
+        }else {
+            logger.info("请正确输入14位账号");
+            MessageUtil.addWarn("请正确输入14位账号");
+        }
+        return null;
+    }
+    public String txnEvent() {
+        if (m8401.getTXNAMT().matches("^[-+]?([0-9]+)")){
+            return null;
+        }else {
+            logger.info("金额不合法");
+            MessageUtil.addWarn("金额不合法，只包含数字");
+        }
+        return null;
+    }
+    //-------------------event判断----------------------------
 
     //套票查询
     public String onBatchQry() {
@@ -143,7 +159,7 @@ public class BatchBookAction implements Serializable {
                 onModifyVchset();
                 initAddBat();
                 flushTotalData();
-            }else {
+            } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
@@ -235,13 +251,13 @@ public class BatchBookAction implements Serializable {
         } else {
             MessageUtil.addErrorWithClientID("msgs", formcode);
         }
-        double d = Double.parseDouble(txnamt)*100;
+        double d = Double.parseDouble(txnamt) * 100;
         String str = "";
-        if (d>2147483646||d<-2147483645){
-            str = d+"";  //前台会用科学计数法表示2.147483647E9
-        }else {
-            int i = (int)(d);
-            str = i+"";
+        if (d > 2147483646 || d < -2147483645) {
+            str = d + "";  //前台会用科学计数法表示2.147483647E9
+        } else {
+            int i = (int) (d);
+            str = i + "";
         }
         // - - - - - - - - - - - - - - - - - -
         m8401.setACTNUM(param.get("actnum"));
@@ -257,6 +273,7 @@ public class BatchBookAction implements Serializable {
     //套号修改
     public String onBoolVchset() {
         if (this.dataList.size() > 0) {
+            onBatchQry();
             MessageUtil.addError("存在未套平传票...");
         } else {
             onModifyVchset();
@@ -532,6 +549,7 @@ public class BatchBookAction implements Serializable {
     public void setFurinf(String furinf) {
         this.furinf = furinf;
     }
+
 }
 
 
