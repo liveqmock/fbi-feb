@@ -45,24 +45,28 @@
         <div class="entry">
             <h:form id="form">
                 <p:messages id="msgs" showSummary="true" showDetail="true"/>
-                <!--<p:focus for="vchtyp"/>-->
+                <p:focus for="vchtyp"/>
                 <p:fieldset>
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                            <h:outputLabel value="凭证代号："/>
+                            <h:outputLabel value="凭证代号:"/>
                             <p:inputText id="vchtyp" value="#{actcimAction.cim.VCHTYP}" required="true"
                                          requiredMessage="必须输入凭证代号"/>
-                            <h:outputLabel value="领入/交出："/>
-                            <p:inputText value="#{actcimAction.cim.IOFLAG}" required="true"
-                                         requiredMessage="必须输入领入/交出"/>
+                            <h:outputLabel value="领入/交出:"/>
+
+                            <p:selectOneMenu value="#{actcimAction.cim.IOFLAG}" style="width: 131px;" required="true"
+                                             requiredMessage="必须输入领入/交出">
+                                <f:selectItems value="#{selectEnumCimFieldAction.ctfStmipoItems}"/>
+                            </p:selectOneMenu>
+
                             <h:outputLabel value="起始号："/>
                             <p:inputText value="#{actcimAction.cim.BEGNUM}" required="true"
                                          requiredMessage="必须输入起始号"/>
                             <h:outputLabel value="终止号:"/>
                             <p:inputText value="#{actcimAction.cim.ENDNUM}" required="true"
                                          requiredMessage="必须输入终止号"/>
-                            <h:outputLabel value="数量："/>
+                            <h:outputLabel value="数量:"/>
                             <p:outputLabel value="#{actcimAction.cim.VCHCNT}"/>
 
 

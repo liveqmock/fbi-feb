@@ -34,8 +34,8 @@ public class Txnh830Action extends AbstractTxnAction {
         paramList.add(mh830.getORGIDT());
         paramList.add(mh830.getDEPNUM());
         paramList.add(mh830.getTXNTLR());
-
-
+//        termid = mh830.getTXNTLR();
+//        tellerid = mh830.getTXNTLR();
 
 
 

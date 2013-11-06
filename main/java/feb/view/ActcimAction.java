@@ -55,6 +55,7 @@ public class ActcimAction implements Serializable {
     private String vchcnt;
     private List<Mh830> addcimList = new ArrayList<>();
     private List<T302.Bean> dataList = new ArrayList<>();
+    private List<T009.Bean> dataListPz = new ArrayList<>();
 //    private List<T009.Bean> dataListOne = new ArrayList<>();
 //    private List<?> data = new ArrayList<>();
 
@@ -65,76 +66,49 @@ public class ActcimAction implements Serializable {
         orgidt = "010";
         depnum = "60";
 
+
     }
     public String onAllQuery() {
         try {
-            if (allone.contentEquals("1")){
+//            if (allone.contentEquals("0")){
             Mh830 mh830 = new Mh830(vchtyp,allone,orgidt,depnum,txntlr);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("h830", mh830);
-            if (formList != null && !formList.isEmpty()) {
-//                dataListOne = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if ("T009".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        cimqry = (T009) form.getFormBody();
-//                        T009 t009 = (T009) form.getFormBody();
-//                        dataListOne.addAll(t009.getBeanList());
-//                        data = new ArrayList<>(dataListOne);
+            List<SOFForm> formDemo = null;
 
-                    }
-                    else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-                    }
-                }
-            }
-            if (cimqry == null) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }
+            if (allone.equals("1")&&vchtyp.equals("")){
+                MessageUtil.addError("单种查询必须输入凭证种类");
             }
             else {
-                   onAllT813Query();
-            }
-           /* if (DdataList == null || DdataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }*/
-        } catch (Exception e) {
-            logger.error("查询失败", e);
-            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
+                 if (formList != null && !formList.isEmpty()) {
+                        dataListPz = new ArrayList<>();
+                    for (SOFForm form : formList) {
 
-        return null;
-    }
-    public String onAllT813Query() {
-        try {
+                        if ("T009".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                            T009 t009 = (T009) form.getFormBody();
+                            dataListPz.addAll(t009.getBeanList());
 
-            Mh830 mh830= new Mh830(vchtyp,allone,orgidt,depnum,txntlr);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("h830", mh830);
-            if (formList != null && !formList.isEmpty()) {
-                dataList = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if ("T302".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T302 t302 = (T302) form.getFormBody();
 
-                        dataList.addAll(t302.getBeanList());
 
-//                        data = new ArrayList<>(dataList);
+                        }
+                        else {
+                            logger.info(form.getFormHeader().getFormCode());
+
+                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+                        }
                     }
-                    else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
+                if (cimqry == null) {
+                    MessageUtil.addWarn("没有查询到数据。");
                 }
             }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
+
         return null;
     }
-
 
     public String onDeal() {
         try {
@@ -306,4 +280,11 @@ public class ActcimAction implements Serializable {
         this.cim = cim;
     }
 
+    public List<T009.Bean> getDataListPz() {
+        return dataListPz;
+    }
+
+    public void setDataListPz(List<T009.Bean> dataListPz) {
+        this.dataListPz = dataListPz;
+    }
 }

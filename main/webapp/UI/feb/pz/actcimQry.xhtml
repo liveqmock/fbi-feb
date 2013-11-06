@@ -44,15 +44,18 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:focus for="allone"/>
                 <p:fieldset>
                     <h:panelGrid id="pg" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="是否单种:"/>
-                            <p:inputText id="allone" value="#{actcimAction.allone}" required="true"
-                                         requiredMessage="必须输入是否单种"/>
+
+                            <p:selectOneMenu id="allone" value="#{actcimAction.allone}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCimFieldAction.ctfStmaloItems}" required="true"
+                                               requiredMessage="必须输入是否单种"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="凭证种类:"/>
                             <p:inputText id="vchtyp" value="#{actcimAction.vchtyp}" maxlength="34"
                                        />
@@ -69,7 +72,7 @@
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="查询"
                                              action="#{actcimAction.onAllQuery}" ajax="true"
-                                             update="msgs,pg,btns,dt,dt1">
+                                             update="msgs,pg,btns,dt">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
@@ -86,26 +89,9 @@
                     </f:facet>
                 </p:ajaxStatus>
 
-                    <h:panelGrid id="dt1" columns="2" style="width: 100%;">
-                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
-                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
 
-                                >
-                            <h:outputLabel value="柜员号:"/>
-                            <p:outputLabel value="#{actcimAction.cimqry.TXNTLR}"/>
-                            <h:outputLabel value="凭证种类:"/>
-                            <p:outputLabel value="#{actcimAction.cimqry.VCHTYP}"/>
-                            <h:outputLabel value="凭证数量:"/>
-                            <p:outputLabel value="#{actcimAction.cimqry.VCHCNT}"/>
-                            <h:outputLabel value="凭证起号:"/>
-                            <p:outputLabel value="#{actcimAction.cimqry.BEGNUM}"/>
-                            <h:outputLabel value="凭证止号:"/>
-                            <p:outputLabel value="#{actcimAction.cimqry.ENDNUM}"/>
-                        </h:panelGrid>
-                    </h:panelGrid>
-
-
-                <p:dataTable id="dt" height="200"  value="#{actcimAction.dataList}"  var="record"
+                <p:separator/>
+                <p:dataTable id="dt" height="200"  value="#{actcimAction.dataListPz}"  var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
@@ -114,30 +100,16 @@
                         <h:outputText value="#{record.VCHTYP}"/>
                     </p:column>
 >
-                    <p:column headerText="上日结存数目" style="text-align:right">
-                        <h:outputText value="#{record.LWKBAL}"/>
+                    <p:column headerText="凭证数量" style="text-align:right">
+                        <h:outputText value="#{record.VCHCNT}"/>
                     </p:column>
-                    <p:column headerText="本日领取数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNAPP}"/>
+                    <p:column headerText="凭证起号" style="text-align:right">
+                        <h:outputText value="#{record.BEGNUM}"/>
                     </p:column>
-                    <p:column headerText="本日使用数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNUSE}"/>
+                    <p:column headerText="凭证止号" style="text-align:right">
+                        <h:outputText value="#{record.ENDNUM}"/>
                     </p:column>
-                    <p:column headerText="本日换折数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNCHG}"/>
-                    </p:column>
-                    <p:column headerText="本日作废数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNABD}"/>
-                    </p:column>
-                    <p:column headerText="本日挂失数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNLST}"/>
-                    </p:column>
-                    <p:column headerText="本日调出数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNOUT}"/>
-                    </p:column>
-                    <p:column headerText="本日结存数目" style="text-align:right">
-                        <h:outputText value="#{record.CRNBAL}"/>
-                    </p:column>
+
                 </p:dataTable>
 
             </h:form>

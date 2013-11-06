@@ -63,8 +63,11 @@
                                          requiredMessage="必须输入凭证名称"/>
 
                             <h:outputLabel value="是否有价证券:"/>
-                            <p:inputText value="#{actidmAction.addirt.SCTMAK}" required="true"
-                                         requiredMessage="必须输入是否有价证券"/>
+
+                            <p:selectOneMenu value="#{actidmAction.addirt.SCTMAK}" style="width: 131px;" required="true"
+                                             requiredMessage="必须输入是否有价证券">
+                                <f:selectItems value="#{selectEnumCimFieldAction.ctfStmsctItems}"/>
+                            </p:selectOneMenu>
 
                             <h:outputLabel value="凭证金额:"/>
                             <p:inputText value="#{actidmAction.addirt.VCHAMT}" required="true"

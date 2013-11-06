@@ -17,8 +17,15 @@ public class Mh830 extends MTia {
     public Mh830(){
 
     }
-    public Mh830(String VCHTYP,String ALLONE,String ORGIDT,String DEPNUM,String TXNTLR){
-        this.VCHTYP = VCHTYP;
+    public Mh830(String ALLONE,String ORGIDT,String DEPNUM,String TXNTLR){
+
+        this.ALLONE = ALLONE;
+        this.ORGIDT = ORGIDT;
+        this.DEPNUM = DEPNUM;
+        this.TXNTLR = TXNTLR;
+    }
+    public Mh830(String vchtyp,String ALLONE,String ORGIDT,String DEPNUM,String TXNTLR){
+        this.VCHTYP = vchtyp;
         this.ALLONE = ALLONE;
         this.ORGIDT = ORGIDT;
         this.DEPNUM = DEPNUM;

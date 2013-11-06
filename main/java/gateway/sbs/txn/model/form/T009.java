@@ -11,7 +11,30 @@ import java.util.List;
  *
  */
 public class T009 extends SOFFormBody {
+    private List<Bean> beanList = new ArrayList<Bean>();
 
+    @Override
+    public void assembleFields(int offset, byte[] buffer) {
+
+
+        int index = offset;
+        int beanLength = 45;
+        do {
+            Bean bean = new Bean();
+            bean.assembleFields(index, buffer);
+            if (!bean.VCHTYP.equals("")){
+                beanList.add(bean);
+            }
+
+            index += beanLength;
+        } while (index < buffer.length);
+    }
+
+    public List<Bean> getBeanList() {
+        return beanList;
+    }
+
+    public class Bean extends AssembleModel {
         {
             fieldTypes = new int[]{1, 1, 1, 1, 1};
             fieldLengths = new int[]{4, 2, 13, 13, 13};
@@ -66,7 +89,7 @@ public class T009 extends SOFFormBody {
             this.TXNTLR = TXNTLR;
         }
 
-
+    }
         //    public int offset = 0;
 
 

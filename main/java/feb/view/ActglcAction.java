@@ -98,6 +98,7 @@ public class ActglcAction implements Serializable {
                 for (SOFForm form : formList) {
                     if ("T861".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         irt = (T861) form.getFormBody();
+
                     }
                     else {
                         logger.info(form.getFormHeader().getFormCode());
