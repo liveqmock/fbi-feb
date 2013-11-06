@@ -28,7 +28,7 @@ public class M9814 extends MTia {
     private String INTDAC = "";         //应付利息账户核算码       Y
     private String INTCAC = "";         //应收利息账户核算码       Y
     private String FUNCDE="0";           //功能码 0-单笔查询、1-多笔查询 2-修改、3-删除、4-增加   Y
-    private String DEGNUM = "";         //开始序号               Y
+    private String BEGNUM = "";         //开始序号               Y
     private String CLRFLG = "1";         //引用号                 Y
     private String MODFLG= "0";        // 当前修改标志  0-不修改，1-修改
     private String TLRNCDE="";         //柜员号
@@ -36,7 +36,9 @@ public class M9814 extends MTia {
     //-----------------------------------------------------------
     public M9814() {
     }
-
+    public M9814 (String GLCODE){
+        this.GLCODE = GLCODE;
+    }
     public M9814(String GLCODE, String APCODE) {
         this.GLCODE = GLCODE;
         this.APCODE = APCODE;
@@ -194,12 +196,12 @@ public class M9814 extends MTia {
         this.FUNCDE = FUNCDE;
     }
 
-    public String getDEGNUM() {
-        return DEGNUM;
+    public String getBEGNUM() {
+        return BEGNUM;
     }
 
-    public void setDEGNUM(String DEGNUM) {
-        this.DEGNUM = DEGNUM;
+    public void setBEGNUM(String BEGNUM) {
+        this.BEGNUM = BEGNUM;
     }
 
     public String getCLRFLG() {
