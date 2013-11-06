@@ -19,9 +19,9 @@ public class M8002 extends MTia{
     private String LEGBDY="";           //	法人代表姓名
     private String RELCUS="";           //	相关客户
     private String INPFLG="1";          //	形式
-    private String BEGNUM="000001";   //	起始笔数
-    private String CUSNAM="";         //	客户名称
-    private String SYSIDT="8";        //	系统标识
+    private String BEGNUM="000001";    //	起始笔数
+    private String CUSNAM="";          //	客户名称
+    private String SYSIDT="";         //	系统标识
 
     //===========================================
 
@@ -29,6 +29,18 @@ public class M8002 extends MTia{
     public M8002(String CUSIDT){
         this.CUSIDT = CUSIDT;
     }
+
+    public M8002(String CUSIDT,String CUSNAM,String PASTYP,
+                 String PASSNO,String CUSIDX,String LEGBDY,String RELCUS) {
+        this.CUSIDT = CUSIDT;
+        this.PASTYP = PASTYP;
+        this.PASSNO = PASSNO;
+        this.CUSIDX = CUSIDX;
+        this.LEGBDY = LEGBDY;
+        this.RELCUS = RELCUS;
+        this.CUSNAM = CUSNAM;
+    }
+
     public String getBATSEQ() {
         return BATSEQ;
     }
