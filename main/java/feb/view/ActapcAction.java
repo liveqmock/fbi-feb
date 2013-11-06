@@ -36,8 +36,8 @@ public class ActapcAction implements Serializable {
 
     private static Logger logger = LoggerFactory.getLogger(ActirtAction.class);
 
-    private String glcode;
-    private String apcode;
+    private String glcode = "";
+    private String apcode = "";
     private String action;
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
@@ -56,7 +56,7 @@ public class ActapcAction implements Serializable {
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         glcode = StringUtils.isEmpty(params.get("glcode")) ? "" : params.get("glcode");
-        apcode = params.get("apcode");
+        apcode = StringUtils.isEmpty(params.get("apcode")) ? "" : params.get("apcode");
         action = params.get("action");
         if (!StringUtils.isEmpty(apcode)) {
             M9814 m9814 = new M9814(glcode, apcode);
@@ -97,7 +97,7 @@ public class ActapcAction implements Serializable {
 
     public String initQry() {
         try {
-            apcode = (apcode == null ? "" : apcode);
+            //apcode = (apcode == null ? "" : apcode);
             M9814 m9814 = new M9814(glcode, apcode);
             m9814.setFUNCDE("1");
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);

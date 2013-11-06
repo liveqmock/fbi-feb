@@ -56,7 +56,7 @@ public class Txn9814Action extends AbstractTxnAction {
         paramList.add(m9814.getINTDAC());
         paramList.add(m9814.getINTCAC());
         paramList.add(m9814.getFUNCDE());
-        paramList.add(m9814.getDEGNUM());
+        paramList.add(m9814.getBEGNUM());
         paramList.add(m9814.getCLRFLG());
         paramList.add(m9814.getTLRNCDE());
 
