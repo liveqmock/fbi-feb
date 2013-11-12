@@ -1,7 +1,11 @@
 package feb.view;
 
+import feb.print.model.Vch;
+import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
+import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.T016;
 import gateway.sbs.txn.model.form.T898;
 import gateway.sbs.txn.model.msg.M8401;
 import gateway.sbs.txn.model.msg.M8402;
@@ -10,6 +14,8 @@ import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.tools.BeanHelper;
+import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
 import skyline.service.SkylineService;
 
@@ -19,6 +25,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,10 +48,15 @@ public class BatchBookAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
+    @ManagedProperty(value = "#{vchPrintService}")
+    private VchPrintService vchPrintService;
+
     private String vchset;//传票套号
     private String setseq;//套内序号
     private String tlrnum;//柜员号
     private String totnum;//总笔数
+    private String sysdat;//日期
+    private String txntim;//时间
     //--------------------------------------
     private String actnum;//ACTNUM账号
     private String txnamt;//TXNAMT金额
@@ -61,15 +74,19 @@ public class BatchBookAction implements Serializable {
     private double totalDebitAmt;    //借方
     private double totalCreditAmt;   //贷方
     private double totalAmt;         //轧差
+    private boolean printable = false;
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         vchset = StringUtils.isEmpty(params.get("vchset")) ? "0000" : params.get("vchset");
         setseq = params.get("setseq");
+
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
+        sysdat = SkylineService.getSysdate7();//系统日期
         onBatchQry();  // 初始化查询
         initAddBat();
+        //System.out.println("==================>"+DateUtil.getCurrentTime());
     }
 
     /*
@@ -87,24 +104,58 @@ public class BatchBookAction implements Serializable {
 
     //-------------------event判断----------------------------
     public String actEvent() {
-        if (m8401.getACTNUM().length()==14&&m8401.getACTNUM().matches("[0-9]+")){
+        if (m8401.getACTNUM().length() == 14 && m8401.getACTNUM().matches("[0-9]+")) {
             return null;
-        }else {
+        } else {
             logger.info("请正确输入14位账号");
             MessageUtil.addWarn("请正确输入14位账号");
         }
         return null;
     }
+
     public String txnEvent() {
-        if (m8401.getTXNAMT().matches("^[-+]?([0-9]+)")){
+        if (m8401.getTXNAMT().matches("^[-+]?([0-9]+)")) {
+            txnamt = m8401.getTXNAMT();
+            BigDecimal bd100 = new BigDecimal("100");
+            DecimalFormat df = new DecimalFormat("###,###,##0.00");
+            m8401.setTXNAMT(df.format(new BigDecimal(m8401.getTXNAMT()).divide(bd100)));
             return null;
-        }else {
-            logger.info("金额不合法");
-            MessageUtil.addWarn("金额不合法，只包含数字");
+        } else {
+            MessageUtil.addWarn("金额不合法，只包含-，+与数字 ");
         }
         return null;
     }
-    //-------------------event判断----------------------------
+
+    /*
+       DecimalFormat df = new DecimalFormat("###,###,##0.00");
+       m8401.setTXNAMT(df.format(new BigDecimal(Double.parseDouble(m8401.getTXNAMT())/100)));
+    */
+    //TODO 传票打印  +++++++++++++
+    public void onPrint() {
+        try {
+            List<Vchset> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T898.Bean bean : dataList) {
+                if (!StringUtils.isEmpty(bean.getACTNUM()) || !StringUtils.isEmpty(bean.getTXNAMT())) {
+                    printCnt++;
+                    Vchset vch = new Vchset();
+                    BeanHelper.copyFields(bean, vch);
+                    DecimalFormat df = new DecimalFormat("###,###,##0.00");
+                    vch.setTXNAMT(df.format(new BigDecimal(bean.getTXNAMT())));
+                    vchs.add(vch);
+                }
+            }
+            for (; printCnt < 20; printCnt++) {
+                vchs.add(new Vchset());
+            }
+            txntim = DateUtil.getCurrentTime();//系统时间
+            vchPrintService.printVch(
+                    "              传票流水账", vchset, sysdat, txntim, "010", "", "", vchs);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
 
     //套票查询
     public String onBatchQry() {
@@ -121,6 +172,8 @@ public class BatchBookAction implements Serializable {
                         if (!allList.get(0).getSETSEQ().equals("")) {
                             for (T898.Bean bean : allList) {
                                 if (!bean.getRECSTS().equals("I")) {
+                                    /*DecimalFormat df = new DecimalFormat("###,###,##0.00");
+                                    bean.setTXNAMT(df.format(new BigDecimal(bean.getTXNAMT())));*/
                                     dataList.add(bean);
                                 }
                             }
@@ -129,6 +182,8 @@ public class BatchBookAction implements Serializable {
                         vchset = t898.getFormBodyHeader().getVCHSET();
                         totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
+                    } else if ("M957".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addWarn("M957柜员密码已过期 !");
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -152,6 +207,7 @@ public class BatchBookAction implements Serializable {
         try {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
+            m8401.setTXNAMT(txnamt);
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
@@ -195,6 +251,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
+                onPrint();
                 onBatchQry();
                 initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
@@ -207,6 +264,7 @@ public class BatchBookAction implements Serializable {
         }
         return null;
     }
+
 
     //套删除
     public String onDeleteVchset() {
@@ -340,7 +398,7 @@ public class BatchBookAction implements Serializable {
         return null;
     }
     //---------------------------多笔删除-----------------------------------------------------
-//    public String onAllConfirm() {
+//    public String onAllConfirm() {全部删除
 //        selectedRecords = dataList.toArray(selectedRecords);
 //        onMultiConfirm();
 //        return null;
@@ -550,6 +608,21 @@ public class BatchBookAction implements Serializable {
         this.furinf = furinf;
     }
 
+    public VchPrintService getVchPrintService() {
+        return vchPrintService;
+    }
+
+    public void setVchPrintService(VchPrintService vchPrintService) {
+        this.vchPrintService = vchPrintService;
+    }
+
+    public boolean isPrintable() {
+        return printable;
+    }
+
+    public void setPrintable(boolean printable) {
+        this.printable = printable;
+    }
 }
 
 
