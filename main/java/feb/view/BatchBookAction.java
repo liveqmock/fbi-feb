@@ -83,7 +83,7 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
-        sysdat = SkylineService.getSysdate7();//系统日期
+        sysdat =new SimpleDateFormat("yyyy/MM/dd").format(new Date());
         onBatchQry();  // 初始化查询
         initAddBat();
         //System.out.println("==================>"+DateUtil.getCurrentTime());

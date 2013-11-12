@@ -42,11 +42,7 @@ public class SkylineService {
         String date8 = sdf8.format(new Date());
         return date8;
     }
-    public static String getSysdate7() {
-        SimpleDateFormat sdf7 = new SimpleDateFormat("yyyy/MM/dd");
-        String date7 = sdf7.format(new Date());
-        return date7;
-    }
+
     public String getSysdate6() {
         SimpleDateFormat sdf6 = new SimpleDateFormat("yyyyMM");
         String date6 = sdf6.format(new Date());
