@@ -36,7 +36,7 @@
         <script language="JavaScript" type="text/JavaScript">
             function KeyDown() {
                 if (event.keyCode == 13) {
-                    if (event.srcElement.id == 'inputform:cusnum') {
+                    if (event.srcElement.id == 'inputform:cusidt') {
                         document.forms['inputform']['inputform:btns'].click();
                     } else {
                         event.keyCode = 9;
@@ -48,97 +48,154 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
                 <p:focus for="cusnam"/>
-                <p:messages id="msgs" showSummary="false" showDetail="true"/>
                 <p:panel>
                     <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                            <h:outputLabel value="客户名称*:"/>
-                            <h:inputText id="cusnam" value="#{clientAction.m8001.CUSNAM}" required="true"
-                                    onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户英文名*:"/>
-                            <h:inputText value="#{clientAction.m8001.ENGNAM}" required="true"
+                            <p:columnGroup>
+                                <h:outputLabel style="color: red;" value="*"/>
+                                <h:outputLabel value="客户名称:"/>
+                            </p:columnGroup>
+                            <h:inputText id="cusnam" value="#{clientAction.m8001.CUSNAM}"
+                                         required="true" requiredMessage="客户名称不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户简称*:"/>
-                            <h:inputText value="#{clientAction.m8001.SHTNAM}" required="true"
+                            <h:outputLabel value="客户英文名:"/>
+                            <h:inputText value="#{clientAction.m8001.ENGNAM}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="简名索引*:"/>
-                            <h:inputText value="#{clientAction.m8001.CUSIDX}" required="true"
+                            <h:outputLabel value="*客户简称:"/>
+                            <h:inputText value="#{clientAction.m8001.SHTNAM}"
+                                         required="true" requiredMessage="客户简称不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册国家码:"/>
-                            <h:inputText value="#{clientAction.m8001.RSDCTR}" required="true"
+                            <h:outputLabel value="简名索引:"/>
+                            <h:inputText value="#{clientAction.m8001.CUSIDX}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="所在国家码:"/>
-                            <h:inputText value="#{clientAction.m8001.OPRCTR}" required="true"
+
+
+                            <h:outputLabel value="*地址:"/>
+                            <h:inputText value="#{clientAction.m8001.CORADD}"
+                                         required="true" requiredMessage="地址不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="地址*:" required="true"/>
-                            <h:inputText value="#{clientAction.m8001.CORADD}" required="true"
+                            <h:outputLabel value="*邮编:"/>
+                            <p:inputMask value="#{clientAction.m8001.ZIPCDE}"
+                                         required="true" mask="999999" requiredMessage="邮编不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="邮编:"/>
-                            <h:inputText value="#{clientAction.m8001.ZIPCDE}" required="true"
+                            <h:outputLabel value="电话:"/>
+                            <h:inputText value="#{clientAction.m8001.TELNUM}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="电话*:"/>
-                            <h:inputText value="#{clientAction.m8001.TELNUM}" required="true"
+                            <h:outputLabel value="*行业代码:"/>
+                            <p:inputMask value="#{clientAction.m8001.BUSCDE}" mask="a9999"
+                                         required="true" requiredMessage="行业代码不能为空,输入格式为字母+4个数字的形式"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="电传*:"/>
-                            <h:inputText value="#{clientAction.m8001.TELNUM}" required="true"
+                            <h:outputLabel value="*组织机构代码:"/>
+                            <h:inputText value="#{clientAction.m8001.ENTCDE}"
+                                         required="true" requiredMessage="组织机构代码不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="证件类别:"/>
-                            <p:selectOneMenu value="#{clientAction.m8001.PASTYP}" style="width: 131px;"
-                                             onkeydown="KeyDown()" onfocus="this.select()">
+                            <h:outputLabel value="*证件类别:"/>
+                            <p:selectOneMenu value="#{clientAction.m8001.PASTYP}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
                             </p:selectOneMenu>
-                            <h:outputLabel value="证件号:"/>
-                            <h:inputText value="#{clientAction.m8001.PASSNO}" required="true"
+                            <h:outputLabel value="*证件号:"/>
+                            <h:inputText value="#{clientAction.m8001.PASSNO}"
+                                         required="true" requiredMessage="证件号不能为空"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="信用等级*:"/>
-                            <h:inputText value="#{clientAction.m8001.TSTRNK}" required="true"
+                            <h:outputLabel value="注册国家码:"/>
+                            <h:inputText value="#{clientAction.m8001.RSDCTR}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="信用额度*:"/>
-                            <h:inputText value="#{clientAction.m8001.CRDLIM}" style="text-align: right "
-                                         required="true" onkeydown="KeyDown()" onfocus="this.select()">
-                                <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
-                            </h:inputText>
-                            <h:outputLabel value="风险组别*:"/>
-                            <h:inputText value="#{clientAction.m8001.RSKGRP}" required="true"
+                            <h:outputLabel value="所在国家码:"/>
+                            <h:inputText value="#{clientAction.m8001.OPRCTR}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="相关客户*:"/>
-                            <h:inputText value="#{clientAction.m8001.RELCUS}" required="true"
+                            <h:outputLabel value="企业性质:"/>
+                            <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="有无进口权:"/>
+                            <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="客户分类码:"/>
+                            <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="信用等级:"/>
+                            <h:inputText value="#{clientAction.m8001.TSTRNK}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="密码*:"/>
-                            <p:inputMask value="#{clientAction.m8001.CUSPWD}" mask="******" required="true"
+                            <h:outputLabel value="*信用额度:"/>
+                            <h:inputText value="#{clientAction.m8001.CRDLIM}" required="true"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户类型码:"/>
-                            <h:inputText value="#{clientAction.m8001.CUSKID}"
+                            <h:outputLabel value="风险组别:"/>
+                            <h:inputText value="#{clientAction.m8001.RSKGRP}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册地址*:"/>
-                            <h:inputText value="#{clientAction.m8001.REGADD}" required="true"
+                            <h:outputLabel value="相关客户:"/>
+                            <h:inputText value="#{clientAction.m8001.RELCUS}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户类别:"/>
-                            <h:inputText value="#{clientAction.m8001.CUSTY2}" required="true"
+                            <h:outputLabel value="密码:"/>
+                            <p:inputMask value="#{clientAction.m8001.CUSPWD}" mask="999999"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="行业代码*:"/>
-                            <p:inputMask value="#{clientAction.m8001.BUSCDE}" mask="a9999"
+                            <h:outputLabel value="法人代表姓名:"/>
+                            <h:inputText value="#{clientAction.m8001.LEGBDY}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="财务负责人姓名:"/>
+                            <h:inputText value="#{clientAction.m8001.ACTBDY}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="注册本币资本:"/>
+                            <h:inputText value="#{clientAction.m8001.LOCCAP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="注册外币资本:"/>
+                            <h:inputText value="#{clientAction.m8001.REGCAP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="第二货币:"/>
+                            <h:inputText value="#{clientAction.m8001.REGCCY}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="地址:"/>
+                            <h:inputText value="#{clientAction.m8001.REGADD}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="注册日期:"/>
+                            <h:inputText value="#{clientAction.m8001.REGDAT}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="有效期(月):"/>
+                            <h:inputText value="#{clientAction.m8001.EFFDUR}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="国税号码:"/>
+                            <h:inputText value="#{clientAction.m8001.CTXNUM}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="地税号码:"/>
+                            <h:inputText value="#{clientAction.m8001.LTXNUM}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+
+                            <h:outputLabel value="主管部门:"/>
+                            <h:inputText value="#{clientAction.m8001.SUPDEP}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="INTERNET号:"/>
+                            <h:inputText value="#{clientAction.m8001.INTNET}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认建立"
                                              action="#{clientAction.onCreate}" ajax="true"
-                                             update="msgs,dataPanel,btns,show">
+                                             update="msgs,btns,show">
                             </p:commandButton>
-                            <p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;"/>
-                            <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证"
-                                             disabled="#{!clientAction.printable}"
+                            <p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 10px"/>
+                            <p:commandButton style="width:80px;margin-left:10px;margin-top: 10px" value="打印凭证"
                                              action="#{clientAction.onPrintOpenAct}" ajax="false"
                                              update="msgs,btns,show">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:panel>
-                <p:fieldset style="margin-top: 10px">
-                    <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0"
-                                 style="width:80%;"
+                <br/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="部门号:"/>
                         <h:outputText value="#{clientAction.t001.ORGIDT}"/>

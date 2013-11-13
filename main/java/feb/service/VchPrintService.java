@@ -24,6 +24,27 @@ public class VchPrintService {
 
     private static final String BASE_FONT = PropertyManager.getProperty("print.pdf.font");
 
+    // 开销户确认书
+    public void printVchpenClsAct(String title, String orgid, String deptid, String actnum,
+                                    String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
+        PdfPTable table = initCmnPdfPTable(title);     // 生成Pdf文件
+
+        String[] labels = {"机构号：", "部门号：", "客户号：", "客户名称：", "建立日期：",  "交易柜员："};
+        String[] values = {orgid, deptid, actnum, actnam, opndat, teller};
+        int i = 0;
+        PdfPCell cell = null;
+        BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font headFont2 = new Font(bfChinese, 12, Font.NORMAL);// 设置字体大小
+
+        for (String row : labels) {
+            cell = new PdfPCell(new Paragraph(StringPad.pad4ChineseToByteLength(true, row, 30, " ") + values[i++], headFont2));
+            cell.setBorder(0);
+            cell.setFixedHeight(22);//单元格高度
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            table.addCell(cell);
+        }
+        printPdfTable(table);
+    }
     // 打印传票
     public void printVch(String title, String vchset, String txndat,
                          String txntim,  String bankno, String termid,
@@ -84,7 +105,7 @@ public class VchPrintService {
                 "= = = = = = = = = = = = = = = =", 78, " ");
 
         String row3 = StringPad.pad4ChineseToByteLength(true, "日期：", 15, " ") + txndat +
-                StringPad.pad4ChineseToByteLength(true, "套   号：", 58, " ") + vchset;
+                StringPad.pad4ChineseToByteLength(true, "套  号：", 58, " ") + vchset;
 
         String row4 = StringPad.pad4ChineseToByteLength(true, "时间：", 15, " ") + txntim +
                 StringPad.pad4ChineseToByteLength(true, "柜员号：", 60, " ") + om.getOperatorId();
@@ -115,7 +136,30 @@ public class VchPrintService {
         }
         return table;
     }
+    // 通用空白凭证
+    private PdfPTable initCmnPdfPTable(String title) throws IOException, DocumentException {
+        PdfPTable table = new PdfPTable(new float[]{1000f});// 建立一个pdf表格
+        table.setSpacingBefore(160f);// 设置表格上面空白宽度
+        table.setTotalWidth(835);// 设置表格的宽度
+        table.setLockedWidth(false);// 设置表格的宽度固定
+        table.getDefaultCell().setBorder(0);//设置表格默认为无边框
+        BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font headFont1 = new Font(bfChinese, 14, Font.BOLD);// 设置字体大小
+        PdfPCell blankCell = new PdfPCell(new Paragraph());
+        blankCell.setBorder(0);
+        blankCell.setFixedHeight(25);
+        table.addCell(blankCell);
+        PdfPCell cell = new PdfPCell(new Paragraph(title, headFont1));
+        cell.setBorder(0);
+        cell.setFixedHeight(40);//单元格高度
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);// 设置内容水平居中显示
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(cell);
+        blankCell.setFixedHeight(10);
+        table.addCell(blankCell);
 
+        return table;
+    }
     // 单页打印
     private void printPdfTable(PdfPTable table) throws DocumentException, IOException {
         FacesContext ctx = FacesContext.getCurrentInstance();

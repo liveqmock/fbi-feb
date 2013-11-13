@@ -1,7 +1,8 @@
 package feb.view;
 
+import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
-import feb.service.PdfPrintService;
+import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.*;
@@ -37,23 +38,24 @@ public class ClientAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;
+    @ManagedProperty(value = "#{vchPrintService}")
+    private VchPrintService vchPrintService;
 
-    private String inpflg;
-    private String cusidt;
-    private String cusnam;
-    private String pastyp;
-    private String passno;
-    private String cusidx;
-    private String legbdy;
-    private String relcus;
-    private String action;
+    private String inpflg = "";
+    private String cusidt = "";
+    private String cusnam = "";
+    private String pastyp = "";
+    private String passno = "";
+    private String cusidx = "";
+    private String legbdy = "";
+    private String relcus = "";
+    private String action = "";
     private M8002 m8002 = new M8002();          //查询客户请求报文
     private M8004 m8004 = new M8004();          //修改客户
     private M8001 m8001 = new M8001();          //对公账户开户
     private T001 t001;                          //创建账户响应报文 与关闭账户查询公用
-    private T003 t003;
+    private T224 t224;
+    private T003 t003 = new T003();
     private T004 t004 = new T004();             //对公客户单笔查询
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
@@ -65,18 +67,11 @@ public class ClientAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        inpflg = StringUtils.isEmpty(params.get("inpflg")) ? "" : params.get("inpflg");
         cusidt = StringUtils.isEmpty(params.get("cusidt")) ? "" : params.get("cusidt");
-        cusnam = StringUtils.isEmpty(params.get("cusnam")) ? "" : params.get("cusnam");
-        pastyp = StringUtils.isEmpty(params.get("pastyp")) ? "" : params.get("pastyp");
-        passno = StringUtils.isEmpty(params.get("passno")) ? "" : params.get("passno");
-        legbdy = StringUtils.isEmpty(params.get("legbdy")) ? "" : params.get("legbdy");
-        relcus = StringUtils.isEmpty(params.get("relcus")) ? "" : params.get("relcus");
-        cusidx = StringUtils.isEmpty(params.get("cusidx")) ? "" : params.get("cusidx");
         action = StringUtils.isEmpty(params.get("action")) ? "" : params.get("action");
         tellerid = SkylineService.getOperId();
         if ("detail".equals(action)) onQryCus();
-        if ("query".equals(action)) onAllQuery();
+        if ("query".equals(action)) onQryCus();
     }
 
     public String onCreate() {
@@ -84,16 +79,20 @@ public class ClientAction implements Serializable {
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
-                if (form.getFormHeader().getFormCode().contains("W012")) {      //forms.size() == 2
+                if (forms.size() == 2) {      //
                     if ("T001".equalsIgnoreCase(formcode)) {
                         t001 = (T001) form.getFormBody();
+                        //isPrintable = true;
                         MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
+                    } else {
+                        return null;
                     }
                 } else if ("T001".equalsIgnoreCase(formcode)) {
-                    m8001.setFUNCDE("Y");
-                    List<SOFForm> forms2 = dataExchangeService.callSbsTxn("8001", m8001);//客户已存在继续创建
+                    //m8001.setFUNCDE("Y");
+                    //List<SOFForm> forms2 = dataExchangeService.callSbsTxn("8001", m8001);//客户已存在继续创建
                     MessageUtil.addWarn("该客户号已存在" + t001.getCUSIDT());
                 } else {
+                    logger.error("创建失败");
                     MessageUtil.addErrorWithClientID("msgs", formcode);
                 }
             }
@@ -107,7 +106,7 @@ public class ClientAction implements Serializable {
     // 打印确认书
     public void onPrintOpenAct() {
         try {
-            pdfPrintService.printVch4OpenClsAct(
+            vchPrintService.printVchpenClsAct(
                     "     客户建立确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
                     t001.getCUSNAM(), t001.getOPNDAT(), "", tellerid);
         } catch (Exception e) {
@@ -140,57 +139,57 @@ public class ClientAction implements Serializable {
 
     //浏览查询
     public String onAllQuery() {
-            try {
-                m8002 = new M8002(cusidt, cusnam, pastyp, passno, cusidx, legbdy, relcus);
-                if (!cusnam.equals("")  && passno.equals("") && pastyp.equals("") &&
-                        cusidx.equals("") && legbdy.equals("")  && relcus.equals("")&&cusidt.equals("")) {
-                    m8002.setINPFLG("6");
-                } else if (!pastyp.equals("") && !passno.equals("") && cusnam.equals("") &&
-                        cusidx.equals("") && legbdy.equals("") && relcus.equals("")&&cusidt.equals("")) {
-                    m8002.setINPFLG("2");
-                } else if (!cusidx.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && legbdy.equals("") && relcus.equals("")&&cusidt.equals("")) {
-                    m8002.setINPFLG("3");
-                } else if (!legbdy.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && cusidx.equals("") && relcus.equals("")&&cusidt.equals("")) {
-                    m8002.setINPFLG("4");
-                } else if (!relcus.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") &&cusidt.equals("")) {
-                    m8002.setINPFLG("5");
-                } else if (!cusidt.equals("")&&relcus.equals("") && cusnam.equals("") && passno.equals("") &&
-                        pastyp.equals("") && cusidx.equals("") && legbdy.equals("") ) {
-                    m8002.setINPFLG("1");
-                } else {
-                    MessageUtil.addWarn("没有这种组合，请检查输入项。" );
-                    return null;
-                }
-                List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
-                if (formList != null && !formList.isEmpty()) {
-                    dataList = new ArrayList<>();
-                    List list = new ArrayList();
-                    for (SOFForm form : formList) {
-                        if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T003 t003 = (T003) form.getFormBody();
-                            dataList.addAll(t003.getBeanList());
-                        }else if ("T004".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T004 t004 = (T004) form.getFormBody();
-                            list.add(t004);
-                            dataList.addAll(list);
-                        }else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            //logger.info("查询完成");
-                        } else {
-                            logger.info(form.getFormHeader().getFormCode());
-                            MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                        }
+        try {
+            m8002 = new M8002(cusidt, cusnam, pastyp, passno, cusidx, legbdy, relcus);
+            if (!cusnam.equals("") && passno.equals("") && pastyp.equals("") &&
+                    cusidx.equals("") && legbdy.equals("") && relcus.equals("") && cusidt.equals("")) {
+                m8002.setINPFLG("6");
+            } else if (!pastyp.equals("") && !passno.equals("") && cusnam.equals("") &&
+                    cusidx.equals("") && legbdy.equals("") && relcus.equals("") && cusidt.equals("")) {
+                m8002.setINPFLG("2");
+            } else if (!cusidx.equals("") && cusnam.equals("") && passno.equals("") &&
+                    pastyp.equals("") && legbdy.equals("") && relcus.equals("") && cusidt.equals("")) {
+                m8002.setINPFLG("3");
+            } else if (!legbdy.equals("") && cusnam.equals("") && passno.equals("") &&
+                    pastyp.equals("") && cusidx.equals("") && relcus.equals("") && cusidt.equals("")) {
+                m8002.setINPFLG("4");
+            } else if (!relcus.equals("") && cusnam.equals("") && passno.equals("") &&
+                    pastyp.equals("") && cusidx.equals("") && legbdy.equals("") && cusidt.equals("")) {
+                m8002.setINPFLG("5");
+            } else if (!cusidt.equals("") && relcus.equals("") && cusnam.equals("") && passno.equals("") &&
+                    pastyp.equals("") && cusidx.equals("") && legbdy.equals("")) {
+                m8002.setINPFLG("1");
+            } else {
+                MessageUtil.addWarn("没有这种组合，请检查输入项。");
+                return null;
+            }
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("8002", m8002);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                List list = new ArrayList();
+                for (SOFForm form : formList) {
+                    if ("T003".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T003 t003 = (T003) form.getFormBody();
+                        dataList.addAll(t003.getBeanList());
+                    } else if ("T004".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T004 t004 = (T004) form.getFormBody();
+                        list.add(t004);
+                        dataList.addAll(list);
+                    } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        //logger.info("查询完成");
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-                if (dataList == null || dataList.isEmpty()) {
-                    MessageUtil.addWarn("没有查询到数据。");
-                }
-            } catch (Exception e) {
-                logger.error("查询失败", e);
-                MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
             }
+            if (dataList == null || dataList.isEmpty()) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
         return null;
     }
 
@@ -199,8 +198,8 @@ public class ClientAction implements Serializable {
     }
 
     public String onBack() {
-        //return "clientAllQry";
-        return "clientAllQry?faces-redirect=true&action=query";
+        return "clientAllQry";
+        //return "clientAllQry?faces-redirect=true&action=query";
     }
 
     public String onClose() {
@@ -255,12 +254,12 @@ public class ClientAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public PdfPrintService getPdfPrintService() {
-        return pdfPrintService;
+    public VchPrintService getVchPrintService() {
+        return vchPrintService;
     }
 
-    public void setPdfPrintService(PdfPrintService pdfPrintService) {
-        this.pdfPrintService = pdfPrintService;
+    public void setVchPrintService(VchPrintService vchPrintService) {
+        this.vchPrintService = vchPrintService;
     }
 
     public M8002 getM8002() {
@@ -343,13 +342,13 @@ public class ClientAction implements Serializable {
         this.cusnam = cusnam;
     }
 
-    public boolean isPrintable() {
+    /*public boolean isPrintable() {
         return isPrintable;
     }
 
     public void setPrintable(boolean printable) {
         isPrintable = printable;
-    }
+    }*/
 
     public T003 getT003() {
         return t003;
@@ -405,5 +404,21 @@ public class ClientAction implements Serializable {
 
     public void setInpflg(String inpflg) {
         this.inpflg = inpflg;
+    }
+
+    public T224 getT224() {
+        return t224;
+    }
+
+    public void setT224(T224 t224) {
+        this.t224 = t224;
+    }
+
+    public boolean isPrintable() {
+        return isPrintable;
+    }
+
+    public void setPrintable(boolean printable) {
+        isPrintable = printable;
     }
 }
