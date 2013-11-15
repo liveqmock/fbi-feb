@@ -19,7 +19,7 @@ public class M8001 extends MTia {
     private String RSDCTR = "CN";       //注册国家码
     private String OPRCTR = "CN";        //所在国家码
     private String CORADD = "";        //地址
-    private String ZIPCDE = "";        //邮编
+    private String ZIPCDE = "266101";        //邮编
     private String TELNUM = "";        //电话
     private String TELEXN = "";        //电传
     private String PASTYP = "1";        //证件类别
@@ -29,7 +29,7 @@ public class M8001 extends MTia {
     private String RSKGRP = "";        //风险组别
     private String RELCUS = "";        //相关客户
     private String CUSPWD = "";        //密码
-    private String CUSKID = "";        //客户类型码
+    private String CUSKID = "1";        //客户类型码
     private String DEPNU3 = "";        //部门号
     private String LEGBDY = "";        //法人代表姓名
     private String ACTBDY = "";        //财务负责人姓名
@@ -44,8 +44,8 @@ public class M8001 extends MTia {
     private String BOCGRP = "";        //客户分类码
     private String SUPDEP = "";        //主管部门
     private String BUSCDE = "";        //行业代码
-    private String ENTTYP = "";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
-    private String CUSTY1 = "";        //有无进口权
+    private String ENTTYP = "R";        //企业性质A-内资国有企业 B-内资集体企业  C-内资股份合作企业 D-内资联营企业 E-内资国有独资有限责任公司
+    private String CUSTY1 = "00";        //有无进口权
     private String CUSTY2 = "1";        // 客户类别(控制开户)
     private String INTNET = "";        // INTERNET /SWIFT号
     private String ENTCDE = "";        // 组织机构代码

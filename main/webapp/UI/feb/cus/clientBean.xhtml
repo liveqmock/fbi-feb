@@ -52,11 +52,11 @@
         <div style="margin:5px">
             <h:form id="form">
                 <p:panel id="dataPanel" columns="2">
-                    <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                    <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:85%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="客户号:"/>
-                        <h:outputText value="#{clientAction.t004.CUSIDT}"/>
-                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{clientAction.cusidt}"/>
+                        <h:outputLabel value="客户名称:"/>
                         <h:outputText value="#{clientAction.t004.CUSNAM}"/>
                         <h:outputLabel value="客户英文名:"/>
                         <h:outputText value="#{clientAction.t004.ENGNAM}"/>
@@ -69,7 +69,7 @@
                         <h:outputLabel value="所在国家码:"/>
                         <h:outputText value="#{clientAction.t004.OPRCTR}"/>
 
-                        <h:outputLabel value="个人地址:"/>
+                        <h:outputLabel value="地址:"/>
                         <h:outputText value="#{clientAction.t004.CORADD}"/>
                         <h:outputLabel value="邮编:"/>
                         <h:outputText value="#{clientAction.t004.ZIPCDE}"/>
@@ -114,47 +114,14 @@
                         <h:outputText value="#{clientAction.t004.REGADD}"/>
                         <h:outputLabel value="注册日期:"/>
                         <h:outputText value="#{clientAction.t004.REGDAT}"/>
-                        <!--<h:outputLabel value="有效期(月):"/>
-                        <h:outputText value="#{clientAction.t004.EFFDUR}"/>
-                        <h:outputLabel value="国税号码:"/>
-                        <h:outputText value="#{clientAction.t004.CTXNUM}"/>
-
-                        <h:outputLabel value="地税号码:"/>
-                        <h:outputText value="#{clientAction.t004.LTXNUM}"/>
-                        <h:outputLabel value="客户分类码:"/>
-                        <h:outputText value="#{clientAction.t004.BOCGRP}" />
-                        <h:outputLabel value="主管部门:"/>
-                        <h:outputText value="#{clientAction.t004.SUPDEP}"/>
-                        <h:outputLabel value="行业代码:"/>
-                        <h:outputText value="#{clientAction.t004.BUSCDE}" />
-                        <h:outputLabel value="企业性质:"/>
-                        <h:outputText value="#{clientAction.t004.ENTTYP}"/>
-                        <h:outputLabel value="损益归类码:"/>
-                        <h:outputText value="#{clientAction.t004.CUSTY1}"/>
-                        <h:outputLabel value="客户类别:"/>
-                        <h:outputText value="#{clientAction.t004.CUSTY2}"/>
-                        <h:outputLabel value="INTERNET号:"/>
-                        <h:outputText value="#{clientAction.t004.INTNET}"/>
-                        <h:outputLabel value="企业标准号:"/>
-                        <h:outputText value="#{clientAction.t004.ENTCDE}" />
-                        <h:outputLabel value="联行代号:"/>
-                        <h:outputText value="#{clientAction.t004.IBKCDE}"/>
-                        <h:outputLabel value="行号:"/>
-                        <h:outputText value="#{clientAction.t004.SBKNUM}" />
-                        <h:outputLabel value="功能参数:"/>
-                        <h:outputText value="#{clientAction.t004.AMDTLR}"/>
-                        <h:outputLabel value="修改日期:"/>
-                        <h:outputText value="#{clientAction.t004.UPDDAT}"/>
-                        <h:outputLabel value="记录状态:"/>
-                        <h:outputText value="#{clientAction.t004.RECSTS}"/>
-                        <h:outputLabel value="系统标识:"/>
-                        <h:outputText value="#{clientAction.t004.SYSIDT}"/>-->
                     </h:panelGrid>
                     <p:separator/>
-                    <h:panelGrid  id="btn" columns="1" style="text-align:center;padding-top:5px;" width="98%">
+                    <h:panelGrid id="btn" columns="1" style="text-align:center;padding-top:5px;" width="98%">
                         <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                         action="#{clientAction.onBack}"
-                                         style="padding-left:10px;padding-right:10px;margin-left:10px;" />
+                                         style="padding-left:10px;padding-right:10px;margin-left:10px;"
+                                         action="#{clientAction.onBack}">
+                            <f:param value="#{clientAction.cusidt}" name="cusidt"/>
+                        </p:commandButton>
                     </h:panelGrid>
                 </p:panel>
             </h:form>

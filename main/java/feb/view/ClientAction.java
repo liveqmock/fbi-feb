@@ -73,26 +73,22 @@ public class ClientAction implements Serializable {
         if ("detail".equals(action)) onQryCus();
         if ("query".equals(action)) onQryCus();
     }
-
     public String onCreate() {
         try {
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
-                if (forms.size() == 2) {      //
+                if (forms.size() == 2) {
                     if ("T001".equalsIgnoreCase(formcode)) {
                         t001 = (T001) form.getFormBody();
-                        //isPrintable = true;
                         MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
-                    } else {
-                        return null;
                     }
                 } else if ("T001".equalsIgnoreCase(formcode)) {
-                    //m8001.setFUNCDE("Y");
-                    //List<SOFForm> forms2 = dataExchangeService.callSbsTxn("8001", m8001);//客户已存在继续创建
-                    MessageUtil.addWarn("该客户号已存在" + t001.getCUSIDT());
+                    t001 = (T001) form.getFormBody();
+                    t001.setAMDTLR(tellerid);
+                    m8001.setFUNCDE("Y");
+                    MessageUtil.addWarn("该客户已存在,请单击确认键继续创建." );
                 } else {
-                    logger.error("创建失败");
                     MessageUtil.addErrorWithClientID("msgs", formcode);
                 }
             }
