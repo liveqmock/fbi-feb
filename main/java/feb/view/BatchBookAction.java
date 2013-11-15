@@ -83,7 +83,7 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
-        sysdat =new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+        sysdat = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
         onBatchQry();  // 初始化查询
         initAddBat();
         //System.out.println("==================>"+DateUtil.getCurrentTime());
@@ -121,7 +121,7 @@ public class BatchBookAction implements Serializable {
             m8401.setTXNAMT(df.format(new BigDecimal(m8401.getTXNAMT()).divide(bd100)));
             return null;
         } else {
-            MessageUtil.addWarn("金额不合法，只包含-，+与数字 ");
+            MessageUtil.addWarn("金额不合法，只包含-+与数字 ");
         }
         return null;
     }
@@ -172,6 +172,7 @@ public class BatchBookAction implements Serializable {
                         if (!allList.get(0).getSETSEQ().equals("")) {
                             for (T898.Bean bean : allList) {
                                 if (!bean.getRECSTS().equals("I")) {
+                                    bean.setTMPAMT(new BigDecimal(bean.getTXNAMT()));
                                     /*DecimalFormat df = new DecimalFormat("###,###,##0.00");
                                     bean.setTXNAMT(df.format(new BigDecimal(bean.getTXNAMT())));*/
                                     dataList.add(bean);
@@ -352,6 +353,7 @@ public class BatchBookAction implements Serializable {
                         allList.addAll(t898.getBeanList());
                         for (T898.Bean bean : allList) {
                             if (!bean.getRECSTS().equals("I")) {
+                                bean.setTMPAMT(new BigDecimal(bean.getTXNAMT()));//金额格式化
                                 dataList.add(bean);
                             }
                         }

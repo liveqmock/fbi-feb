@@ -122,7 +122,6 @@
                     <p:column headerText="操作" style="text-align:center">
                         <p:commandLink value="详细" immediate="true" ajax="false" action="#{clientAction.onClick()}"
                                        style="color: blue">
-                            <!--<f:param value="#{clientAction.cusidt}" name="cusidt"/>-->
                             <f:param value="#{record.CUSIDT}" name="cusidt"/>
                             <f:param value="detail" name="action"/>
                         </p:commandLink>

@@ -85,7 +85,7 @@ public class ClientAction implements Serializable {
                     }
                 } else if ("T001".equalsIgnoreCase(formcode)) {
                     t001 = (T001) form.getFormBody();
-                    t001.setAMDTLR(tellerid);
+                    //t001.setAMDTLR(tellerid);
                     m8001.setFUNCDE("Y");
                     MessageUtil.addWarn("该客户已存在,请单击确认键继续创建." );
                 } else {

@@ -3,6 +3,7 @@ package gateway.sbs.txn.model.form;
 import gateway.sbs.core.domain.AssembleModel;
 import gateway.sbs.core.domain.SOFFormBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +134,16 @@ public class T898 extends SOFFormBody {
         private String VCHSTS;          //Æ¾Ö¤×´Ì¬
         private String REGNUM;          //Æ¾Ö¤±àºÅ
         private String RECSTS;          //¼ÇÂ¼×´Ì¬
+
+        private BigDecimal TMPAMT;
+
+        public BigDecimal getTMPAMT() {
+            return TMPAMT;
+        }
+
+        public void setTMPAMT(BigDecimal TMPAMT) {
+            this.TMPAMT = TMPAMT;
+        }
 
         public String getSETSEQ() {
             return SETSEQ;

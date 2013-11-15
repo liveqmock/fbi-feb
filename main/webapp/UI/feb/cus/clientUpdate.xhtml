@@ -39,7 +39,7 @@
         <script language="JavaScript" type="text/JavaScript">
             document.onkeydown = function TabReplace() {
                 if (event.keyCode == 13) {
-                    if (event.srcElement.tagName = 'cusnum')
+                    if (event.srcElement.tagName = 'cusidt')
                         event.keyCode = 9;
                     else
                         event.keyCode = 13;
@@ -50,17 +50,17 @@
     <ui:define name="content">
         <div style="margin:5px">
             <h:form id="form">
-                <p:focus for="cusnum"/>
+                <p:focus for="cusidt"/>
                 <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid columns="2" cellspacing="5"
                                      columnClasses="col-label,col-input">
-                            <h:outputLabel value="客户:" style="font-weight: bold"/>
-                            <p:inputText id="cusnum" required="true" size="25"
+                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                            <p:inputText id="cusidt" required="true" size="25"
                                          requiredMessage="客户不能为空。"
                                           onkeydown="KeyDown()" onfocus="this.select()"
-                                         value="#{clientAction.m8002.CUSIDT}" />
+                                         value="#{clientAction.cusidt}" />
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
@@ -88,7 +88,7 @@
                     <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="*客户号:"/>
-                        <h:inputText value="#{clientAction.m8004.CUSIDT}"/>
+                        <h:inputText value="#{clientAction.m8004.CUSIDT}" readonly="true"/>
                         <h:outputLabel value="*客户名称:"/>
                         <h:inputText value="#{clientAction.m8004.CUSNAM}"/>
                         <h:outputLabel value="客户英文名:"/>
@@ -102,7 +102,7 @@
                         <h:outputLabel value="所在国家码:"/>
                         <h:inputText value="#{clientAction.m8004.OPRCTR}"/>
 
-                        <h:outputLabel value="*个人地址:"/>
+                        <h:outputLabel value="*公司地址:"/>
                         <h:inputText value="#{clientAction.m8004.CORADD}"/>
                         <h:outputLabel value="邮编:"/>
                         <h:inputText value="#{clientAction.m8004.ZIPCDE}"/>

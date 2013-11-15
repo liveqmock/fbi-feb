@@ -39,7 +39,7 @@
         <script language="JavaScript" type="text/JavaScript">
             function KeyDown() {
                 if (event.keyCode == 13) {
-                    if (event.srcElement.id == 'inputform:cusnum') {
+                    if (event.srcElement.id == 'inputform:cusidt') {
                         document.forms['inputform']['inputform:btns'].click();
                     } else {
                         event.keyCode = 9;
@@ -51,7 +51,7 @@
     <ui:define name="content">
         <div style="margin:5px">
             <h:form id="form">
-                <p:focus for="cusnum"/>
+                <p:focus for="cusidt"/>
                 <p:messages id="msgs" showSummary="true" showDetail="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
@@ -59,7 +59,7 @@
                                      columnClasses="col-label,col-input">
                             <h:outputLabel value="客户号:" style="font-weight: bold"/>
                             <p:inputText required="true" size="25" requiredMessage="客户号不能为空。"
-                                         id="cusnum" value="#{clientAction.m8002.CUSIDT}"
+                                         id="cusidt" value="#{clientAction.cusidt}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"

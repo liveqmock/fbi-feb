@@ -1,5 +1,7 @@
 package gateway.sbs.txn.model.msg;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
@@ -19,7 +21,7 @@ public class M8401 extends MTia {
     private String ACTNUM = "";     // 账号
     private String TXNAMT = "";     // 交易金额
     private String RVSLBL = "";     // 冲账标志   '* '-冲账，'12'-转账,'11'-现金,'52'-补账
-    private String OPNDA2 = "";     // 交易日期
+    private String OPNDA2 ="";     // 交易日期
     private String FURINF = "";     // 摘要
     private String PRDCDE = "VCH1";     // 产品码
     private String DEPNU3 = "60";     // 部门号
@@ -36,6 +38,14 @@ public class M8401 extends MTia {
     private String REGNUM = "";     // 凭证编号
 
     //===================================================
+
+    public M8401() {
+    }
+
+    public M8401(String VCHSET) {
+        this.VCHSET = VCHSET;
+    }
+
     public String getBATSEQ() {
         return BATSEQ;
     }

@@ -319,8 +319,9 @@
                 <p:column headerText="冲正标志" style="text-align:center" sortBy="#{record.RVSLBL}">
                     <h:outputText value="#{record.RVSLBL}"/>
                 </p:column>
-                <p:column headerText="交易金额" style="text-align:right" sortBy="#{record.TXNAMT}">
-                    <h:outputText value="#{record.TXNAMT}">
+                <p:column headerText="交易金额" style="text-align:right" sortBy="#{record.TMPAMT}">
+                    <h:outputText value="#{record.TMPAMT}">
+                        <f:convertNumber pattern="###,###,###,###,##0.00"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="摘要" style="text-align:center">

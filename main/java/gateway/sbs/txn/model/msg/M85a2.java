@@ -19,6 +19,7 @@ public class M85a2 extends MTia {
     public M85a2(String VCHSET){
         this.VCHSET = VCHSET;
     }
+
     public String getBATSEQ() {
         return BATSEQ;
     }
