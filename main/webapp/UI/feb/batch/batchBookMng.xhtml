@@ -218,10 +218,9 @@
                         </h:inputText>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
-                        <p:commandButton id="save" value="确定" ajax="false" onfocus="this.select()"
-                                         onkeydown="KeyDown()" action="#{batchBookAction.onCreateNewRecord}"
+                        <p:commandButton id="save" value="确定" ajax="false" action="#{batchBookAction.onCreateNewRecord}"
                                          style="width:66px;" >
-                        </p:commandButton>
+                        </p:commandButton><!-- onfocus="this.select()" onkeydown="KeyDown()"-->
                         <!--<p:commandButton style="width:66px;display:none" value="打印T"
                                          action="#{batchBookAction.onPrint}" ajax="false">
                         </p:commandButton>-->
