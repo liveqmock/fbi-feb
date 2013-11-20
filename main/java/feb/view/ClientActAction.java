@@ -61,6 +61,7 @@ public class ClientActAction implements Serializable {
             if ("T101".equalsIgnoreCase(formcode)) {
                 rtnActInfo = (T101) form.getFormBody();
                 MessageUtil.addInfo("客户账户建立成功，账号：" + rtnActInfo.getACTNUM());
+                isPrintable = true;
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
