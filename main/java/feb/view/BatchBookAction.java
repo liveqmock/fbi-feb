@@ -14,6 +14,7 @@ import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.utils.BusinessDate;
 import pub.tools.BeanHelper;
 import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
@@ -64,6 +65,7 @@ public class BatchBookAction implements Serializable {
     private String valdat;//VALDAT起息日
     private String anacde;//ANACDE统计码
     private String furinf;//FURINF摘要
+
     //--------------------------------------
     private M8401 m8401 = new M8401();
     private T898 t898 = new T898();
@@ -75,6 +77,7 @@ public class BatchBookAction implements Serializable {
     private double totalCreditAmt;   //贷方
     private double totalAmt;         //轧差
     private boolean printable = false;
+    //private String sysBusinessDate = BusinessDate.getTodaytime();  //业务日期
 
     @PostConstruct
     public void init() {
@@ -183,11 +186,11 @@ public class BatchBookAction implements Serializable {
                         vchset = t898.getFormBodyHeader().getVCHSET();
                         totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
                         flushTotalData();
-                    } else if ("M957".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        MessageUtil.addWarn("M957柜员密码已过期 !");
+                    } else if ("M922".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addWarn("您无权限操作该交易 !");
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
@@ -209,6 +212,9 @@ public class BatchBookAction implements Serializable {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
             m8401.setTXNAMT(txnamt);
+
+            m8401.setFURINF(new String(m8401.getFURINF().getBytes("ISO-8859-1"),"UTF-8"));
+
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
@@ -216,6 +222,8 @@ public class BatchBookAction implements Serializable {
                 onModifyVchset();
                 initAddBat();
                 flushTotalData();
+            } else if ("M402".equalsIgnoreCase(formcode)){
+                MessageUtil.addWarnWithClientID("msgs", formcode);
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }

@@ -71,7 +71,7 @@
                             <p:commandButton style="width:110px;" value="确认关闭" id="del"
                                              disabled="#{!clientAction.closeable}"
                                              action="#{clientAction.onClose}" ajax="true"
-                                             update="msgs,panel,dataPanel">
+                                             update="msgs,panel,show">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
@@ -150,7 +150,7 @@
                     </h:panelGrid>
                 </p:panel>
                 <p:fieldset style="margin-top: 18px">
-                    <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
+                    <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0"
                                  style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="部门号:"/>

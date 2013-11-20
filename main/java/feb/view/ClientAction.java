@@ -87,7 +87,7 @@ public class ClientAction implements Serializable {
                     t001 = (T001) form.getFormBody();
                     //t001.setAMDTLR(tellerid);
                     m8001.setFUNCDE("Y");
-                    MessageUtil.addWarn("该客户已存在,请单击确认键继续创建." );
+                    MessageUtil.addWarn("该客户已存在,如需创建请单击确认按钮、");
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", formcode);
                 }
@@ -207,13 +207,13 @@ public class ClientAction implements Serializable {
                 t001 = (T001) form.getFormBody();
                 closeable = false;
                 // TODO 打印
-                MessageUtil.addInfo("客户账户关闭成功，账号：" + t001.getCUSIDT());
+                MessageUtil.addInfo("客户账户关闭成功，客户号：" + t001.getCUSIDT());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
-            logger.error("8103关闭账户失败", e);
-            MessageUtil.addError("8103关闭账户失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("关闭客户失败", e);
+            MessageUtil.addError("关闭客户失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
 
@@ -227,14 +227,14 @@ public class ClientAction implements Serializable {
                 if ("T004".equalsIgnoreCase(formcode)) {
                     t004 = (T004) form.getFormBody();
                     updateable = false;
-                    MessageUtil.addInfo("客户账户修改成功，客户号：" + t004.getCUSIDT());
+                    MessageUtil.addInfo("客户信息修改成功，客户号：" + t004.getCUSIDT());
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                 }
             }
         } catch (Exception e) {
-            logger.error("8004账户修改交易失败", e);
-            MessageUtil.addError("8004账户修改交易失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("客户信息修改失败", e);
+            MessageUtil.addError("客户信息修改失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
