@@ -153,46 +153,22 @@ public class OperatorManager implements Serializable {
      * @return boolean
      * @roseuid 3F80B6360281
      */
-    public boolean login(String operid, String password) {
+    public String login(String operid, String password) {
 
-        if (!sbsLogin(operid, password)) return false;
+        String formcode = sbsLogin(operid, password);
+        if (!"T901".equals(formcode)) return formcode;
         ConnectionManager cm = ConnectionManager.getInstance();
-        DatabaseConnection dc = cm.get();
-//        SqlSession session = IbatisFactory.ORACLE.getInstance().openSession();
         try {
             String loginWhere = "where operid='" + operid
                     + "' and operpasswd ='" + password + "'and operenabled='1'";
-            //zhan 20100415 for UAAP
-            /*
-            if (operid == null) {
-                isLogin = false;
-                return false;
-            }
-            String loginWhere = "where operid='" + operid
-                    + "' and operenabled='1'";
-            */
+
             this.operatorid = operid;
             operator = new PtOperBean();
             operator = (PtOperBean) operator.findFirstByWhere(loginWhere);
             if (operator == null) {
                 isLogin = false;
-                return false;
+                return "FEB登录校验失败";
             }
-
-            /*
-            //zhanrui 20101117
-            ScttlrMapper mapper = session.getMapper(ScttlrMapper.class);
-            ScttlrExample example = new ScttlrExample();
-            //TODO 机构号
-            example.createCriteria().andOrgidtEqualTo(operator.getDeptid()).andTlrnumEqualTo(operid);
-
-            try {
-                scttlr = mapper.selectByExample(example).get(0);
-            } catch (Exception e) {
-                logger.info("未在SCTTLR表中找到对应记录。");
-                return false;
-            }
-            */
 
             String sss = "登录时间 :" + loginTime + " IP: " + remoteAddr
                     + " 机器名称 : " + remoteHost;
@@ -207,21 +183,11 @@ public class OperatorManager implements Serializable {
 
             this.operatorname = operator.getOpername();
             isLogin = true;
-            // 取得该操作员的所有角色。dep
-            // PtOperRoleBean porb = new PtOperRoleBean();
-            // List porbs = porb.findByWhere("where operid='"+operid+"'");
-            // roles = new String[porbs.size()];
-            // for ( int i = 0 ; i < porbs.size() ; i++ ) {
-            // roles[i] = ((PtOperRoleBean)porbs.get(i)).getRoleid();
-            // }
-            // 初始化资源列表。
+
             resources = new Resources(operid);
             // 初始化菜单。
             try {
                 mb = new MenuBean();
-
-                //this.xmlString = mb.generateStream(operid);
-                //this.jsonString = mb.generateJsonStream(operid);
                 this.jsonMap.put("default", mb.generateJsonStream(operid, "default"));
                 this.jsonMap.put("system", mb.generateJsonStream(operid, "system"));
 
@@ -231,28 +197,17 @@ public class OperatorManager implements Serializable {
                         + ex3 + "]");
             }
 
-            // 初始化jsp资源
-            // PtMenuBean pmb = new PtMenuBean();
-            // List pmbs = pmb.findByWhere("where menuid in (select resname from
-            // ptresource where restype='2' and resid in (select resid from
-            // ptroleres where roleid in (select roleid from ptoperrole where
-            // operid='"+operid+"')))");
-            // jsplist = new ArrayList();
-            // for ( int i = 0 ; i < pmbs.size() ; i++ ) {
-            // pmb = (PtMenuBean)pmbs.get(i);
-            // jsplist.add(pmb.getMenuaction());
-            // }
-            return isLogin;
+            return "T901";
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "FEB登录校验异常";
         } finally {
             cm.release();
         }
 
     }
 
-    public boolean sbsLogin(String tellerId, String tellerPwd) {
+    public String sbsLogin(String tellerId, String tellerPwd) {
         M0001 m0001 = new M0001(tellerId, tellerPwd);
         List<String> paramList = new ArrayList<>();
         paramList.add(m0001.getTLRNUM());
@@ -263,14 +218,12 @@ public class OperatorManager implements Serializable {
         SBSResponse sbsResponse = new SBSResponse();
         ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
         List<SOFForm> forms = sbsResponse.getSofForms();
-        for (SOFForm form : forms) {
-            if ("T901".equals(form.getFormHeader().getFormCode())) {
-                T901 t901 = (T901) form.getFormBody();
-                sysBusinessDate = t901.getSYSDAT();
-                return true;
-            }
+        String formCode = forms.get(0).getFormHeader().getFormCode();
+        if ("T901".equals(formCode)) {
+            T901 t901 = (T901) forms.get(0).getFormBody();
+            sysBusinessDate = t901.getSYSDAT();
         }
-        return false;
+        return forms.get(0).getFormHeader().getFormCode();
     }
 
     public boolean sbsLogout(String tellerId, String termId) {

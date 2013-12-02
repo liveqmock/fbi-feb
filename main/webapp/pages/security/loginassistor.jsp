@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="pub.platform.form.config.SystemAttributeNames" %>
 <%@ page import="pub.platform.security.OperatorManager" %>
+<%@ page import="pub.platform.advance.utils.MessagePropertyManager" %>
 <%
     String path = request.getContextPath();
     String loginUsername = request.getParameter("username");
@@ -53,16 +54,20 @@
         session.setAttribute(SystemAttributeNames.USER_INFO_NAME, loginOM);
     }
     //String imgsign = request.getParameter("imgsign");
-    boolean isLogin = false;
+    String loginCode = "";
     try {
         //if(!om.ImgSign(imgsign))
         //	out.println("<script language=\"javascript\">alert ('输入校验码有误！'); if(top){ top.location.href='/index.jsp'; } else { location.href = '/index.jsp';} </script>");
         loginOM.setRemoteAddr(request.getRemoteAddr());
         loginOM.setRemoteHost(request.getRemoteHost());
 //        isLogin = loginOM.login(loginUsername, password);
-        isLogin = loginOM.login(loginUsername.toUpperCase(), password.toUpperCase());
-        if (!isLogin) {
-            out.println("<script language=\"javascript\">alert ('签到失败！'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
+        loginCode = loginOM.login(loginUsername.toUpperCase(), password.toUpperCase());
+        if (!"T901".equals(loginCode)) {
+            String loginErrMsg = MessagePropertyManager.getProperty(loginCode);
+            if (loginErrMsg == null) {
+                out.println("<script language=\"javascript\">alert ('" + loginCode + "'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
+            } else
+                out.println("<script language=\"javascript\">alert ('" + loginErrMsg + "'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
         }
     } catch (Exception e) {
         e.printStackTrace();
