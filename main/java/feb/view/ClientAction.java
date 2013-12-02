@@ -89,7 +89,6 @@ public class ClientAction implements Serializable {
                     }
                 } else if ("T001".equalsIgnoreCase(formcode)) {
                     t001 = (T001) form.getFormBody();
-                    //t001.setAMDTLR(tellerid);
                     m8001.setFUNCDE("Y");
                     MessageUtil.addWarn("该客户已存在,如需继续创建请单击确认按钮、");
                 } else {
@@ -199,7 +198,7 @@ public class ClientAction implements Serializable {
 
     public String onBack() {
         return srcpage + "?faces-redirect=true&action=query&cusidt=" + cusidt;
-        //return "clientAllQry?faces-redirect=true&action=query&cusidt=" + cusidt+ "&cusnam=" + t004.getCUSNAM();
+        //return "clientAllQry?faces-redirect=true&action=query&pastyp=" + t004.getPASTYP()+"&passno=" +t004.getPASSNO();
     }
 
     public String onClose() {

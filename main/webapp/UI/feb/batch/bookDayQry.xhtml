@@ -58,31 +58,34 @@
                         <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
                                      columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
                             <h:outputLabel value="客户号:" style="font-weight: bold"/>
-                            <p:inputText id="cusidt" size="25" value="#{clientAction.cusidt}"
+                            <p:inputText id="cusidt" size="25" value="#{bookDayQryAction.cusidt}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="核算码:" style="font-weight: bold"/>
+                            <p:inputText id="apcode" size="25" value="#{bookDayQryAction.apcode}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="币别:" style="font-weight: bold"/>
+                            <p:inputText id="curcde" size="25" value="#{bookDayQryAction.curcde}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="最小金额:" style="font-weight: bold"/>
+                            <p:inputText id="secamt" size="25" value="#{bookDayQryAction.secamt}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="最大金额:" style="font-weight: bold"/>
+                            <p:inputText id="ovelim" size="25" value="#{bookDayQryAction.ovelim}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="柜员号:" style="font-weight: bold"/>
+                            <p:inputText id="tlrnum" size="25" value="#{bookDayQryAction.tlrnum}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="传票套号:" style="font-weight: bold"/>
+                            <p:inputText id="vchset" size="25" value="#{bookDayQryAction.vchset}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="借贷别:" style="font-weight: bold"/>
+                            <p:inputText id="funcde" size="25" value="#{bookDayQryAction.funcde}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
 
-                            <h:outputLabel value="证件类别:" style="font-weight: bold"/>
-                            <p:inputText id="pastyp" size="25" value="#{clientAction.pastyp}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="证件号:" style="font-weight: bold"/>
-                            <p:inputText id="passno" size="25" value="#{clientAction.passno}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="简名索引:" style="font-weight: bold"/>
-                            <p:inputText id="cusidx" size="25" value="#{clientAction.cusidx}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="法人姓名:" style="font-weight: bold"/>
-                            <p:inputText id="legbdy" size="25" value="#{clientAction.legbdy}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="相关客户:" style="font-weight: bold"/>
-                            <p:inputText id="relcus" size="25" value="#{clientAction.relcus}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户名称:" style="font-weight: bold"/>
-                            <p:inputText id="cusnam" size="25" value="#{clientAction.cusnam}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
-                            <p:commandButton style="width:110px;" value="客户信息查询"
-                                             action="#{clientAction.onAllQuery}" ajax="true"
+                            <p:commandButton style="width:110px;" value="当日传票查询"
+                                             action="#{bookDayQryAction.onVchsetQry()}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
@@ -91,7 +94,7 @@
                 <br/>
                 <p:outputLabel
                         style="font-size: 12px !important;font-weight: bold;color: grey;"
-                        value="查询形式：1-输入客户号 2-输入证件种类、证件号码  3-输入客户简名索引  4-输入法人姓名  5-输入相关客户号  6-输入客户名称"/>
+                        value="借贷别：借 - D , 贷 - C"/>
                 <p:separator/>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
@@ -102,31 +105,38 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:dataTable id="dt" height="200"
-                             value="#{clientAction.dataList}" var="record"
+                             value="#{bookDayQryAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
-                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
+                             总笔数：#{bookDayQryAction.t851.totcnt}
+                             当前显示笔数：#{bookDayQryAction.t851.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column headerText="客户号" style="text-align:center">
+                    <p:column headerText="客户号" style="text-align:center" sortBy="#{record.CUSIDT}">
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
-                    <p:column headerText="证件号" style="text-align:left">
-                        <h:outputText value="#{record.PASSNO}"/>
+                    <p:column headerText="核算码" style="text-align:center" sortBy="#{record.APCODE}">
+                    <h:outputText value="#{record.APCODE}"/>
                     </p:column>
-                    <p:column headerText="客户简称" style="text-align:left">
-                        <h:outputText value="#{record.SHTNAM}"/>
+                    <p:column headerText="币别" style="text-align:center" sortBy="#{record.CURCDE}">
+                    <h:outputText value="#{record.CURCDE}"/>
                     </p:column>
-                    <p:column headerText="电话" style="text-align:left">
-                        <h:outputText value="#{record.TELNUM}"/>
+                    <p:column headerText="账户名称" style="text-align:left" sortBy="#{record.ACTNAM}">
+                        <h:outputText value="#{record.ACTNAM}"/>
                     </p:column>
-
-                    <p:column headerText="操作" style="text-align:center">
-                        <p:commandLink value="详细" immediate="true" ajax="false" action="#{clientAction.onClick()}"
-                                       style="color: blue">
-                            <f:param value="#{record.CUSIDT}" name="cusidt"/>
-                            <f:param value="detail" name="action"/>
-                            <f:param value="clientAllQry" name="srcpage"/>
-                        </p:commandLink>
+                    <p:column headerText="金额" style="text-align:right" sortBy="#{record.TXNAMT}">
+                        <h:outputText value="#{record.TXNAMT}">
+                            <f:convertNumber type="number" pattern="###,###,###,###,##0.00"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="摘要" style="text-align:center" sortBy="#{record.FURINF}">
+                        <h:outputText value="#{record.FURINF}"/>
+                    </p:column>
+                    <p:column headerText="传票套号" style="text-align:center" sortBy="#{record.VCHSET}">
+                        <h:outputText value="#{record.VCHSET}"/>
+                    </p:column>
+                    <p:column headerText="起息日期" style="text-align:center" sortBy="#{record.VALDAT}">
+                        <h:outputText value="#{record.VALDAT}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
