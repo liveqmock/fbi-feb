@@ -51,15 +51,16 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:focus for="cusidt"/>
+                <p:focus for="cusnam"/>
                 <p:messages id="msgs" showDetail="false" showSummary="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
                                      columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,input-col-s,input-col-xl,input-col-l,input-col-xl">
-                            <h:outputLabel value="客户名称:" style="font-weight: bold"/>
-                            <p:inputText id="cusnam" size="25" value="#{clientAction.cusnam}"
+                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                            <p:inputText id="cusidt" size="25" value="#{clientAction.cusidt}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
+
                             <h:outputLabel value="证件类别:" style="font-weight: bold"/>
                             <p:inputText id="pastyp" size="25" value="#{clientAction.pastyp}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
@@ -75,8 +76,8 @@
                             <h:outputLabel value="相关客户:" style="font-weight: bold"/>
                             <p:inputText id="relcus" size="25" value="#{clientAction.relcus}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
-                            <p:inputText id="cusidt" size="25" value="#{clientAction.cusidt}"
+                            <h:outputLabel value="客户名称:" style="font-weight: bold"/>
+                            <p:inputText id="cusnam" size="25" value="#{clientAction.cusnam}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
@@ -124,6 +125,7 @@
                                        style="color: blue">
                             <f:param value="#{record.CUSIDT}" name="cusidt"/>
                             <f:param value="detail" name="action"/>
+                            <f:param value="clientAllQry" name="srcpage"/>
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>

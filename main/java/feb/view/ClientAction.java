@@ -62,17 +62,21 @@ public class ClientAction implements Serializable {
     private List<T003.Bean> dataList = new ArrayList<>();
     private List<T003.Bean> tmpList = new ArrayList<>();
     private String tellerid;                    //柜员号
+    private String srcpage;
     private boolean isPrintable;               // 是否可打印凭证
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         cusidt = StringUtils.isEmpty(params.get("cusidt")) ? "" : params.get("cusidt");
+        cusnam = StringUtils.isEmpty(params.get("cusnam")) ? "" : params.get("cusnam");
+        srcpage = params.get("srcpage");
         action = StringUtils.isEmpty(params.get("action")) ? "" : params.get("action");
         tellerid = SkylineService.getOperId();
         if ("detail".equals(action)) onQryCus();
-        if ("query".equals(action)) onQryCus();
+        if ("query".equals(action)) onAllQuery();
     }
+
     public String onCreate() {
         try {
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001);
@@ -87,7 +91,7 @@ public class ClientAction implements Serializable {
                     t001 = (T001) form.getFormBody();
                     //t001.setAMDTLR(tellerid);
                     m8001.setFUNCDE("Y");
-                    MessageUtil.addWarn("该客户已存在,如需创建请单击确认按钮、");
+                    MessageUtil.addWarn("该客户已存在,如需继续创建请单击确认按钮、");
                 } else {
                     MessageUtil.addErrorWithClientID("msgs", formcode);
                 }
@@ -194,8 +198,8 @@ public class ClientAction implements Serializable {
     }
 
     public String onBack() {
-        return "clientAllQry";
-        //return "clientAllQry?faces-redirect=true&action=query";
+        return srcpage + "?faces-redirect=true&action=query&cusidt=" + cusidt;
+        //return "clientAllQry?faces-redirect=true&action=query&cusidt=" + cusidt+ "&cusnam=" + t004.getCUSNAM();
     }
 
     public String onClose() {
@@ -416,5 +420,13 @@ public class ClientAction implements Serializable {
 
     public void setPrintable(boolean printable) {
         isPrintable = printable;
+    }
+
+    public String getSrcpage() {
+        return srcpage;
+    }
+
+    public void setSrcpage(String srcpage) {
+        this.srcpage = srcpage;
     }
 }
