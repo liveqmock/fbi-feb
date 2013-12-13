@@ -41,7 +41,6 @@ public class Txna270Action extends AbstractTxnAction {
         paramList.add(ma270.getCORADD());
 
         paramList.add(ma270.getTELNUM());
-        paramList.add(ma270.getTXNAMT());
         paramList.add(ma270.getVALDAT());
         paramList.add(ma270.getACTTYP());
         paramList.add(ma270.getDPTTYP());

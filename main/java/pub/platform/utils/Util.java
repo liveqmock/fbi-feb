@@ -25,7 +25,7 @@ public class Util
 
        String maxcount ="1";
        try{
-            String SQLStr = "select max(" + Keyfield + ")as maxcount from  " + tableName + " " +whereStr ;
+            String SQLStr = "select max(to_number(" + Keyfield + "))as maxcount from  " + tableName + " " +whereStr ;
             System.out.println("SQLStr="+SQLStr);
             RecordSet rs = dc.executeQuery(SQLStr);
             if(rs.next())

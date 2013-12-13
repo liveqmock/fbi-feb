@@ -1,26 +1,37 @@
 package gateway.sbs.txn.model.msg;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Lichao.W
- * Date: 13-11-20
- * Time: 下午2:30
- * To change this template use File | Settings | File Templates.
+ * 签到
  */
-public class M8823 extends MTia{
-    private String CUSIDT = "";    //客户号    CTF-CUSIDT
-    private String APCODE = "";    //核算码    CTF-APCODE
-    private String CURCDE = "";    //币别    CTF-CURCDE
-    private String ERYDA1 = "";    //起始日期    CTF-ERYDA1
-    private String ERYDA2 = "";    //终止日期    CTF-ERYDA2
-    private String SECAMT = "";    //最小金额    CTF-SECAMT
-    private String OVELIM = "";    //最大金额    CTF-OVELIM
-    private String TLRNUM = "";    //柜员号    CTF-TLRNUM
-    private String VCHSET = "";    //传票套号    CTF-VCHSET
-    private String FUNCDE = "";    //借贷别    CTF-FUNCDE
-    private String REGADD = "";    //排序字段    CTF-REGADD
-    private String BEGNUM = "";    //起始笔数    CTF-BEGNUM
+public class M8823 extends MTia {
+    private String CUSIDT;           //客户号
+    private String APCODE;           //核算码
+    private String CURCDE;           //币别
+    private String ERYDA1;           //起始日期
+    private String ERYDA2;           //终止日期
+    private String SECAMT;           //最小金额
+    private String OVELIM;           //最大金额
+    private String TLRNUM;           //柜员号
+    private String VCHSET;           //传票套号
+    private String FUNCDE;           //借贷别
+    private String REGADD;           //排序字段
+    private String BEGNUM;           //起始笔数
 
+    public M8823(String CUSIDT, String APCODE, String CURCDE, String ERYDA1, String ERYDA2, String SECAMT, String OVELIM, String TLRNUM ,
+                 String VCHSET ,String FUNCDE, String REGADD ,String BEGNUM) {
+        this.CUSIDT = CUSIDT;
+        this.APCODE = APCODE;
+        this.CURCDE = CURCDE;
+        this.ERYDA1 = ERYDA1;
+        this.ERYDA2 = ERYDA2;
+        this.SECAMT = SECAMT;
+        this.OVELIM = OVELIM;
+        this.TLRNUM = TLRNUM;
+        this.VCHSET = VCHSET;
+        this.FUNCDE = FUNCDE;
+        this.REGADD = REGADD;
+        this.BEGNUM = BEGNUM;
+    }
     public String getCUSIDT() {
         return CUSIDT;
     }
