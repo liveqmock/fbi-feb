@@ -113,6 +113,16 @@ public class ClientAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
+    public void onPrintCloseAct() {
+        try {
+            vchPrintService.printVchpenClsAct(
+                    "     客户关闭确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
+                    t001.getCUSNAM(), t001.getOPNDAT(), "", tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
 
     public String onQryCus() {
         try {

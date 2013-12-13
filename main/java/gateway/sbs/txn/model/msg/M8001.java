@@ -18,7 +18,7 @@ public class M8001 extends MTia {
     private String CUSIDX = "";        //简名索引
     private String RSDCTR = "CN";       //注册国家码
     private String OPRCTR = "CN";        //所在国家码
-    private String CORADD = "";        //地址
+    private String CORADD = "CN";        //地址
     private String ZIPCDE = "266101";        //邮编
     private String TELNUM = "";        //电话
     private String TELEXN = "";        //电传

@@ -34,7 +34,7 @@ import java.util.Map;
 @ViewScoped
 public class ActapcAction implements Serializable {
 
-    private static Logger logger = LoggerFactory.getLogger(ActirtAction.class);
+    private static Logger logger = LoggerFactory.getLogger(ActapcAction.class);
 
     private String glcode = "";
     private String apcode = "";
