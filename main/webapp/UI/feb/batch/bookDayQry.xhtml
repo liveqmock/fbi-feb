@@ -108,8 +108,8 @@
                              value="#{bookDayQryAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
                              {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
-                             总笔数：#{bookDayQryAction.t851.totcnt}
-                             当前显示笔数：#{bookDayQryAction.t851.curcnt}"
+                             总笔数：#{acthstAction.totcnt}
+                             当前显示笔数：#{acthstAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
                     <p:column headerText="客户号" style="text-align:center" sortBy="#{record.CUSIDT}">
