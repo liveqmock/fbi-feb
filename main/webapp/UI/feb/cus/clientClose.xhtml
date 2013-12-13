@@ -62,7 +62,7 @@
                                          id="cusidt" value="#{clientAction.cusidt}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
-                        <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
+                        <h:panelGrid id="btns" columns="3" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:110px;" value="客户信息查询"
                                              action="#{clientAction.onQryCus()}" ajax="true"
@@ -71,6 +71,11 @@
                             <p:commandButton style="width:110px;" value="确认关闭" id="del"
                                              disabled="#{!clientAction.closeable}"
                                              action="#{clientAction.onClose}" ajax="true"
+                                             update="msgs,panel,show">
+                            </p:commandButton>
+                            <p:commandButton style="width:110px;" value="打印确认书" id="prt"
+                                             disabled="#{!clientAction.isPrintable()}"
+                                             action="#{clientAction.onPrintCloseAct()}" ajax="true"
                                              update="msgs,panel,show">
                             </p:commandButton>
                         </h:panelGrid>

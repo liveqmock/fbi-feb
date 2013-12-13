@@ -63,7 +63,7 @@ public class ClientAction implements Serializable {
     private List<T003.Bean> tmpList = new ArrayList<>();
     private String tellerid;                    //柜员号
     private String srcpage;
-    private boolean isPrintable;               // 是否可打印凭证
+    private boolean isPrintable = false;               // 是否可打印凭证
 
     @PostConstruct
     public void init() {
@@ -219,6 +219,7 @@ public class ClientAction implements Serializable {
             if ("T001".equalsIgnoreCase(formcode)) {
                 t001 = (T001) form.getFormBody();
                 closeable = false;
+                isPrintable = true;
                 // TODO 打印
                 MessageUtil.addInfo("客户账户关闭成功，客户号：" + t001.getCUSIDT());
             } else {
