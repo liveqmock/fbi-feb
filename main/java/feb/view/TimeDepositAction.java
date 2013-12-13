@@ -127,9 +127,6 @@ public class TimeDepositAction implements Serializable {
             pdfPrintService.printVch(
                     "       联机传票/复核（授权）清单", t016.getWATNUM(), t016.getVCHSET(), t016.getTRNDAT(),
                     t016.getTRNCDE(), t016.getTRNTIM(), t016.getORGIDT(), "", t016.getVCHPAR(), vchs);
-//            pdfPrintService.printVch(
-//                    "       联机传票/复核（授权）清单", "wat","vchset", "20131025",
-//                    "a271", "171539", "010", "", "", vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
