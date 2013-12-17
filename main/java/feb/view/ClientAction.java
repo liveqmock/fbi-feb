@@ -105,7 +105,7 @@ public class ClientAction implements Serializable {
     // 打印确认书
     public void onPrintOpenAct() {
         try {
-            vchPrintService.printVchpenClsAct(
+            vchPrintService.printVchpenAct(
                     "     客户建立确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
                     t001.getCUSNAM(), t001.getOPNDAT(), "", tellerid);
         } catch (Exception e) {
@@ -115,9 +115,9 @@ public class ClientAction implements Serializable {
     }
     public void onPrintCloseAct() {
         try {
-            vchPrintService.printVchpenClsAct(
+            vchPrintService.printVchClsAct(
                     "     客户关闭确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
-                    t001.getCUSNAM(), t001.getOPNDAT(), "", tellerid);
+                    t001.getCUSNAM(), t001.getOPNDAT(),t001.getCLSDAT(), tellerid);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));

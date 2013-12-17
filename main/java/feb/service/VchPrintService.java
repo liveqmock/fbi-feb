@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 打印所有凭证
+ * 打印传票 开销客户
  */
 @Service
 public class VchPrintService {
@@ -25,7 +25,7 @@ public class VchPrintService {
     private static final String BASE_FONT = PropertyManager.getProperty("print.pdf.font");
 
     // 开户确认书
-    public void printVchpenClsAct(String title, String orgid, String deptid, String actnum,
+    public void printVchpenAct(String title, String orgid, String deptid, String actnum,
                                     String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
         PdfPTable table = initCmnPdfPTable(title);     // 生成Pdf文件
 
@@ -47,11 +47,11 @@ public class VchPrintService {
     }
     // 关闭客户确认书
     public void printVchClsAct(String title, String orgid, String deptid, String actnum,
-                                    String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
+                               String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
         PdfPTable table = initCmnPdfPTable(title);     // 生成Pdf文件
 
-        String[] labels = {"机构号：", "部门号：", "客户号：", "客户名称：", "注销日期：",  "交易柜员："};
-        String[] values = {orgid, deptid, actnum, actnam, opndat, teller};
+        String[] labels = {"机构号：", "部门号：", "客户号：", "客户名称：", "建立日期：","关闭日期：",  "交易柜员："};
+        String[] values = {orgid, deptid, actnum, actnam, opndat, clsdat, teller};
         int i = 0;
         PdfPCell cell = null;
         BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);

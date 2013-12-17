@@ -75,7 +75,7 @@
                             </p:commandButton>
                             <p:commandButton style="width:110px;" value="打印确认书" id="prt"
                                              disabled="#{!clientAction.isPrintable()}"
-                                             action="#{clientAction.onPrintCloseAct()}" ajax="true"
+                                             action="#{clientAction.onPrintCloseAct()}" ajax="false"
                                              update="msgs,panel,show">
                             </p:commandButton>
                         </h:panelGrid>
@@ -154,7 +154,7 @@
                         <h:outputText value="#{clientAction.t004.REGDAT}"/>
                     </h:panelGrid>
                 </p:panel>
-                <p:fieldset style="margin-top: 18px">
+               <!-- <p:fieldset style="margin-top: 18px">
                     <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0"
                                  style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
@@ -166,12 +166,14 @@
                         <h:outputText value="#{clientAction.t001.CUSIDT}"/>
                         <h:outputLabel value="客户名称:"/>
                         <h:outputText value="#{clientAction.t001.CUSNAM}"/>
-                        <h:outputLabel value="注销日期:"/>
+                        <h:outputLabel value="建立日期:"/>
+                        <h:outputText value="#{clientAction.t001.OPNDAT}"/>
+                        <h:outputLabel value="关闭日期:"/>
                         <h:outputText value="#{clientAction.t001.CLSDAT}"/>
                         <h:outputLabel value="操作员:"/>
                         <h:outputText value="#{clientAction.t001.AMDTLR}"/>
                     </h:panelGrid>
-                </p:fieldset>
+                </p:fieldset>-->
             </h:form>
         </div>
     </ui:define>
