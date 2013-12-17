@@ -71,12 +71,12 @@
                             <p:commandButton style="width:110px;" value="确认关闭" id="del"
                                              disabled="#{!clientAction.closeable}"
                                              action="#{clientAction.onClose}" ajax="true"
-                                             update="msgs,panel,show">
+                                             update="msgs,panel">
                             </p:commandButton>
                             <p:commandButton style="width:110px;" value="打印确认书" id="prt"
                                              disabled="#{!clientAction.isPrintable()}"
                                              action="#{clientAction.onPrintCloseAct()}" ajax="false"
-                                             update="msgs,panel,show">
+                                             update="msgs,panel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
