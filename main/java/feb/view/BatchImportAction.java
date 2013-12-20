@@ -1,6 +1,7 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.sysdate.SystemDate;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.msg.M8401;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -32,6 +33,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import pub.platform.MessageUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,11 +63,27 @@ public class BatchImportAction implements Serializable {
         //System.out.println("==============================>" + System.getProperty("file.encoding"));//获取java环境默认编码
 //        tlrnum = SkylineService.getOperId();//============>得到当前柜员号
 //        sysdat = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-
+    }
+    public String onBtnImpClick() {
+        if (org.apache.commons.lang.StringUtils.isEmpty(filepath)) {
+            MessageUtil.addError("请选择文件.");
+            return null;
+        }
+        try{
+            filepath = filepath.replace("\\","/");
+            //String filename = filepath.split("/")[filepath.split("/").length-1];
+            File afile = new File(filepath);
+            readExcel(afile);
+        } catch (Exception ex) {
+            MessageUtil.addError("导入失败.");
+            return null;
+        }
+        MessageUtil.addError("导入成功.");
+        return null;
     }
         /**
          * 对外提供读取excel 的方法
-         * */
+         **/
         public List<List<Object>> readExcel(File file) throws IOException{
             String fileName = file.getName();
             String extension = fileName.lastIndexOf(".")==-1?"":fileName.substring(fileName.lastIndexOf(".")+1);
@@ -80,7 +98,8 @@ public class BatchImportAction implements Serializable {
         /**
          * 读取 office 2003 excel
          * @throws IOException
-         * @throws FileNotFoundException */
+         * @throws FileNotFoundException
+         * */
         private List<List<Object>> read2003Excel(File file) throws IOException{
             List<List<Object>> list = new LinkedList<List<Object>>();
             HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
@@ -167,7 +186,7 @@ public class BatchImportAction implements Serializable {
                         continue;
                     }
                     DecimalFormat df = new DecimalFormat("0");// 格式化 number String 字符
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");// 格式化日期字符串
                     DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
 
                     switch (cell.getCellType()) {
@@ -206,6 +225,7 @@ public class BatchImportAction implements Serializable {
             }
             return list;
         }
+
     public String onCreateNewRecord() {
         int tmp = 1;
         tmp++;

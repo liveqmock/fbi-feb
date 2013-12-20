@@ -1,14 +1,13 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.sysdate.SystemDate;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T851;
 import gateway.sbs.txn.model.msg.M8822;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 import pub.platform.MessageUtil;
-import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -16,8 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +38,6 @@ public class BookDayQryAction implements Serializable {
     private M8822 m8822;
     private T851 t851 = new T851();
     private List<T851.Bean> dataList = new ArrayList<>();
-
-    private String tellerid;
     private String cusidt = "";
     private String apcode = "";
     private String curcde = "";
@@ -52,6 +48,8 @@ public class BookDayQryAction implements Serializable {
     private String funcde = "";
     private String fegadd = "";
     private String begnum = "";
+    private String totcnt = "";
+    private String curcnt = "";
 
     public String onVchsetQry() {
         try {
@@ -64,6 +62,8 @@ public class BookDayQryAction implements Serializable {
                     if ("T851".equals(form.getFormHeader().getFormCode())) {
                         T851 t851 = (T851) form.getFormBody();
                         dataList.addAll(t851.getBeanList());
+                        totcnt = t851.getFormBodyHeader().getTOTCNT();
+                        curcnt = t851.getFormBodyHeader().getCURCNT();
                     } else if ("W012".equals(form.getFormHeader().getFormCode())) {
 
                     } else {
@@ -192,5 +192,21 @@ public class BookDayQryAction implements Serializable {
 
     public void setBegnum(String begnum) {
         this.begnum = begnum;
+    }
+
+    public String getTotcnt() {
+        return totcnt;
+    }
+
+    public void setTotcnt(String totcnt) {
+        this.totcnt = totcnt;
+    }
+
+    public String getCurcnt() {
+        return curcnt;
+    }
+
+    public void setCurcnt(String curcnt) {
+        this.curcnt = curcnt;
     }
 }

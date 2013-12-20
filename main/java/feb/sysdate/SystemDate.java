@@ -17,8 +17,9 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class SystemDate {
+
     //获取系统日期==========Skyservice============
-    private OperatorManager getOperatorManager() {
+    private static OperatorManager getOperatorManager() {
         ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) extContext.getSession(true);
         OperatorManager om = (OperatorManager) session.getAttribute(SystemAttributeNames.USER_INFO_NAME);
@@ -32,7 +33,7 @@ public class SystemDate {
         try {
             date = new SimpleDateFormat().parse(strdate);
         } catch (Exception e) {
-
+            System.out.println("日期转化异常："+e.getMessage());
         }
         return date;
     }
