@@ -9,6 +9,8 @@ import gateway.sbs.txn.model.msg.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.form.config.SystemAttributeNames;
+import pub.platform.security.OperatorManager;
 import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
 import skyline.service.SkylineService;
@@ -17,7 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +63,11 @@ public class ClientAction implements Serializable {
     private T004 t004 = new T004();             //对公客户单笔查询
     private boolean closeable = false;         // 是否可关户
     private boolean updateable = false;        // 是否可修改
+    private boolean isPrintable = false;               // 是否可打印凭证
     private List<T003.Bean> dataList = new ArrayList<>();
     private List<T003.Bean> tmpList = new ArrayList<>();
     private String tellerid;                    //柜员号
     private String srcpage;
-    private boolean isPrintable = false;               // 是否可打印凭证
 
     @PostConstruct
     public void init() {

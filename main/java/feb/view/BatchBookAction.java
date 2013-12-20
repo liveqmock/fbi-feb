@@ -1,11 +1,10 @@
 package feb.view;
 
-import feb.print.model.Vch;
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
 import feb.service.VchPrintService;
+import feb.sysdate.SystemDate;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T016;
 import gateway.sbs.txn.model.form.T898;
 import gateway.sbs.txn.model.msg.M8401;
 import gateway.sbs.txn.model.msg.M8402;
@@ -14,7 +13,6 @@ import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pub.platform.utils.BusinessDate;
 import pub.tools.BeanHelper;
 import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
@@ -77,7 +75,6 @@ public class BatchBookAction implements Serializable {
     private double totalCreditAmt;   //贷方
     private double totalAmt;         //轧差
     private boolean printable = false;
-    //private String sysBusinessDate = BusinessDate.getTodaytime();  //业务日期
 
     @PostConstruct
     public void init() {
@@ -86,10 +83,10 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
-        sysdat = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+        //sysdat = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+        sysdat = new SystemDate().getSysdate();
         onBatchQry();  // 初始化查询
         initAddBat();
-        //System.out.println("==================>"+DateUtil.getCurrentTime());
     }
 
     /*
@@ -102,7 +99,8 @@ public class BatchBookAction implements Serializable {
         m8401.setTLRNUM(tlrnum);
         m8401.setVCHSET(vchset);
         m8401.setRVSLBL("12");
-        m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        //m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        m8401.setOPNDA2(new SystemDate().getSysdate());
     }
 
     //-------------------event判断----------------------------
@@ -153,7 +151,7 @@ public class BatchBookAction implements Serializable {
             }
             txntim = DateUtil.getCurrentTime();//系统时间
             vchPrintService.printVch(
-                    "              传票流水账", vchset, sysdat, txntim, "010", "", "", vchs);
+                    "              传   票   流   水   账", vchset, sysdat, txntim, "010", "", "", vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -212,7 +210,9 @@ public class BatchBookAction implements Serializable {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
             m8401.setTXNAMT(txnamt);
-
+            /*
+            * 不通过ajax提交 自行对摘要字段转码，get得到utf-8，new Str转换成java运行编码utf-16
+            */
             m8401.setFURINF(new String(m8401.getFURINF().getBytes("ISO-8859-1"),"UTF-8"));
 
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
@@ -260,7 +260,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
-                onPrint();
+                //onPrint();
                 onBatchQry();
                 initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
