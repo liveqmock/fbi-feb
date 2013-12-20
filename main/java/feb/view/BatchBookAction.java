@@ -75,6 +75,7 @@ public class BatchBookAction implements Serializable {
     private double totalCreditAmt;   //贷方
     private double totalAmt;         //轧差
     private boolean printable = false;
+    SystemDate systemDate = new SystemDate();
 
     @PostConstruct
     public void init() {
@@ -83,8 +84,7 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
-        //sysdat = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-        sysdat = new SystemDate().getSysdate();
+        sysdat =new SimpleDateFormat("yyyy/MM/dd").format(systemDate.getSysdate2());
         onBatchQry();  // 初始化查询
         initAddBat();
     }
@@ -99,8 +99,8 @@ public class BatchBookAction implements Serializable {
         m8401.setTLRNUM(tlrnum);
         m8401.setVCHSET(vchset);
         m8401.setRVSLBL("12");
-        //m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        m8401.setOPNDA2(new SystemDate().getSysdate());
+        //m8401.setOPNDA2(new SimpleDateFormat("yyyyMMdd").format(new Date()));//当前日期
+        m8401.setOPNDA2(systemDate.getSysdate1());//sbs日期
     }
 
     //-------------------event判断----------------------------

@@ -92,14 +92,14 @@
             if (event.keyCode == 38) {
                 if (event.srcElement.id == 'inputform:txnamt') {
                     document.forms['inputform']['inputform:actnum'].focus();
-                } else if (event.srcElement.id == 'inputform:rvslbl') {
+                } else if (event.srcElement.id == 'inputform:anacde') {
                     document.forms['inputform']['inputform:txnamt'].focus();
+                } else if (event.srcElement.id == 'inputform:rvslbl') {
+                    document.forms['inputform']['inputform:anacde'].focus();
                 } else if (event.srcElement.id == 'inputform:opnda2') {
                     document.forms['inputform']['inputform:rvslbl'].focus();
-                } else if (event.srcElement.id == 'inputform:anacde') {
-                    document.forms['inputform']['inputform:opnda2'].focus();
                 } else if (event.srcElement.id == 'inputform:furinf') {
-                    document.forms['inputform']['inputform:anacde'].focus();
+                    document.forms['inputform']['inputform:opnda2'].focus();
                 }
             }
         }
@@ -189,7 +189,7 @@
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                         <h:outputLabel value="帐号* :" for="actnum"/>
                         <p:inputText autocomplete="off" id="actnum" value="#{batchBookAction.m8401.ACTNUM}"
-                                     onkeydown="KeyDown()" onfocus="this.select()"
+                                     onkeydown="KeyDown()" onfocus="this.select()" maxlength="14"
                                      required="true" requiredMessage="请正确输入账号">
                         </p:inputText>
                         <h:outputLabel value="交易金额* :" for="txnamt"/>
@@ -197,6 +197,10 @@
                                      onkeydown="KeyDown()" onfocus="this.select()" style="text-align:right"
                                      required="true" requiredMessage="请正确输入金额">
                             <p:ajax event="blur" listener="#{batchBookAction.txnEvent}" update="msgs,txnamt"/>
+                        </h:inputText>
+                        <h:outputLabel value="摘要 :" for="anacde"/>
+                        <h:inputText autocomplete="off" id="anacde" value="#{batchBookAction.m8401.FURINF}"
+                                     onkeydown="KeyDown()" onfocus="this.select()">
                         </h:inputText>
                         <h:outputLabel value="冲正标志* :" for="rvslbl"/>
                         <p:inputMask autocomplete="off" id="rvslbl" value="#{batchBookAction.m8401.RVSLBL}"
@@ -208,24 +212,24 @@
                                      requiredMessage="日期不能为空。"
                                      onclick="WdatePicker({dateFmt:'yyyyMMdd'})">
                         </h:inputText>
-                        <h:outputLabel value="统计码 :" for="anacde"/>
-                        <p:inputMask autocomplete="off" id="anacde" value="#{batchBookAction.m8401.ANACDE}"
-                                     onkeydown="KeyDown()" onfocus="this.select()" mask="****">
-                        </p:inputMask>
-                        <h:outputLabel value="摘要 :" for="furinf"/>
-                        <h:inputText autocomplete="off" id="furinf" value="#{batchBookAction.m8401.FURINF}"
-                                     onkeydown="KeyDown()" onfocus="this.select()">
-                        </h:inputText>
+                        <h:outputLabel value="统计码 :" for="furinf"/>
+                        <p:inputText autocomplete="off" id="furinf" value="#{batchBookAction.m8401.ANACDE}"
+                                     onkeydown="KeyDown()" onfocus="this.select()" >
+                        </p:inputText>
+
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                         <p:commandButton id="save" value="确定" ajax="false" action="#{batchBookAction.onCreateNewRecord}"
-                                         style="width:66px;" update="show,:dtform">
+                                         style="width:66px;" update="msgs,show,:dtform">
                         </p:commandButton>
+                        <!--<p:commandButton id="t" value="T" ajax="false" action="#{batchBookAction.onPrint()}"
+                                         style="width:66px;" update="show,:dtform">
+                        </p:commandButton>-->
                     </h:panelGrid>
                 </h:panelGrid>
                 <p:separator/><!--columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
                 input-col-s,input-col-xl,input-col-l,input-col-xl"-->
-                <h:panelGrid id="show" style="width: 80%" columns="8"
+                <h:panelGrid id="show" style="width: 82%" columns="8"
                              columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,col-label2, col-input2">
                     <h:outputLabel value="贷方合计 :"/>
                     <h:inputText id="creditamt" value="#{batchBookAction.totalCreditAmt}" disabled="true"
@@ -267,7 +271,14 @@
                             action="#{batchBookAction.onMultiConfirm}" type="push"
                             ajax="false"/>
             </p:menubar>
-
+            <p:ajaxStatus style="height:18px;text-align:center">
+                <f:facet name="start">
+                    <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
             <p:dialog id="dialog" header="已套平传票修改" widgetVar="vchsetdlg" modal="true">
                 <p:growl id="vchsetgrowl" globalOnly="true" showDetail="true"/>
                 <h:panelGrid columns="1" cellpadding="5">

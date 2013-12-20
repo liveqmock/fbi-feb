@@ -24,15 +24,28 @@ public class SystemDate {
         OperatorManager om = (OperatorManager) session.getAttribute(SystemAttributeNames.USER_INFO_NAME);
         return om;
     }
-    private String sysdate = getOperatorManager().getSysBusinessDate();
-    //private String sysdate2 = new SimpleDateFormat("yyyy/MM/dd").format(sysdate);
 
-    public String getSysdate() {
-        return sysdate;
+    private String strdate = getOperatorManager().getSysBusinessDate();
+
+    private Date stringTodate() {
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat().parse(strdate);
+        } catch (Exception e) {
+
+        }
+        return date;
     }
 
-    public void setSysdate(String sysdate) {
-        this.sysdate = sysdate;
+    private String sysdate1 = strdate;
+    private Date sysdate2 = stringTodate();
+
+    public String getSysdate1() {
+        return sysdate1;
+    }
+
+    public Date getSysdate2() {
+        return sysdate2;
     }
 
 }
