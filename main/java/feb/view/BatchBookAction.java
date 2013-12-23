@@ -260,7 +260,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
-                onPrint();
+                //onPrint();
                 onBatchQry();
                 initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
