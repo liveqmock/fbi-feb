@@ -220,10 +220,12 @@
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                         <p:commandButton id="save" value="确定" ajax="false" action="#{batchBookAction.onCreateNewRecord}"
-                                         style="width:66px;" update="msgs,show,:dtform">
+                                         style="width:74px;" update="msgs,show,:dtform">
                         </p:commandButton>
-                        <!--<p:commandButton id="t" value="T" ajax="false" action="#{batchBookAction.onPrint()}"
-                                         style="width:66px;" update="show,:dtform">
+                        <!--<p:commandButton id="t" value="打印传票" ajax="false"
+                                         disabled="#{!batchBookAction.isPrintable()}"
+                                         action="#{batchBookAction.onPrint()}"
+                                         style="width:74px;" update="show,:dtform">
                         </p:commandButton>-->
                     </h:panelGrid>
                 </h:panelGrid>

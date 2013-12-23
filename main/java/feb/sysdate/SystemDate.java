@@ -30,10 +30,11 @@ public class SystemDate {
 
     private Date stringTodate() {
         Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
-            date = new SimpleDateFormat().parse(strdate);
+            date = sdf.parse(strdate);
         } catch (Exception e) {
-            System.out.println("日期转化异常："+e.getMessage());
+            throw new RuntimeException("日期转化异常："+e);
         }
         return date;
     }

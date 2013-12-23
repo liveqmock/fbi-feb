@@ -84,7 +84,7 @@ public class BatchBookAction implements Serializable {
         setseq = params.get("setseq");
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
-        sysdat =new SimpleDateFormat("yyyy/MM/dd").format(systemDate.getSysdate2());
+        sysdat =new SimpleDateFormat("yyyy/MM/dd").format(systemDate.getSysdate2());//sbs时间
         onBatchQry();  // 初始化查询
         initAddBat();
     }
@@ -260,7 +260,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
-                //onPrint();
+                onPrint();
                 onBatchQry();
                 initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
