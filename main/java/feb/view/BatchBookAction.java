@@ -338,9 +338,8 @@ public class BatchBookAction implements Serializable {
     }
 
     //套号修改
-    public String onBoolVchset() {
+    public String onBoolVchset() {//存在问题：传票修改时套号变
         if (this.dataList.size() > 0) {
-            onBatchQry();
             MessageUtil.addError("存在未套平传票...");
         } else {
             onModifyVchset();
