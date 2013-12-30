@@ -23,7 +23,6 @@ public class SelectEnumCusFieldAction implements Serializable {
     @ManagedProperty(value = "#{skylineService}")
     private SkylineService skylineService;
 
-    // private List<SelectItem> ctfStmfmtItems;      // 对账单账页形式
     private List<SelectItem> cusPastypItems;      //证件类型
     private List<SelectItem> cusBocgrpItems;      //客户分类
     private List<SelectItem> cusEnttypItems;      //企业性质
@@ -31,7 +30,6 @@ public class SelectEnumCusFieldAction implements Serializable {
 
     @PostConstruct
     public void init() {
-        //ctfStmfmtItems = skylineService.getEnuSelectItemList("CTF-STMFMT", true, false);
         cusPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
         cusBocgrpItems = skylineService.getEnuSelectItemList("CTF-BOCGRP", true, false);
         cusEnttypItems = skylineService.getEnuSelectItemList("CTF-ENTTYP", true, false);
@@ -78,4 +76,5 @@ public class SelectEnumCusFieldAction implements Serializable {
     public void setCusCusty1Items(List<SelectItem> cusCusty1Items) {
         this.cusCusty1Items = cusCusty1Items;
     }
+
 }
