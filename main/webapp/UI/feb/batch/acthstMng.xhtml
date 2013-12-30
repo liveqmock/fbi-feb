@@ -121,6 +121,9 @@
                     <p:column headerText="币别"  style="text-align:center">
                         <h:outputText value="#{record.CURCDE}"/>
                     </p:column>
+                    <p:column headerText="账户名称"  style="text-align:center">
+                        <h:outputText value="#{record.ACTNAM}"/>
+                    </p:column>
                     <p:column sortBy="#{record.ERYDAT}" headerText="交易日期"  style="text-align:center">
                         <h:outputText value="#{record.ERYDAT}"/>
                     </p:column>
@@ -148,9 +151,7 @@
                     <p:column sortBy="#{record.VALDAT}" headerText="起息日期"  style="text-align:center">
                         <h:outputText value="#{record.VALDAT}"/>
                     </p:column>
-                    <p:column headerText="账户名称"  style="text-align:center">
-                        <h:outputText value="#{record.ACTNAM}"/>
-                    </p:column>
+
 
                     <p:columnGroup type="footer">
                         <p:row>
