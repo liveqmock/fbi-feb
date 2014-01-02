@@ -46,7 +46,6 @@ public class ActidmAction implements Serializable {
     private T121 irt = new T121();
     private T007 idm = new T007();
 
-
     private boolean updateable = false;
     private boolean deleteable = false;
     private boolean readonly = false;

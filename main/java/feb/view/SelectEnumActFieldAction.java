@@ -32,8 +32,8 @@ public class SelectEnumActFieldAction implements Serializable {
     private List<SelectItem> ctfLegzipItems;      // 账户用途
     private List<SelectItem> ctfCqeflgItems;      // 支票/存折标志
 
-    private List<SelectItem> apctypItems;         //核算码种类
-    private List<SelectItem> cusPastypItems;      //test
+    /*private List<SelectItem> apctypItems;         //核算码种类
+    private List<SelectItem> cusPastypItems;      //test*/
 
     @PostConstruct
     public void init() {
@@ -47,8 +47,8 @@ public class SelectEnumActFieldAction implements Serializable {
         ctfLegzipItems = skylineService.getEnuSelectItemList("CTF-LEGZIP", true, false);
         ctfCqeflgItems = skylineService.getEnuSelectItemList("CTF-CQEFLG", true, false);
 
-        cusPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
-        apctypItems = skylineService.getEnuSelectItemList("CTF-APCTYP", true, false);
+        //cusPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
+        //apctypItems = skylineService.getEnuSelectItemList("CTF-APCTYP", true, false);
     }
 
 
@@ -59,14 +59,6 @@ public class SelectEnumActFieldAction implements Serializable {
 
     public void setSkylineService(SkylineService skylineService) {
         this.skylineService = skylineService;
-    }
-
-    public List<SelectItem> getApctypItems() {
-        return apctypItems;
-    }
-
-    public void setApctypItems(List<SelectItem> apctypItems) {
-        this.apctypItems = apctypItems;
     }
 
     public List<SelectItem> getCtfStmfmtItems() {
@@ -141,11 +133,4 @@ public class SelectEnumActFieldAction implements Serializable {
         this.ctfCqeflgItems = ctfCqeflgItems;
     }
 
-    public List<SelectItem> getCusPastypItems() {
-        return cusPastypItems;
-    }
-
-    public void setCusPastypItems(List<SelectItem> cusPastypItems) {
-        this.cusPastypItems = cusPastypItems;
-    }
 }
