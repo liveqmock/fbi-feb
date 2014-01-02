@@ -4,6 +4,8 @@
 *.ipr
 *.iws
 *.iml
+.idea
+.gitignore
 
 *.pydevproject
 .project
