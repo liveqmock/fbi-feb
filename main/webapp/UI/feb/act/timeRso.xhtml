@@ -94,9 +94,14 @@
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="查询"
+                            <p:commandButton style="width:80px;" value="查询"
                                              action="#{actrsoAction.onAllQuery()}" ajax="true"
                                              update="msgs,panel,dt">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;" value="打印凭证"
+                                             disabled="#{!actrsoAction.printable}"
+                                             action="#{actrsoAction.onPrintOpenAct}" ajax="false"
+                                             update="msgs,btns,showpanel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>

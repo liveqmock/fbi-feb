@@ -1,6 +1,8 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.service.RosPrintService;
+import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T133;
 import gateway.sbs.txn.model.msg.Ma280;
@@ -29,8 +31,11 @@ public class ActrsoAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    private T133 rso = new T133();
 
+    @ManagedProperty(value = "#{rosPrintService}")
+    private RosPrintService rosPrintService;
+
+    private T133 rso = new T133();
     private String actty1;
     private String iptac1;
     private String dramd1;
@@ -39,6 +44,7 @@ public class ActrsoAction implements Serializable {
     private String actty2;
     private String iptac2;
     private String nbkfl2;
+    private boolean printable = false;
 
     private List<Ma280> hstList = new ArrayList<>();
 
@@ -65,6 +71,7 @@ public class ActrsoAction implements Serializable {
                         if ("T133".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                             T133 t133 = (T133) form.getFormBody();
                             rso = t133;
+                            printable = true;
                         }
                         else {
                             logger.info(form.getFormHeader().getFormCode());
@@ -84,7 +91,16 @@ public class ActrsoAction implements Serializable {
 
         return null;
     }
-
+    public void onPrintOpenAct() {
+        try {
+            rosPrintService.printVchpenAct(
+                    "     客户建立确认书", "1", "2", "3",
+                    "4", "5", "6", "sys1");
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
@@ -171,5 +187,21 @@ public class ActrsoAction implements Serializable {
 
     public void setHstList(List<Ma280> hstList) {
         this.hstList = hstList;
+    }
+
+    public boolean isPrintable() {
+        return printable;
+    }
+
+    public void setPrintable(boolean printable) {
+        this.printable = printable;
+    }
+
+    public RosPrintService getRosPrintService() {
+        return rosPrintService;
+    }
+
+    public void setRosPrintService(RosPrintService rosPrintService) {
+        this.rosPrintService = rosPrintService;
     }
 }

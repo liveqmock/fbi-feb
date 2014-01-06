@@ -109,7 +109,7 @@ public class CtgManager {
             resbytes[databytes.length + 3] = 0x00;
             response.init(resbytes);
 //            response.init(abytCommarea);
-//            String formcode = response.getFormcode();
+//          String formcode = response.getFormcode();
 //            logger.info("===返回FORMCODE:" + formcode + "   本包通讯耗时:" + (endtime - starttime) + "ms.");
             logger.info("本包通讯耗时:" + (endtime - starttime) + "ms.");
         } catch (Exception e) {

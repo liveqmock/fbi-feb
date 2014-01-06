@@ -408,4 +408,5 @@ public class ClientActAction implements Serializable {
     public void setTellerid(String tellerid) {
         this.tellerid = tellerid;
     }
+
 }
