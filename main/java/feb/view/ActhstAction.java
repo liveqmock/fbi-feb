@@ -55,7 +55,7 @@ public class ActhstAction implements Serializable {
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 //        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-          cusidt = "0001000";
+        cusidt = "";
         regadd = "";
         begnum = "";
 

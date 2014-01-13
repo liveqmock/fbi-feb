@@ -84,20 +84,24 @@
                             <p:inputText  style="width: 131px;"
                                           value="#{acthstAction.vchset}"/>
                             <h:outputLabel value="借贷别:" style="font-weight: bold"/>
-                            <p:selectOneMenu value="#{acthstAction.funcde}" style="width: 135px;">
-                                <f:selectItems value="#{selectEnumCimFieldAction.ctfStmhstItems}"/>
-                            </p:selectOneMenu>
+                            <p:inputText  style="width: 131px;"
+                                          value="#{acthstAction.funcde}"/>
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="查询"
+                            <p:commandButton style="width:110px;" value="历史传票查询"
                                              action="#{acthstAction.onAllQuery}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="借贷别：借 - D , 贷 - C"/>
+                <p:separator/>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
                         <h:graphicImage value="/images/ajaxloadingbar.gif"/>
@@ -108,10 +112,12 @@
                 </p:ajaxStatus>
                 <p:dataTable id="dt" height="200"
                              value="#{acthstAction.dataList}" var="record"
-                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
+                             {LastPageLink} {RowsPerPageDropdown}
+                             总笔数：#{bookDayQryAction.totcnt}
+                             当前显示笔数：#{bookDayQryAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
-                             emptyMessage="数据记录为空..."
-                             >
+                             emptyMessage="数据记录为空...">
                     <p:column  headerText="客户号"  style="text-align:center">
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
@@ -152,16 +158,6 @@
                         <h:outputText value="#{record.VALDAT}"/>
                     </p:column>
 
-
-                    <p:columnGroup type="footer">
-                        <p:row>
-                            <p:column footerText="总记录数: " style="text-align:center"/>
-                            <p:column footerText="#{acthstAction.totcnt}" />
-                            <p:column footerText="本包内记录数: " style="text-align:center"/>
-                            <p:column footerText="#{acthstAction.curcnt}" />
-
-                        </p:row>
-                    </p:columnGroup>
                 </p:dataTable>
             </h:form>
         </div>
