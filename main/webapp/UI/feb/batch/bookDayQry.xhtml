@@ -112,7 +112,7 @@
                              当前显示笔数：#{bookDayQryAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column  headerText="客户号"  style="text-align:center">
+                    <p:column sortBy="#{record.CUSIDT}" headerText="客户号"  style="text-align:center">
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
                     <p:column sortBy="#{record.APCODE}" headerText="核算码"  style="text-align:center">

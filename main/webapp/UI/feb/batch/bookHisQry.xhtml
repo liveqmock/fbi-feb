@@ -114,11 +114,11 @@
                              value="#{acthstAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
                              {LastPageLink} {RowsPerPageDropdown}
-                             总笔数：#{bookDayQryAction.totcnt}
-                             当前显示笔数：#{bookDayQryAction.curcnt}"
+                             总笔数：#{acthstAction.totcnt}
+                             当前显示笔数：#{acthstAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column  headerText="客户号"  style="text-align:center">
+                    <p:column sortBy="#{record.CUSIDT}" headerText="客户号"  style="text-align:center">
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
                     <p:column sortBy="#{record.APCODE}" headerText="核算码"  style="text-align:center">
@@ -134,7 +134,9 @@
                         <h:outputText value="#{record.ERYDAT}"/>
                     </p:column>
                     <p:column sortBy="#{record.TXNAMT}" headerText="金额"  style="text-align:center">
-                        <h:outputText value="#{record.TXNAMT}"/>
+                        <h:outputText value="#{record.TXNAMT}">
+                        <f:convertNumber type="number" pattern="###,###,##0.00"/>
+                        </h:outputText>
                     </p:column>
                     <p:column sortBy="#{record.TLRNUM}" headerText="柜员"  style="text-align:center">
                         <h:outputText value="#{record.TLRNUM}"/>
