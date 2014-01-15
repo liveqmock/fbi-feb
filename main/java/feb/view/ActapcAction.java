@@ -69,7 +69,7 @@ public class ActapcAction implements Serializable {
         } else {
             // 添加 初始化 addapc
             initAddapc();
-            initQry();
+            //initQry();//初始化查询 点开页面就进行一次查询
         }
         if ("update".equals(action)) {
             updateable = true;
@@ -114,7 +114,7 @@ public class ActapcAction implements Serializable {
                         return null;
                     } else {
                         logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
