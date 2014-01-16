@@ -69,7 +69,7 @@ public class ActapcAction implements Serializable {
         } else {
             // 添加 初始化 addapc
             initAddapc();
-            //initQry();//初始化查询 点开页面就进行一次查询
+            initQry();//初始化查询 点开页面就进行一次查询
         }
         if ("update".equals(action)) {
             updateable = true;
