@@ -28,7 +28,7 @@ public class Ma101 extends MTia {
 
 
     public Ma101(String ACTTY1, String IPTAC1, String DUEFLG, String DRAMD1, String DPTPRD, String VALDAT, String TXNAMT,
-                 String VCHTYP, String VCHNUM, String ANACDE) {
+                 String VCHTYP, String VCHNUM, String ACTTY2,String IPTAC2, String ANACDE) {
         this.ACTTY1 = ACTTY1;
         this.IPTAC1 = IPTAC1;
         this.DUEFLG = DUEFLG;
@@ -39,6 +39,8 @@ public class Ma101 extends MTia {
         this.VCHTYP = VCHTYP;
         this.VCHNUM = VCHNUM;
         this.ANACDE = ANACDE;
+        this.ACTTY2 = ACTTY2;
+        this.IPTAC2 = IPTAC2;
 
     }
 

@@ -76,6 +76,7 @@ public class CtgManager {
             System.arraycopy(getBytes(requestBuffer), 0, abytCommarea, 0, requestBuffer.length());
             //打包包体
             setBufferValues(request.getParamList(), abytCommarea);
+
             String sendTime = new SimpleDateFormat("HH:mm:ss:SSS").format(new Date());
             logger.info("交易" + request.getTxncode() + " 发送报文: " + sendTime + format16(truncBuffer(abytCommarea)));
 
@@ -141,7 +142,7 @@ public class CtgManager {
     private void setBufferValues(List list, byte[] bb) throws UnsupportedEncodingException {
         int start = 51;
         for (int i = 1; i <= list.size(); i++) {
-            String value = list.get(i - 1).toString();
+            String value = list.get(i - 1).toString();    //07
             setVarData(start, value, bb);
             start = start + value.getBytes("GBK").length + 2;
         }
@@ -154,7 +155,7 @@ public class CtgManager {
         slen[0] = (byte) (len >> 8);
         slen[1] = (byte) (len);
         System.arraycopy(slen, 0, aa, pos, 2);
-        System.arraycopy(data.getBytes(), 0, aa, pos + 2, len);
+        System.arraycopy(data.getBytes(), 0, aa, pos + 2, len);   //aa 51=0  52=2 53=48(0) 54 =  55(7)
     }
 
 

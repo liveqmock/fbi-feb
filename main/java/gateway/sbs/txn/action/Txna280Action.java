@@ -48,9 +48,6 @@ public class Txna280Action extends AbstractTxnAction {
         paramList.add(ma280.getMAGFL2());
 
 
-
-
-
         // Ö´ÐÐsbs½»Ò×
         SBSResponse response = coreTxnService.execute(termid, tellerid, "a280", paramList);
 

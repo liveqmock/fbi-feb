@@ -60,48 +60,43 @@
                         <h:panelGrid columns="4" cellspacing="5"
                                      columnClasses="col-label,col-input,col-label,col-input">
                             <h:outputLabel value="账户类型:" style="font-weight: bold"/>
-                            <p:inputText  size="25"
-                                         id="actty1" required="true"  maxlength="2"
+                            <p:inputText size="25"
+                                         id="actty1" required="true" maxlength="2"
                                          value="#{actrsoAction.actty1}" requiredMessage="账户类型不能为空。"/>
                             <h:outputLabel value="账户号:" style="font-weight: bold"/>
-                            <p:inputText  size="25" required="true"
-                                          value="#{actrsoAction.iptac1}" requiredMessage="账户号不能为空。"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrsoAction.iptac1}" requiredMessage="账户号不能为空。"/>
                             <h:outputLabel value="取款方式:" style="font-weight: bold"/>
-                            <p:selectOneMenu value="#{actrsoAction.dramd1}" style="width: 156px;" required="true"
+                            <p:selectOneMenu value="#{actrsoAction.dramd1}" style="width: 162px;" required="true"
                                              requiredMessage="取款方式不能为空。">
                                 <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdraItems}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel value="交易日期:" style="font-weight: bold"/>
-                            <p:inputText  size="25" required="true"
-                                          value="#{actrsoAction.txndat}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})" requiredMessage="交易日期不能为空。"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrsoAction.txndat}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"
+                                         requiredMessage="交易日期不能为空。"/>
                             <h:outputLabel value="强制到期标志:" style="font-weight: bold"/>
 
-                            <p:selectOneMenu value="#{actrsoAction.dueflg}" style="width: 156px;" required="true"
+                            <p:selectOneMenu value="#{actrsoAction.dueflg}" style="width: 162px;" required="true"
                                              requiredMessage="强制到期标志不能为空。">
                                 <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdueItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="账户类型:" style="font-weight: bold"/>
-                            <p:inputText  size="25" required="true"
-                                          value="#{actrsoAction.actty2}" requiredMessage="账户类型不能为空。"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrsoAction.actty2}" requiredMessage="账户类型不能为空。"/>
                             <h:outputLabel value="账号:" style="font-weight: bold"/>
-                            <p:inputText  size="25" required="true"
-                                          value="#{actrsoAction.iptac2}" requiredMessage="账号不能为空。"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrsoAction.iptac2}" requiredMessage="账号不能为空。"/>
                             <h:outputLabel value="无折标志:" style="font-weight: bold"/>
-                            <p:inputText  size="25" required="true"
-                                          value="#{actrsoAction.nbkfl2}" requiredMessage="无折标志不能为空。"/>
-
+                            <p:inputText size="25" required="true"
+                                         value="#{actrsoAction.nbkfl2}" requiredMessage="无折标志不能为空。"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:80px;" value="查询"
                                              action="#{actrsoAction.onAllQuery()}" ajax="true"
                                              update="msgs,panel,dt">
-                            </p:commandButton>
-                            <p:commandButton style="width:80px;" value="打印凭证"
-                                             disabled="#{!actrsoAction.printable}"
-                                             action="#{actrsoAction.onPrintOpenAct}" ajax="false"
-                                             update="msgs,btns,showpanel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
@@ -122,7 +117,7 @@
                             <h:outputLabel value="账户号:"/>
                             <p:outputLabel value="#{actrsoAction.rso.ACTNM1}"/>
                             <h:outputLabel value="证件种类:"/>
-                            <p:outputLabel value="#{actrsoAction.rso.PASTYP}" />
+                            <p:outputLabel value="#{actrsoAction.rso.PASTYP}"/>
                             <h:outputLabel value="证件号码:"/>
                             <p:outputLabel value="#{actrsoAction.rso.PASNO1}"/>
                             <h:outputLabel value="账户类别:"/>
@@ -143,7 +138,6 @@
                             <p:outputLabel value="#{actrsoAction.rso.PREBAL}"/>
                             <h:outputLabel value="交易后余额:"/>
                             <p:outputLabel value="#{actrsoAction.rso.PSTBAL}"/>
-
 
 
                         </h:panelGrid>

@@ -46,6 +46,9 @@ public class TimeDepositAction implements Serializable {
     private boolean printable = false;
     private BigDecimal bdTxnamt;   // 交易金额
 
+    private String auttlr;                     // 授权主管柜员号
+    private String autpwd;                     // 授权主管密码
+
     @PostConstruct
     public void init() {
         ma271 = new Ma271();
@@ -81,7 +84,7 @@ public class TimeDepositAction implements Serializable {
             if (!StringUtils.isEmpty(ma271.getIPTAC1()) && !ma271.getIPTAC1().startsWith("8010")) {
                 ma271.setIPTAC1("8010" + ma271.getIPTAC1());
             }
-            List<SOFForm> forms = dataExchangeService.callSbsTxn("a271", ma271);
+            List<SOFForm> forms = dataExchangeService.callSbsTxn(auttlr, autpwd, "a271", ma271);
 
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
@@ -181,5 +184,21 @@ public class TimeDepositAction implements Serializable {
 
     public void setPrintable(boolean printable) {
         this.printable = printable;
+    }
+
+    public String getAuttlr() {
+        return auttlr;
+    }
+
+    public void setAuttlr(String auttlr) {
+        this.auttlr = auttlr;
+    }
+
+    public String getAutpwd() {
+        return autpwd;
+    }
+
+    public void setAutpwd(String autpwd) {
+        this.autpwd = autpwd;
     }
 }

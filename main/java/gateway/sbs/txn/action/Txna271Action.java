@@ -66,7 +66,7 @@ public class Txna271Action extends AbstractTxnAction {
         paramList.add(ma271.getVCHUSERATE());
         paramList.add(ma271.getMAGFL1());
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellid, "a271", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellid, auttlr, autpwd, "a271", paramList);
 
         StringBuffer rtnFormCodes = new StringBuffer("[a271-定期存款开户] 客户号：" + ma271.getCUSIDT()
                 + " 金额：" + ma271.getTXNAMT() + " 凭证号：" + ma271.getVCHNUM() + " 返回码：");

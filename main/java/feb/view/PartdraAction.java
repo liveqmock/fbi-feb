@@ -1,15 +1,21 @@
 package feb.view;
 
+import feb.print.model.Vch;
 import feb.service.DataExchangeService;
+import feb.service.PdfPrintService;
+import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.T016;
 import gateway.sbs.txn.model.form.T088;
 import gateway.sbs.txn.model.form.T104;
+import gateway.sbs.txn.model.form.T130;
 import gateway.sbs.txn.model.msg.Ma100;
 import gateway.sbs.txn.model.msg.Ma101;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
-import feb.print.model.VchPartRso;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,8 +26,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-//import gateway.sbs.txn.model.form.T399;
 
 /**
  *
@@ -34,8 +38,17 @@ public class PartdraAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+
+    @ManagedProperty(value = "#{rosPrintService}")
+    private RosPrintService rosPrintService;
+
+    @ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;
+
     private T088 dra = new T088();
-    private T104 Vrso = new T104();
+    private T104 Vrso;
+    private T016 t016;
+    private T130 t130;
     private boolean printable = false;
 
     private String actty1;
@@ -47,74 +60,114 @@ public class PartdraAction implements Serializable {
     private String txnamt;
     private String vchtyp;
     private String vchnum;
+    private String actty2;
+    private String iptac2;
     private String anacde;
     private String auttlr;
     private String autpwd;
-
 
     private List<Ma100> hstList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
         actty1 = "07";
-        iptac1 = "010600012700000033";
         dueflg = "0";
-        vchtyp = "74";
-        vchnum = "00000303";
+        vchtyp = "73";
+        vchnum = "05";
         anacde = "1111";
+        actty2 = "01";
     }
+
     public String onAllQuery() {
         try {
-//            if (allone.contentEquals("0")){
-            Ma100 ma100 = new Ma100(actty1,iptac1,dueflg,dramd1,dptprd,valdat,txnamt,vchtyp,vchnum,anacde);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr,autpwd,"a100", ma100);
-                 if (formList != null && !formList.isEmpty()) {
-                    for (SOFForm form : formList) {
-                        if ("T088".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T088 t088 = (T088) form.getFormBody();
-                            dra = t088;
-                            printable = true ;
-                        }
-                        else {
-                            logger.info(form.getFormHeader().getFormCode());
-
-                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
-                        }
+            Ma101 ma101 = new Ma101(actty1, iptac1, dueflg, dramd1, dptprd, valdat, txnamt, vchtyp, vchnum, actty2, iptac2, anacde);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd, "a101", ma101);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("T088".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T088 t088 = (T088) form.getFormBody();
+                        dra = t088;
+                        printable = true;
+                    } else if ("T016".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T016 t016 = (T016) form.getFormBody();
+                        this.t016 = t016;
+                        printable = true;
+                    } else if ("T104".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T104 t104 = (T104) form.getFormBody();
+                        this.Vrso = t104;
+                        printable = true;
+                    } else if ("T130".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T130 t130 = (T130) form.getFormBody();
+                        this.t130 = t130;
+                        printable = true;
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
-                    }
-                if (dra == null) {
-                    MessageUtil.addWarn("没有查询到数据。");
                 }
+            }
+            if (dra == null) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-
         return null;
     }
-    public void onPrint() {
-        Ma101 ma101 = new Ma101(actty1,iptac1,dueflg,dramd1,dptprd,valdat,txnamt,vchtyp,vchnum,anacde);
-        VchPartRso PrintRso = new VchPartRso();
-        List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr,autpwd,"a101", ma101);
-        if (formList != null && !formList.isEmpty()) {
-            for (SOFForm form : formList) {
-                if ("T104".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                    T104 t104 = (T104) form.getFormBody();
-                    Vrso = t104;
-                }
-                else {
-                    logger.info(form.getFormHeader().getFormCode());
 
-                    MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+    public void onPrintOpenAct() {
+        try {
+            /***
+             * 测试数据
+             * */
+            /*Vrso = new T104();
+            Vrso.setCUSIDT("0073680");
+            Vrso.setOURREF("010DFIX140000520");
+            Vrso.setTXNDAT("20140114");
+            Vrso.setORGNAM("新月集团");
+            Vrso.setACTNAM("新月集团");
+            Vrso.setBOKNUM("010600012700000468");
+            Vrso.setVALDAT("20130705");
+            Vrso.setEXPDAT("20140705");
+            Vrso.setINTCUR("CNY");
+            Vrso.setTXNAMT("000000499910000");
+            Vrso.setDPTTYP("31");
+            Vrso.setDPTPRD("12");
+            Vrso.setINTRAT("003300000");
+            //--------------------------------------
+            t016 = new T016();
+            t016.setTRNCDE("a281");
+            t016.setWATNUM("0000441");
+            t016.setTRNTIM("172041");
+            t016.setTLRNUM("SYS1");
+            t016.setVCHSET("0084");
+            t016.setVCHPAR("");
+            t016.setTRNDAT("20140114");
+            t016.setORGIDT("010");*/
+
+
+            if (t016 != null && Vrso != null) {
+                List<Vch> vchs = new ArrayList<>();
+                int printCnt = 0;
+                for (T016.Bean bean : t016.getBeanList()) {
+                    if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
+                        printCnt++;
+                        logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
+                        Vch vch = new Vch();
+                        BeanHelper.copyFields(bean, vch);
+                        vchs.add(vch);
+                    }
                 }
+                for (; printCnt < 11; printCnt++) {
+                    vchs.add(new Vch());
+                }
+                rosPrintService.printCP_ZSS("联机传票/复核（授权）清单", t016, vchs, "存款证实书", Vrso);
             }
-        }
-        if (PrintRso.getACTNAM().isEmpty()) {
-            MessageUtil.addWarn("打印失败。");
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
 
@@ -126,6 +179,21 @@ public class PartdraAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
+    public RosPrintService getRosPrintService() {
+        return rosPrintService;
+    }
+
+    public void setRosPrintService(RosPrintService rosPrintService) {
+        this.rosPrintService = rosPrintService;
+    }
+
+    public PdfPrintService getPdfPrintService() {
+        return pdfPrintService;
+    }
+
+    public void setPdfPrintService(PdfPrintService pdfPrintService) {
+        this.pdfPrintService = pdfPrintService;
+    }
 
     public String getActty1() {
         return actty1;
@@ -150,6 +218,7 @@ public class PartdraAction implements Serializable {
     public void setDramd1(String dramd1) {
         this.dramd1 = dramd1;
     }
+
     public String getTxnamt() {
         return txnamt;
     }
@@ -228,6 +297,38 @@ public class PartdraAction implements Serializable {
 
     public void setVrso(T104 vrso) {
         Vrso = vrso;
+    }
+
+    public T016 getT016() {
+        return t016;
+    }
+
+    public void setT016(T016 t016) {
+        this.t016 = t016;
+    }
+
+    public T130 getT130() {
+        return t130;
+    }
+
+    public void setT130(T130 t130) {
+        this.t130 = t130;
+    }
+
+    public String getActty2() {
+        return actty2;
+    }
+
+    public void setActty2(String actty2) {
+        this.actty2 = actty2;
+    }
+
+    public String getIptac2() {
+        return iptac2;
+    }
+
+    public void setIptac2(String iptac2) {
+        this.iptac2 = iptac2;
     }
 
     public String getAuttlr() {

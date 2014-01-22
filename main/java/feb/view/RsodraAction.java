@@ -51,10 +51,8 @@ public class RsodraAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 //        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
         actty1 = "07";
-        iptac1 = "010600012000002235";
         dramd1 = "0";
         actty2 = "01";
-        iptac2 = "801000000432012001";
 
     }
     public String onAllQuery() {

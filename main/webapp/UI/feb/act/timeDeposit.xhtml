@@ -48,7 +48,9 @@
                                         listener="#{timeDepositAction.onQry}"/>
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD2}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD2}" style="width: 138px;"
+                                             required="true"
+                                             requiredMessage="必须选择取款方式!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDramdItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
@@ -57,7 +59,7 @@
                             <h:outputLabel value="户名:"/>
                             <p:inputText value="#{timeDepositAction.ma271.ACTNM2}"/>
                             <h:outputLabel value="证件类型:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.PASTYP}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.PASTYP}" style="width: 138px;">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfPastypItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="证件号码:"/>
@@ -78,29 +80,35 @@
                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                             <h:outputLabel value="*账户类型:"/>
                             <p:selectOneMenu id="acttyp" value="#{timeDepositAction.ma271.ACTTYP}"
-                                             style="width: 131px;">
+                                             style="width: 138px;" required="true"
+                                             requiredMessage="必须选择账户类型!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfActtypItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*存款种类:"/>
                             <p:selectOneMenu id="dpttyp" value="#{timeDepositAction.ma271.DPTTYP}"
-                                             style="width: 131px;">
+                                             style="width: 138px;" required="true"
+                                             requiredMessage="必须选择存款种类!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDpttypItems}"/>
                             </p:selectOneMenu>
                             <p:columnGroup>
                                 <h:outputLabel style="color: red;" value="*"/>
                                 <h:outputLabel value="存期:"/>
                             </p:columnGroup>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 131px;"
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 138px;"
                                              required="true"
                                              requiredMessage="必须选择存期!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDptprdItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*自动转存标志:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.ATOFLG}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.ATOFLG}" style="width: 138px;"
+                                             required="true"
+                                             requiredMessage="必须选择自动转存标志!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfAtoflgItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*凭证种类:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.VCHTYP}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.VCHTYP}" style="width: 138px;"
+                                             required="true"
+                                             requiredMessage="必须选择凭证种类!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfVchtypItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="*凭证号:"/>
@@ -112,7 +120,9 @@
 
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD1}" style="width: 131px;">
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD1}" style="width: 138px;"
+                                             required="true"
+                                             requiredMessage="必须选择取款方式!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDramdItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
@@ -122,6 +132,12 @@
                             <p:inputText value="#{timeDepositAction.ma271.VCHUSERATE}"/>
                             <h:outputLabel value="摘要:"/>
                             <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
+                            <h:outputLabel value="主管授权号:" style="font-weight: bold"/>
+                            <p:inputText required="true"
+                                         value="#{timeDepositAction.auttlr}" requiredMessage="主管号不能为空。"/>
+                            <h:outputLabel value="主管授权密码:" style="font-weight: bold"/>
+                            <p:password required="true"
+                                        value="#{timeDepositAction.autpwd}" requiredMessage="密码不能为空。"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="5%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"

@@ -1,6 +1,7 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T220;
 import gateway.sbs.txn.model.msg.Ma111;
@@ -14,7 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -29,10 +30,14 @@ public class RsondnAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+
+    @ManagedProperty(value = "#{rosPrintService}")
+    private RosPrintService rosPrintService;
+
     private T220 ndn = new T220();
 
-    private String auttlr = "SYS1";                     // 授权主管柜员号
-    private String autpwd = "00000000";                     // 授权主管密码
+    private String auttlr;                     // 授权主管柜员号
+    private String autpwd;                     // 授权主管密码
 
 
     private String actty2;
@@ -42,6 +47,7 @@ public class RsondnAction implements Serializable {
     private String advamt;
     private String advdat;
 
+    private boolean printable = false;
 
 
     @PostConstruct
@@ -49,39 +55,66 @@ public class RsondnAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 //        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
         actty2 = "07";
-        iptac2 = "010600012000002235";
         dramd2 = "0";
         advamt = "1";
 
     }
+
     public String onAllQuery() {
         try {
 //            if (allone.contentEquals("0")){
-            Ma111 ma111 = new Ma111(actty2,iptac2,advnum,dramd2,advamt,advdat);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr,autpwd,"a111", ma111);
-                 if (formList != null && !formList.isEmpty()) {
-                    for (SOFForm form : formList) {
-                        if ("T220".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T220 t220 = (T220) form.getFormBody();
-                            ndn = t220;
-                        }
-                        else {
-                            logger.info(form.getFormHeader().getFormCode());
+            Ma111 ma111 = new Ma111(actty2, iptac2, advnum, dramd2, advamt, advdat);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd, "a111", ma111);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("T220".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T220 t220 = (T220) form.getFormBody();
+                        ndn = t220;
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
 
-                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
 //                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
-                        }
                     }
-                    }
-                if (ndn == null) {
-                    MessageUtil.addWarn("没有查询到数据。");
                 }
+            }
+            if (ndn == null) {
+                MessageUtil.addWarn("没有查询到数据。");
+            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
 
         return null;
+    }
+
+    public void onPrintOpenAct() {
+        try {
+
+            /***
+             * 测试数据
+             * */
+            ndn = new T220();
+            ndn.setTXNCDE("a281");
+            ndn.setTELLER("SYS1");
+            ndn.setTXNDAT("20140102");
+            ndn.setACTTY("07");
+            ndn.setIPTAC("801000865000581001");
+            ndn.setADVDAT("20130201");
+            ndn.setACTNAM("南美鹰");
+            ndn.setINTCUR("CNY");
+            ndn.setTXNAMT(new BigDecimal("12345678"));
+            ndn.setADVNUM("12344565");
+            ndn.setREMARK("备注");
+
+            if (ndn != null) {
+                rosPrintService.printDrawNote("提款通知单", ndn);
+            }
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
     }
 
     public DataExchangeService getDataExchangeService() {
@@ -92,8 +125,13 @@ public class RsondnAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
+    public RosPrintService getRosPrintService() {
+        return rosPrintService;
+    }
 
-
+    public void setRosPrintService(RosPrintService rosPrintService) {
+        this.rosPrintService = rosPrintService;
+    }
 
     public String getActty2() {
         return actty2;
@@ -165,5 +203,13 @@ public class RsondnAction implements Serializable {
 
     public void setAdvdat(String advdat) {
         this.advdat = advdat;
+    }
+
+    public boolean isPrintable() {
+        return printable;
+    }
+
+    public void setPrintable(boolean printable) {
+        this.printable = printable;
     }
 }

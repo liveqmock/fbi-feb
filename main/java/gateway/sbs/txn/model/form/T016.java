@@ -29,6 +29,25 @@ public class T016 extends SOFFormBody {
 
     private List<Bean> beanList = new ArrayList<Bean>();
 
+
+   /* public T016(){
+        *//**
+         * ≤‚ ‘ π”√
+         * *//*
+        Bean bean3 = new Bean();
+        bean3.setDEBACT("801000865001124001");
+        bean3.setDEBAMT("CNY30,000,000.00");
+        bean3.setCREACT("");
+        bean3.setCREAMT("");
+        Bean bean2 = new Bean();
+        bean2.setDEBACT("801000865000582001");
+        bean2.setDEBAMT("CNY55,153,00");
+        bean2.setCREACT("801000865000581001");
+        bean2.setCREAMT("CNY30,055,123,33");
+        beanList.add(bean3);
+        beanList.add(bean2);
+    }*/
+
     {
         fieldLengths = new int[]{4, 4, 4, 6, 7, 8, 60,
                 1, 10, 10, 3, 4, 40, 60};
