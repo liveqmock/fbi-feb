@@ -87,19 +87,16 @@
                                      width="10%">
                             <p:commandButton style="width:80px;" value="提交"
                                              action="#{rsondnAction.onAllQuery()}" ajax="true"
-                                             update="msgs,panel,dt">
+                                             update="msgs,dt">
                             </p:commandButton>
 
-                            <!--disabled="#{!rsondnAction.printable}"-->
+                            <!---->
                             <p:commandButton style="width:80px;" value="打印凭证"
+                                             disabled="#{!rsondnAction.printable}"
                                              action="#{rsondnAction.onPrintOpenAct()}" ajax="false"
                                              update="msgs">
                             </p:commandButton>
 
-                            <p:commandButton style="width:80px;" value="打印凭证" type="button"
-                                             actionListener="#{rsondnAction.onPrintOpenAct()}"
-                                             update="msgs">
-                            </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>

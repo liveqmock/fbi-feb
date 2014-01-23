@@ -120,18 +120,16 @@
                             <p:commandButton style="width:110px;" value="查询"
                                              action="#{partdraAction.onAllQuery()}"
                                              disabled="#{actrsoAction.printable}" ajax="true"
-                                             update="msgs,panel,dt">
+                                             update="msgs,dt">
                             </p:commandButton>
 
 
 
-                            <!--disabled="#{!partdraAction.printable}"-->
+                            <!---->
                             <p:commandButton style="width:110px;" value="打印凭证"
                                              disabled="#{!partdraAction.printable}"
                                              action="#{partdraAction.onPrintOpenAct()}" ajax="false"
                                              update="msgs,btns,showpanel">
-
-
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>

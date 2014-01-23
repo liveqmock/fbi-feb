@@ -76,11 +76,12 @@
                                      width="10%">
                             <p:commandButton style="width:110px;" value="提交"
                                              action="#{rsondpAction.onAllQuery()}" ajax="true"
-                                             update="msgs,panel,dt">
+                                             update="msgs,dt">
                             </p:commandButton>
 
                             <!--disabled="#{!rsondpAction.printable}"-->
                             <p:commandButton style="width:110px;" value="打印凭证"
+                                             disabled="#{!rsondpAction.printable}"
                                              action="#{rsondpAction.onPrintOpenAct()}" ajax="false"
                                              update="msgs">
                             </p:commandButton>
