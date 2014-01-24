@@ -1,24 +1,21 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import feb.sysdate.SystemDate;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T851;
 import gateway.sbs.txn.model.msg.M8822;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -72,9 +69,9 @@ public class BookDayQryAction implements Serializable {
                     }
                 }
             }
-          /*  if (dataList == null || dataList.isEmpty()) {
+            if (dataList == null || dataList.isEmpty()) {
                 MessageUtil.addWarn("没有查询到数据。");
-            }*/
+            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -82,6 +79,22 @@ public class BookDayQryAction implements Serializable {
         return null;
     }
 
+    public void exportExcel(Object document){
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
+
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+            HSSFCell cell = header.getCell(i);
+
+            cell.setCellStyle(cellStyle);
+        }
+    }
+//==========================================================================
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }

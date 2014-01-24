@@ -88,6 +88,11 @@
                                              action="#{bookDayQryAction.onVchsetQry()}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
+                            <!--<p:commandButton value="传票导出XLS" style="width:110px;" ajax="false">
+                                &lt;!&ndash;<p:graphicImage value="/images/excel.png" />&ndash;&gt;
+                                <p:dataExporter type="xls" target="dt" fileName="record"
+                                                postProcessor="#{bookDayQryAction.exportExcel}"/>
+                            </p:commandButton>-->
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
@@ -112,45 +117,84 @@
                              当前显示笔数：#{bookDayQryAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column sortBy="#{record.CUSIDT}" headerText="客户号"  style="text-align:center">
+                    <p:column sortBy="#{record.CUSIDT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="客户号"/>
+                        </f:facet>
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
-                    <p:column sortBy="#{record.APCODE}" headerText="核算码"  style="text-align:center">
+                    <p:column sortBy="#{record.APCODE}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="核算码"/>
+                        </f:facet>
                         <h:outputText value="#{record.APCODE}"/>
                     </p:column>
-                    <p:column headerText="币别"  style="text-align:center">
+                    <p:column  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="币别"/>
+                        </f:facet>
                         <h:outputText value="#{record.CURCDE}"/>
                     </p:column>
-                    <p:column headerText="账户名称"  style="text-align:left">
+                    <p:column style="text-align:left">
+                        <f:facet name="header">
+                            <h:outputText value="账户名称"/>
+                        </f:facet>
                         <h:outputText value="#{record.ACTNAM}"/>
                     </p:column>
-                    <p:column sortBy="#{record.ERYDAT}" headerText="交易日期"  style="text-align:center">
+                    <p:column sortBy="#{record.ERYDAT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="交易日期"/>
+                        </f:facet>
                         <h:outputText value="#{record.ERYDAT}"/>
                     </p:column>
-                    <p:column sortBy="#{record.TXNAMT}" headerText="金额"  style="text-align:right">
+                    <p:column sortBy="#{record.TXNAMT}"  style="text-align:right">
+                        <f:facet name="header">
+                            <h:outputText value="金额"/>
+                        </f:facet>
                         <h:outputText value="#{record.TXNAMT}">
-                        <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
                         </h:outputText>
                     </p:column>
-                    <p:column sortBy="#{record.TLRNUM}" headerText="柜员"  style="text-align:center">
+                    <p:column sortBy="#{record.TLRNUM}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="柜员"/>
+                        </f:facet>
                         <h:outputText value="#{record.TLRNUM}"/>
                     </p:column>
-                    <p:column sortBy="#{record.VCHSET}" headerText="传票套号"  style="text-align:center">
+                    <p:column sortBy="#{record.VCHSET}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="传票套号"/>
+                        </f:facet>
                         <h:outputText value="#{record.VCHSET}"/>
                     </p:column>
-                    <p:column sortBy="#{record.SETSEQ}" headerText="套内序号"  style="text-align:center">
+                    <p:column sortBy="#{record.SETSEQ}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="套内序号"/>
+                        </f:facet>
                         <h:outputText value="#{record.SETSEQ}"/>
                     </p:column>
-                    <p:column headerText="摘要"  style="text-align:center">
+                    <p:column  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="摘要"/>
+                        </f:facet>
                         <h:outputText value="#{record.FURINF}"/>
                     </p:column>
-                    <p:column sortBy="#{record.ERYTIM}" headerText="交易时间"  style="text-align:center">
+                    <p:column sortBy="#{record.ERYTIM}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="交易时间"/>
+                        </f:facet>
                         <h:outputText value="#{record.ERYTIM}"/>
                     </p:column>
-                    <p:column headerText="统计码"  style="text-align:center">
+                    <p:column style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="统计码"/>
+                        </f:facet>
                         <h:outputText value="#{record.ANACDE}"/>
                     </p:column>
-                    <p:column sortBy="#{record.VALDAT}" headerText="起息日期"  style="text-align:center">
+                    <p:column sortBy="#{record.VALDAT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="起息日期"/>
+                        </f:facet>
                         <h:outputText value="#{record.VALDAT}"/>
                     </p:column>
                 </p:dataTable>
