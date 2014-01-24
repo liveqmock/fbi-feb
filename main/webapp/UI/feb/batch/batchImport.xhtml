@@ -27,41 +27,22 @@
             }
         </style>
         <script language="JavaScript" type="text/JavaScript">
-            function setpathvalue(obj) {
+            function getpathvalue(obj) {
                 document.getElementById("editForm:hidfileimp").value = obj.value;
             }
         </script>
     </ui:define>
     <ui:define name="content">
         <div style="margin:5px;">
-            <h:form id="editForm">
+            <h:form id="editForm" enctype="multipart/form-data">
                 <p:messages id="msgs" showDetail="true"/>
                 <p:panel header="【批量导入】" style="height: 105px">
-                    <h:panelGrid width="100%" cellspacing="0" border="0" columns="2" columnClasses="col-qry1"
-                                 style="margin-top: 20px">
-                    <h:panelGrid id="adddat" columns="2" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                    <h:panelGrid id="adddat" columns="2" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%; margin-top: 10px"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                        <h:panelGroup>
-                            <h:panelGrid cellspacing="0" border="0" columns="2">
-                                <!--<h:outputLabel value="选择文件 :  " style="font-weight: bold;"/>-->
-                                <input style="width:360px;" id="fileimp" type="file" value=""
-                                       onchange="setpathvalue(this)"></input>
-                                <h:inputHidden id="hidfileimp" value="#{batchImportAction.filepath}"/>
-                            </h:panelGrid>
-                        </h:panelGroup>
-                            <h:panelGrid cellspacing="0" border="0" columns="1">
-                                <h:panelGroup>
-                                    <p:commandButton style="width:60px;" ajax="true"
-                                                     id="btnImp" update="msgs"
-                                                     value="导入" action="#{batchImportAction.onBtnImpClick()}"
-                                            ></p:commandButton>
-                                </h:panelGroup>
-                            </h:panelGrid>
-                        <!--<p:fileUpload value="#{batchImportAction.file}" mode="simple" style="width:300px;"/>
-
-                        <p:commandButton value="导入" ajax="false" update="msgs" style="width:70px;"
-                                         actionListener="#{batchImportAction.onBtnImpClick}"/>-->
-                        </h:panelGrid>
+                        <p:fileUpload value="#{batchImportAction.file}" mode="simple" style="width:300px;"/>
+                        <p:commandButton value="开始录入" ajax="false" update="msgs" style="width:80px;"
+                                         action="#{batchImportAction.onBtnImpClick()}"/>
                     </h:panelGrid>
                 </p:panel>
                 <p:ajaxStatus style="height:18px;text-align:center">
