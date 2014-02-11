@@ -150,7 +150,7 @@ public class BatchImportAction implements Serializable {
             HSSFCell cell5 = null;              //统计码
 
             //数据插入
-            for (int i = 0; i <= rowLen; i++) {
+            for (int i = 1; i <= rowLen; i++) {
                 cell0 = sheet.getRow(i).getCell(0);// 账号
                 //actnum =  cell0.getNumericCellValue() + "";
                 actnum = cell0.getStringCellValue().trim();
@@ -174,6 +174,7 @@ public class BatchImportAction implements Serializable {
         } catch (Exception ex) {
             MessageUtil.addError("录入内容异常.");
         }
+        MessageUtil.addInfo("录入结束.");
     }
 
     /**
@@ -194,7 +195,7 @@ public class BatchImportAction implements Serializable {
             XSSFCell cell5 = null;              //统计码
 
             //数据插入
-            for (int i = 0; i <= rowLen; i++) {
+            for (int i = 1; i <= rowLen; i++) {    //可以有表头从第二行开始读，如果是0，就从第一行开始读
                 cell0 = sheet.getRow(i).getCell(0);// 账号
                 //actnum =  cell0.getNumericCellValue() + "";
                 actnum = cell0.getStringCellValue().trim();
@@ -215,17 +216,17 @@ public class BatchImportAction implements Serializable {
                 furinf = ((int) cell5.getNumericCellValue()) + "";
                 onCreateNewRecord();
             }
-            MessageUtil.addInfo("录入成功.");
         } catch (Exception ex) {
             MessageUtil.addError("录入内容异常.");
         }
+        MessageUtil.addInfo("录入结束.");
         return null;
     }
 
     public String onCreateNewRecord() {
         int tmp = Integer.parseInt(totnum) + 1;
         String str = tmp + "";
-        tmp++;
+        //tmp++;
         try {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
@@ -241,7 +242,7 @@ public class BatchImportAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
                 //MessageUtil.addInfo("传票录入成功：");
-                onBatchQry();
+                onBatchQry();//查询一下totnum
             } else {
                 pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
             }
