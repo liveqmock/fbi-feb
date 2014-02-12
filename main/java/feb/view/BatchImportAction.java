@@ -142,12 +142,12 @@ public class BatchImportAction implements Serializable {
             HSSFWorkbook wb = new HSSFWorkbook(fs);
             HSSFSheet sheet = wb.getSheetAt(0);
             int rowLen = sheet.getLastRowNum();
-            HSSFCell cell0 = null;              //账号
-            HSSFCell cell1 = null;              //金额
-            HSSFCell cell2 = null;              //摘要
-            HSSFCell cell3 = null;              //冲账标志
-            HSSFCell cell4 = null;              //充不日期
-            HSSFCell cell5 = null;              //统计码
+            HSSFCell cell0 ;              //账号
+            HSSFCell cell1 ;              //金额
+            HSSFCell cell2 ;              //摘要
+            HSSFCell cell3 ;              //冲账标志
+            HSSFCell cell4 ;              //充不日期
+            HSSFCell cell5 ;              //统计码
 
             //数据插入
             for (int i = 1; i <= rowLen; i++) {
@@ -168,7 +168,11 @@ public class BatchImportAction implements Serializable {
                 valdat = ((int) cell4.getNumericCellValue()) + "";
 
                 cell5 = sheet.getRow(i).getCell(5);//统计吗
-                furinf = ((int) cell5.getNumericCellValue()) + "";
+                if (cell5!=null){
+                    furinf = ((int) cell5.getNumericCellValue()) + "";
+                }else {
+
+                }
                 onCreateNewRecord();
             }
         } catch (Exception ex) {
@@ -203,17 +207,23 @@ public class BatchImportAction implements Serializable {
                 cell1 = sheet.getRow(i).getCell(1);//金额
                 txnamt = ((int) cell1.getNumericCellValue()) + "";
 
-                cell2 = sheet.getRow(i).getCell(2);//记息日
-                anacde = ((int) cell2.getNumericCellValue()) + "";
+                cell2 = sheet.getRow(i).getCell(2);//统计码
+                if (cell2!=null){
+                    anacde = ((int) cell2.getNumericCellValue()) + "";
+                }else{
+                    anacde = "";
+                }
 
                 cell3 = sheet.getRow(i).getCell(3);//冲正标志
                 rvslbl = ((int) cell3.getNumericCellValue()) + "";
 
-                cell4 = sheet.getRow(i).getCell(4);//摘要
+                cell4 = sheet.getRow(i).getCell(4);//日期
                 valdat = ((int) cell4.getNumericCellValue()) + "";
 
-                cell5 = sheet.getRow(i).getCell(5);//统计吗
-                furinf = ((int) cell5.getNumericCellValue()) + "";
+                cell5 = sheet.getRow(i).getCell(5);//摘要
+                if (cell5!=null){
+                    furinf = ((int) cell5.getNumericCellValue()) + "";
+                }
                 onCreateNewRecord();
             }
         } catch (Exception ex) {
