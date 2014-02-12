@@ -194,17 +194,15 @@
                             <h:outputLabel value="主管部门:"/>
                             <h:inputText value="#{clientAction.m8001.SUPDEP}" id="supdep"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <!--<h:outputLabel value="INTERNET号:"/>
-                            <h:inputText value="#{clientAction.m8001.INTNET}" id="intnet"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>-->
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认建立"
                                              action="#{clientAction.onCreate}" ajax="true"
-                                             update="msgs,btns,show">
+                                             update="msgs,btns,show,btnpt">
                             </p:commandButton>
-                            <p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 8px"/>
-                            <p:commandButton style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
+                            <!--<p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 8px"/>-->
+                            <p:commandButton id="btnpt" style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
+                                             disabled="#{!clientAction.printable}"
                                              action="#{clientAction.onPrintOpenAct}" ajax="false"
                                              update="msgs,btns,show">
                             </p:commandButton>

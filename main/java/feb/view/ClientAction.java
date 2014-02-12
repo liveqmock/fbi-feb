@@ -7,6 +7,11 @@ import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.form.config.SystemAttributeNames;
@@ -22,7 +27,10 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +76,9 @@ public class ClientAction implements Serializable {
     private List<T003.Bean> tmpList = new ArrayList<>();
     private String tellerid;                    //柜员号
     private String srcpage;
+    private UploadedFile custFile;  //客户文件
+    private List<M8001> m8001errs;//批量导入客户信息失败集合
+    private List<T001> t001s;//批量导入客户信息成功集合
 
     @PostConstruct
     public void init() {
@@ -89,6 +100,7 @@ public class ClientAction implements Serializable {
                 if (forms.size() == 2) {
                     if ("T001".equalsIgnoreCase(formcode)) {
                         t001 = (T001) form.getFormBody();
+                        isPrintable = true;
                         MessageUtil.addInfo("客户信息建立成功，名称：" + m8001.getCUSNAM());
                     }
                 } else if ("T001".equalsIgnoreCase(formcode)) {
@@ -257,7 +269,159 @@ public class ClientAction implements Serializable {
         return null;
     }
 
-
+    /**
+     * 批量建立客户
+     * author:nanmeiying
+     */
+    public void batImport() {
+        t001s = new ArrayList<T001>();
+        m8001errs = new ArrayList<M8001>();
+        if (custFile == null) {
+            MessageUtil.addInfo("文件不得为空!");
+            return;
+        }
+        if (!custFile.getFileName().endsWith(".xls") && !custFile.getFileName().endsWith(".xlsx")) {
+            MessageUtil.addInfo("请选择Excel文件!");
+            return;
+        }
+        try {
+            InputStream is = custFile.getInputstream();
+            POIFSFileSystem fs = new POIFSFileSystem(is);
+            HSSFWorkbook wb = new HSSFWorkbook(fs);
+            HSSFSheet sheet = wb.getSheetAt(0);
+            int rowLen = sheet.getLastRowNum();
+            HSSFCell cell;
+            M8001 m8001Tmp;
+            T001 t001Tmp;
+            String tmp = "";
+            for (int i = 1; i <= rowLen; i++) {
+                m8001Tmp = new M8001();
+                int cellNum = sheet.getRow(i).getLastCellNum();
+                for (int j = 0; j < cellNum; j++) {
+                    cell = sheet.getRow(i).getCell(j);
+                    if (cell != null) {
+                        if (cell.getCellType() == 1) {
+                            tmp = cell.getStringCellValue().trim();
+                        } else if (cell.getCellType() == 0) {
+                            tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                        }
+                    } else break;
+                    switch (j) {
+                        case 0:
+                            m8001Tmp.setCUSNAM(tmp);
+                            break;
+                        case 1:
+                            m8001Tmp.setSHTNAM(tmp);
+                            break;
+                        case 2:
+                            m8001Tmp.setCORADD(tmp);
+                            break;
+                        case 3:
+                            m8001Tmp.setZIPCDE(tmp);
+                            break;
+                        case 4:
+                            m8001Tmp.setTELNUM(tmp);
+                            break;
+                        case 5:
+                            m8001Tmp.setBUSCDE(tmp);
+                            break;
+                        case 6:
+                            m8001Tmp.setENTCDE(tmp);
+                            break;
+                        case 7:
+                            m8001Tmp.setPASTYP(tmp);
+                            break;
+                        case 8:
+                            m8001Tmp.setPASSNO(tmp);
+                            break;
+                        case 9:
+                            m8001Tmp.setRSDCTR(tmp);
+                            break;
+                        case 10:
+                            m8001Tmp.setOPRCTR(tmp);
+                            break;
+                        case 11:
+                            m8001Tmp.setENTTYP(tmp);
+                            break;
+                        case 12:
+                            m8001Tmp.setCUSTY1(tmp);
+                            break;
+                        case 13:
+                            m8001Tmp.setBOCGRP(tmp);
+                            break;
+                        case 14:
+                            m8001Tmp.setTSTRNK(tmp);
+                            break;
+                        case 15:
+                            m8001Tmp.setCRDLIM(tmp);
+                            break;
+                        case 16:
+                            m8001Tmp.setRSKGRP(tmp);
+                            break;
+                        case 17:
+                            m8001Tmp.setRELCUS(tmp);
+                            break;
+                        case 18:
+                            m8001Tmp.setCUSPWD(tmp);
+                            break;
+                        case 19:
+                            m8001Tmp.setLEGBDY(tmp);
+                            break;
+                        case 20:
+                            m8001Tmp.setACTBDY(tmp);
+                            break;
+                        case 21:
+                            m8001Tmp.setLOCCAP(tmp);
+                            break;
+                        case 22:
+                            m8001Tmp.setREGCAP(tmp);
+                            break;
+                        case 23:
+                            m8001Tmp.setREGCCY(tmp);
+                            break;
+                        case 24:
+                            m8001Tmp.setREGADD(tmp);
+                            break;
+                        case 25:
+                            m8001Tmp.setREGDAT(tmp);
+                            break;
+                        case 26:
+                            m8001Tmp.setEFFDUR(tmp);
+                            break;
+                        case 27:
+                            m8001Tmp.setCTXNUM(tmp);
+                            break;
+                        case 28:
+                            m8001Tmp.setLTXNUM(tmp);
+                            break;
+                        case 29:
+                            m8001Tmp.setSUPDEP(tmp);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                List<SOFForm> forms = dataExchangeService.callSbsTxn("8001", m8001Tmp);
+                for (SOFForm form : forms) {
+                    String formcode = form.getFormHeader().getFormCode();
+                    if (forms.size() == 2) {
+                        if ("T001".equalsIgnoreCase(formcode)) {
+                            t001Tmp = (T001) form.getFormBody();
+                            t001s.add(t001Tmp);
+                        }
+                    } else if ("T001".equalsIgnoreCase(formcode)) {
+                        m8001Tmp.setFUNCDE("Y");
+                        m8001errs.add(m8001Tmp);
+                    } else {
+                        m8001errs.add(m8001Tmp);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            MessageUtil.addError("导入文件出现错误" + e.getMessage());
+        }
+        MessageUtil.addInfo("导入结束！");
+    }
     //----------------------------------------------------------------
 
     public DataExchangeService getDataExchangeService() {
@@ -442,5 +606,29 @@ public class ClientAction implements Serializable {
 
     public void setSrcpage(String srcpage) {
         this.srcpage = srcpage;
+    }
+
+    public UploadedFile getCustFile() {
+        return custFile;
+    }
+
+    public void setCustFile(UploadedFile custFile) {
+        this.custFile = custFile;
+    }
+
+    public List<T001> getT001s() {
+        return t001s;
+    }
+
+    public void setT001s(List<T001> t001s) {
+        this.t001s = t001s;
+    }
+
+    public List<M8001> getM8001errs() {
+        return m8001errs;
+    }
+
+    public void setM8001errs(List<M8001> m8001errs) {
+        this.m8001errs = m8001errs;
     }
 }
