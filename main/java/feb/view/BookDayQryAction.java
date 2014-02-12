@@ -35,6 +35,7 @@ public class BookDayQryAction implements Serializable {
     private M8822 m8822;
     private T851 t851 = new T851();
     private List<T851.Bean> dataList = new ArrayList<>();
+    private boolean isExport ;
     private String cusidt = "";
     private String apcode = "";
     private String curcde = "";
@@ -61,6 +62,7 @@ public class BookDayQryAction implements Serializable {
                         dataList.addAll(t851.getBeanList());
                         totcnt = t851.getFormBodyHeader().getTOTCNT();
                         curcnt = t851.getFormBodyHeader().getCURCNT();
+                        isExport = true;
                     } else if ("W012".equals(form.getFormHeader().getFormCode())) {
 
                     } else {
@@ -221,5 +223,13 @@ public class BookDayQryAction implements Serializable {
 
     public void setCurcnt(String curcnt) {
         this.curcnt = curcnt;
+    }
+
+    public boolean isExport() {
+        return isExport;
+    }
+
+    public void setExport(boolean export) {
+        isExport = export;
     }
 }

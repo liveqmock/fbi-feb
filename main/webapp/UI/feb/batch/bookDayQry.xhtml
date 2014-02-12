@@ -86,13 +86,13 @@
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
                             <p:commandButton style="width:110px;" value="当日传票查询"
                                              action="#{bookDayQryAction.onVchsetQry()}" ajax="true"
-                                             update="msgs,dt">
+                                             update="msgs,dt,btnex">
                             </p:commandButton>
-                            <!--<p:commandButton value="传票导出XLS" style="width:110px;" ajax="false">
-                                &lt;!&ndash;<p:graphicImage value="/images/excel.png" />&ndash;&gt;
+                            <p:commandButton id="btnex" value="传票导出XLS" disabled="#{!bookDayQryAction.export}"
+                                             style="width:110px;" ajax="false">
                                 <p:dataExporter type="xls" target="dt" fileName="record"
                                                 postProcessor="#{bookDayQryAction.exportExcel}"/>
-                            </p:commandButton>-->
+                            </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>

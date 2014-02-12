@@ -4,6 +4,8 @@ import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T851;
 import gateway.sbs.txn.model.msg.M8823;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
@@ -47,7 +49,7 @@ public class ActhstAction implements Serializable {
     private String funcde;
     private String regadd;
     private String begnum;
-
+    private boolean isExport;
     private List<M8823> hstList = new ArrayList<>();
     private List<T851.Bean> dataList = new ArrayList<>();
 
@@ -77,6 +79,7 @@ public class ActhstAction implements Serializable {
                             totcnt = t851.getFormBodyHeader().getTOTCNT();
                             curcnt = t851.getFormBodyHeader().getCURCNT();
                             dataList.addAll(t851.getBeanList());
+                            isExport  = true;
                         }
                         else {
                             logger.info(form.getFormHeader().getFormCode());
@@ -93,10 +96,25 @@ public class ActhstAction implements Serializable {
             logger.error("≤È—Ø ß∞‹", e);
             MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-
         return null;
     }
 
+    public void exportExcel(Object document){
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
+
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+            HSSFCell cell = header.getCell(i);
+
+            cell.setCellStyle(cellStyle);
+        }
+    }
+//-------------------------------------------------------------------------------
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
@@ -238,5 +256,13 @@ public class ActhstAction implements Serializable {
 
     public void setCurcnt(String curcnt) {
         this.curcnt = curcnt;
+    }
+
+    public boolean isExport() {
+        return isExport;
+    }
+
+    public void setExport(boolean export) {
+        isExport = export;
     }
 }

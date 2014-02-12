@@ -92,7 +92,12 @@
                                      width="10%">
                             <p:commandButton style="width:110px;" value="历史传票查询"
                                              action="#{acthstAction.onAllQuery}" ajax="true"
-                                             update="msgs,dt">
+                                             update="msgs,dt,btnex">
+                            </p:commandButton>
+                            <p:commandButton id="btnex" value="传票导出XLS" style="width:110px;" ajax="false"
+                                    disabled="#{!acthstAction.export}">
+                                <p:dataExporter type="xls" target="dt" fileName="record"
+                                                postProcessor="#{acthstAction.exportExcel}"/>
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
