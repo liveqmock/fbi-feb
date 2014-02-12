@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .label {
+                text-align: right;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="inputform" enctype="multipart/form-data">
+            <p:messages id="msgs" showDetail="true" showSummary="true"/>
+            <p:panel>
+                <h:panelGrid id="dataPanel" cellpadding="0" cellspacing="5" columns="3">
+                    <p:fileUpload value="#{interClientActBatAction.file}" style="width: 300px" required="true" requiredMessage="文件不能为空!"
+                                  mode="simple"/>
+                    <p:commandButton value="批量导入" ajax="false"
+                                     actionListener="#{interClientActBatAction.onBtnImpClick()}" update="msgs,dtsucess,dterrors"/>
+                </h:panelGrid>
+            </p:panel>
+            <br/>
+            <p:separator/>
+            <p:dataTable id="dtsuccess" height="200"
+                         value="#{interClientActBatAction.t101s}" var="record"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                         emptyMessage="数据记录为空...">
+                <f:facet name="header">
+                    成功插入信息
+                </f:facet>
+                <p:column headerText="部门号" style="text-align:center">
+                    <h:outputText value="#{record.ORGIDT}"/>
+                </p:column>
+                <p:column headerText="机构号" style="text-align:center">
+                    <h:outputText value="#{record.DEPNUM}"/>
+                </p:column>
+                <p:column headerText="账号" style="text-align:center">
+                    <h:outputText value="#{record.ACTNUM}"/>
+                </p:column>
+                <p:column headerText="账户名称" style="text-align:center">
+                    <h:outputText value="#{record.CUSNAM}"/>
+                </p:column>
+                <p:column headerText="建立日期" style="text-align:center">
+                    <h:outputText value="#{record.OPNDAT}"/>
+                </p:column>
+                <p:column headerText="操作员" style="text-align:center">
+                    <h:outputText value="#{record.AMDTLR}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:separator/>
+            <p:dataTable id="dterrors" height="200"
+                         value="#{interClientActBatAction.m8104errs}" var="errRecord"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                         emptyMessage="数据记录为空...">
+
+                <f:facet name="header">
+                    插入失败信息
+                </f:facet>
+                <p:column headerText="账号" style="text-align:center">
+                    <h:outputText value="#{errRecord.ACTNUM}"/>
+                </p:column>
+                <p:column headerText="账户名称" style="text-align:center">
+                    <h:outputText value="#{errRecord.ACTNAM}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
