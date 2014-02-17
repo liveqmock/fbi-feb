@@ -1,10 +1,12 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
+import feb.service.PdfPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T101;
 import gateway.sbs.txn.model.msg.M8101;
 import gateway.sbs.txn.model.msg.M8104;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -22,12 +24,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +48,10 @@ public class ClientActBatAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
+    @ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;
+
+    private String actnum;
     private String tellerid;
     private M8101 m8101 = new M8101();   // 账户
     private T101 t101;                   // 开户返回信息
@@ -53,6 +61,8 @@ public class ClientActBatAction implements Serializable {
 
     @PostConstruct
     public void init() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        actnum = StringUtils.isEmpty(params.get("actnum")) ? "" : params.get("actnum");
         tellerid = SkylineService.getOperId();
     }
 
@@ -241,42 +251,75 @@ public class ClientActBatAction implements Serializable {
                             m8101.setCINRAT(tmp);
                             break;
                         case 3:
-                            m8101.setACTTYP(tmp);
+                            m8101.setSTMADD(tmp);
                             break;
                         case 4:
-                            m8101.setINTFLG(tmp);
+                            m8101.setSTMZIP(tmp);
                             break;
                         case 5:
-                            m8101.setINTCYC(tmp);
+                            m8101.setSTMFMT(tmp);
                             break;
                         case 6:
-                            m8101.setINTTRA(tmp);
+                            m8101.setSTMSHT(tmp);
                             break;
                         case 7:
-                            m8101.setDINRAT(tmp);
+                            m8101.setSTMDEP(tmp);
                             break;
                         case 8:
-                            m8101.setDRATSF(tmp);
+                            m8101.setSTMCYC(tmp);
                             break;
                         case 9:
-                            m8101.setCRATSF(tmp);
+                            m8101.setSTMCDT(tmp);
                             break;
                         case 10:
-                            m8101.setLEGCYC(tmp);
+                            m8101.setACTTYP(tmp);
                             break;
                         case 11:
-                            m8101.setLEGCDT(tmp);
+                            m8101.setINTFLG(tmp);
                             break;
                         case 12:
-                            m8101.setLEGFMT(tmp);
+                            m8101.setINTCYC(tmp);
                             break;
                         case 13:
-                            m8101.setLEGADD(tmp);
+                            m8101.setINTTRA(tmp);
                             break;
                         case 14:
-                            m8101.setLEGSHT(tmp);
+                            m8101.setCQEFLG(tmp);
                             break;
                         case 15:
+                            m8101.setBALLIM(tmp);
+                            break;
+                        case 16:
+                            m8101.setOVELIM(tmp);
+                            break;
+                        case 17:
+                            m8101.setOVEEXP(tmp);
+                            break;
+                        case 18:
+                            m8101.setDINRAT(tmp);
+                            break;
+                        case 19:
+                            m8101.setDRATSF(tmp);
+                            break;
+                        case 20:
+                            m8101.setCRATSF(tmp);
+                            break;
+                        case 21:
+                            m8101.setLEGCYC(tmp);
+                            break;
+                        case 22:
+                            m8101.setLEGCDT(tmp);
+                            break;
+                        case 23:
+                            m8101.setLEGFMT(tmp);
+                            break;
+                        case 24:
+                            m8101.setLEGADD(tmp);
+                            break;
+                        case 25:
+                            m8101.setLEGSHT(tmp);
+                            break;
+                        case 26:
                             m8101.setLEGDEP(tmp);
                             break;
                         default:
@@ -285,6 +328,8 @@ public class ClientActBatAction implements Serializable {
                 }
                 onCreateInternalAct();
             }
+
+
         } catch (IOException e) {
             pub.tools.MessageUtil.addError("导入文件出现错误" + e.getMessage());
         }
@@ -309,7 +354,22 @@ public class ClientActBatAction implements Serializable {
         return null;
     }
 
+    // 打印开户确认书
+    public void onPrintOpenAct() {
+        for (T101 bean : t101s) {
+            try {
+                pdfPrintService.printVch4OpenClsAct(
+                        "       开户确认书", bean.getORGIDT(), bean.getDEPNUM(), actnum,
+                        bean.getCUSNAM(), bean.getOPNDAT(), "", tellerid);
+            } catch (Exception e) {
+                logger.error("打印失败", e);
+                pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            }
+        }
+    }
+
     //======================================================================================
+
     public UploadedFile getFile() {
         return file;
     }
@@ -357,5 +417,21 @@ public class ClientActBatAction implements Serializable {
 
     public void setT101s(List<T101> t101s) {
         this.t101s = t101s;
+    }
+
+    public PdfPrintService getPdfPrintService() {
+        return pdfPrintService;
+    }
+
+    public void setPdfPrintService(PdfPrintService pdfPrintService) {
+        this.pdfPrintService = pdfPrintService;
+    }
+
+    public String getActnum() {
+        return actnum;
+    }
+
+    public void setActnum(String actnum) {
+        this.actnum = actnum;
     }
 }

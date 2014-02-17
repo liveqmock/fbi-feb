@@ -10,12 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +40,7 @@ public class BookDayQryAction implements Serializable {
     private M8822 m8822;
     private T851 t851 = new T851();
     private List<T851.Bean> dataList = new ArrayList<>();
-    private boolean isExport ;
+    private boolean isExport;
     private String cusidt = "";
     private String apcode = "";
     private String curcde = "";
@@ -48,6 +53,11 @@ public class BookDayQryAction implements Serializable {
     private String begnum = "";
     private String totcnt = "";
     private String curcnt = "";
+
+    @PostConstruct
+    public void init() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    }
 
     public String onVchsetQry() {
         try {
@@ -81,7 +91,7 @@ public class BookDayQryAction implements Serializable {
         return null;
     }
 
-    public void exportExcel(Object document){
+    public void exportExcel(Object document) {
         HSSFWorkbook wb = (HSSFWorkbook) document;
         HSSFSheet sheet = wb.getSheetAt(0);
         HSSFRow header = sheet.getRow(0);
@@ -90,13 +100,15 @@ public class BookDayQryAction implements Serializable {
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
             HSSFCell cell = header.getCell(i);
 
             cell.setCellStyle(cellStyle);
         }
     }
-//==========================================================================
+
+
+    //==========================================================================
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }

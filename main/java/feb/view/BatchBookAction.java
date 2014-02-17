@@ -3,7 +3,6 @@ package feb.view;
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
 import feb.service.VchPrintService;
-import feb.sysdate.SystemDate;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T898;
 import gateway.sbs.txn.model.msg.M8401;
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
 import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
+import pub.tools.SystemDate;
 import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;

@@ -88,7 +88,8 @@
                                              action="#{bookDayQryAction.onVchsetQry()}" ajax="true"
                                              update="msgs,dt,btnex">
                             </p:commandButton>
-                            <p:commandButton id="btnex" value="传票导出XLS" disabled="#{!bookDayQryAction.export}"
+                            <p:commandButton id="btnex" value="传票导出XLS"
+                                             disabled="#{!bookDayQryAction.export}"
                                              style="width:110px;" ajax="false">
                                 <p:dataExporter type="xls" target="dt" fileName="record"
                                                 postProcessor="#{bookDayQryAction.exportExcel}"/>

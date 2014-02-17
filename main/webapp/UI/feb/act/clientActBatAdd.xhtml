@@ -18,11 +18,12 @@
         <h:form id="inputform" enctype="multipart/form-data">
             <p:messages id="msgs" showDetail="true" showSummary="true"/>
             <p:panel>
-                <h:panelGrid id="dataPanel" cellpadding="0" cellspacing="5" columns="3">
+                <h:panelGrid id="dataPanel" cellpadding="0" cellspacing="5" columns="4">
                     <p:fileUpload value="#{clientActBatAction.file}" style="width: 300px" required="true" requiredMessage="文件不能为空!"
                                   mode="simple"/>
                     <p:commandButton value="批量导入" ajax="false"
-                                     actionListener="#{clientActBatAction.onBtnImpClick()}" update="msgs,dtsucess,dterrors"/>
+                                     actionListener="#{clientActBatAction.onBtnImpClick()}"
+                                     update="msgs,dtsucess,dterrors"/>
                 </h:panelGrid>
             </p:panel>
             <br/>
@@ -54,6 +55,13 @@
                 <p:column headerText="操作员" style="text-align:center">
                     <h:outputText value="#{record.AMDTLR}"/>
                 </p:column>
+                <!--<p:column headerText="操作" style="text-align:center">
+                    <p:commandLink value="打印" immediate="true" ajax="false"
+                                   action="#{clientActBatAction.onPrintOpenAct()}"
+                                   style="color: blue">
+                        <f:param value="#{record.ACTNUM}" name="actnum"/>
+                    </p:commandLink>
+                </p:column>-->
             </p:dataTable>
             <br/>
             <p:separator/>
