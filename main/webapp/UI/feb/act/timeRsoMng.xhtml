@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:focus for="actty1"/>
+                <p:messages id="msgs" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="4" cellspacing="5"
+                                     columnClasses="col-label,col-input,col-label,col-input">
+                            <h:outputLabel value="账户类型:" style="font-weight: bold"/>
+                            <p:inputText size="25"
+                                         id="actty1" required="true" maxlength="2"
+                                         value="#{actrso281Action.actty1}" requiredMessage="账户类型不能为空。"/>
+                            <h:outputLabel value="账户号:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.iptac1}" requiredMessage="账户号不能为空。"/>
+                            <h:outputLabel value="取款方式:" style="font-weight: bold"/>
+                            <p:selectOneMenu value="#{actrso281Action.dramd1}" style="width: 162px;" required="true"
+                                             requiredMessage="取款方式不能为空。">
+                                <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdraItems}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="交易日期:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.txndat}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"
+                                         requiredMessage="交易日期不能为空。"/>
+                            <h:outputLabel value="强制到期标志:" style="font-weight: bold"/>
+
+                            <p:selectOneMenu value="#{actrso281Action.dueflg}" style="width: 162px;" required="true"
+                                             requiredMessage="强制到期标志不能为空。">
+                                <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdueItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="账户类型:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.actty2}" requiredMessage="账户类型不能为空。"/>
+                            <h:outputLabel value="账号:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.iptac2}" requiredMessage="账号不能为空。"/>
+                            <h:outputLabel value="无折标志:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.nbkfl2}" requiredMessage="无折标志不能为空。"/>
+
+                            <h:outputLabel value="*凭证种类:" style="font-weight: bold"/>
+                            <p:selectOneMenu style="width: 162px;" value="#{actrso281Action.vchtyp}" required="true"
+                                             requiredMessage="必须选择凭证种类!">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfVchtypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="*凭证号:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrso281Action.vchnum}" required="true"
+                                         requiredMessage="必须输入凭证号!"/>
+
+                            <h:outputLabel value="*主管授权号:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true"
+                                         value="#{actrso281Action.auttlr}" requiredMessage="主管号不能为空。"/>
+                            <h:outputLabel value="*主管授权密码:" style="font-weight: bold"/>
+                            <p:password size="25" required="true"
+                                        value="#{actrso281Action.autpwd}" requiredMessage="密码不能为空。"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
+                                     width="10%">
+                            <p:commandButton style="width:80px;" value="结清"
+                                             action="#{actrso281Action.onAllQuery()}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+
+                            <p:commandButton style="width:80px;" value="打印凭证"
+                                             disabled="#{!actrso281Action.printable}"
+                                             action="#{actrso281Action.onPrintOpenAct}" ajax="false"
+                                             update="msgs,btns">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:fieldset>
+                    <h:panelGrid id="dt" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
+                                >
+                            <h:outputLabel value="账户号:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.ACTNM1}"/>
+                            <h:outputLabel value="证件种类:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.PASTYP}"/>
+                            <h:outputLabel value="证件号码:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.PASNO1}"/>
+                            <h:outputLabel value="账户类别:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.ACTTYP}"/>
+                            <h:outputLabel value="余额:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.CURBL1}"/>
+                            <h:outputLabel value="起息日期:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.VALDAT}"/>
+                            <h:outputLabel value="存期:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.DPTPRD}"/>
+                            <h:outputLabel value="实付金额:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.TOTINT}"/>
+                            <h:outputLabel value="账号:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.ACTNM2}"/>
+                            <h:outputLabel value="币别名:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.CURNAM}"/>
+                            <h:outputLabel value="交易前余额:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.PREBAL}"/>
+                            <h:outputLabel value="交易后余额:"/>
+                            <p:outputLabel value="#{actrso281Action.rso.PSTBAL}"/>
+
+
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
