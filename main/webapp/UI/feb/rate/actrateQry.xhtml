@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    document.forms['form']['form:btn'].click();
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="4" cellspacing="5"
+                                     columnClasses="col-label,col-input,col-label,col-input">
+                            <h:outputLabel value="货币码:" style="font-weight: bold"/>
+                            <p:inputText size="25" value=""/>
+                            <h:outputLabel value="收费码:" style="font-weight: bold"/>
+                            <p:inputText  size="25" value=""
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="启用日期:" style="font-weight: bold"/>
+                            <p:inputText  size="25" required="true"
+                                         requiredMessage="启用日期不能为空。"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="功能参数:" style="font-weight: bold"/>
+                            <p:inputText  size="25" required="true"
+                                         requiredMessage="启用时间不能为空。"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
+                                     width="10%">
+                            <p:commandButton style="width:110px;" value="货币码查询"
+                                             action="#{actirtAction.onAllQuery}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="多笔查询的组合: 1. 查询启用日期
+                        输入货币码  收费码  功能参数
+                    2. 查询费率版本
+                       输入货币码  启用日期  功能参数"/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{actirtAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                        {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="货币码" style="text-align:center">
+                        <h:outputText value=""/>
+                    </p:column>
+                    <p:column headerText="收费码" style="text-align:center">
+                        <h:outputText value=""/>
+                    </p:column>
+
+                    <p:column headerText="第二货币" style="text-align:center">
+                        <h:outputText value=""/>
+                    </p:column>
+
+                    <p:column headerText="启用日期" style="text-align:left">
+                        <h:outputText value=""/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

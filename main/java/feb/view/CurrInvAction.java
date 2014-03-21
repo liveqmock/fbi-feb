@@ -18,6 +18,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ public class CurrInvAction implements Serializable {
     private String actnum = "";  //            账号
     private String auttlr = "";
     private String autpwd = "";
+    private String clsdat = "";
+    private String lintdt = "";
     private  M8114 m8114 = new M8114();
     private T114 t114 ;
     private boolean isPrintable = false;               // 是否可打印凭证
@@ -66,19 +70,13 @@ public class CurrInvAction implements Serializable {
         }
         return null;
     }
+
     public void onPrintInv() {
-        /*try {
-            invPrintService.printCurrInv(" 活期存款清单","2","3","4",
-                    "5","6","7","8","9",
-                    "10","11","12","13","14",
-                    "15","16","17","18");
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }*/
         try {
+            clsdat = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getCLSDAT()));
+            lintdt = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getLINTDT()));
             invPrintService.printCurrInv(" 活期存款清单",t114.getORGIDT(),t114.getACTNUM(),t114.getACTNAM(),
-                    t114.getAVABAL(),t114.getCLSDAT(),t114.getLINTDT(),t114.getCRACCM1(),t114.getCRATSF1(),
+                    t114.getAVABAL(),clsdat,t114.getLINTDT(),t114.getCRACCM1(),t114.getCRATSF1(),
                     t114.getCACINT1(),t114.getCRACCM2(),t114.getCRATSF2(),t114.getCACINT2(),t114.getCRACCM3(),
                     t114.getCRATSF3(),t114.getCACINT3(),t114.getCACINT(),t114.getAMOUNT());
         } catch (Exception e) {

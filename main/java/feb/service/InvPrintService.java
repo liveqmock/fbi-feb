@@ -36,34 +36,46 @@ public class InvPrintService {
         table.getDefaultCell().setBorder(0);//设置表格默认为无边框
         BaseFont bfChinese = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font headFont1 = new Font(bfChinese, 11, Font.NORMAL);// 设置字体大小
-        String row1 = StringPad.pad4ChineseToByteLength(true, title, 45, " ");
+        String row1 = StringPad.pad4ChineseToByteLength(true, title, 50, " ");
         String row11 = StringPad.pad4ChineseToByteLength(true, "", 50, "");
         String row2 = StringPad.pad4ChineseToByteLength(true, "机构号:", 15, " ") + orgidt +
                 StringPad.pad4ChineseToByteLength(true, "账号:", 27, " ") + actnum;
 
         String row3 = StringPad.pad4ChineseToByteLength(true, "帐户名:", 15, " ") + actnam;
 
-        String row4 = StringPad.pad4ChineseToByteLength(true, "即时有效余额: ", 16, " ") + avabal;
+        String row4 = StringPad.pad4ChineseToByteLength(true, "即时有效余额: ", 16, " ") +
+                StringPad.pad4ChineseToByteLength(true, avabal, 18, " ");
 
         String row5 = StringPad.pad4ChineseToByteLength(true, " 关户日期: ", 16, " ") + clsdat +
                 StringPad.pad4ChineseToByteLength(true, "末次记息日: ", 23, " ") + lintdt;
 
-        String row6 = StringPad.pad4ChineseToByteLength(true, "积数1: ", 16, " ") + craccm1 +
-                StringPad.pad4ChineseToByteLength(false, "                    利率1: ", 27, " ") + cratsf1 +
-                StringPad.pad4ChineseToByteLength(false, "                    利息1: ", 27, " ") + cacint1;
+        String row6 = StringPad.pad4ChineseToByteLength(true, "积数1: ", 16, " ") +
+                StringPad.pad4ChineseToByteLength(true, craccm1, 18, " ") +
+                StringPad.pad4ChineseToByteLength(true, "   利率1: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cratsf1, 18, " ")+
+                StringPad.pad4ChineseToByteLength(true, "   利息1: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cacint1, 18, " ");
 
-        String row7 = StringPad.pad4ChineseToByteLength(true, "积数2: ", 16, " ") + craccm2 +
-                StringPad.pad4ChineseToByteLength(false, "                    利率2: ", 27, " ") + cratsf2 +
-                StringPad.pad4ChineseToByteLength(false, "                    利息2: ", 27, " ") + cacint2;
+        String row7 = StringPad.pad4ChineseToByteLength(true, "积数2: ", 16, " ") +
+                StringPad.pad4ChineseToByteLength(true, craccm2 , 18, " ")+
+                StringPad.pad4ChineseToByteLength(true, "   利率2: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cratsf2, 18, " ") +
+                StringPad.pad4ChineseToByteLength(true, "   利息2: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cacint2, 18, " ");
 
-        String row8 = StringPad.pad4ChineseToByteLength(true, "积数3: ", 16, " ") + craccm3 +
-                StringPad.pad4ChineseToByteLength(false, "                        利率3: ", 31, " ") + cratsf3 +
-                StringPad.pad4ChineseToByteLength(false, "                    利息3: ", 32, " ") + cacint3;
+        String row8 = StringPad.pad4ChineseToByteLength(true, "积数3: ", 16, " ") +
+                StringPad.pad4ChineseToByteLength(true, craccm3, 18, " ") +
+                StringPad.pad4ChineseToByteLength(true, "   利率3: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cratsf3, 18, " ") +
+                StringPad.pad4ChineseToByteLength(true, "   利息3: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, cacint3, 18, " ");
 
         String row9 = StringPad.pad4ChineseToByteLength(true, "    " + "   ", 50, " ");
 
-        String row10 = StringPad.pad4ChineseToByteLength(true, "利息合计: ", 16, " ") + cacint +
-                StringPad.pad4ChineseToByteLength(true, "本息合计: ", 28, " ") + acount;
+        String row10 = StringPad.pad4ChineseToByteLength(true, "利息合计: ", 16, " ") +
+                StringPad.pad4ChineseToByteLength(true, cacint, 18, " ") +
+                StringPad.pad4ChineseToByteLength(true, "    本息合计: ", 13, " ") +
+                StringPad.pad4ChineseToByteLength(true, acount, 18, " ");
 
         String[] labels = new String[]{row1, row11, row2, row3, row4, row5, row6, row7, row8, row9, row10};
 
@@ -73,7 +85,7 @@ public class InvPrintService {
             cell.setBorder(0);
             cell.setFixedHeight(15);//单元格高度
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell.setVerticalAlignment(Element.ALIGN_LEFT);
+            cell.setVerticalAlignment(Element.ALIGN_RIGHT);
             table.addCell(cell);
         }
         printPdfTable(table);
