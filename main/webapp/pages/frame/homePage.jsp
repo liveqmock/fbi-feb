@@ -145,8 +145,8 @@
             if (isProd_Web == "0") {
                 //alert("当前环境为开发测试环境！");
             }
-            if (isProd_Sbs == "0") {
-                //alert("当前环境连接的是SBS测试机！");
+            if (isProd_Sbs == "1") {
+                alert("已进入SBS生产环境！！");
             }
         }
 
