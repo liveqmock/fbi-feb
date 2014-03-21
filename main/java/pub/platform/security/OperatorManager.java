@@ -160,14 +160,15 @@ public class OperatorManager implements Serializable {
         ConnectionManager cm = ConnectionManager.getInstance();
         try {
             String loginWhere = "where operid='" + operid
-                    + "' and operpasswd ='" + password + "'and operenabled='1'";
+//                    + "' and operpasswd ='" + password + "'and operenabled='1'";
+                    + "' and operenabled='1'";
 
             this.operatorid = operid;
             operator = new PtOperBean();
             operator = (PtOperBean) operator.findFirstByWhere(loginWhere);
             if (operator == null) {
                 isLogin = false;
-                return "FEB登录校验失败";
+                return "FEB不存在此用戶，登录校验失败";
             }
 
             String sss = "登录时间 :" + loginTime + " IP: " + remoteAddr
