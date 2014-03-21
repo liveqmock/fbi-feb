@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                width: 148px;
+                text-align: right;
+            }
+
+            .col-input {
+                width: 180px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 180px;
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                width: 180px;
+                text-align: left;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:cusidt') {
+                        document.forms['inputform']['inputform:btns'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div style="margin:5px">
+            <h:form id="form">
+                <p:focus for="orgid3"/>
+                <p:messages id="msgs"  showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="4" cellspacing="5"
+                                     columnClasses="col-label,col-input">
+                            <h:outputLabel value="机构号:" style="font-weight: bold"/>
+                            <p:inputText size="25" id="orgid3" required="true"
+                                         value="#{currInvAction.orgid3}" requiredMessage="机构好不能为空。"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="账号:" style="font-weight: bold"/>
+                            <p:inputText required="true" size="25" requiredMessage="账号不能为空。"
+                                         id="actnum" value="#{currInvAction.actnum}" maxlength="14"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="授权主管:" style="font-weight: bold"/>
+                            <p:inputText size="25" id="auttlr" value="#{currInvAction.auttlr}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="主管密码:" style="font-weight: bold"/>
+                            <p:password size="25" id="autpwd" value="#{currInvAction.autpwd}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
+                                     width="10%">
+                            <p:commandButton style="width:110px;" value="结息清单查询"
+                                             action="#{currInvAction.onQryIvn}" ajax="true"
+                                             update="msgs,panel,dataPanel" id="query">
+                            </p:commandButton>
+
+                            <p:commandButton style="width:110px;" value="清单打印" id="prt"
+                                             disabled="#{!currInvAction.isPrintable()}"
+                                             action="#{currInvAction.onPrintInv}"
+                                              ajax="false"  update="msgs,panel">
+                            </p:commandButton>
+                            <!--<p:commandButton style="width:110px;" value="清单打印" id="prt"
+                                             action="#{currInvAction.onPrintInv}"
+                                             ajax="false"  update="msgs,panel">
+                            </p:commandButton>-->
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel id="dataPanel">
+                    <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="机构号:"/>
+                        <h:outputText value="#{currInvAction.t114.ORGIDT}"/>
+                        <h:outputLabel value="账号:"/>
+                        <h:outputText value="#{currInvAction.t114.ACTNUM}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{currInvAction.t114.ACTNAM}"/>
+                        <h:outputLabel value="即时有效余额:"/>
+                        <h:outputText value="#{currInvAction.t114.AVABAL}"/>
+                        <h:outputLabel value="关户日期:"/>
+                        <h:outputText value="#{currInvAction.t114.CLSDAT}"/>
+                        <h:outputLabel value="末次计息日期:"/>
+                        <h:outputText value="#{currInvAction.t114.LINTDT}"/>
+                        <h:outputLabel value="积数1:"/>
+                        <h:outputText value="#{currInvAction.t114.CRACCM1}"/>
+
+                        <h:outputLabel value="利率1:"/>
+                        <h:outputText value="#{currInvAction.t114.CRATSF1}"/>
+                        <h:outputLabel value="利息1:"/>
+                        <h:outputText value="#{currInvAction.t114.CACINT1}"/>
+                        <h:outputLabel value="积数2:"/>
+                        <h:outputText value="#{currInvAction.t114.CRACCM2}"/>
+                        <h:outputLabel value="利率2:"/>
+                        <h:outputText value="#{currInvAction.t114.CRATSF2}"/>
+                        <h:outputLabel value="利息2:"/>
+                        <h:outputText value="#{currInvAction.t114.CACINT2}"/>
+                        <h:outputLabel value="积数3:"/>
+                        <h:outputText value="#{currInvAction.t114.CRACCM3}"/>
+                        <h:outputLabel value="利率3:"/>
+                        <h:outputText value="#{currInvAction.t114.CRATSF3}"/>
+                        <h:outputLabel value="利息3:"/>
+                        <h:outputText value="#{currInvAction.t114.CACINT3}"/>
+                        <h:outputLabel value="总利息:"/>
+                        <h:outputText value="#{currInvAction.t114.CACINT}"/>
+                        <h:outputLabel value="本息合计:"/>
+                        <h:outputText value="#{currInvAction.t114.AMOUNT}"/>
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
