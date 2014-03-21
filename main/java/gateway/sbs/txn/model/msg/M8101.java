@@ -35,7 +35,7 @@ public class M8101 extends MTia {
     private String LEGCDT = "0031";    // 分户账出账日期
     private String LEGFMT = "C";        // 分户账账页形式 C.外部客户账页 S.共享账户账页 O.不出账页
     private String LEGADD = "";        // 分户账地址
-    private String LEGZIP = "100000";  // 账户用途 100000. 一般结算户 200000. 资金专用户 300000. 票据户 400000. 票据池账户 500000. 验资户 600000. 表外户 900000. 其他
+    private String LEGZIP = "";  // 账户用途 100000. 一般结算户 200000. 资金专用户 300000. 票据户 400000. 票据池账户 500000. 验资户 600000. 表外户 900000. 其他
     private String LEGSHT = "001";     // 分户账出账份数
     private String LEGDEP = "01060";   // 分户账分发部门
     private String GLCODE = "";        // 总账码      空
