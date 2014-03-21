@@ -1,10 +1,7 @@
 package skyline.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skyline.repository.dao.PtenudetailMapper;
-import skyline.repository.model.Ptenudetail;
-import skyline.repository.model.PtenudetailExample;
+import pub.platform.dao.PTENUDETAIL;
 
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -17,27 +14,22 @@ import java.util.Map;
  * User: zhangxiaobo
  * Date: 13-9-6
  * Time: 下午4:54
- * To change this template use File | Settings | File Templates.
+ *
+ * 更新：20140321 zhanrui 不再使用mybatis获取数据
  */
 @Component
 public class PtEnuSelectImpl implements Selectable {
 
-    @Autowired
-    private PtenudetailMapper ptenudetailMapper;
-
     @Override
     public List<SelectItem> getSelectItems(String enuId, boolean isSelectNone, boolean isExpandID) {
-        PtenudetailExample example = new PtenudetailExample();
-        example.createCriteria().andEnutypeEqualTo(enuId);
-        example.setOrderByClause(" DISPNO ");
-        List<Ptenudetail> records = ptenudetailMapper.selectByExample(example);
         List<SelectItem> items = new ArrayList<SelectItem>();
+        List<PTENUDETAIL> records = new PTENUDETAIL().findByWhere(" where enutype ='" + enuId + "' order by dispno");
         SelectItem item;
         if (isSelectNone) {
             item = new SelectItem("", "");
             items.add(item);
         }
-        for (Ptenudetail record : records) {
+        for (PTENUDETAIL record : records) {
             if (isExpandID) {
                 item = new SelectItem(record.getEnuitemvalue(), record.getEnuitemvalue() + " " + record.getEnuitemlabel());
             } else {
@@ -51,11 +43,8 @@ public class PtEnuSelectImpl implements Selectable {
     @Override
     public Map<String, String> getMap(String enuId) {
         Map<String, String> dataMap = new HashMap<>();
-        PtenudetailExample example = new PtenudetailExample();
-        example.createCriteria().andEnutypeEqualTo(enuId);
-        example.setOrderByClause(" DISPNO ");
-        List<Ptenudetail> records = ptenudetailMapper.selectByExample(example);
-        for (Ptenudetail record : records) {
+        List<PTENUDETAIL> records = new PTENUDETAIL().findByWhere(" where enutype ='" + enuId + "' order by dispno");
+        for (PTENUDETAIL record : records) {
             dataMap.put(record.getEnuitemvalue(), record.getEnuitemvalue());
         }
         return dataMap;

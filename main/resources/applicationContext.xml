@@ -43,22 +43,6 @@
     <!-- enable transaction demarcation with annotations -->
     <tx:annotation-driven/>
 
-    <!-- define the SqlSessionFactory, notice that configLocation is not needed when you use MapperFactoryBean -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations">
-        <list>
-            <value>classpath:skyline/repository/mapper/**/*.xml</value>
-            <value>classpath:feb/repository/mapper/**/*.xml</value>
-        </list>
-        </property>
-    </bean>
-
-    <!-- scan for mappers and let them be autowired -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="feb.repository.dao,skyline.repository.dao"/>
-    </bean>
-
    <bean id="skylineService" class="skyline.service.SkylineService">
        <property name="selectable" ref="ptEnuSelectImpl"/>
    </bean>
