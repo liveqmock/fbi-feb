@@ -33,7 +33,7 @@
             font-weight: bold;
         }
     </style>
-    <script language="JavaScript" type="text/JavaScript">
+    <!--<script language="JavaScript" type="text/JavaScript">
         function KeyDown() {
             if (event.keyCode == 13) {
                 if (event.srcElement.id == 'inputform:cusidt') {
@@ -69,6 +69,13 @@
                 } else if (event.srcElement.id == 'inputform:shtnam') {
                     document.forms['inputform']['inputform:cusnam'].focus();
                 }
+            }
+        }
+    </script>-->
+    <script language="JavaScript" type="text/JavaScript">
+        document.onkeydown = function TabReplace() {
+            if (event.keyCode == 13) {
+                event.keyCode = 9;
             }
         }
     </script>
