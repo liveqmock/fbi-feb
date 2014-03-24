@@ -136,10 +136,17 @@ public class ActapcAction implements Serializable {
         }
         return null;
     }
-
+    public String onQuery(){
+        if ("".equals(apcode)){
+         initQry();
+        }else {
+            onAllQuery();
+        }
+        return null;
+    }
     public String onAllQuery() {
         try {
-            addapc = new M9814(glcode, apcode);
+            addapc = new M9814(glcode,apcode);
             dataList = new ArrayList<>();
             List list = new ArrayList();
             SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
