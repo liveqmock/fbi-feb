@@ -90,7 +90,7 @@ public class VchPrintService {
             table.addCell(cell);
         }
         Paragraph cell2 = new Paragraph(StringPad.pad4ChineseToByteLength(true, "- - - - - - - - - " +
-                "- - - - - - - - - - - " +
+                "- - - - - - - - - - - -" +
                 "- - - - - - - - - - - - - -"  , 85, " "), headFont2);
         table.addCell(cell2);
         printPdfTable(table);
