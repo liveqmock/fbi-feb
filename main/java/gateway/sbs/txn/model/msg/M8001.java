@@ -36,7 +36,7 @@ public class M8001 extends MTia {
     private String LOCCAP = "0.00";        //注册本币资本  单位为分，输入元，需要*100
     private String REGCAP = "0.00";        //注册外币资本   单位为分，输入元，需要*100
     private String REGCCY = "";        //第二货币
-    private String REGADD = "";        //地址
+    private String REGADD = "CH";        //地址
     private String REGDAT = "";        //注册日期
     private String EFFDUR = "";        //有效期(月)
     private String CTXNUM = "";        //国税号码

@@ -5,238 +5,238 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/ui.xhtml">
 
-    <ui:define name="head">
-        <style type="text/css">
-            .col-label {
-                text-align: right;
-                font-size: 12px !important;
-                font-weight: bold;
-            }
+<ui:define name="head">
+    <style type="text/css">
+        .col-label {
+            text-align: right;
+            font-size: 12px !important;
+            font-weight: bold;
+        }
 
-            .col-input {
-                width: 150px;
-                font-size: 12px !important;
-                text-align: left;
-                font-weight: bold;
-            }
+        .col-input {
+            width: 150px;
+            font-size: 12px !important;
+            text-align: left;
+            font-weight: bold;
+        }
 
-            .col-label2 {
-                width: 150px;
-                font-size: 12px !important;
-                text-align: right;
-                font-weight: bold;
-            }
+        .col-label2 {
+            width: 150px;
+            font-size: 12px !important;
+            text-align: right;
+            font-weight: bold;
+        }
 
-            .col-input2 {
-                font-size: 12px !important;
-                text-align: left;
-                font-weight: bold;
-            }
-        </style>
-        <script language="JavaScript" type="text/JavaScript">
-            function KeyDown() {
-                if (event.keyCode == 13) {
-                    if (event.srcElement.id == 'inputform:cusidt') {
-                        document.forms['inputform']['inputform:btns'].click();
-                    }if (event.srcElement.id == 'inputform:pastyp') {
-                        event.keyCode = 9 ;
-                    } else {
-                        event.keyCode = 9;
-                    }
+        .col-input2 {
+            font-size: 12px !important;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+    <script language="JavaScript" type="text/JavaScript">
+        function KeyDown() {
+            if (event.keyCode == 13) {
+                if (event.srcElement.id == 'inputform:cusidt') {
+                    document.forms['inputform']['inputform:btns'].click();
                 }
-                if (event.keyCode == 38) {
-                    if (event.srcElement.id == 'inputform:intnet') {
-                        document.forms['inputform']['inputform:supdep'].focus();
-                    } else if (event.srcElement.id == 'inputform:supdep') {
-                        document.forms['inputform']['inputform:ltxnum'].focus();
-                    } else if (event.srcElement.id == 'inputform:ltxnum') {
-                        document.forms['inputform']['inputform:ctxnum'].focus();
-                    } else if (event.srcElement.id == 'inputform:ctxnum') {
-                        document.forms['inputform']['inputform:effdur'].focus();
-                    } else if (event.srcElement.id == 'inputform:effdur') {
-                        document.forms['inputform']['inputform:regdur'].focus();
-                    }else if (event.srcElement.id == 'inputform:entcde') {
-                        document.forms['inputform']['inputform:buscde'].focus();
-                    }else if (event.srcElement.id == 'inputform:buscde') {
-                        document.forms['inputform']['inputform:telnum'].focus();
-                    }else if (event.srcElement.id == 'inputform:telnum') {
-                        document.forms['inputform']['inputform:zipcde'].focus();
-                    }else if (event.srcElement.id == 'inputform:zipcde') {
-                        document.forms['inputform']['inputform:coradd'].focus();
-                    }else if (event.srcElement.id == 'inputform:coradd') {
-                        document.forms['inputform']['inputform:shtnam'].focus();
-                    }else if (event.srcElement.id == 'inputform:shtnam') {
-                        document.forms['inputform']['inputform:cusnam'].focus();
-                    }
+                if (event.srcElement.id == 'inputform:pastyp') {
+                    event.keyCode = 9;
+                } else {
+                    event.keyCode = 9;
                 }
             }
-        </script>
-    </ui:define>
-    <ui:define name="content">
-        <div class="entry">
-            <h:form id="inputform">
-                <p:messages id="msgs" showDetail="true" showSummary="true"/>
-                <p:focus for="cusnam"/>
-                <p:panel>
-                    <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
-                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
-                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                            <p:columnGroup>
-                                <h:outputLabel style="color: red;" value="*"/>
-                                <h:outputLabel value="客户名称:"/>
-                            </p:columnGroup>
-                            <h:inputText id="cusnam" value="#{clientAction.m8001.CUSNAM}"
-                                         required="true" requiredMessage="客户名称不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()" >
-                            </h:inputText>
-                            <!--<h:outputLabel value="客户英文名:" for="engnam"/>
-                            <h:inputText value="#{clientAction.m8001.ENGNAM}" id="engnam"
-                                         onkeydown="KeyDown()" onfocus="this.select()" />-->
-                            <h:outputLabel value="*客户简称:"/>
-                            <h:inputText value="#{clientAction.m8001.SHTNAM}" id="shtnam"
-                                         required="true" requiredMessage="客户简称不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <!--<h:outputLabel value="简名索引:"/>
-                            <h:inputText value="#{clientAction.m8001.CUSIDX}" id="cusidx"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>-->
-                            <h:outputLabel value="*地址:"/>
-                            <h:inputText value="#{clientAction.m8001.CORADD}" id="coradd"
-                                         required="true" requiredMessage="地址不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="*邮编:"/>
-                            <p:inputText value="#{clientAction.m8001.ZIPCDE}" id="zipcde"
-                                         required="true"  requiredMessage="邮编不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="电话:"/>
-                            <h:inputText value="#{clientAction.m8001.TELNUM}" id="telnum"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="*行业代码:"/>
-                            <p:inputText value="#{clientAction.m8001.BUSCDE}" id="buscde"
-                                         required="true" requiredMessage="行业代码不能为空,输入格式为字母+4个数字的形式"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="*组织机构代码:"/>
-                            <h:inputText value="#{clientAction.m8001.ENTCDE}" id="entcde"
-                                         required="true" requiredMessage="组织机构代码不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="*证件类别:"/>
-                            <p:selectOneMenu id="pastyp" value="#{clientAction.m8001.PASTYP}" style="width: 131px;"
-                                             onkeydown="KeyDown()" onfocus="this.select()">
-                                <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="*证件号:"/>
-                            <h:inputText value="#{clientAction.m8001.PASSNO}" id="passno"
-                                         required="true" requiredMessage="证件号不能为空"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册国家码:"/>
-                            <h:inputText value="#{clientAction.m8001.RSDCTR}" id="rsdctr"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="所在国家码:"/>
-                            <h:inputText value="#{clientAction.m8001.OPRCTR}" id="oprctr"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="企业性质:"/>
-                            <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;" id="enttyp">
-                                <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="有无进口权:"/>
-                            <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;" id="custy1">
-                                <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="客户分类码:"/>
-                            <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;" id="bocgrp">
-                                <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="信用等级:"/>
-                            <h:inputText value="#{clientAction.m8001.TSTRNK}" id="tstrnk"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="*信用额度:"/>
-                            <h:inputText value="#{clientAction.m8001.CRDLIM}" required="true"
-                                         onkeydown="KeyDown()" onfocus="this.select()" id="crdlim"/>
-                            <h:outputLabel value="风险组别:"/>
-                            <h:inputText value="#{clientAction.m8001.RSKGRP}" id="rskgrp"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="相关客户:"/>
-                            <h:inputText value="#{clientAction.m8001.RELCUS}" id="relcus"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="密码:"/>
-                            <p:inputText value="#{clientAction.m8001.CUSPWD}" id="cuspwd"
-                                         onkeydown="KeyDown()" onfocus="this.select()" />
-                            <h:outputLabel value="法人代表姓名:"/>
-                            <h:inputText value="#{clientAction.m8001.LEGBDY}" id="legbdy"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="财务负责人姓名:"/>
-                            <h:inputText value="#{clientAction.m8001.ACTBDY}" id="actbdy"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册本币资本:"/>
-                            <h:inputText value="#{clientAction.m8001.LOCCAP}" id="loccap"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册外币资本:"/>
-                            <h:inputText value="#{clientAction.m8001.REGCAP}" id="regcap"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="第二货币:"/>
-                            <h:inputText value="#{clientAction.m8001.REGCCY}" id="regccy"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="地址:"/>
-                            <h:inputText value="#{clientAction.m8001.REGADD}" id="regadd"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="注册日期:"/>
-                            <h:inputText value="#{clientAction.m8001.REGDAT}" id="regdat"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="有效期(月):"/>
-                            <h:inputText value="#{clientAction.m8001.EFFDUR}" id="effdur"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="国税号码:"/>
-                            <h:inputText value="#{clientAction.m8001.CTXNUM}" id="ctxnum"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="地税号码:"/>
-                            <h:inputText value="#{clientAction.m8001.LTXNUM}" id="ltxnum"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-
-                            <h:outputLabel value="主管部门:"/>
-                            <h:inputText value="#{clientAction.m8001.SUPDEP}" id="supdep"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                        </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
-                            <p:commandButton style="width:80px;margin-left:10px;" value="确认建立"
-                                             action="#{clientAction.onCreate}" ajax="true"
-                                             update="msgs,btns,show,btnpt">
-                            </p:commandButton>
-                            <!--<p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 8px"/>-->
-                            <p:commandButton id="btnpt" style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
-                                             disabled="#{!clientAction.printable}"
-                                             action="#{clientAction.onPrintOpenAct}" ajax="false"
-                                             update="msgs,btns,show">
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </h:panelGrid>
-                </p:panel>
-                <br/>
-                <p:separator/>
-                <p:ajaxStatus style="height:18px;text-align:center">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value=""/>
-                    </f:facet>
-                </p:ajaxStatus>
-                <p:fieldset>
-                    <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+            if (event.keyCode == 38) {
+                if (event.srcElement.id == 'inputform:intnet') {
+                    document.forms['inputform']['inputform:supdep'].focus();
+                } else if (event.srcElement.id == 'inputform:supdep') {
+                    document.forms['inputform']['inputform:ltxnum'].focus();
+                } else if (event.srcElement.id == 'inputform:ltxnum') {
+                    document.forms['inputform']['inputform:ctxnum'].focus();
+                } else if (event.srcElement.id == 'inputform:ctxnum') {
+                    document.forms['inputform']['inputform:effdur'].focus();
+                } else if (event.srcElement.id == 'inputform:effdur') {
+                    document.forms['inputform']['inputform:regdur'].focus();
+                } else if (event.srcElement.id == 'inputform:entcde') {
+                    document.forms['inputform']['inputform:buscde'].focus();
+                } else if (event.srcElement.id == 'inputform:buscde') {
+                    document.forms['inputform']['inputform:telnum'].focus();
+                } else if (event.srcElement.id == 'inputform:telnum') {
+                    document.forms['inputform']['inputform:zipcde'].focus();
+                } else if (event.srcElement.id == 'inputform:zipcde') {
+                    document.forms['inputform']['inputform:coradd'].focus();
+                } else if (event.srcElement.id == 'inputform:coradd') {
+                    document.forms['inputform']['inputform:shtnam'].focus();
+                } else if (event.srcElement.id == 'inputform:shtnam') {
+                    document.forms['inputform']['inputform:cusnam'].focus();
+                }
+            }
+        }
+    </script>
+</ui:define>
+<ui:define name="content">
+    <div class="entry">
+        <h:form id="inputform">
+            <p:messages id="msgs" showDetail="true" showSummary="true"/>
+            <p:focus for="cusnam"/>
+            <p:panel>
+                <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                    <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                        <h:outputLabel value="部门号:"/>
-                        <h:outputText value="#{clientAction.t001.ORGIDT}"/>
-                        <h:outputLabel value="机构号:"/>
-                        <h:outputText value="#{clientAction.t001.DEPNUM}"/>
-                        <h:outputLabel value="客户号:"/>
-                        <h:outputText value="#{clientAction.t001.CUSIDT}"/>
-                        <h:outputLabel value="客户名称:"/>
-                        <h:outputText value="#{clientAction.t001.CUSNAM}"/>
-                        <h:outputLabel value="建立日期:"/>
-                        <h:outputText value="#{clientAction.t001.OPNDAT}"/>
-                        <h:outputLabel value="操作员:"/>
-                        <h:outputText value="#{clientAction.t001.AMDTLR}"/>
+                        <p:columnGroup>
+                            <h:outputLabel style="color: red;" value="*"/>
+                            <h:outputLabel value="客户名称:"/>
+                        </p:columnGroup>
+                        <h:inputText id="cusnam" value="#{clientAction.m8001.CUSNAM}"
+                                     required="true" requiredMessage="客户名称不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()">
+                        </h:inputText>
+                        <h:outputLabel value="*客户简称:"/>
+                        <h:inputText value="#{clientAction.m8001.SHTNAM}" id="shtnam"
+                                     required="true" requiredMessage="客户简称不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="*邮编:"/>
+                        <p:inputText value="#{clientAction.m8001.ZIPCDE}" id="zipcde"
+                                     required="true" requiredMessage="邮编不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="*证件类别:"/>
+                        <p:selectOneMenu id="pastyp" value="#{clientAction.m8001.PASTYP}" style="width: 131px;"
+                                         onkeydown="KeyDown()" onfocus="this.select()">
+                            <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="*证件号:"/>
+                        <h:inputText value="#{clientAction.m8001.PASSNO}" id="passno"
+                                     required="true" requiredMessage="证件号不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="法人代表姓名:"/>
+                        <h:inputText value="#{clientAction.m8001.LEGBDY}" id="legbdy"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="*组织机构代码:"/>
+                        <h:inputText value="#{clientAction.m8001.ENTCDE}" id="entcde"
+                                     required="true" requiredMessage="组织机构代码不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="*行业代码:"/>
+                        <p:inputText value="#{clientAction.m8001.BUSCDE}" id="buscde"
+                                     required="true" requiredMessage="行业代码不能为空,输入格式为字母+4个数字的形式"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="客户分类码:"/>
+                        <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;" id="bocgrp">
+                            <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="*信用额度:"/>
+                        <h:inputText value="#{clientAction.m8001.CRDLIM}" required="true"
+                                     onkeydown="KeyDown()" onfocus="this.select()" id="crdlim"/>
+                        <h:outputLabel value="注册国家码:"/>
+                        <h:inputText value="#{clientAction.m8001.RSDCTR}" id="rsdctr"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="所在国家码:"/>
+                        <h:inputText value="#{clientAction.m8001.OPRCTR}" id="oprctr"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="地址:"/>
+                        <h:inputText value="#{clientAction.m8001.REGADD}" id="regadd"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="企业性质:"/>
+                        <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;" id="enttyp">
+                            <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="有无进口权:"/>
+                        <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;" id="custy1">
+                            <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="*地址:"/>
+                        <h:inputText value="#{clientAction.m8001.CORADD}" id="coradd"
+                                     required="true" requiredMessage="地址不能为空"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="电话:"/>
+                        <h:inputText value="#{clientAction.m8001.TELNUM}" id="telnum"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+
+
+
+                        <h:outputLabel value="信用等级:"/>
+                        <h:inputText value="#{clientAction.m8001.TSTRNK}" id="tstrnk"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="风险组别:"/>
+                        <h:inputText value="#{clientAction.m8001.RSKGRP}" id="rskgrp"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="相关客户:"/>
+                        <h:inputText value="#{clientAction.m8001.RELCUS}" id="relcus"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="密码:"/>
+                        <p:inputText value="#{clientAction.m8001.CUSPWD}" id="cuspwd"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+
+                        <h:outputLabel value="财务负责人姓名:"/>
+                        <h:inputText value="#{clientAction.m8001.ACTBDY}" id="actbdy"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="注册本币资本:"/>
+                        <h:inputText value="#{clientAction.m8001.LOCCAP}" id="loccap"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="注册外币资本:"/>
+                        <h:inputText value="#{clientAction.m8001.REGCAP}" id="regcap"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="第二货币:"/>
+                        <h:inputText value="#{clientAction.m8001.REGCCY}" id="regccy"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+
+                        <h:outputLabel value="注册日期:"/>
+                        <h:inputText value="#{clientAction.m8001.REGDAT}" id="regdat"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="有效期(月):"/>
+                        <h:inputText value="#{clientAction.m8001.EFFDUR}" id="effdur"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="国税号码:"/>
+                        <h:inputText value="#{clientAction.m8001.CTXNUM}" id="ctxnum"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                        <h:outputLabel value="地税号码:"/>
+                        <h:inputText value="#{clientAction.m8001.LTXNUM}" id="ltxnum"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+
+                        <h:outputLabel value="主管部门:"/>
+                        <h:inputText value="#{clientAction.m8001.SUPDEP}" id="supdep"
+                                     onkeydown="KeyDown()" onfocus="this.select()"/>
                     </h:panelGrid>
-                </p:fieldset>
-            </h:form>
-        </div>
-    </ui:define>
+                    <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                        <p:commandButton style="width:80px;margin-left:10px;" value="确认建立"
+                                         action="#{clientAction.onCreate}" ajax="true"
+                                         update="msgs,btns,show,btnpt">
+                        </p:commandButton>
+                        <!--<p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 8px"/>-->
+                        <p:commandButton id="btnpt" style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
+                                         disabled="#{!clientAction.printable}"
+                                         action="#{clientAction.onPrintOpenAct}" ajax="false"
+                                         update="msgs,btns,show">
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:panel>
+            <br/>
+            <p:separator/>
+            <p:ajaxStatus style="height:18px;text-align:center">
+                <f:facet name="start">
+                    <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+            <p:fieldset>
+                <h:panelGrid id="show" columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                             columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                    <h:outputLabel value="部门号:"/>
+                    <h:outputText value="#{clientAction.t001.ORGIDT}"/>
+                    <h:outputLabel value="机构号:"/>
+                    <h:outputText value="#{clientAction.t001.DEPNUM}"/>
+                    <h:outputLabel value="客户号:"/>
+                    <h:outputText value="#{clientAction.t001.CUSIDT}"/>
+                    <h:outputLabel value="客户名称:"/>
+                    <h:outputText value="#{clientAction.t001.CUSNAM}"/>
+                    <h:outputLabel value="建立日期:"/>
+                    <h:outputText value="#{clientAction.t001.OPNDAT}"/>
+                    <h:outputLabel value="操作员:"/>
+                    <h:outputText value="#{clientAction.t001.AMDTLR}"/>
+                </h:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </div>
+</ui:define>
 </ui:composition>

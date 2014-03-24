@@ -45,7 +45,7 @@ import java.util.Map;
 @ManagedBean
 @ViewScoped
 public class ClientAction implements Serializable {
-    private static Logger logger = LoggerFactory.getLogger(ClientActAction.class);
+    private static Logger logger = LoggerFactory.getLogger(ClientAction.class);
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
@@ -129,11 +129,12 @@ public class ClientAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
+
     public void onPrintCloseAct() {
         try {
             vchPrintService.printVchClsAct(
                     "     客户关闭确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
-                    t001.getCUSNAM(), t001.getOPNDAT(),t001.getCLSDAT(), tellerid);
+                    t001.getCUSNAM(), t001.getOPNDAT(), t001.getCLSDAT(), tellerid);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -299,10 +300,18 @@ public class ClientAction implements Serializable {
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue().trim();
+                            if ("".equals(tmp)){
+                                continue;
+                            }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                            if ("0".equals(tmp)){
+                                continue;
+                            }
+                        }else if (cell.getCellType()==3){
+                            continue;
                         }
-                    } else break;
+                    } else continue;
                     switch (j) {
                         case 0:
                             m8001Tmp.setCUSNAM(tmp);

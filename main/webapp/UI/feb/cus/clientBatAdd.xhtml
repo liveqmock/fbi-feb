@@ -23,7 +23,8 @@
                     <h:outputLabel value="客户信息文件:" styleClass="label"/>
                     <p:fileUpload value="#{clientAction.custFile}" mode="simple"/>
                     <p:commandButton value="批量导入" ajax="false"
-                                     actionListener="#{clientAction.batImport}" update="msgs,dtsucess,dterrors"/>
+                                     actionListener="#{clientAction.batImport}"
+                                     update="msgs,dtsucess,dterrors"/>
                 </h:panelGrid>
             </p:panel>
             <br/>
