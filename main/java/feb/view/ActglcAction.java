@@ -32,7 +32,7 @@ public class ActglcAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ActglcAction.class);
 
     private String action;
-    private String glcode ="";
+    private String glcode = "";
     private String extdat;
     private String glcnam;
     private String irtdate;
@@ -40,7 +40,7 @@ public class ActglcAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
     private List<T813.Bean> dataList = new ArrayList<>();
-//    private List<T861.Bean> DdataList = new ArrayList<>();
+    //    private List<T861.Bean> DdataList = new ArrayList<>();
     private T861 irt = new T861();
     private T813 t813 = new T813();
     private T861 t861 = new T861();
@@ -99,18 +99,17 @@ public class ActglcAction implements Serializable {
                     if ("T861".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         irt = (T861) form.getFormBody();
 
-                    }
-                    else {
+                    } else {
                         logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-           }
-
+            }
+/*
             if (irt.getGLCCAT() == null|| irt.getGLCCAT().isEmpty() ) {
                 MessageUtil.addWarn("没有查询到数据。");
             }
-           /* if (DdataList == null || DdataList.isEmpty()) {
+           *//* if (DdataList == null || DdataList.isEmpty()) {
                 MessageUtil.addWarn("没有查询到数据。");
             }*/
         } catch (Exception e) {
@@ -119,6 +118,7 @@ public class ActglcAction implements Serializable {
         }
         return null;
     }
+
     public String onAllT813Query() {
         try {
             if (glcode == null) {
@@ -135,16 +135,17 @@ public class ActglcAction implements Serializable {
                     if ("T813".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         T813 t813 = (T813) form.getFormBody();
                         dataList.addAll(t813.getBeanList());
-                    }
-                    else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())){
+
+                    }else {
+                        //logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (dataList == null || dataList.isEmpty()) {
+           /* if (dataList == null || dataList.isEmpty()) {
                 MessageUtil.addWarn("没有查询到数据。");
-            }
+            }*/
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
