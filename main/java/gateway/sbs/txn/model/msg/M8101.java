@@ -42,6 +42,7 @@ public class M8101 extends MTia {
     private String FXRATE = "";        // 汇率        空
     private String LOCCAP = "";        // 注册外币资本  空
     private String TXNAMT = "";        // 交易金额     空
+    private String ERROCDE;            //错误信息
 
     public String getBATSEQ() {
         return BATSEQ;
@@ -337,5 +338,13 @@ public class M8101 extends MTia {
 
     public void setTXNAMT(String TXNAMT) {
         this.TXNAMT = TXNAMT;
+    }
+
+    public void setERROCDE(String ERROCDE) {
+        this.ERROCDE = ERROCDE;
+    }
+
+    public String getERROCDE() {
+        return ERROCDE;
     }
 }

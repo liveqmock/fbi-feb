@@ -53,6 +53,7 @@ public class M8001 extends MTia {
     private String SBKNUM = "";        // 行号
     private String FUNCDE = "";        // 功能参数
     private String SYSIDT = "8";        // 系统标识
+    private String ERROCDE = "";        //错误信息
 
     //====================================================
     public String getBATSEQ() {
@@ -405,5 +406,13 @@ public class M8001 extends MTia {
 
     public void setSYSIDT(String SYSIDT) {
         this.SYSIDT = SYSIDT;
+    }
+
+    public String getERROCDE() {
+        return ERROCDE;
+    }
+
+    public void setERROCDE(String ERROCDE) {
+        this.ERROCDE = ERROCDE;
     }
 }

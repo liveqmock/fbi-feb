@@ -81,7 +81,9 @@
                 <p:column headerText="账户名称" style="text-align:center">
                     <h:outputText value="#{errRecord.ACTNAM}"/>
                 </p:column>
-
+                <p:column headerText="错误信息" style="text-align:center">
+                    <h:outputText value="#{errRecord.ERROCDE}"/>
+                </p:column>
             </p:dataTable>
         </h:form>
     </ui:define>

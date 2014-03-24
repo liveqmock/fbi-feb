@@ -326,19 +326,19 @@ public class ClientAction implements Serializable {
                             m8001Tmp.setZIPCDE(tmp);
                             break;
                         case 4:
-                            m8001Tmp.setTELNUM(tmp);
-                            break;
-                        case 5:
                             m8001Tmp.setBUSCDE(tmp);
                             break;
-                        case 6:
+                        case 5:
                             m8001Tmp.setENTCDE(tmp);
                             break;
-                        case 7:
+                        case 6:
                             m8001Tmp.setPASTYP(tmp);
                             break;
-                        case 8:
+                        case 7:
                             m8001Tmp.setPASSNO(tmp);
+                            break;
+                        case 8:
+                            m8001Tmp.setTELNUM(tmp);
                             break;
                         case 9:
                             m8001Tmp.setRSDCTR(tmp);
@@ -416,9 +416,10 @@ public class ClientAction implements Serializable {
                             t001s.add(t001Tmp);
                         }
                     } else if ("T001".equalsIgnoreCase(formcode)) {
-                        m8001Tmp.setFUNCDE("Y");
+                        m8001Tmp.setERROCDE("已存在！");
                         m8001errs.add(m8001Tmp);
                     } else {
+                        m8001Tmp.setERROCDE(formcode);
                         m8001errs.add(m8001Tmp);
                     }
                 }
@@ -426,8 +427,8 @@ public class ClientAction implements Serializable {
         } catch (IOException e) {
             MessageUtil.addError("导入文件出现错误" + e.getMessage());
         }
-        MessageUtil.addInfo("导入结束！");
     }
+
     //----------------------------------------------------------------
 
     public DataExchangeService getDataExchangeService() {

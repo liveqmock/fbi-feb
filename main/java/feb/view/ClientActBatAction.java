@@ -5,7 +5,6 @@ import feb.service.PdfPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T101;
 import gateway.sbs.txn.model.msg.M8101;
-import gateway.sbs.txn.model.msg.M8104;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -117,10 +116,18 @@ public class ClientActBatAction implements Serializable {
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue().trim();
+                            if ("".equals(tmp)){
+                                continue;
+                            }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                            if ("0".equals(tmp)){
+                                continue;
+                            }
+                        }else if (cell.getCellType()==3){
+                            continue;
                         }
-                    } else break;
+                    } else continue;
                     switch (j) {
                         case 0:
                             m8101.setACTNUM(tmp);
@@ -129,25 +136,25 @@ public class ClientActBatAction implements Serializable {
                             m8101.setACTNAM(tmp);
                             break;
                         case 2:
-                            m8101.setCINRAT(tmp);
+                            m8101.setACTTYP(tmp);
                             break;
                         case 3:
-                            m8101.setLEGZIP(tmp);
+                            m8101.setINTCYC(tmp);
                             break;
                         case 4:
-                            m8101.setSTMADD(tmp);
+                            m8101.setINTTRA(tmp);
                             break;
                         case 5:
-                            m8101.setSTMZIP(tmp);
+                            m8101.setCQEFLG(tmp);
                             break;
                         case 6:
                             m8101.setSTMFMT(tmp);
                             break;
                         case 7:
-                            m8101.setSTMSHT(tmp);
+                            m8101.setSTMDEP(tmp);
                             break;
                         case 8:
-                            m8101.setSTMDEP(tmp);
+                            m8101.setSTMSHT(tmp);
                             break;
                         case 9:
                             m8101.setSTMCYC(tmp);
@@ -156,19 +163,19 @@ public class ClientActBatAction implements Serializable {
                             m8101.setSTMCDT(tmp);
                             break;
                         case 11:
-                            m8101.setACTTYP(tmp);
+                            m8101.setCINRAT(tmp);
                             break;
                         case 12:
-                            m8101.setINTFLG(tmp);
+                            m8101.setLEGZIP(tmp);
                             break;
                         case 13:
-                            m8101.setINTCYC(tmp);
+                            m8101.setSTMADD(tmp);
                             break;
                         case 14:
-                            m8101.setINTTRA(tmp);
+                            m8101.setSTMZIP(tmp);
                             break;
                         case 15:
-                            m8101.setCQEFLG(tmp);
+                            m8101.setINTFLG(tmp);
                             break;
                         case 16:
                             m8101.setBALLIM(tmp);
@@ -237,16 +244,24 @@ public class ClientActBatAction implements Serializable {
             String tmp = "";
             for (int i = 1; i <= rowLen; i++) {
                 m8101 = new M8101();
-                //int cellNum = sheet.getRow(i).getLastCellNum();
-                for (int j = 0; j < 27; j++) {
+                int cellNum = sheet.getRow(i).getLastCellNum();
+                for (int j = 0; j < cellNum; j++) {
                     cell = sheet.getRow(i).getCell(j);
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue();
+                            if ("".equals(tmp)){
+                                continue;
+                            }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                            if ("0".equals(tmp)){
+                                continue;
+                            }
+                        }else if (cell.getCellType()==3){
+                            continue;
                         }
-                    } else break;
+                    } else continue;
                     switch (j) {
                         case 0:
                             m8101.setACTNUM(tmp);
@@ -255,25 +270,25 @@ public class ClientActBatAction implements Serializable {
                             m8101.setACTNAM(tmp);
                             break;
                         case 2:
-                            m8101.setCINRAT(tmp);
+                            m8101.setACTTYP(tmp);
                             break;
                         case 3:
-                            m8101.setLEGZIP(tmp);
+                            m8101.setINTCYC(tmp);
                             break;
                         case 4:
-                            m8101.setSTMADD(tmp);
+                            m8101.setINTTRA(tmp);
                             break;
                         case 5:
-                            m8101.setSTMZIP(tmp);
+                            m8101.setCQEFLG(tmp);
                             break;
                         case 6:
                             m8101.setSTMFMT(tmp);
                             break;
                         case 7:
-                            m8101.setSTMSHT(tmp);
+                            m8101.setSTMDEP(tmp);
                             break;
                         case 8:
-                            m8101.setSTMDEP(tmp);
+                            m8101.setSTMSHT(tmp);
                             break;
                         case 9:
                             m8101.setSTMCYC(tmp);
@@ -282,19 +297,19 @@ public class ClientActBatAction implements Serializable {
                             m8101.setSTMCDT(tmp);
                             break;
                         case 11:
-                            m8101.setACTTYP(tmp);
+                            m8101.setCINRAT(tmp);
                             break;
                         case 12:
-                            m8101.setINTFLG(tmp);
+                            m8101.setLEGZIP(tmp);
                             break;
                         case 13:
-                            m8101.setINTCYC(tmp);
+                            m8101.setSTMADD(tmp);
                             break;
                         case 14:
-                            m8101.setINTTRA(tmp);
+                            m8101.setSTMZIP(tmp);
                             break;
                         case 15:
-                            m8101.setCQEFLG(tmp);
+                            m8101.setINTFLG(tmp);
                             break;
                         case 16:
                             m8101.setBALLIM(tmp);
@@ -338,8 +353,6 @@ public class ClientActBatAction implements Serializable {
                 }
                 onCreateInternalAct();
             }
-
-
         } catch (IOException e) {
             pub.tools.MessageUtil.addError("导入文件出现错误" + e.getMessage());
         }
@@ -355,11 +368,12 @@ public class ClientActBatAction implements Serializable {
                 t101s.add(t101);
             } else {
                 m8101errs.add(m8101);
-                pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
+                m8101.setERROCDE(formcode);
+//                pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
             logger.error("8101账户开户失败", e);
-            pub.tools.MessageUtil.addError("8101账户开户失败." + (e.getMessage() == null ? "" : e.getMessage()));
+            MessageUtil.addError("8101账户开户失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
