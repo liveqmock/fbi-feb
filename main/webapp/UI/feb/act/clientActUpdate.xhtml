@@ -101,6 +101,10 @@
                         <p:inputText value="#{clientActAction.updateAct.ACTNAM}" maxlength="36"/>
                         <h:outputLabel value="贷方利率代码:"/>
                         <p:inputText value="#{clientActAction.updateAct.CINRAT}" maxlength="3"/>
+                        <h:outputLabel value="账户用途:"/>
+                        <p:selectOneMenu value="#{clientActAction.clientAct.LEGZIP}" style="width: 131px;">
+                            <f:selectItems value="#{selectEnumActFieldAction.ctfLegzipItems}"/>
+                        </p:selectOneMenu>
                         <h:outputLabel value="对账单地址:"/>
                         <p:inputText value="#{clientActAction.updateAct.STMADD}"/>
                         <h:outputLabel value="邮编:"/>
@@ -163,8 +167,8 @@
                         <p:inputText value="#{clientActAction.updateAct.LEGADD}"/>
                         <h:outputLabel value="分户账出账份数:"/>
                         <p:inputText value="#{clientActAction.updateAct.LEGSHT}"/>
-                        <h:outputLabel value="分户账分发部门:"/>
-                        <p:inputText value="#{clientActAction.updateAct.LEGDEP}"/>
+                        <!--<h:outputLabel value="分户账分发部门:"/>
+                        <p:inputText value="#{clientActAction.updateAct.LEGDEP}"/>-->
                     </h:panelGrid>
                 </p:panel>
             </h:form>

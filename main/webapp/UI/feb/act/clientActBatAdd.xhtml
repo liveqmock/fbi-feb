@@ -22,7 +22,7 @@
                     <p:fileUpload value="#{clientActBatAction.file}" style="width: 300px" required="true" requiredMessage="文件不能为空!"
                                   mode="simple"/>
                     <p:commandButton value="批量导入" ajax="false"
-                                     actionListener="#{clientActBatAction.onBtnImpClick()}"
+                                     action="#{clientActBatAction.onBtnImpClick}"
                                      update="msgs,dtsucess,dterrors"/>
                 </h:panelGrid>
             </p:panel>

@@ -132,75 +132,78 @@ public class ClientActBatAction implements Serializable {
                             m8101.setCINRAT(tmp);
                             break;
                         case 3:
-                            m8101.setSTMADD(tmp);
+                            m8101.setLEGZIP(tmp);
                             break;
                         case 4:
-                            m8101.setSTMZIP(tmp);
+                            m8101.setSTMADD(tmp);
                             break;
                         case 5:
-                            m8101.setSTMFMT(tmp);
+                            m8101.setSTMZIP(tmp);
                             break;
                         case 6:
-                            m8101.setSTMSHT(tmp);
+                            m8101.setSTMFMT(tmp);
                             break;
                         case 7:
-                            m8101.setSTMDEP(tmp);
+                            m8101.setSTMSHT(tmp);
                             break;
                         case 8:
-                            m8101.setSTMCYC(tmp);
+                            m8101.setSTMDEP(tmp);
                             break;
                         case 9:
-                            m8101.setSTMCDT(tmp);
+                            m8101.setSTMCYC(tmp);
                             break;
                         case 10:
-                            m8101.setACTTYP(tmp);
+                            m8101.setSTMCDT(tmp);
                             break;
                         case 11:
-                            m8101.setINTFLG(tmp);
+                            m8101.setACTTYP(tmp);
                             break;
                         case 12:
-                            m8101.setINTCYC(tmp);
+                            m8101.setINTFLG(tmp);
                             break;
                         case 13:
-                            m8101.setINTTRA(tmp);
+                            m8101.setINTCYC(tmp);
                             break;
                         case 14:
-                            m8101.setCQEFLG(tmp);
+                            m8101.setINTTRA(tmp);
                             break;
                         case 15:
-                            m8101.setBALLIM(tmp);
+                            m8101.setCQEFLG(tmp);
                             break;
                         case 16:
-                            m8101.setOVELIM(tmp);
+                            m8101.setBALLIM(tmp);
                             break;
                         case 17:
-                            m8101.setOVEEXP(tmp);
+                            m8101.setOVELIM(tmp);
                             break;
                         case 18:
-                            m8101.setDINRAT(tmp);
+                            m8101.setOVEEXP(tmp);
                             break;
                         case 19:
-                            m8101.setDRATSF(tmp);
+                            m8101.setDINRAT(tmp);
                             break;
                         case 20:
-                            m8101.setCRATSF(tmp);
+                            m8101.setDRATSF(tmp);
                             break;
                         case 21:
-                            m8101.setLEGCYC(tmp);
+                            m8101.setCRATSF(tmp);
                             break;
                         case 22:
-                            m8101.setLEGCDT(tmp);
+                            m8101.setLEGCYC(tmp);
                             break;
                         case 23:
-                            m8101.setLEGFMT(tmp);
+                            m8101.setLEGCDT(tmp);
                             break;
                         case 24:
-                            m8101.setLEGADD(tmp);
+                            m8101.setLEGFMT(tmp);
                             break;
                         case 25:
-                            m8101.setLEGSHT(tmp);
+                            m8101.setLEGADD(tmp);
                             break;
                         case 26:
+                            m8101.setLEGSHT(tmp);
+                            break;
+                        case 27:
                             m8101.setLEGDEP(tmp);
                             break;
                         default:
@@ -217,6 +220,10 @@ public class ClientActBatAction implements Serializable {
 
     /**
      * 读取Office 2007 excel
+     *
+     * 原poi不可以读取2007
+     * 所以需要额外的dom4j-1.6.1.jar  poi-ooxml-schemas-3.7-20101029.jar
+     * xmlbeans-2.3.0.jar三个jar包
      */
     public void read2007Excel(UploadedFile file) throws IOException {
         t101s = new ArrayList<T101>();
@@ -251,75 +258,78 @@ public class ClientActBatAction implements Serializable {
                             m8101.setCINRAT(tmp);
                             break;
                         case 3:
-                            m8101.setSTMADD(tmp);
+                            m8101.setLEGZIP(tmp);
                             break;
                         case 4:
-                            m8101.setSTMZIP(tmp);
+                            m8101.setSTMADD(tmp);
                             break;
                         case 5:
-                            m8101.setSTMFMT(tmp);
+                            m8101.setSTMZIP(tmp);
                             break;
                         case 6:
-                            m8101.setSTMSHT(tmp);
+                            m8101.setSTMFMT(tmp);
                             break;
                         case 7:
-                            m8101.setSTMDEP(tmp);
+                            m8101.setSTMSHT(tmp);
                             break;
                         case 8:
-                            m8101.setSTMCYC(tmp);
+                            m8101.setSTMDEP(tmp);
                             break;
                         case 9:
-                            m8101.setSTMCDT(tmp);
+                            m8101.setSTMCYC(tmp);
                             break;
                         case 10:
-                            m8101.setACTTYP(tmp);
+                            m8101.setSTMCDT(tmp);
                             break;
                         case 11:
-                            m8101.setINTFLG(tmp);
+                            m8101.setACTTYP(tmp);
                             break;
                         case 12:
-                            m8101.setINTCYC(tmp);
+                            m8101.setINTFLG(tmp);
                             break;
                         case 13:
-                            m8101.setINTTRA(tmp);
+                            m8101.setINTCYC(tmp);
                             break;
                         case 14:
-                            m8101.setCQEFLG(tmp);
+                            m8101.setINTTRA(tmp);
                             break;
                         case 15:
-                            m8101.setBALLIM(tmp);
+                            m8101.setCQEFLG(tmp);
                             break;
                         case 16:
-                            m8101.setOVELIM(tmp);
+                            m8101.setBALLIM(tmp);
                             break;
                         case 17:
-                            m8101.setOVEEXP(tmp);
+                            m8101.setOVELIM(tmp);
                             break;
                         case 18:
-                            m8101.setDINRAT(tmp);
+                            m8101.setOVEEXP(tmp);
                             break;
                         case 19:
-                            m8101.setDRATSF(tmp);
+                            m8101.setDINRAT(tmp);
                             break;
                         case 20:
-                            m8101.setCRATSF(tmp);
+                            m8101.setDRATSF(tmp);
                             break;
                         case 21:
-                            m8101.setLEGCYC(tmp);
+                            m8101.setCRATSF(tmp);
                             break;
                         case 22:
-                            m8101.setLEGCDT(tmp);
+                            m8101.setLEGCYC(tmp);
                             break;
                         case 23:
-                            m8101.setLEGFMT(tmp);
+                            m8101.setLEGCDT(tmp);
                             break;
                         case 24:
-                            m8101.setLEGADD(tmp);
+                            m8101.setLEGFMT(tmp);
                             break;
                         case 25:
-                            m8101.setLEGSHT(tmp);
+                            m8101.setLEGADD(tmp);
                             break;
                         case 26:
+                            m8101.setLEGSHT(tmp);
+                            break;
+                        case 27:
                             m8101.setLEGDEP(tmp);
                             break;
                         default:
