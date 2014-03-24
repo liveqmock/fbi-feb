@@ -76,7 +76,7 @@ public class CurrInvAction implements Serializable {
             clsdat = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getCLSDAT()));
             lintdt = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getLINTDT()));
             invPrintService.printCurrInv(" 活期存款清单",t114.getORGIDT(),t114.getACTNUM(),t114.getACTNAM(),
-                    t114.getAVABAL(),clsdat,t114.getLINTDT(),t114.getCRACCM1(),t114.getCRATSF1(),
+                    t114.getAVABAL(),clsdat,lintdt,t114.getCRACCM1(),t114.getCRATSF1(),
                     t114.getCACINT1(),t114.getCRACCM2(),t114.getCRATSF2(),t114.getCACINT2(),t114.getCRACCM3(),
                     t114.getCRATSF3(),t114.getCACINT3(),t114.getCACINT(),t114.getAMOUNT());
         } catch (Exception e) {
@@ -158,4 +158,19 @@ public class CurrInvAction implements Serializable {
         this.autpwd = autpwd;
     }
 
+    public String getLintdt() {
+        return lintdt;
+    }
+
+    public void setLintdt(String lintdt) {
+        this.lintdt = lintdt;
+    }
+
+    public String getClsdat() {
+        return clsdat;
+    }
+
+    public void setClsdat(String clsdat) {
+        this.clsdat = clsdat;
+    }
 }

@@ -84,10 +84,6 @@
                                              action="#{currInvAction.onPrintInv}"
                                               ajax="false"  update="msgs,panel">
                             </p:commandButton>
-                            <!--<p:commandButton style="width:110px;" value="清单打印" id="prt"
-                                             action="#{currInvAction.onPrintInv}"
-                                             ajax="false"  update="msgs,panel">
-                            </p:commandButton>-->
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
@@ -106,14 +102,7 @@
                         <h:outputText value="#{currInvAction.t114.ORGIDT}"/>
                         <h:outputLabel value="账号:"/>
                         <h:outputText value="#{currInvAction.t114.ACTNUM}"/>
-                        <h:outputLabel value="账户名称:"/>
-                        <h:outputText value="#{currInvAction.t114.ACTNAM}"/>
-                        <h:outputLabel value="即时有效余额:"/>
-                        <h:outputText value="#{currInvAction.t114.AVABAL}"/>
-                        <h:outputLabel value="关户日期:"/>
-                        <h:outputText value="#{currInvAction.t114.CLSDAT}"/>
-                        <h:outputLabel value="末次计息日期:"/>
-                        <h:outputText value="#{currInvAction.t114.LINTDT}"/>
+
                         <h:outputLabel value="积数1:"/>
                         <h:outputText value="#{currInvAction.t114.CRACCM1}"/>
 
@@ -133,6 +122,14 @@
                         <h:outputText value="#{currInvAction.t114.CRATSF3}"/>
                         <h:outputLabel value="利息3:"/>
                         <h:outputText value="#{currInvAction.t114.CACINT3}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{currInvAction.t114.ACTNAM}"/>
+                        <h:outputLabel value="即时有效余额:"/>
+                        <h:outputText value="#{currInvAction.t114.AVABAL}"/>
+                        <h:outputLabel value="关户日期:"/>
+                        <h:outputText value="#{currInvAction.t114.CLSDAT}"/>
+                        <h:outputLabel value="末次计息日期:"/>
+                        <h:outputText value="#{currInvAction.t114.LINTDT}"/>
                         <h:outputLabel value="总利息:"/>
                         <h:outputText value="#{currInvAction.t114.CACINT}"/>
                         <h:outputLabel value="本息合计:"/>
