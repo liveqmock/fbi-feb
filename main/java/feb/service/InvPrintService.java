@@ -43,7 +43,7 @@ public class InvPrintService {
 
         String row3 = StringPad.pad4ChineseToByteLength(true, "帐户名:", 15, " ") + actnam;
 
-        String row4 = StringPad.pad4ChineseToByteLength(true, "即时有效余额: ", 16, " ") +
+        String row4 = StringPad.pad4ChineseToByteLength(true, "有效余额: ", 16, " ") +
                 StringPad.pad4ChineseToByteLength(true, avabal, 18, " ");
 
         String row5 = StringPad.pad4ChineseToByteLength(true, " 关户日期: ", 16, " ") + clsdat +

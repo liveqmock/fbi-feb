@@ -57,6 +57,7 @@ public class ClientActBatAction implements Serializable {
     private UploadedFile file;  //客户文件
     private List<M8101> m8101errs;//批量创建账户失败集合
     private List<T101> t101s;//批量创建账户信息成功集合
+    //private List<T101> selectedActs = new ArrayList<T101>();//用于批量打印时选择打印条数
 
     @PostConstruct
     public void init() {
@@ -458,4 +459,5 @@ public class ClientActBatAction implements Serializable {
     public void setActnum(String actnum) {
         this.actnum = actnum;
     }
+
 }
