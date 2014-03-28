@@ -35,8 +35,9 @@
                          paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                          emptyMessage="数据记录为空...">
                 <f:facet name="header">
-                    成功插入信息
+                    导入成功条数
                 </f:facet>
+                <!--<p:column selectionMode="multiple" style="width:2%"/>-->
                 <p:column headerText="部门号" style="text-align:center">
                     <h:outputText value="#{record.ORGIDT}"/>
                 </p:column>
@@ -55,13 +56,12 @@
                 <p:column headerText="操作员" style="text-align:center">
                     <h:outputText value="#{record.AMDTLR}"/>
                 </p:column>
-                <!--<p:column headerText="操作" style="text-align:center">
-                    <p:commandLink value="打印" immediate="true" ajax="false"
-                                   action="#{clientActBatAction.onPrintOpenAct()}"
-                                   style="color: blue">
-                        <f:param value="#{record.ACTNUM}" name="actnum"/>
-                    </p:commandLink>
-                </p:column>-->
+                <f:facet name="footer">
+                    <h:commandLink>
+                        <h:outputText value="[导出数据]"/>
+                        <p:dataExporter type="xls" target="dtsuccess" fileName="actInfos"/>
+                    </h:commandLink>
+                </f:facet>
             </p:dataTable>
             <br/>
             <p:separator/>
@@ -73,7 +73,7 @@
                          emptyMessage="数据记录为空...">
 
                 <f:facet name="header">
-                    插入失败信息
+                    导入失败条数
                 </f:facet>
                 <p:column headerText="账号" style="text-align:center">
                     <h:outputText value="#{errRecord.ACTNUM}"/>

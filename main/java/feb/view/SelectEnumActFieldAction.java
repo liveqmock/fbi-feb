@@ -31,9 +31,11 @@ public class SelectEnumActFieldAction implements Serializable {
     private List<SelectItem> ctfIntcycItems;      // 计息周期
     private List<SelectItem> ctfLegzipItems;      // 账户用途
     private List<SelectItem> ctfCqeflgItems;      // 支票/存折标志
-
-    /*private List<SelectItem> apctypItems;         //核算码种类
-    private List<SelectItem> cusPastypItems;      //test*/
+    /**
+     * wang
+     */
+    private List<SelectItem> ctfInterActtypItems;         //内部账户类型
+    private List<SelectItem> cusInterLegfmtItems;         //内部分户账帐页形式
 
     @PostConstruct
     public void init() {
@@ -47,8 +49,8 @@ public class SelectEnumActFieldAction implements Serializable {
         ctfLegzipItems = skylineService.getEnuSelectItemList("CTF-LEGZIP", true, false);
         ctfCqeflgItems = skylineService.getEnuSelectItemList("CTF-CQEFLG", true, false);
 
-        //cusPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
-        //apctypItems = skylineService.getEnuSelectItemList("CTF-APCTYP", true, false);
+        ctfInterActtypItems = skylineService.getEnuSelectItemList("CTF-INTERACTTYP", true, false);
+        cusInterLegfmtItems = skylineService.getEnuSelectItemList("CTF-INTERLEGFMT", true, false);
     }
 
 
@@ -133,4 +135,19 @@ public class SelectEnumActFieldAction implements Serializable {
         this.ctfCqeflgItems = ctfCqeflgItems;
     }
 
+    public List<SelectItem> getCtfInterActtypItems() {
+        return ctfInterActtypItems;
+    }
+
+    public void setCtfInterActtypItems(List<SelectItem> ctfInterActtypItems) {
+        this.ctfInterActtypItems = ctfInterActtypItems;
+    }
+
+    public List<SelectItem> getCusInterLegfmtItems() {
+        return cusInterLegfmtItems;
+    }
+
+    public void setCusInterLegfmtItems(List<SelectItem> cusInterLegfmtItems) {
+        this.cusInterLegfmtItems = cusInterLegfmtItems;
+    }
 }
