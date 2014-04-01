@@ -10,7 +10,7 @@ function ValidateLength() {
 		document.winform.username.select();
 		return false;
 	}
-	if(!(trimStr(document.winform.password.value).length >= 1)) {	
+	if(!(trimStr(document.winform.password.value).length >= 1)&&trimStr(document.winform.password.value).replace()) {
 		window.alert("必须输入用户密码！");
 		document.winform.password.focus();
 		document.winform.password.select();

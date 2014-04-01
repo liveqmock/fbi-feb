@@ -32,6 +32,11 @@
                 document.all.newpwd.focus();
                 return;
             }
+            if (/^(\d)\1\1\1\1\1\1\1$/.test(document.all.newpwd.value)) {
+                alert("ÃÜÂëÌ«¼òµ¥£¡");
+                document.all.newpwd.focus();
+                return;
+            }
             if (document.all.newpwd.value == document.all.checkpwd.value) {
 
                 var xmlDoc = createDoc();
