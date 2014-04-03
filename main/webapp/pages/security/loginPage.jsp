@@ -72,7 +72,7 @@
                                            onKeyPress="return focusNext(this.form, 'DropExpiration', event)">
                                 </LI>
                             </UL>
-                            <%--<UL>
+                            <UL>
                                 <LI class="user_main_text">Cookie：</LI>
                                 <LI class="user_main_input">
                                     <SELECT id="DropExpiration" name="DropExpiration" onKeyPress="return submitViaEnter(event)">
@@ -80,7 +80,7 @@
                                         <OPTION value="Year">保存一年</OPTION>
                                         <OPTION value="None">不保存</OPTION>
                                     </SELECT></LI>
-                            </UL>--%>
+                            </UL>
                         </DIV>
                     </LI>
                     <LI class="user_main_r">

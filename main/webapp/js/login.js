@@ -19,7 +19,7 @@ function ValidateLength() {
 	
 	return true;
 }
-/*function submitViaEnter(evt,Location) {
+function submitViaEnter(evt,Location) {
 	evt = (evt) ? evt : event;
 	var target = (evt.target) ? evt.target : evt.srcElement;
 	var form = target.form;
@@ -32,7 +32,7 @@ function ValidateLength() {
 	   }
 	}
 	return true;
-}*/
+}
 function focusNext(form, elemName, evt) {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode :
