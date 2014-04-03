@@ -14,6 +14,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.advance.utils.MessagePropertyManager;
+import pub.platform.advance.utils.PropertyManager;
 import pub.platform.form.config.SystemAttributeNames;
 import pub.platform.security.OperatorManager;
 import pub.tools.BeanHelper;
@@ -300,15 +302,15 @@ public class ClientAction implements Serializable {
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue().trim();
-                            if ("".equals(tmp)){
+                            if ("".equals(tmp)) {
                                 continue;
                             }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
-                            if ("0".equals(tmp)){
+                            if ("0".equals(tmp)) {
                                 continue;
                             }
-                        }else if (cell.getCellType()==3){
+                        } else if (cell.getCellType() == 3) {
                             continue;
                         }
                     } else continue;
@@ -419,7 +421,8 @@ public class ClientAction implements Serializable {
                         m8001Tmp.setERROCDE("ÒÑ´æÔÚ£¡");
                         m8001errs.add(m8001Tmp);
                     } else {
-                        m8001Tmp.setERROCDE(formcode);
+                        String s = MessagePropertyManager.getProperty(formcode);
+                        m8001Tmp.setERROCDE(formcode+s);
                         m8001errs.add(m8001Tmp);
                     }
                 }

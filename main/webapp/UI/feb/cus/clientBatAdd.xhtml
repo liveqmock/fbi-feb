@@ -29,6 +29,14 @@
             </p:panel>
             <br/>
             <p:separator/>
+            <p:ajaxStatus style="height:18px;text-align:center">
+                <f:facet name="start">
+                    <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
             <p:dataTable id="dtsuccess" height="200"
                          value="#{clientAction.t001s}" var="record"
                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}

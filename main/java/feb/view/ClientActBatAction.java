@@ -17,6 +17,7 @@ import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
+import pub.platform.advance.utils.MessagePropertyManager;
 import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
@@ -369,8 +370,7 @@ public class ClientActBatAction implements Serializable {
                 t101s.add(t101);
             } else {
                 m8101errs.add(m8101);
-                m8101.setERROCDE(formcode);
-//                pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
+                m8101.setERROCDE(formcode+MessagePropertyManager.getProperty(formcode));
             }
         } catch (Exception e) {
             logger.error("8101ÕË»§¿ª»§Ê§°Ü", e);
