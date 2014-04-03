@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import pub.platform.MessageUtil;
+import pub.platform.advance.utils.MessagePropertyManager;
 import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
@@ -49,6 +50,7 @@ public class BatchImportAction implements Serializable {
     private T898 t898 = new T898();
     private List<T898.Bean> dataList = new ArrayList<>();
     private List<T898.Bean> allList = new ArrayList<>();
+    private List<M8401> errorList = new ArrayList<>();
     private UploadedFile file;
     private String vchset;
     private String tlrnum;
@@ -254,7 +256,9 @@ public class BatchImportAction implements Serializable {
                 //MessageUtil.addInfo("传票录入成功：");
                 onBatchQry();//查询一下totnum
             } else {
-                pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
+                errorList.add(m8401);
+                m8401.setERRINF(formcode + MessagePropertyManager.getProperty(formcode));
+                //pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
             logger.error("8401传票录入失败", e);
@@ -366,5 +370,13 @@ public class BatchImportAction implements Serializable {
 
     public void setFurinf(String furinf) {
         this.furinf = furinf;
+    }
+
+    public List<M8401> getErrorList() {
+        return errorList;
+    }
+
+    public void setErrorList(List<M8401> errorList) {
+        this.errorList = errorList;
     }
 }

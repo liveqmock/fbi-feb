@@ -37,6 +37,7 @@ public class M8401 extends MTia {
     private String CORAPC = "";     // 损益对应核算码
     private String REGNUM = "";     // 凭证编号
 
+    private String ERRINF = "";    //错误信息
     //===================================================
 
     public M8401() {
@@ -244,5 +245,13 @@ public class M8401 extends MTia {
 
     public void setREGNUM(String REGNUM) {
         this.REGNUM = REGNUM;
+    }
+
+    public String getERRINF() {
+        return ERRINF;
+    }
+
+    public void setERRINF(String ERRINF) {
+        this.ERRINF = ERRINF;
     }
 }

@@ -53,6 +53,33 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
+                <p:separator/>
+                <p:dataTable id="dterrors" height="200"
+                             value="#{batchImportAction.errorList}" var="errRecord"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <f:facet name="header">
+                        导入失败条数
+                    </f:facet>
+                    <p:column headerText="账号" style="text-align:center">
+                        <h:outputText value="#{errRecord.ACTNUM}"/>
+                    </p:column>
+                    <p:column headerText="账户名称" style="text-align:center">
+                        <h:outputText value="#{errRecord.TXNAMT}"/>
+                    </p:column>
+                    <p:column headerText="交易日期" style="text-align:center">
+                        <h:outputText value="#{errRecord.OPNDA2}"/>
+                    </p:column>
+                    <p:column headerText="冲账标志" style="text-align:center">
+                        <h:outputText value="#{errRecord.RVSLBL}"/>
+                    </p:column>
+                    <p:column headerText="错误信息" style="text-align:center">
+                        <h:outputText value="#{errRecord.ERRINF}"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </div>
     </ui:define>
