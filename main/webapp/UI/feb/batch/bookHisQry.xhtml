@@ -55,37 +55,38 @@
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="6" columnClasses="col-95,col-5">
                         <h:panelGrid columns="6" cellspacing="4"
-                                     columnClasses="col-label,col-input,col-label,col-input">
+                                     columnClasses="col-label2, col-input2 , col-label2, col-input2,
+                                     col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="客户号:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"  id="cusidt"
+                            <p:inputText style="width: 131px;" id="cusidt"
                                          value="#{acthstAction.cusidt}"/>
                             <h:outputLabel value="核算码:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.apcode}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.apcode}"/>
                             <h:outputLabel value="币别:" style="font-weight: bold"/>
                             <p:inputText style="width: 131px;"
-                                          value="#{acthstAction.curcde}" />
+                                         value="#{acthstAction.curcde}"/>
                             <h:outputLabel value="起始日期:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.eryda1}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.eryda1}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                             <h:outputLabel value="终止日期:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.eryda2}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.eryda2}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
                             <h:outputLabel value="最小金额:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.secamt}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.secamt}"/>
                             <h:outputLabel value="最大金额:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.ovelim}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.ovelim}"/>
                             <h:outputLabel value="柜员号:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.tlenum}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.tlenum}"/>
                             <h:outputLabel value="传票套号:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.vchset}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.vchset}"/>
                             <h:outputLabel value="借贷别:" style="font-weight: bold"/>
-                            <p:inputText  style="width: 131px;"
-                                          value="#{acthstAction.funcde}"/>
+                            <p:inputText style="width: 131px;"
+                                         value="#{acthstAction.funcde}"/>
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
@@ -95,7 +96,7 @@
                                              update="msgs,dt,btnex">
                             </p:commandButton>
                             <p:commandButton id="btnex" value="传票导出XLS" style="width:110px;" ajax="false"
-                                    disabled="#{!acthstAction.export}">
+                                             disabled="#{!acthstAction.export}">
                                 <p:dataExporter type="xls" target="dt" fileName="record"
                                                 postProcessor="#{acthstAction.exportExcel}"/>
                             </p:commandButton>
@@ -123,45 +124,45 @@
                              当前显示笔数：#{acthstAction.curcnt}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column sortBy="#{record.CUSIDT}" headerText="客户号"  style="text-align:center">
+                    <p:column sortBy="#{record.CUSIDT}" headerText="客户号" style="text-align:center">
                         <h:outputText value="#{record.CUSIDT}"/>
                     </p:column>
-                    <p:column sortBy="#{record.APCODE}" headerText="核算码"  style="text-align:center">
+                    <p:column sortBy="#{record.APCODE}" headerText="核算码" style="text-align:center">
                         <h:outputText value="#{record.APCODE}"/>
                     </p:column>
-                    <p:column headerText="币别"  style="text-align:center">
+                    <p:column headerText="币别" style="text-align:center">
                         <h:outputText value="#{record.CURCDE}"/>
                     </p:column>
-                    <p:column headerText="账户名称"  style="text-align:center">
+                    <p:column headerText="账户名称" style="text-align:center">
                         <h:outputText value="#{record.ACTNAM}"/>
                     </p:column>
-                    <p:column sortBy="#{record.ERYDAT}" headerText="交易日期"  style="text-align:center">
+                    <p:column sortBy="#{record.ERYDAT}" headerText="交易日期" style="text-align:center">
                         <h:outputText value="#{record.ERYDAT}"/>
                     </p:column>
-                    <p:column sortBy="#{record.TXNAMT}" headerText="金额"  style="text-align:center">
+                    <p:column sortBy="#{record.TXNAMT}" headerText="金额" style="text-align:center">
                         <h:outputText value="#{record.TXNAMT}">
-                        <f:convertNumber type="number" pattern="###,###,##0.00"/>
+                            <f:convertNumber type="number" pattern="###,###,##0.00"/>
                         </h:outputText>
                     </p:column>
-                    <p:column sortBy="#{record.TLRNUM}" headerText="柜员"  style="text-align:center">
+                    <p:column sortBy="#{record.TLRNUM}" headerText="柜员" style="text-align:center">
                         <h:outputText value="#{record.TLRNUM}"/>
                     </p:column>
-                    <p:column sortBy="#{record.VCHSET}" headerText="传票套号"  style="text-align:center">
+                    <p:column sortBy="#{record.VCHSET}" headerText="传票套号" style="text-align:center">
                         <h:outputText value="#{record.VCHSET}"/>
                     </p:column>
-                    <p:column sortBy="#{record.SETSEQ}" headerText="套内序号"  style="text-align:center">
+                    <p:column sortBy="#{record.SETSEQ}" headerText="套内序号" style="text-align:center">
                         <h:outputText value="#{record.SETSEQ}"/>
                     </p:column>
-                    <p:column headerText="摘要"  style="text-align:center">
+                    <p:column headerText="摘要" style="text-align:center">
                         <h:outputText value="#{record.FURINF}"/>
                     </p:column>
-                    <p:column sortBy="#{record.ERYTIM}" headerText="交易时间"  style="text-align:center">
+                    <p:column sortBy="#{record.ERYTIM}" headerText="交易时间" style="text-align:center">
                         <h:outputText value="#{record.ERYTIM}"/>
                     </p:column>
-                    <p:column headerText="统计码"  style="text-align:center">
+                    <p:column headerText="统计码" style="text-align:center">
                         <h:outputText value="#{record.ANACDE}"/>
                     </p:column>
-                    <p:column sortBy="#{record.VALDAT}" headerText="起息日期"  style="text-align:center">
+                    <p:column sortBy="#{record.VALDAT}" headerText="起息日期" style="text-align:center">
                         <h:outputText value="#{record.VALDAT}"/>
                     </p:column>
 
