@@ -20,11 +20,10 @@
             <p:messages id="msgs" showDetail="true" showSummary="true"/>
             <p:panel>
                 <h:panelGrid id="dataPanel" cellpadding="0" cellspacing="5" columns="3">
-                    <h:outputLabel value="客户信息文件:" styleClass="label"/>
-                    <p:fileUpload value="#{clientAction.custFile}" mode="simple"/>
+                    <p:fileUpload value="#{clientAction.custFile}" mode="simple" style="width: 300px"/>
                     <p:commandButton value="批量导入" ajax="false"
                                      actionListener="#{clientAction.batImport}"
-                                     update="msgs,dtsucess,dterrors"/>
+                                     update="msgs,dtsuccess,dterrors"/>
                 </h:panelGrid>
             </p:panel>
             <br/>
