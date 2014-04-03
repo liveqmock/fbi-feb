@@ -27,6 +27,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +56,6 @@ public class BatchImportAction implements Serializable {
     private String vchset;
     private String tlrnum;
     private String totnum;
-    private String actnum;//ACTNUM账号
-    private String txnamt;//TXNAMT金额
-    private String anacde;//ANACDE统计码
-    private String rvslbl;//RVSLBL冲正标志
-    private String valdat;//VALDAT起息日
-    private String furinf;//FURINF摘要
 
     @PostConstruct
     public void init() {
@@ -144,36 +139,50 @@ public class BatchImportAction implements Serializable {
             HSSFWorkbook wb = new HSSFWorkbook(fs);
             HSSFSheet sheet = wb.getSheetAt(0);
             int rowLen = sheet.getLastRowNum();
-            HSSFCell cell0 ;              //账号
-            HSSFCell cell1 ;              //金额
-            HSSFCell cell2 ;              //摘要
-            HSSFCell cell3 ;              //冲账标志
-            HSSFCell cell4 ;              //充不日期
-            HSSFCell cell5 ;              //统计码
-
-            //数据插入
+            HSSFCell cell;
+            String tmp = "";
             for (int i = 1; i <= rowLen; i++) {
-                cell0 = sheet.getRow(i).getCell(0);// 账号
-                //actnum =  cell0.getNumericCellValue() + "";
-                actnum = cell0.getStringCellValue().trim();
-
-                cell1 = sheet.getRow(i).getCell(1);//金额
-                txnamt = ((int) cell1.getNumericCellValue()) + "";
-
-                cell2 = sheet.getRow(i).getCell(2);//记息日
-                anacde = ((int) cell2.getNumericCellValue()) + "";
-
-                cell3 = sheet.getRow(i).getCell(3);//冲正标志
-                rvslbl = ((int) cell3.getNumericCellValue()) + "";
-
-                cell4 = sheet.getRow(i).getCell(4);//摘要
-                valdat = ((int) cell4.getNumericCellValue()) + "";
-
-                cell5 = sheet.getRow(i).getCell(5);//统计吗
-                if (cell5!=null){
-                    furinf = ((int) cell5.getNumericCellValue()) + "";
-                }else {
-
+                m8401 = new M8401();
+                int cellNum = sheet.getRow(i).getLastCellNum();
+                for (int j = 0; j < cellNum; j++) {
+                    cell = sheet.getRow(i).getCell(j);
+                    if (cell != null) {
+                        if (cell.getCellType() == 1) {
+                            tmp = cell.getStringCellValue().trim();
+                            if ("".equals(tmp)){
+                                continue;
+                            }
+                        } else if (cell.getCellType() == 0) {
+                            tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                            if ("0".equals(tmp)){
+                                continue;
+                            }
+                        }else if (cell.getCellType()==3){
+                            continue;
+                        }
+                    } else continue;
+                    switch (j) {
+                        case 0:
+                            m8401.setACTNUM(tmp);
+                            break;
+                        case 1:
+                            m8401.setTXNAMT(tmp);
+                            break;
+                        case 2:
+                            m8401.setFURINF(tmp);
+                            break;
+                        case 3:
+                            m8401.setRVSLBL(tmp);
+                            break;
+                        case 4:
+                            m8401.setOPNDA2(tmp);
+                            break;
+                        case 5:
+                            m8401.setANACDE(tmp);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 onCreateNewRecord();
             }
@@ -193,38 +202,50 @@ public class BatchImportAction implements Serializable {
             XSSFWorkbook wb = new XSSFWorkbook(input);
             XSSFSheet sheet = wb.getSheetAt(0);
             int rowLen = sheet.getLastRowNum();
-            XSSFCell cell0 = null;              //账号
-            XSSFCell cell1 = null;              //金额
-            XSSFCell cell2 = null;              //摘要
-            XSSFCell cell3 = null;              //冲账标志
-            XSSFCell cell4 = null;              //充不日期
-            XSSFCell cell5 = null;              //统计码
-
-            //数据插入
-            for (int i = 1; i <= rowLen; i++) {    //可以有表头从第二行开始读，如果是0，就从第一行开始读
-                cell0 = sheet.getRow(i).getCell(0);// 账号
-                //actnum =  cell0.getNumericCellValue() + "";
-                actnum = cell0.getStringCellValue().trim();
-
-                cell1 = sheet.getRow(i).getCell(1);//金额
-                txnamt = ((int) cell1.getNumericCellValue()) + "";
-
-                cell2 = sheet.getRow(i).getCell(2);//统计码
-                if (cell2!=null){
-                    anacde = ((int) cell2.getNumericCellValue()) + "";
-                }else{
-                    anacde = "";
-                }
-
-                cell3 = sheet.getRow(i).getCell(3);//冲正标志
-                rvslbl = ((int) cell3.getNumericCellValue()) + "";
-
-                cell4 = sheet.getRow(i).getCell(4);//日期
-                valdat = ((int) cell4.getNumericCellValue()) + "";
-
-                cell5 = sheet.getRow(i).getCell(5);//摘要
-                if (cell5!=null){
-                    furinf = ((int) cell5.getNumericCellValue()) + "";
+            XSSFCell cell;
+            String tmp = "";
+            for (int i = 1; i <= rowLen; i++) {
+                m8401 = new M8401();
+                int cellNum = sheet.getRow(i).getLastCellNum();
+                for (int j = 0; j < cellNum; j++) {
+                    cell = sheet.getRow(i).getCell(j);
+                    if (cell != null) {
+                        if (cell.getCellType() == 1) {
+                            tmp = cell.getStringCellValue().trim();
+                            if ("".equals(tmp)){
+                                continue;
+                            }
+                        } else if (cell.getCellType() == 0) {
+                            tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
+                            if ("0".equals(tmp)){
+                                continue;
+                            }
+                        }else if (cell.getCellType()==3){
+                            continue;
+                        }
+                    } else continue;
+                    switch (j) {
+                        case 0:
+                            m8401.setACTNUM(tmp);
+                            break;
+                        case 1:
+                            m8401.setTXNAMT(tmp);
+                            break;
+                        case 2:
+                            m8401.setFURINF(tmp);
+                            break;
+                        case 3:
+                            m8401.setRVSLBL(tmp);
+                            break;
+                        case 4:
+                            m8401.setOPNDA2(tmp);
+                            break;
+                        case 5:
+                            m8401.setANACDE(tmp);
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 onCreateNewRecord();
             }
@@ -242,12 +263,6 @@ public class BatchImportAction implements Serializable {
         try {
             m8401.setSETSEQ(str);
             m8401.setVCHSET(vchset);
-            m8401.setACTNUM(actnum);
-            m8401.setTXNAMT(txnamt);
-            m8401.setRVSLBL(rvslbl);
-            m8401.setOPNDA2(valdat);
-            m8401.setANACDE(anacde);
-            m8401.setFURINF(furinf);
             m8401.setTLRNUM(tlrnum);
 
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
@@ -258,7 +273,6 @@ public class BatchImportAction implements Serializable {
             } else {
                 errorList.add(m8401);
                 m8401.setERRINF(formcode + MessagePropertyManager.getProperty(formcode));
-                //pub.tools.MessageUtil.addErrorWithClientID("msgs", formcode);
             }
         } catch (Exception e) {
             logger.error("8401传票录入失败", e);
@@ -322,54 +336,6 @@ public class BatchImportAction implements Serializable {
 
     public void setAllList(List<T898.Bean> allList) {
         this.allList = allList;
-    }
-
-    public String getActnum() {
-        return actnum;
-    }
-
-    public void setActnum(String actnum) {
-        this.actnum = actnum;
-    }
-
-    public String getTxnamt() {
-        return txnamt;
-    }
-
-    public void setTxnamt(String txnamt) {
-        this.txnamt = txnamt;
-    }
-
-    public String getRvslbl() {
-        return rvslbl;
-    }
-
-    public void setRvslbl(String rvslbl) {
-        this.rvslbl = rvslbl;
-    }
-
-    public String getValdat() {
-        return valdat;
-    }
-
-    public void setValdat(String valdat) {
-        this.valdat = valdat;
-    }
-
-    public String getAnacde() {
-        return anacde;
-    }
-
-    public void setAnacde(String anacde) {
-        this.anacde = anacde;
-    }
-
-    public String getFurinf() {
-        return furinf;
-    }
-
-    public void setFurinf(String furinf) {
-        this.furinf = furinf;
     }
 
     public List<M8401> getErrorList() {
