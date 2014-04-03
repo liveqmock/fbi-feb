@@ -10,7 +10,7 @@ function ValidateLength() {
 		document.winform.username.select();
 		return false;
 	}
-	if(!(trimStr(document.winform.password.value).length >= 1)) {	
+	if(!(trimStr(document.winform.password.value).length >= 1)&&trimStr(document.winform.password.value).replace()) {
 		window.alert("必须输入用户密码！");
 		document.winform.password.focus();
 		document.winform.password.select();
@@ -19,7 +19,7 @@ function ValidateLength() {
 	
 	return true;
 }
-function submitViaEnter(evt,Location) {
+/*function submitViaEnter(evt,Location) {
 	evt = (evt) ? evt : event;
 	var target = (evt.target) ? evt.target : evt.srcElement;
 	var form = target.form;
@@ -32,7 +32,7 @@ function submitViaEnter(evt,Location) {
 	   }
 	}
 	return true;
-}
+}*/
 function focusNext(form, elemName, evt) {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode :
