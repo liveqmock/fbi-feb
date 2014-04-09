@@ -56,7 +56,7 @@
                             <h:outputLabel value="*账号:"/>
                             <p:inputText id="actnum" value="#{clientActAction.clientAct.ACTNUM}" required="true"
                                          requiredMessage="必须输入14位账号" maxlength="14">
-                                <p:ajax event="blur" update="msgs,actnam,stmadd,stmzip"
+                                <p:ajax event="blur" update="msgs,actnam,stmadd,stmzip,inttra"
                                         listener="#{clientActAction.onQryCustom}"/>
                             </p:inputText>
                             <h:outputLabel value="*账户名称:"/>
@@ -72,7 +72,7 @@
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="转息账户:"/>
-                            <p:inputText value="#{clientActAction.clientAct.INTTRA}"/>
+                            <p:inputText id="inttra" value="#{clientActAction.clientAct.INTTRA}"/>
                             <h:outputLabel value="支票/存折标志:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.CQEFLG}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfCqeflgItems}"/>
