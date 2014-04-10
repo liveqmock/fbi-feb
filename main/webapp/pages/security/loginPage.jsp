@@ -68,7 +68,7 @@
                                 <LI class="user_main_text">ÃÜ Âë£º</LI>
                                 <LI class="user_main_input">
                                     <INPUT class="TxtPasswordCssClass" id="password" type="password"
-                                           name="password"
+                                           name="password" maxlength="8"
                                            onKeyPress="return focusNext(this.form, 'DropExpiration', event)">
                                 </LI>
                             </UL>
