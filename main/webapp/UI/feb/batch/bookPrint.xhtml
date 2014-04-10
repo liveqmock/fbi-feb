@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:cusidt') {
+                        //document.forms['inputform']['inputform:query'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:focus for="vchset"/>
+                <p:messages id="msgs" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="2" cellspacing="5"
+                                     columnClasses="col-label,col-input" >
+                            <h:outputLabel value="传票套号:" style="font-weight: bold"/>
+                            <p:inputText id="vchset" size="25" value="#{rePrintVchAction.vchset}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0">
+                            <p:commandButton style="width:110px;" value="传票查询"
+                                             action="#{rePrintVchAction.onVchQry}" ajax="true"
+                                             update="msgs,dt,btnex">
+                            </p:commandButton>
+                            <p:commandButton id="btnex" value="打印传票"
+                                             style="width:110px;" ajax="false"
+                                             disabled="#{!rePrintVchAction.print}"
+                                             action="#{rePrintVchAction.onPrint()}">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{rePrintVchAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="序号" style="text-align:center" sortBy="#{record.SETSEQ}">
+                        <h:outputText id="setseq" value="#{record.SETSEQ}"/>
+                    </p:column>
+                    <p:column headerText="帐号" style="text-align:center" sortBy="#{record.ACTNUM}">
+                        <h:outputText value="#{record.ACTNUM}"/>
+                    </p:column>
+                    <p:column headerText="冲正标志" style="text-align:center" sortBy="#{record.RVSLBL}">
+                        <h:outputText value="#{record.RVSLBL}"/>
+                    </p:column>
+                    <p:column headerText="交易金额" style="text-align:right" sortBy="#{record.TMPAMT}">
+                        <h:outputText value="#{record.TMPAMT}">
+                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="摘要" style="text-align:center">
+                        <h:outputText value="#{record.FURINF}"/>
+                    </p:column>
+                    <p:column headerText="冲补/起息日" style="text-align:center">
+                        <h:outputText value="#{record.VALDAT}">
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="统计码" style="text-align:center">
+                        <h:outputText value="#{record.ANACDE}"/>
+                    </p:column>
+                    <p:column headerText="附件" style="text-align:center">
+                        <h:outputText value="#{record.VCHATT}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
