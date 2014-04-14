@@ -87,8 +87,6 @@
                 <p:panel id="dataPanel">
                     <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                        <h:outputLabel value="*客户号:"/>
-                        <h:inputText value="#{clientAction.m8004.CUSIDT}" readonly="true"/>
                         <h:outputLabel value="*客户名称:"/>
                         <h:inputText value="#{clientAction.m8004.CUSNAM}"/>
                         <h:outputLabel value="客户简称:"/>
@@ -171,15 +169,10 @@
                         <h:inputText value="#{clientAction.m8004.SUPDEP}"/>
                         <h:outputLabel value="INTERNET号:"/>
                         <h:inputText value="#{clientAction.m8004.INTNET}"/>
-
                         <h:outputLabel value="联行代号:"/>
                         <h:inputText value="#{clientAction.m8004.IBKCDE}"/>
                         <h:outputLabel value="行号:"/>
                         <h:inputText value="#{clientAction.m8004.SBKNUM}"/>
-                        <h:outputLabel value="功能参数:"/>
-                        <h:inputText value="#{clientAction.m8004.FUNCDE}"/>
-                        <h:outputLabel value="系统标识:"/>
-                        <h:inputText value="#{clientAction.m8004.SYSIDT}"/>
                     </h:panelGrid>
                 </p:panel>
             </h:form>

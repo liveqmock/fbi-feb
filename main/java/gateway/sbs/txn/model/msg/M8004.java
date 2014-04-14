@@ -9,7 +9,49 @@ package gateway.sbs.txn.model.msg;
  */
 public class M8004 extends MTia{
 
-    private String BATSEQ = "111111";        //平台顺序号
+    private String BATSEQ = "111111" ;  //  平台顺序号
+    private String ORGIDT = "010" ;  //  机构号
+    private String DEPNUM = "60" ;  //  部门号
+    private String CUSIDT = "";
+    private String CUSNAM = "" ;  //  客户名称
+    private String ENGNAM = "" ;  //  客户英文名
+    private String SHTNAM = "" ;  //  客户简称
+    private String CUSIDX = "" ;  //  简名索引
+    private String RSDCTR = "CN" ;  //  注册国家码
+    private String OPRCTR = "" ;  //  所在国家码
+    private String CORADD = "" ;  //  地址
+    private String ZIPCDE = "" ;  //  邮编
+    private String TELNUM = "" ;  //  电话
+    private String TELEXN = "" ;  //  电传
+    private String PASTYP = "" ;  //  证件类别
+    private String PASSNO = "" ;  //  证件号
+    private String TSTRNK = "" ;  //  信用等级
+    private String CRDLIM = "" ;  //  信用额度
+    private String RSKGRP = "" ;  //  风险组别
+    private String RELCUS = "" ;  //  相关客户
+    private String CUSPWD = "" ;  //  密码
+    private String CUSKID = "" ;  //  客户类型码
+    private String LEGBDY = "" ;  //  部门号
+    private String ACTBDY = "" ;  //  法人代表姓名
+    private String LOCCAP = "" ;  //  财务负责人姓名
+    private String REGCAP = "" ;  //  注册外币资本
+    private String REGCCY = "" ;  //  注册外币资本
+    private String REGADD = "" ;  //  第二货币
+    private String REGDAT = "" ;  //  地址
+    private String EFFDUR = "" ;  //  注册日期
+    private String CTXNUM = "" ;  //  有效期(月)
+    private String LTXNUM = "" ;  //          国税号码
+    private String BOCGRP = "" ;  //          地税号码
+    private String SUPDEP = "" ;  //          客户分类码
+    private String BUSCDE = "" ;  //          主管部门
+    private String ENTTYP = "" ;  //          行业代码
+    private String CUSTY1 = "" ;  //          企业性质
+    private String CUSTY2 = "" ;  //          有无进口权
+    private String INTNET = "" ;  //  客户类别(控制开户)
+    private String ENTCDE = "" ;  //  INTERNET/SWIFT号
+    private String IBKCDE = "" ;  //  组织机构代码
+    private String SBKNUM = "" ;  //  联行代号
+   /* private String BATSEQ = "111111";        //平台顺序号
     private String ORGIDT = "010";        //机构号
     private String DEPNUM = "60";        //部门号
     private String CUSIDT = "";
@@ -53,7 +95,7 @@ public class M8004 extends MTia{
     private String IBKCDE = "";        // 联行代号
     private String SBKNUM = "";        // 行号
     private String FUNCDE = "";        // 功能参数
-    private String SYSIDT = "";        // 系统标识
+    private String SYSIDT = "";        // 系统标识*/
 
     //===========================================================
     public String getCUSIDT() {
@@ -63,6 +105,7 @@ public class M8004 extends MTia{
     public void setCUSIDT(String CUSIDT) {
         this.CUSIDT = CUSIDT;
     }
+
 
     public String getBATSEQ() {
         return BATSEQ;
@@ -232,14 +275,6 @@ public class M8004 extends MTia{
         this.CUSKID = CUSKID;
     }
 
-    public String getDEPNU3() {
-        return DEPNU3;
-    }
-
-    public void setDEPNU3(String DEPNU3) {
-        this.DEPNU3 = DEPNU3;
-    }
-
     public String getLEGBDY() {
         return LEGBDY;
     }
@@ -400,7 +435,7 @@ public class M8004 extends MTia{
         this.SBKNUM = SBKNUM;
     }
 
-    public String getFUNCDE() {
+   /* public String getFUNCDE() {
         return FUNCDE;
     }
 
@@ -414,5 +449,5 @@ public class M8004 extends MTia{
 
     public void setSYSIDT(String SYSIDT) {
         this.SYSIDT = SYSIDT;
-    }
+    }*/
 }
