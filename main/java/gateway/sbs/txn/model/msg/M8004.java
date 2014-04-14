@@ -12,7 +12,7 @@ public class M8004 extends MTia{
     private String BATSEQ = "111111" ;  //  平台顺序号
     private String ORGIDT = "010" ;  //  机构号
     private String DEPNUM = "60" ;  //  部门号
-    private String CUSIDT = "";
+    private String CUSIDT = "" ;
     private String CUSNAM = "" ;  //  客户名称
     private String ENGNAM = "" ;  //  客户英文名
     private String SHTNAM = "" ;  //  客户简称
