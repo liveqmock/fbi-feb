@@ -28,7 +28,7 @@ public class Txn8822Action extends AbstractTxnAction {
     @Override
     protected List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
         M8822 m8822 = (M8822)tia;
-        logger.info("传票号：" + m8822.getVCHSET());
+        //logger.info("传票号：" + m8822.getVCHSET());
         List<String> paramList = new ArrayList<>();
         paramList.add(m8822.getCUSIDT());
         paramList.add(m8822.getAPCODE());
@@ -44,7 +44,7 @@ public class Txn8822Action extends AbstractTxnAction {
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8822", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("传票号：" + m8822.getVCHSET() + " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("客户号：" + m8822.getCUSIDT() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

@@ -65,15 +65,18 @@ public class BookDayQryAction implements Serializable {
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if ("T851".equals(form.getFormHeader().getFormCode())) {
-                        T851 t851 = (T851) form.getFormBody();
-                        dataList.addAll(t851.getBeanList());
+                    if (!"T851".equals(form.getFormHeader().getFormCode())) {
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                        return null;
+                    } else if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t851 = (T851) form.getFormBody();
+                        dataList = t851.getBeanList();
                         totcnt = t851.getFormBodyHeader().getTOTCNT();
                         curcnt = t851.getFormBodyHeader().getCURCNT();
                         isExport = true;
-                    } else if ("W012".equals(form.getFormHeader().getFormCode())) {
+                    }  else if ("W012".equals(form.getFormHeader().getFormCode())) {
 
-                    } else {
+                    }else {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
