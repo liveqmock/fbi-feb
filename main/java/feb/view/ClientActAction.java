@@ -231,7 +231,7 @@ public class ClientActAction implements Serializable {
                 clientAct.setACTNAM(t004.getCUSNAM());
                 clientAct.setSTMADD(t004.getCORADD());
                 clientAct.setSTMZIP(t004.getZIPCDE());
-                clientAct.setINTTRA(clientAct.getACTNUM());
+                clientAct.setINTTRA("8010"+clientAct.getACTNUM());
             } else {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             }
