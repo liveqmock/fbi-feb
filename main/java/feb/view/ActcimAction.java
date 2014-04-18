@@ -28,9 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 利率码
- */
 @ManagedBean
 @ViewScoped
 public class ActcimAction implements Serializable {
@@ -39,10 +36,10 @@ public class ActcimAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-//    private T208 cim = new T208();
+    private T208 t208 = new T208();
     private T009 cimqry = new T009();
     private Mh830 addcim = new Mh830();
-    private Mh820 cim = new Mh820();
+    private Mh820 mh820;
     private String vchtyp;
     private String allone;
     private String orgidt;
@@ -54,10 +51,10 @@ public class ActcimAction implements Serializable {
     private String endnum;
     private String vchcnt;
     private List<Mh830> addcimList = new ArrayList<>();
+    private List<T208> t208List = new ArrayList<>();
     private List<T302.Bean> dataList = new ArrayList<>();
     private List<T009.Bean> dataListPz = new ArrayList<>();
 //    private List<T009.Bean> dataListOne = new ArrayList<>();
-//    private List<?> data = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -68,19 +65,19 @@ public class ActcimAction implements Serializable {
 
 
     }
+
     public String onAllQuery() {
         try {
 //            if (allone.contentEquals("0")){
-            Mh830 mh830 = new Mh830(vchtyp,allone,orgidt,depnum,txntlr);
+            Mh830 mh830 = new Mh830(vchtyp, allone, orgidt, depnum, txntlr);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("h830", mh830);
             List<SOFForm> formDemo = null;
 
-            if (allone.equals("1")&&vchtyp.equals("")){
+            if (allone.equals("1") && vchtyp.equals("")) {
                 MessageUtil.addError("单种查询必须输入凭证种类");
-            }
-            else {
-                 if (formList != null && !formList.isEmpty()) {
-                        dataListPz = new ArrayList<>();
+            } else {
+                if (formList != null && !formList.isEmpty()) {
+                    dataListPz = new ArrayList<>();
                     for (SOFForm form : formList) {
 
                         if ("T009".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
@@ -88,16 +85,14 @@ public class ActcimAction implements Serializable {
                             dataListPz.addAll(t009.getBeanList());
 
 
-
-                        }
-                        else {
+                        } else {
                             logger.info(form.getFormHeader().getFormCode());
 
                             MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
 //                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
                         }
                     }
-                    }
+                }
                 if (cimqry == null) {
                     MessageUtil.addWarn("没有查询到数据。");
                 }
@@ -110,13 +105,24 @@ public class ActcimAction implements Serializable {
         return null;
     }
 
+    public String cntNum() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        begnum = params.get("form:begnum");
+        vchcnt = ((Integer.parseInt(endnum) - Integer.parseInt(begnum) + 1) + "");
+        return vchcnt;
+    }
+
     public String onDeal() {
         try {
-            String formcode = txnh820ForUD();
-            if ("T208".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfoWithClientID("msgs", formcode);
+            mh820 = new Mh820(vchtyp, ioflag, begnum, endnum, vchcnt);
+            mh820.setVCHCNT((Integer.parseInt(endnum) - Integer.parseInt(begnum) + 1) + "");
+            //BeanHelper.copyFields(cim, mh820);
+            SOFForm form = dataExchangeService.callSbsTxn("h820", mh820).get(0);
+            if ("T208".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                T208 t208 = (T208) form.getFormBody();
+                t208List.add(t208);
             } else {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             }
         } catch (Exception e) {
             logger.error("交易失败", e);
@@ -125,19 +131,6 @@ public class ActcimAction implements Serializable {
         return null;
     }
 
-    // 利率修改和删除
-    private String txnh820ForUD() throws IllegalAccessException {
-
-        Mh820 mh820 = new Mh820();
-
-        int a = Integer.parseInt(cim.getBEGNUM());
-        int b = Integer.parseInt(cim.getENDNUM());
-        int c = b - a + 1;
-        cim.setVCHCNT(Integer.toString(c));
-        BeanHelper.copyFields(cim, mh820);
-        SOFForm form = dataExchangeService.callSbsTxn("h820", mh820).get(0);
-        return form.getFormHeader().getFormCode();
-    }
     // --------------------
 
 
@@ -148,7 +141,6 @@ public class ActcimAction implements Serializable {
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
     }
-
 
 
 //    public List<T813.Bean> getDataList() {
@@ -216,14 +208,6 @@ public class ActcimAction implements Serializable {
         this.depnum = depnum;
     }
 
-//    public T208 getCim() {
-//        return cim;
-//    }
-//
-//    public void setCim(T208 cim) {
-//        this.cim = cim;
-//    }
-
     public List<Mh830> getAddcimList() {
         return addcimList;
     }
@@ -272,19 +256,35 @@ public class ActcimAction implements Serializable {
         this.vchcnt = vchcnt;
     }
 
-    public Mh820 getCim() {
-        return cim;
-    }
-
-    public void setCim(Mh820 cim) {
-        this.cim = cim;
-    }
-
     public List<T009.Bean> getDataListPz() {
         return dataListPz;
     }
 
     public void setDataListPz(List<T009.Bean> dataListPz) {
         this.dataListPz = dataListPz;
+    }
+
+    public List<T208> getT208List() {
+        return t208List;
+    }
+
+    public void setT208List(List<T208> t208List) {
+        this.t208List = t208List;
+    }
+
+    public Mh820 getMh820() {
+        return mh820;
+    }
+
+    public void setMh820(Mh820 mh820) {
+        this.mh820 = mh820;
+    }
+
+    public T208 getT208() {
+        return t208;
+    }
+
+    public void setT208(T208 t208) {
+        this.t208 = t208;
     }
 }
