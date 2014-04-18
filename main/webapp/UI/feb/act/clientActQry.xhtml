@@ -150,6 +150,10 @@
                     <p:selectOneMenu value="#{clientActAction.actInfo.STMCYC}" style="width: 131px;">
                         <f:selectItems value="#{selectEnumActFieldAction.ctfStmcycItems}"/>
                     </p:selectOneMenu>
+                    <h:outputLabel value="账户用途:"/>
+                    <p:selectOneMenu value="#{clientActAction.actInfo.LEGZIP}" style="width: 131px;">
+                        <f:selectItems value="#{selectEnumActFieldAction.ctfLegzipItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="出账日期:"/>
                     <h:outputText value="#{clientActAction.actInfo.STMCDT}"/>
                     <h:outputLabel value="账户类型:"/>
