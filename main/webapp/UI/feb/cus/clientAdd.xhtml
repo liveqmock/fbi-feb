@@ -207,10 +207,14 @@
                                          action="#{clientAction.onCreate}" ajax="true"
                                          update="msgs,btns,show,btnpt">
                         </p:commandButton>
-                        <!--<p:commandButton value="重置" type="reset" style="width:80px;margin-left:10px;margin-top: 8px"/>-->
-                        <p:commandButton id="btnpt" style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
+                        <!--<p:commandButton id="btnpt" style="width:80px;margin-left:10px;margin-top: 8px" value="打印凭证"
                                          disabled="#{!clientAction.printable}"
                                          action="#{clientAction.onPrintOpenAct}" ajax="false"
+                                         update="msgs,btns,show">
+                        </p:commandButton>-->
+                        <p:commandButton id="btnpt2" style="width:80px;margin-left:10px;margin-top: 8px" value="模板打印"
+                                         disabled="#{!clientAction.printable}"
+                                         action="#{clientAction.onTempPrintOpen()}" ajax="false"
                                          update="msgs,btns,show">
                         </p:commandButton>
                     </h:panelGrid>

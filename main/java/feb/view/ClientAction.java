@@ -2,6 +2,7 @@ package feb.view;
 
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
+import feb.service.TemPrintService;
 import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
@@ -54,6 +55,9 @@ public class ClientAction implements Serializable {
 
     @ManagedProperty(value = "#{vchPrintService}")
     private VchPrintService vchPrintService;
+
+    @ManagedProperty(value = "#{temPrintService}")
+    private TemPrintService temPrintService;
 
     private String inpflg = "";
     private String cusidt = "";
@@ -121,7 +125,7 @@ public class ClientAction implements Serializable {
     }
 
     // 打印确认书
-    public void onPrintOpenAct() {
+   /* public void onPrintOpenAct() {
         try {
             vchPrintService.printVchpenAct(
                     "     客户建立确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
@@ -130,9 +134,28 @@ public class ClientAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
+    }*/
+    public void onTempPrintOpen() {
+        try {
+            temPrintService.printVchpenAct(
+                    t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
+                    t001.getCUSNAM(), t001.getOPNDAT(),tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
     }
-
-    public void onPrintCloseAct() {
+    public void onTempPrintClose() {
+        try {
+            temPrintService.printVchclsCus(
+                    t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
+                    t001.getCUSNAM(), t001.getOPNDAT(),t001.getCLSDAT(),tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+    /*public void onPrintCloseAct() {
         try {
             vchPrintService.printVchClsAct(
                     "     客户关闭确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
@@ -141,7 +164,7 @@ public class ClientAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
     public String onQryCus() {
         try {
@@ -640,5 +663,13 @@ public class ClientAction implements Serializable {
 
     public void setM8001errs(List<M8001> m8001errs) {
         this.m8001errs = m8001errs;
+    }
+
+    public TemPrintService getTemPrintService() {
+        return temPrintService;
+    }
+
+    public void setTemPrintService(TemPrintService temPrintService) {
+        this.temPrintService = temPrintService;
     }
 }

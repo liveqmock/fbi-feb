@@ -75,7 +75,7 @@
                             </p:commandButton>
                             <p:commandButton style="width:110px;" value="打印确认书" id="prt"
                                              disabled="#{!clientAction.isPrintable()}"
-                                             action="#{clientAction.onPrintCloseAct()}" ajax="false"
+                                             action="#{clientAction.onTempPrintClose()}" ajax="false"
                                              update="msgs,panel">
                             </p:commandButton>
                         </h:panelGrid>
