@@ -2,6 +2,7 @@ package feb.view;
 
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
+import feb.service.TemVchPrintService;
 import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T898;
@@ -28,7 +29,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +50,8 @@ public class BatchBookAction implements Serializable {
     @ManagedProperty(value = "#{vchPrintService}")
     private VchPrintService vchPrintService;
 
+    @ManagedProperty(value = "#{temVchPrintService}")
+    private TemVchPrintService temVchPrintService;
     private String vchset;//传票套号
     private String setseq;//套内序号
     private String tlrnum;//柜员号
@@ -132,7 +134,7 @@ public class BatchBookAction implements Serializable {
        m8401.setTXNAMT(df.format(new BigDecimal(Double.parseDouble(m8401.getTXNAMT())/100)));
     */
     //TODO 传票打印  +++++++++++++
-    public void onPrint() {
+   /* public void onPrint() {
         try {
             List<Vchset> vchs = new ArrayList<>();
             int printCnt = 0;
@@ -156,8 +158,31 @@ public class BatchBookAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
+    }*/
+    public void onPrint() {
+        try {
+            List<Vchset> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T898.Bean bean : dataList) {
+                if (!StringUtils.isEmpty(bean.getACTNUM()) || !StringUtils.isEmpty(bean.getTXNAMT())) {
+                    printCnt++;
+                    Vchset vch = new Vchset();
+                    BeanHelper.copyFields(bean, vch);
+                    DecimalFormat df = new DecimalFormat("###,###,##0.00");
+                    vch.setTXNAMT(df.format(new BigDecimal(bean.getTXNAMT())));
+                    vchs.add(vch);
+                }
+            }
+           /* for (; printCnt < 20; printCnt++) {
+                vchs.add(new Vchset());
+            }*/
+            txntim = DateUtil.getCurrentTime();//系统时间
+            temVchPrintService.printVch( vchset, sysdat, txntim,tlrnum,vchs);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
     }
-
     //套票查询
     public String onBatchQry() {
         try {
@@ -260,9 +285,9 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
-                onPrint();
                 onBatchQry();//如果添加打印按钮，可以在此处使用onModifyRecord()打印之后再查询最新
                 initAddBat();
+                onPrint();
                 MessageUtil.addInfo("传票套平成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -631,6 +656,14 @@ public class BatchBookAction implements Serializable {
 
     public void setPrintable(boolean printable) {
         this.printable = printable;
+    }
+
+    public TemVchPrintService getTemVchPrintService() {
+        return temVchPrintService;
+    }
+
+    public void setTemVchPrintService(TemVchPrintService temVchPrintService) {
+        this.temVchPrintService = temVchPrintService;
     }
 }
 

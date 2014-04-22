@@ -43,6 +43,7 @@
                 }
             }
         </script>
+
     </ui:define>
     <ui:define name="content">
         <div class="entry">
@@ -66,6 +67,10 @@
                             <h:outputLabel value="账户类型:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="计息标志:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="计息周期:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.INTCYC}" style="width: 131px;">
@@ -102,11 +107,6 @@
                             <p:inputText id="stmadd" value="#{clientActAction.clientAct.STMADD}"/>
                             <h:outputLabel value="邮编:"/>
                             <p:inputText id="stmzip" value="#{clientActAction.clientAct.STMZIP}"/>
-
-                            <h:outputLabel value="计息标志:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
-                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
-                            </p:selectOneMenu>
                             <h:outputLabel value="协定账户余额限度:"/>
                             <p:inputText value="#{clientActAction.clientAct.BALLIM}"/>
                             <h:outputLabel value="透支限额:"/>
@@ -158,8 +158,8 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
-                <p:fieldset><p:separator/>
-
+                <p:separator/>
+                <p:fieldset>
                     <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
                                  style="width:80%;"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
