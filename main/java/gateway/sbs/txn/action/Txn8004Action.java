@@ -32,7 +32,7 @@ public class Txn8004Action extends AbstractTxnAction {
     public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M8004 m8004 = (M8004) tia;
-        logger.info("[8004-客户查询] 客户号：" + m8004.getCUSIDT());
+        logger.info("[8004-客户查询] 客户：" + m8004.getCUSNAM());
 
         List<String> paramList = new ArrayList<>();
         paramList.add(m8004.getBATSEQ());
@@ -57,7 +57,6 @@ public class Txn8004Action extends AbstractTxnAction {
         paramList.add(m8004.getRELCUS());
         paramList.add(m8004.getCUSPWD());
         paramList.add(m8004.getCUSKID());
-        paramList.add(m8004.getDEPNU3());
         paramList.add(m8004.getLEGBDY());
         paramList.add(m8004.getACTBDY());
         paramList.add(m8004.getLOCCAP());
@@ -78,13 +77,11 @@ public class Txn8004Action extends AbstractTxnAction {
         paramList.add(m8004.getENTCDE());
         paramList.add(m8004.getIBKCDE());
         paramList.add(m8004.getSBKNUM());
-        paramList.add(m8004.getFUNCDE());
-        paramList.add(m8004.getSYSIDT());
 
         // 执行sbs交易
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8004", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[8004-客户查询] 客户号：" + m8004.getCUSIDT() + " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("[8004-客户查询] 客户：" + m8004.getCUSNAM() + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }

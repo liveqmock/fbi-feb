@@ -126,6 +126,13 @@
             background-image: url(../../images/top_right.jpg)
         }
     </style>
+    <%--<script language="javascript">
+        window.onbeforeunload=function checkLeave(e)
+        {
+            var evt = e ? e : (window.event ? window.event : null);
+            evt.returnValue='确认是否已签退！！！！！！';
+        }
+    </script>--%>
     <script type="text/javascript">
         var contextPath = '<%=contextPath%>';
         var defaultMenuStr = '<%=jsonDefaultMenu%>';

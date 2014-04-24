@@ -13,11 +13,11 @@ public class T004 extends SOFFormBody {
 
     {
         fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//46,29
-         /*, 1 1, 1, 1, 1, 1, 1 ,1,1,1,1,1,1,1,1,1,1*/
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//46,29
         fieldLengths = new int[]{7, 72, 120, 16, 4, 3, 3, 122, 6, 18, 10, 1, 18,
-                8, 21, 8, 8, 8, 6, 1, 3, 2, 24, 24, 21, 21, 3, 122, 8};/*,999,15,15,8,8,5,1,4,4,
-            30,25,5,2,4,8,1,1*/
+                8, 21, 8, 8, 8, 6, 1, 3, 2, 24, 24, 21, 21, 3, 122, 8, 3, 15, 15,
+                8, 8, 5, 1, 4, 4, 30, 25, 5, 2, 4, 8, 1, 1};
     }
 
     private String CUSIDT;   //	客户号
@@ -49,7 +49,7 @@ public class T004 extends SOFFormBody {
     private String REGCCY;   //	第二货币
     private String REGADD;   //	地址
     private String REGDAT;   //	注册日期
-    /*private String EFFDUR;   //	有效期(月)
+    private String EFFDUR;   //	有效期(月)
     private String CTXNUM;   //	国税号码
     private String LTXNUM;   //	地税号码
     private String BOCGRP;   //	客户分类码
@@ -65,7 +65,7 @@ public class T004 extends SOFFormBody {
     private String AMDTLR;   //	功能参数
     private String UPDDAT;   //	修改日期
     private String RECSTS;   //	记录状态
-    private String SYSIDT;   //	系统标识*/
+    private String SYSIDT;   //	系统标识
 
     public String getCUSIDT() {
         return CUSIDT;
@@ -299,7 +299,7 @@ public class T004 extends SOFFormBody {
         this.REGDAT = REGDAT;
     }
 
-  /*  public String getEFFDUR() {
+    public String getEFFDUR() {
         return EFFDUR;
     }
 
@@ -433,5 +433,5 @@ public class T004 extends SOFFormBody {
 
     public void setSYSIDT(String SYSIDT) {
         this.SYSIDT = SYSIDT;
-    }*/
+    }
 }

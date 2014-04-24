@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="货币码"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入货币码"/>
+                            <h:outputLabel value="第二货币:"/>
+                            <p:inputText  maxlength="3" required="true"
+                                         requiredMessage="必须输入第二货币"/>
+                            <h:outputLabel value="启用日期:"/>
+                            <p:inputText
+                                         required="true" requiredMessage="必须输入启用日期"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="启用时间:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入启用时间"/>
+                            <h:outputLabel value="汇率标志1:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入汇率标志1"/>
+                            <h:outputLabel value="汇率标志2:"/>
+                            <p:inputText required="true"
+                                         requiredMessage="必须输入汇率标志2"/>
+                            <h:outputLabel value="买入价格:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入买入价格"/>
+                            <h:outputLabel value="卖出价格:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入卖出价格"/>
+                            <h:outputLabel value="美元内部价格:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入美元内部价格"/>
+                            <h:outputLabel value="人民银行基准价:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入人民银行基准价"/>
+                            <h:outputLabel value="市场价:"/>
+                            <p:inputText  required="true"
+                                         requiredMessage="必须输入市场价"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="添加" ajax="true"
+                                             update="msgs,pg,btns,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+
+                <p:dataTable id="dt" height="200"
+                             value="#{actirtAction.addirtList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="货币码" style="text-align:center">
+                        <h:outputText value="#{record.CURCDE}"/>
+                    </p:column>
+
+                    <p:column headerText="第二货币" style="text-align:center">
+                        <h:outputText value="#{record.IRTCDE}"/>
+                    </p:column>
+
+                    <p:column headerText="启用时间" style="text-align:left">
+                        <h:outputText value="#{record.IRTNAM}"/>
+                    </p:column>
+
+                    <p:column headerText="启用日期" style="text-align:center">
+                        <h:outputText value="#{record.EFFDAT}"/>
+                    </p:column>
+
+                    <p:column headerText="汇率标志1" style="text-align:right">
+                        <h:outputText value="#{record.IRTVAL}"/>
+                    </p:column>
+
+                    <p:column headerText="汇率标志2" style="text-align:center">
+                        <h:outputText value="#{record.CDFLAG}"/>
+                    </p:column>
+
+                    <p:column headerText="买入价" style="text-align:right">
+                        <h:outputText value="#{record.SPRFLG}"/>
+                    </p:column>
+
+                    <p:column headerText="卖出价" style="text-align:right">
+                        <h:outputText value="#{record.IRTSPH}"/>
+                    </p:column>
+
+                    <p:column headerText="市场价" style="text-align:right">
+                        <h:outputText value="#{record.IRTSPL}"/>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

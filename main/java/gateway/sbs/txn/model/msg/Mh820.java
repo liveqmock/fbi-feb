@@ -14,6 +14,14 @@ public class Mh820 extends MTia {
     private String VCHCNT;
 
 
+    public Mh820(String VCHTYP, String IOFLAG, String BEGNUM, String ENDNUM, String VCHCNT) {
+        this.VCHTYP = VCHTYP;
+        this.IOFLAG = IOFLAG;
+        this.BEGNUM = BEGNUM;
+        this.ENDNUM = ENDNUM;
+        this.VCHCNT = VCHCNT;
+    }
+
     public String getVCHTYP() {
         return VCHTYP;
     }

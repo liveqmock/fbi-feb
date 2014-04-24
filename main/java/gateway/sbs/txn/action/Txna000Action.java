@@ -1,10 +1,11 @@
 package gateway.sbs.txn.action;
 
+import gateway.sbs.core.SBSRequest;
 import gateway.sbs.core.SBSResponse;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.service.CoreTxnService;
-import gateway.sbs.txn.model.msg.M8822;
 import gateway.sbs.txn.model.msg.MTia;
+import gateway.sbs.txn.model.msg.Ma000;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,35 +17,36 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-11-20
- * Time: 下午2:38
+ * Date: 14-4-8
+ * Time: 上午9:00
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class Txn8822Action extends AbstractTxnAction {
-    private static Logger logger = LoggerFactory.getLogger(Txn8822Action.class);
+public class Txna000Action extends AbstractTxnAction {
+
+    private static Logger logger = LoggerFactory.getLogger(Txna000Action.class);
     @Autowired
-    private CoreTxnService coreTxnService;
+    private CoreTxnService coreTxnService ;
     @Override
     protected List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
-        M8822 m8822 = (M8822)tia;
-        //logger.info("传票号：" + m8822.getVCHSET());
+
+        Ma000 ma000 = new Ma000();
+        logger.info("冲正流水号：" + ma000.getRVSKEY());
         List<String> paramList = new ArrayList<>();
-        paramList.add(m8822.getCUSIDT());
-        paramList.add(m8822.getAPCODE());
-        paramList.add(m8822.getCURCDE());
-        paramList.add(m8822.getSECAMT());
-        paramList.add(m8822.getOVELIM());
-        paramList.add(m8822.getTLRNUM());
-        paramList.add(m8822.getVCHSET());
-        paramList.add(m8822.getFUNCDE());
-        paramList.add(m8822.getREGADD());
-        paramList.add(m8822.getBEGNUM());
+        paramList.add(ma000.getRVSKEY());
+        paramList.add(ma000.getRVSTCD());
+        paramList.add(ma000.getACTTY1());
+        paramList.add(ma000.getIPTAC1());
+        paramList.add(ma000.getACTTY2());
+        paramList.add(ma000.getIPTAC2());
+        paramList.add(ma000.getTXNAMT());
+        paramList.add(ma000.getREMARK());
+        paramList.add(ma000.getMAGFL1());
+        paramList.add(ma000.getMAGFL2());
 
-        // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellerid, "8822", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid,"a000", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("客户号：" + m8822.getCUSIDT() + " 返回码：");
+        StringBuffer rtnFormCodes = new StringBuffer("冲正流水号：" + ma000.getRVSKEY());
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }
