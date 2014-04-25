@@ -52,6 +52,7 @@ public class BatchBookAction implements Serializable {
 
     @ManagedProperty(value = "#{temVchPrintService}")
     private TemVchPrintService temVchPrintService;
+
     private String vchset;//传票套号
     private String setseq;//套内序号
     private String tlrnum;//柜员号
@@ -173,9 +174,6 @@ public class BatchBookAction implements Serializable {
                     vchs.add(vch);
                 }
             }
-           /* for (; printCnt < 20; printCnt++) {
-                vchs.add(new Vchset());
-            }*/
             txntim = DateUtil.getCurrentTime();//系统时间
             temVchPrintService.printVch( vchset, sysdat, txntim,tlrnum,vchs);
         } catch (Exception e) {
@@ -285,9 +283,9 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8402", m8402).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
+                onPrint();
                 onBatchQry();//如果添加打印按钮，可以在此处使用onModifyRecord()打印之后再查询最新
                 initAddBat();
-                onPrint();
                 MessageUtil.addInfo("传票套平成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);

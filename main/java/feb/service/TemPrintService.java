@@ -4,7 +4,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
 import org.springframework.stereotype.Service;
-import pub.platform.advance.utils.PropertyManager;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -24,22 +23,15 @@ import java.io.IOException;
 @Service
 public class TemPrintService {
 
-    private static final String BASE_FONT = PropertyManager.getProperty("print.pdf.font");
     private  String fileName ;
-
-    public void printVchpenAct( String orgid, String deptid, String actnum,
+    public void printVchpenAct( String orgidt, String deptid, String actnum,
                                String actnam, String opndat, String teller) throws IOException, DocumentException {
         fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/cusOpnTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
-        /**
-         * 使用中文字体 如果是利用 AcroFields填充值的不需要在程序中设置字体，在模板文件中设置字体为中文字体就行了
-         */
-        //BaseFont bf = BaseFont.createFont(BASE_FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        //Font font = new Font(bf, 12, Font.NORMAL);
         AcroFields fields = ps.getAcroFields();
-        fields.setField("jid", orgid);
+        fields.setField("jid", orgidt);
         fields.setField("bid", deptid);
         fields.setField("id", actnum);
         fields.setField("name", actnam);
@@ -70,6 +62,47 @@ public class TemPrintService {
         printTempPdf(baos);
 
     }
+
+    //开户
+    public void printOpnAct( String orgidt, String deptid, String actnum,
+                                String actnam, String opndat, String teller) throws IOException, DocumentException {
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/actOpnTemp.pdf").getPath();
+        PdfReader reader = new PdfReader(fileName);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfStamper ps = new PdfStamper(reader, baos);
+        AcroFields fields = ps.getAcroFields();
+        fields.setField("orgidt", orgidt);
+        fields.setField("depnum", deptid);
+        fields.setField("actnum", actnum);
+        fields.setField("actnam", actnam);
+        fields.setField("opndat", opndat);
+        fields.setField("amdtlr", teller);
+        ps.setFormFlattening(true);
+        ps.close();
+        printTempPdf(baos);
+
+    }
+
+    //关户
+    public void printClsAct( String orgidt, String deptid, String actnum,
+                                String actnam, String opndat,String clsdat , String teller) throws IOException, DocumentException {
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/actClsTemp.pdf").getPath();
+        PdfReader reader = new PdfReader(fileName);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfStamper ps = new PdfStamper(reader, baos);
+        AcroFields fields = ps.getAcroFields();
+        fields.setField("orgidt", orgidt);
+        fields.setField("depnum", deptid);
+        fields.setField("actnum", actnum);
+        fields.setField("actnam", actnam);
+        fields.setField("opndat", opndat);
+        fields.setField("clsdat", clsdat);
+        fields.setField("amdtlr", teller);
+        ps.setFormFlattening(true);
+        ps.close();
+        printTempPdf(baos);
+
+    }
     private void printTempPdf(ByteArrayOutputStream baos) throws IOException, DocumentException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
@@ -89,19 +122,6 @@ public class TemPrintService {
         out.flush();
         out.close();
         ctx.responseComplete();
-       /* 生成pdf文件供页面下载
-       ServletOutputStream sos =resp.getOutputStream();
-        resp.setContentType("text/xml;charset=UTF-8");
-        resp.addHeader("Content-Disposition","attachment; filename=cusInfo.pdf");
-        resp.setContentType("application/pdf");
-        resp.setHeader("Content-Transfer-Encoding","binary");
-        resp.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-        resp.setHeader("Pragma","public");
-        resp.addHeader("Content-Length",Integer.toString(baos.size()));
-        baos.writeTo(sos);
-        sos.flush();
-        sos.close();
-        ctx.responseComplete();*/
     }
 
 }

@@ -6,10 +6,12 @@ import com.itextpdf.text.pdf.*;
 import feb.print.model.Vchset;
 import org.springframework.stereotype.Service;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +27,6 @@ public class TemVchPrintService {
 
     public void printVch(String vchset, String sysdat, String txntim, String tlrnum, java.util.List<Vchset> vchList) throws IOException, DocumentException {
         fileName = TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/vchTemp.pdf").getPath();
-        FileOutputStream fos = new FileOutputStream("d:/vch.pdf");
         int count = vchList.size(); //  总行数
         int pageCount = 20;       // 每页记录数
         int page = 0;             // 总共页数
@@ -46,8 +47,11 @@ public class TemVchPrintService {
             fields.setField("time", txntim);
             fields.setField("tell", tlrnum);
             int i = 0;
-            int from = item * 20 + 1;
-            int to = from + 19;
+            int from = item*20;
+            int to = from +20;
+            if (to>count){
+                to = count;
+            }
             for (Vchset vch : vchList.subList(from,to)) {
                 for (int j = 0; j < 8; j++) {
                     switch (j) {
@@ -84,8 +88,11 @@ public class TemVchPrintService {
             ps.setFormFlattening(true);
             ps.close();
         }
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
         Document document = new Document();
-        PdfCopy pdfCopy = new PdfCopy(document, fos);
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        PdfCopy pdfCopy = new PdfCopy(document, bao);
         document.open();
         PdfImportedPage impPage = null;
         /**取出之前保存的每页内容*/
@@ -94,6 +101,17 @@ public class TemVchPrintService {
                     .toByteArray()), 1);
             pdfCopy.addPage(impPage);
         }
+        pdfCopy.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
         document.close();
+        resp.reset();
+        ServletOutputStream out = resp.getOutputStream();
+        resp.setContentType("application/pdf");
+        resp.setHeader("Content-disposition", "inline");
+        resp.setContentLength(bao.size());
+        resp.setHeader("Cache-Control", "max-age=30");
+        bao.writeTo(out);
+        out.flush();
+        out.close();
+        ctx.responseComplete();
     }
 }

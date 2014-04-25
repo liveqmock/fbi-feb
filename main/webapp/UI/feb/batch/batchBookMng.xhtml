@@ -215,20 +215,14 @@
                         <p:inputText autocomplete="off" id="furinf" value="#{batchBookAction.m8401.ANACDE}"
                                      onkeydown="KeyDown()" onfocus="this.select()" >
                         </p:inputText>
-
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
                         <p:commandButton id="save" value="确定" ajax="false" action="#{batchBookAction.onCreateNewRecord}"
                                          style="width:74px;" update="msgs,show,:dtform">
                         </p:commandButton>
-                        <!--<p:commandButton id="t" value="打印" ajax="false"
-                                         action="#{batchBookAction.onPrint()}"
-                                         style="width:74px;" update="show,:dtform">
-                        </p:commandButton>-->
                     </h:panelGrid>
                 </h:panelGrid>
-                <p:separator/><!--columnClasses="input-col-m,input-col-xl,input-col-m,input-col-xl,
-                input-col-s,input-col-xl,input-col-l,input-col-xl"-->
+                <p:separator/>
                 <h:panelGrid id="show" style="width: 82%" columns="8"
                              columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,col-label2, col-input2">
                     <h:outputLabel value="贷方合计 :"/>
@@ -259,7 +253,7 @@
             <p:menubar>
                 <p:menuitem value="【套平】" icon="ui-icon ui-icon-gear" type="push"
                             actionListener="#{batchBookAction.onBalanceAct()}"
-                            ajax="false" update="pdt,dtform,msgs,addtable" process="@form"/>
+                            ajax="false" update="pdt,dtform,msgs" process="@form"/>
                 <p:menuitem value="【套修改】" icon="ui-icon ui-icon-pencil" type="push" onclick="vchsetdlg.show();
                              document.forms['vchsetform']['vchsetform:vchset'].focus();"/>
                 <p:menuitem value="【套删除】" icon="ui-icon ui-icon-newwin" type="push"
