@@ -2,6 +2,7 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import feb.service.PdfPrintService;
+import feb.service.TemPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.*;
 import gateway.sbs.txn.model.msg.*;
@@ -15,6 +16,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class ClientActAction implements Serializable {
 
     @ManagedProperty(value = "#{pdfPrintService}")
     private PdfPrintService pdfPrintService;
+
+    @ManagedProperty(value = "#{temPrintService}")
+    private TemPrintService temPrintService;
 
     private M8101 clientAct = new M8101();     // 开户
     private M8109 closeAct = new M8109();      // 关户查询
@@ -73,7 +79,7 @@ public class ClientActAction implements Serializable {
     }
 
     // 打印开户确认书
-    public void onPrintOpenAct() {
+   /* public void onPrintOpenAct() {
         try {
             pdfPrintService.printVch4OpenClsAct(
                     "       开户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
@@ -82,10 +88,30 @@ public class ClientActAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
+    }*/
+    // 打印开户确认书
+    public void onPrintOpenAct() {
+        try {
+            temPrintService.printOpnAct(
+                    rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
+                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
     }
 
-    // 打印开户确认书
     public void onPrintCloseAct() {
+        try {
+            temPrintService.printClsAct(
+                    rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
+                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), rtnActInfo.getCLSDAT(), tellerid);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+    /*public void onPrintCloseAct() {
         try {
             pdfPrintService.printVch4OpenClsAct(
                     "       销户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
@@ -94,7 +120,7 @@ public class ClientActAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
     public String onCreateInternalAct() {
         try {
@@ -410,4 +436,11 @@ public class ClientActAction implements Serializable {
         this.tellerid = tellerid;
     }
 
+    public TemPrintService getTemPrintService() {
+        return temPrintService;
+    }
+
+    public void setTemPrintService(TemPrintService temPrintService) {
+        this.temPrintService = temPrintService;
+    }
 }

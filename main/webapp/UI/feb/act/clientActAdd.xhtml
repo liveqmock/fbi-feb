@@ -68,10 +68,6 @@
                             <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
                             </p:selectOneMenu>
-                            <h:outputLabel value="计息标志:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
-                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
-                            </p:selectOneMenu>
                             <h:outputLabel value="计息周期:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.INTCYC}" style="width: 131px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
@@ -107,6 +103,10 @@
                             <p:inputText id="stmadd" value="#{clientActAction.clientAct.STMADD}"/>
                             <h:outputLabel value="邮编:"/>
                             <p:inputText id="stmzip" value="#{clientActAction.clientAct.STMZIP}"/>
+                            <h:outputLabel value="计息标志:"/>
+                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="协定账户余额限度:"/>
                             <p:inputText value="#{clientActAction.clientAct.BALLIM}"/>
                             <h:outputLabel value="透支限额:"/>
@@ -149,7 +149,6 @@
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:panel>
-                <br/>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
                         <h:graphicImage value="/images/ajaxloadingbar.gif"/>
