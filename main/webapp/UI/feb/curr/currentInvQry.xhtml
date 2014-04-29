@@ -52,14 +52,14 @@
         <div style="margin:5px">
             <h:form id="form">
                 <p:focus for="orgid3"/>
-                <p:messages id="msgs"  showDetail="true"/>
+                <p:messages id="msgs" showDetail="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="3" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid columns="4" cellspacing="5"
                                      columnClasses="col-label,col-input">
                             <h:outputLabel value="机构号:" style="font-weight: bold"/>
-                            <p:inputText size="25" id="orgid3" required="true"
-                                         value="#{currInvAction.orgid3}" requiredMessage="机构好不能为空。"
+                            <p:inputText size="25" id="orgid3"
+                                         value="#{currInvAction.orgid3}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="账号:" style="font-weight: bold"/>
                             <p:inputText required="true" size="25" requiredMessage="账号不能为空。"
@@ -70,7 +70,7 @@
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
                             <h:outputLabel value="主管密码:" style="font-weight: bold"/>
                             <p:password size="25" id="autpwd" value="#{currInvAction.autpwd}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                                        onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
@@ -82,11 +82,13 @@
                             <p:commandButton style="width:110px;" value="清单打印" id="prt"
                                              disabled="#{!currInvAction.isPrintable()}"
                                              action="#{currInvAction.onPrintInv}"
-                                              ajax="false"  update="msgs,panel">
+                                             ajax="false" update="msgs,panel">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
+                <br/>
+                <p:separator/>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
                         <h:graphicImage value="/images/ajaxloadingbar.gif"/>

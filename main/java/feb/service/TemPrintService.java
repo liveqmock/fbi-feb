@@ -103,6 +103,43 @@ public class TemPrintService {
         printTempPdf(baos);
 
     }
+
+    /**
+     * 活期清单打印
+     */
+    public void printCurrInv(String orgidt,String actnum,String actnam,
+            String avabal,String clsdat,String lintdt,String craccm1,String cratsf1,String cacint1,
+            String craccm2,String cratsf2,String cacint2,
+            String craccm3,String cratsf3,String cacint3,String cacint,String amount) throws IOException, DocumentException {
+
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/curInvTemp.pdf").getPath();
+        PdfReader reader = new PdfReader(fileName);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfStamper ps = new PdfStamper(reader, baos);
+        AcroFields fields = ps.getAcroFields();
+        fields.setField("orgidt", orgidt);
+        fields.setField("actnum", actnum);
+        fields.setField("actnam", actnam);
+        fields.setField("avabal", avabal);
+        fields.setField("clsdat", clsdat);
+        fields.setField("lintdt", lintdt);
+        fields.setField("craccm1", craccm1);
+        fields.setField("cratsf1", cratsf1);
+        fields.setField("cacint1", cacint1);
+        fields.setField("craccm2", craccm2);
+        fields.setField("cratsf2", cratsf2);
+        fields.setField("cacint2", cacint2);
+        fields.setField("craccm3", craccm3);
+        fields.setField("cratsf3", cratsf3);
+        fields.setField("cacint3", cacint3);
+        fields.setField("cacint", cacint);
+        fields.setField("amount", amount);
+        ps.setFormFlattening(true);
+        ps.close();
+        printTempPdf(baos);
+
+    }
+
     private void printTempPdf(ByteArrayOutputStream baos) throws IOException, DocumentException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
