@@ -47,7 +47,7 @@ public class CurrInvAction implements Serializable {
     @ManagedProperty(value = "#{temPrintService}")
     private TemPrintService temPrintService;
 
-    private String orgid3 = "";  //            账户机构号
+    private String orgid3 = "010";  //            账户机构号
     private String actnum = "";  //            账号
     private String auttlr = "";
     private String autpwd = "";

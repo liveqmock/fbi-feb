@@ -2,11 +2,13 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import feb.service.RosPrintService;
+import feb.service.TemRosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T220;
 import gateway.sbs.txn.model.msg.Ma121;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.utils.StringMathFormat;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
@@ -31,8 +33,10 @@ public class RsondpAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;
+    @ManagedProperty(value = "#{temRosPrintService}")
+    private TemRosPrintService temRosPrintService;
+    /*@ManagedProperty(value = "#{rosPrintService}")
+    private RosPrintService rosPrintService;*/
 
     private T220 ndp = new T220();
 
@@ -86,22 +90,17 @@ public class RsondpAction implements Serializable {
 
     public void onPrintOpenAct() {
         try {
-
-            /***
-             * 测试数据
-             * */
-            ndp = new T220();
-            ndp.setTXNCDE("a281");
-            ndp.setTELLER("SYS1");
-            ndp.setTXNDAT("20140102");
-            ndp.setACTTY("07");
-            ndp.setIPTAC("801000865000581001");
-            ndp.setADVDAT("20130201");
-            ndp.setACTNAM("南美鹰");
-            ndp.setINTCUR("CNY");
-            ndp.setTXNAMT(new BigDecimal("12345678"));
-            ndp.setADVNUM("12344565");
-            ndp.setREMARK("备注");
+            String txnamt = StringMathFormat.strFormat2(ndp.getTXNAMT().toString());
+            temRosPrintService.printRosdn("七天撤销存款通知单",ndp.getTXNCDE(),ndp.getTELLER(),ndp.getTXNDAT(),
+                    ndp.getIPTAC(),ndp.getADVDAT(),ndp.getACTNAM(),ndp.getINTCUR(),txnamt,
+                    ndp.getADVNUM(),ndp.getREMARK());
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+   /* public void onPrintOpenAct() {
+        try {
             if (ndp != null) {
                 rosPrintService.printRevoNote("撤销通知单", ndp);
             }
@@ -109,7 +108,7 @@ public class RsondpAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
 
     public DataExchangeService getDataExchangeService() {
@@ -120,12 +119,12 @@ public class RsondpAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public RosPrintService getRosPrintService() {
-        return rosPrintService;
+    public TemRosPrintService getTemRosPrintService() {
+        return temRosPrintService;
     }
 
-    public void setRosPrintService(RosPrintService rosPrintService) {
-        this.rosPrintService = rosPrintService;
+    public void setTemRosPrintService(TemRosPrintService temRosPrintService) {
+        this.temRosPrintService = temRosPrintService;
     }
 
     public String getActty2() {
