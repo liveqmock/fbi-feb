@@ -41,7 +41,7 @@ public class SOFForm {
                 // 装配Form体
                 formBody.assembleFields(0, bodyBytes);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Form解析错误", e);
                 throw new RuntimeException("Form解析错误：" + formHeader.getFormCode());
             }
         }

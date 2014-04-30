@@ -6,6 +6,9 @@
 *.iml
 .idea
 .gitignore
+out
+lib
+.gitignore
 
 *.pydevproject
 .project

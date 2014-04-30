@@ -1,5 +1,8 @@
 package gateway.sbs.core.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
@@ -7,6 +10,9 @@ import java.math.BigDecimal;
  * 可装配类
  */
 public class AssembleModel implements Assemble {
+
+    private static Logger logger = LoggerFactory.getLogger(AssembleModel.class);
+
     protected int offset = 0;
 
     //字段类型  1：字符串 2：短整数 3:BigDecimal 4:BigDecimal 自动除以100.0  5:int
@@ -45,8 +51,8 @@ public class AssembleModel implements Assemble {
                 pos += bytes.length;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("报文处理有误！", e);
+            logger.error("报文解析异常"+offset, e);
+            throw new RuntimeException("报文解析异常！", e);
         }
     }
 }
