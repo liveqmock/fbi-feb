@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:menubar>
+                    <p:menuitem type="push" value="全部开启" icon="ui-icon ui-icon-disk" ajax="true"
+                                action="#{outSysConnAction.onAllOpnfirm('1')}" update="msgs,dt"/>
+                    <p:menuitem type="push" value="全部对账" icon="ui-icon ui-icon-disk" ajax="true"
+                                action="#{outSysConnAction.onAllOpnfirm('2')}" update="msgs,dt"/>
+                    <p:menuitem type="push" value="全部关闭" icon="ui-icon ui-icon-disk" ajax="true"
+                                action="#{outSysConnAction.onAllOpnfirm('3')}" update="msgs,dt"/>
+                    <p:menuitem type="push" value="全部次日账" icon="ui-icon ui-icon-disk" ajax="true"
+                                action="#{outSysConnAction.onAllOpnfirm('4')}" update="msgs,dt"/>
+                </p:menubar>
+                <p:separator/>
+                <p:dataTable id="dt" height="200"
+                             value="#{outSysConnAction.dataList}" var="record"
+
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowKey="#{record.TERMID}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="渠道代号" style="text-align:center">
+                        <h:outputText value="#{record.TERMID}"/>
+                    </p:column>
+                    <p:column headerText="渠道名称" style="text-align:left">
+                        <h:outputText value="#{record.TERMNM}"/>
+                    </p:column>
+                    <p:column headerText="最后交易日期" style="text-align:center">
+                        <h:outputText value="#{record.CURDAT}"/>
+                    </p:column>
+                    <p:column headerText="状态" style="text-align:center">
+                        <h:outputText value="#{record.TXNSTS}"/>
+                    </p:column>
+
+                    <p:column headerText="操作" style="text-align:center">
+                        <p:commandLink value="打开"
+                                       actionListener="#{outSysConnAction.onOpenConn('1')}"
+                                       style="color: blue" update="dt">
+                            <f:param value="#{record.TERMID}" name="anacde"/>
+                        </p:commandLink>
+                        <p:spacer width="15px;"/>
+                        <p:commandLink value="对账"
+                                       actionListener="#{outSysConnAction.onOpenConn('2')}"
+                                       style="color: blue" update="dt">
+                            <f:param value="#{record.TERMID}" name="anacde"/>
+                        </p:commandLink>
+                        <p:spacer width="15px;"/>
+                        <p:commandLink value="关闭" actionListener="#{outSysConnAction.onOpenConn('3')}"
+                                       style="color: blue" update="dt">
+                            <f:param value="#{record.TERMID}" name="anacde"/>
+                        </p:commandLink>
+                        <p:spacer width="15px;"/>
+                        <p:commandLink value="次日账" actionListener="#{outSysConnAction.onOpenConn('4')}"
+                                       style="color: blue" update="dt">
+                            <f:param value="#{record.TERMID}" name="anacde"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
