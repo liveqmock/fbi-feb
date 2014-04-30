@@ -15,7 +15,7 @@ public class M8114 extends MTia {
     private String BATSEQ = "111111";  //    平台顺序号
     private String ORGIDT = "010";  //            机构号
     private String DEPNUM = "60";  //    部门号
-    private String ORGID3 = "";  //            账户机构号
+    private String ORGID3 = "010";  //            账户机构号
     private String ACTNUM = "";  //    账号
 
     public M8114(){

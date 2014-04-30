@@ -2,11 +2,13 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import feb.service.RosPrintService;
+import feb.service.TemRosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T220;
 import gateway.sbs.txn.model.msg.Ma111;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.utils.StringMathFormat;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
@@ -31,8 +33,11 @@ public class RsondnAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;
+   /* @ManagedProperty(value = "#{rosPrintService}")
+    private RosPrintService rosPrintService;*/
+
+    @ManagedProperty(value = "#{temRosPrintService}")
+    private TemRosPrintService temRosPrintService;
 
     private T220 ndn = new T220();
 
@@ -85,32 +90,15 @@ public class RsondnAction implements Serializable {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-
         return null;
     }
 
     public void onPrintOpenAct() {
         try {
-
-            /***
-             * 测试数据
-             * */
-            ndn = new T220();
-            ndn.setTXNCDE("a281");
-            ndn.setTELLER("SYS1");
-            ndn.setTXNDAT("20140102");
-            ndn.setACTTY("07");
-            ndn.setIPTAC("801000865000581001");
-            ndn.setADVDAT("20130201");
-            ndn.setACTNAM("南美鹰");
-            ndn.setINTCUR("CNY");
-            ndn.setTXNAMT(new BigDecimal("12345678"));
-            ndn.setADVNUM("12344565");
-            ndn.setREMARK("备注");
-
-            if (ndn != null) {
-                rosPrintService.printDrawNote("提款通知单", ndn);
-            }
+            String txnamt = StringMathFormat.strFormat2(ndn.getTXNAMT().toString());
+            temRosPrintService.printRosdn("七天通知存款通知单",ndn.getTXNCDE(),ndn.getTELLER(),ndn.getTXNDAT(),
+                    ndn.getIPTAC(),ndn.getADVDAT(),ndn.getACTNAM(),ndn.getINTCUR(),txnamt,
+                    ndn.getADVNUM(),ndn.getREMARK());
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -125,12 +113,12 @@ public class RsondnAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public RosPrintService getRosPrintService() {
-        return rosPrintService;
+    public TemRosPrintService getTemRosPrintService() {
+        return temRosPrintService;
     }
 
-    public void setRosPrintService(RosPrintService rosPrintService) {
-        this.rosPrintService = rosPrintService;
+    public void setTemRosPrintService(TemRosPrintService temRosPrintService) {
+        this.temRosPrintService = temRosPrintService;
     }
 
     public String getActty2() {

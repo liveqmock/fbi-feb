@@ -3,6 +3,7 @@ package feb.view;
 import com.itextpdf.text.DocumentException;
 import feb.service.DataExchangeService;
 import feb.service.InvPrintService;
+import feb.service.TemPrintService;
 import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T114;
@@ -13,14 +14,17 @@ import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 import pub.tools.BeanHelper;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,10 +41,13 @@ public class CurrInvAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{invPrintService}")
-    private InvPrintService invPrintService;
+    /*@ManagedProperty(value = "#{invPrintService}")
+    private InvPrintService invPrintService;*/
 
-    private String orgid3 = "";  //            ’Àªßª˙ππ∫≈
+    @ManagedProperty(value = "#{temPrintService}")
+    private TemPrintService temPrintService;
+
+    private String orgid3 = "010";  //            ’Àªßª˙ππ∫≈
     private String actnum = "";  //            ’À∫≈
     private String auttlr = "";
     private String autpwd = "";
@@ -70,8 +77,20 @@ public class CurrInvAction implements Serializable {
         }
         return null;
     }
-
     public void onPrintInv() {
+        try {
+            clsdat = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getCLSDAT()));
+            lintdt = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getLINTDT()));
+            temPrintService.printCurrInv(t114.getORGIDT(),t114.getACTNUM(),t114.getACTNAM(),
+                    t114.getAVABAL(),clsdat,lintdt,t114.getCRACCM1(),t114.getCRATSF1(),
+                    t114.getCACINT1(),t114.getCRACCM2(),t114.getCRATSF2(),t114.getCACINT2(),t114.getCRACCM3(),
+                    t114.getCRATSF3(),t114.getCACINT3(),t114.getCACINT(),t114.getAMOUNT());
+        } catch (Exception e) {
+            logger.error("¥Ú”° ß∞‹", e);
+            pub.tools.MessageUtil.addError("¥Ú”° ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+    /*public void onPrintInv() {
         try {
             clsdat = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getCLSDAT()));
             lintdt = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getLINTDT()));
@@ -83,7 +102,7 @@ public class CurrInvAction implements Serializable {
             logger.error("¥Ú”° ß∞‹", e);
             pub.tools.MessageUtil.addError("¥Ú”° ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
     // - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - -
     public DataExchangeService getDataExchangeService() {
@@ -94,13 +113,13 @@ public class CurrInvAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public InvPrintService getInvPrintService() {
+    /*public InvPrintService getInvPrintService() {
         return invPrintService;
     }
 
     public void setInvPrintService(InvPrintService invPrintService) {
         this.invPrintService = invPrintService;
-    }
+    }*/
 
     public String getOrgid3() {
         return orgid3;
@@ -172,5 +191,13 @@ public class CurrInvAction implements Serializable {
 
     public void setClsdat(String clsdat) {
         this.clsdat = clsdat;
+    }
+
+    public TemPrintService getTemPrintService() {
+        return temPrintService;
+    }
+
+    public void setTemPrintService(TemPrintService temPrintService) {
+        this.temPrintService = temPrintService;
     }
 }

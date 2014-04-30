@@ -155,8 +155,6 @@ public class OperatorManager implements Serializable {
      */
     public String login(String operid, String password) {
 
-        String formcode = sbsLogin(operid, password);
-        if (!"T901".equals(formcode)) return formcode;
         ConnectionManager cm = ConnectionManager.getInstance();
         try {
             String loginWhere = "where operid='" + operid
@@ -170,6 +168,9 @@ public class OperatorManager implements Serializable {
                 isLogin = false;
                 return "FEB不存在此用戶，登录校验失败";
             }
+            
+            String formcode = sbsLogin(operid, password);
+            if (!"T901".equals(formcode)) return formcode;
 
             String sss = "登录时间 :" + loginTime + " IP: " + remoteAddr
                     + " 机器名称 : " + remoteHost;
