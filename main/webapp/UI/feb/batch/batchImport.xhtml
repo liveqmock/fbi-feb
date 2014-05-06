@@ -28,7 +28,7 @@
         </style>
         <script language="JavaScript" type="text/JavaScript">
             function getpathvalue(obj) {
-                document.getElementById("editForm:hidfileimp").value = obj.value;
+                document.getElementById("editForm:upfile").value = obj.value;
             }
         </script>
     </ui:define>
@@ -40,19 +40,19 @@
                     <h:panelGrid id="adddat" columns="2" cellpadding="0" cellspacing="5" border="0"
                                  style="width:80%; margin-top: 10px"
                                  columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                        <p:fileUpload value="#{batchImportAction.file}" mode="simple" style="width:300px;"/>
+                        <p:fileUpload id="upfile" value="#{batchImportAction.file}" mode="simple" style="width:300px;"/>
                         <p:commandButton value="开始录入" ajax="false" update="msgs" style="width:80px;"
                                          action="#{batchImportAction.onBtnImpClick()}"/>
-                        <p:ajaxStatus style="height:18px;text-align:center">
-                            <f:facet name="start">
-                                <h:graphicImage value="/images/ajaxloadingbar.gif"/>
-                            </f:facet>
-                            <f:facet name="complete">
-                                <h:outputText value=""/>
-                            </f:facet>
-                        </p:ajaxStatus>
                     </h:panelGrid>
                 </p:panel>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
                 <p:separator/>
                 <p:dataTable id="dterrors" height="200"
                              value="#{batchImportAction.errorList}" var="errRecord"

@@ -5,6 +5,7 @@ import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T898;
 import gateway.sbs.txn.model.msg.M8401;
 import gateway.sbs.txn.model.msg.M85a2;
+import org.apache.commons.fileupload.FileUpload;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -110,7 +111,7 @@ public class BatchImportAction implements Serializable {
             return null;
         }
         try {
-            //String fileName = filepath.split("/")[filepath.split("/").length - 1];
+            //String filename = filepath.split("/")[filepath.split("/").length - 1];
             String fileName = file.getFileName();
             String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName.substring(fileName.lastIndexOf(".") + 1);
             if ("xls".equals(extension)) {
@@ -345,4 +346,5 @@ public class BatchImportAction implements Serializable {
     public void setErrorList(List<M8401> errorList) {
         this.errorList = errorList;
     }
+
 }
