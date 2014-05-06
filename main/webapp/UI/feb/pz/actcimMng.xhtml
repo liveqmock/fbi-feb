@@ -51,8 +51,11 @@
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="凭证代号:"/>
-                            <p:inputText id="vchtyp" value="#{actcimAction.vchtyp}" required="true"
-                                         requiredMessage="必须输入凭证代号"/>
+                            <p:selectOneMenu value="#{actcimAction.vchtyp}" style="width: 138px;"
+                                             required="true" id="vchtyp"
+                                             requiredMessage="必须选择凭证代号!">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfVchtypItems}"/>
+                            </p:selectOneMenu>
                             <h:outputLabel value="领入/交出:"/>
 
                             <p:selectOneMenu value="#{actcimAction.ioflag}" style="width: 131px;" required="true"
@@ -81,7 +84,10 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <br/>
-
+                <!--<p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="凭证代号：17 - 本币定期保证金存款证实书（十万以上），18 - 本币定期保证金存款证实书（10万以下） ，19 - 外币定期保证金存款证实书
+24 - 活期一本通 ，73 - 单位定期存款证实书(十万以下) ，74 - 单位定期存款证实书(十万以上)，00 - 无凭证"/>-->
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
                         <h:graphicImage value="/images/ajaxloadingbar.gif"/>
