@@ -274,6 +274,9 @@ public class ClientAction implements Serializable {
 
     public String onUpdate() {
         try {
+            String tmp = m8004.getLOCCAP();
+            tmp.replace(",","");
+            m8004.setLOCCAP(tmp);
             List<SOFForm> forms = dataExchangeService.callSbsTxn("8004", m8004);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
