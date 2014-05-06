@@ -3,6 +3,7 @@ package feb.view;
 import feb.print.model.Vch;
 import feb.service.DataExchangeService;
 import feb.service.PdfPrintService;
+import feb.service.TemInvPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T016;
 import gateway.sbs.txn.model.form.T104;
@@ -37,8 +38,10 @@ public class TimeDepositAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    @ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;
+    /*@ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;*/
+    @ManagedProperty(value = "#{temInvPrintService}")
+    private TemInvPrintService temInvPrintService;
     private Ma271 ma271;
     private T132 qryT132;
     private T016 t016;
@@ -124,6 +127,31 @@ public class TimeDepositAction implements Serializable {
                     vchs.add(vch);
                 }
             }
+
+            temInvPrintService.printVch(
+                    "联机传票/复核（授权）清单", t016.getTRNCDE(),t016.getTLRNUM(), t016.getTRNTIM(),
+                    t016.getVCHSET(),t016.getTRNDAT(), vchs,"单位定期存款证实书",t104.getCUSIDT(),t104.getOURREF(),t104.getTXNDAT(),
+                    t104.getORGNAM(),t104.getACTNAM(),t104.getBOKNUM(),t104.getVALDAT(),t104.getEXPDAT(),
+                    t104.getINTCUR(),t104.getTXNAMT(),t104.getDPTTYP(),t104.getDPTPRD(),t104.getINTRAT());
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
+   /* public void onPrint() {
+        try {
+            List<Vch> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T016.Bean bean : t016.getBeanList()) {
+                if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
+                    printCnt++;
+                    logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
+                    Vch vch = new Vch();
+                    BeanHelper.copyFields(bean, vch);
+                    vchs.add(vch);
+                }
+            }
             for (; printCnt < 11; printCnt++) {
                 vchs.add(new Vch());
             }
@@ -134,7 +162,7 @@ public class TimeDepositAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
     // ------------------------------------------------------
 
@@ -146,12 +174,12 @@ public class TimeDepositAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public PdfPrintService getPdfPrintService() {
-        return pdfPrintService;
+    public TemInvPrintService getTemInvPrintService() {
+        return temInvPrintService;
     }
 
-    public void setPdfPrintService(PdfPrintService pdfPrintService) {
-        this.pdfPrintService = pdfPrintService;
+    public void setTemInvPrintService(TemInvPrintService temInvPrintService) {
+        this.temInvPrintService = temInvPrintService;
     }
 
     public Ma271 getMa271() {

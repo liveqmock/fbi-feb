@@ -58,16 +58,6 @@
 
                             <h:outputLabel value="户名:"/>
                             <p:inputText value="#{timeDepositAction.ma271.ACTNM2}"/>
-                            <h:outputLabel value="证件类型:"/>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.PASTYP}" style="width: 138px;">
-                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfPastypItems}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="证件号码:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.PASSNO}"/>
-                            <h:outputLabel value="地址:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.CORADD}"/>
-                            <h:outputLabel value="电话:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.TELNUM}"/>
 
                             <h:outputLabel value="*存款金额:"/>
                             <p:inputText id="txnamt" value="#{timeDepositAction.ma271.TXNAMT}" required="true"
@@ -117,7 +107,6 @@
                             <h:outputLabel value="*转账账号:"/>
                             <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
                                          requiredMessage="必须输入转账账号！">
-
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
                             <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD1}" style="width: 138px;"
@@ -132,6 +121,7 @@
                             <p:inputText value="#{timeDepositAction.ma271.VCHUSERATE}"/>
                             <h:outputLabel value="摘要:"/>
                             <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
+
                             <h:outputLabel value="主管授权号:" style="font-weight: bold"/>
                             <p:inputText required="true"
                                          value="#{timeDepositAction.auttlr}" requiredMessage="主管号不能为空。"/>
@@ -145,6 +135,8 @@
                                              action="#{timeDepositAction.onCreate}" ajax="true"
                                              update="msgs,btns,showpanel">
                             </p:commandButton>
+
+
                             <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证"
                                              disabled="#{!timeDepositAction.printable}"
                                              action="#{timeDepositAction.onPrint}" ajax="false"
