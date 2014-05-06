@@ -26,7 +26,7 @@ public class TemRosPrintService {
     public void printRosdn(String title,String txncde,String teller,String txndat,String iptac,
                            String advdat,String actnam,String intcur,String txnamt,
                            String advnum,String remark) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/rosTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/rosTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -51,7 +51,7 @@ public class TemRosPrintService {
     public void printRosdp( String title,String txncde,String teller,String txndat,String iptac,
                             String advdat,String actnam,String intcur,String txnamt,
                             String advnum,String remark) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/rosTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/rosTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);

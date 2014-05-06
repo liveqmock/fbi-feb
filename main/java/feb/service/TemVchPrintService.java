@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -26,7 +25,7 @@ public class TemVchPrintService {
     private String fileName;
 
     public void printVch(String vchset, String sysdat, String txntim, String tlrnum, java.util.List<Vchset> vchList) throws IOException, DocumentException {
-        fileName = TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/vchTemp.pdf").getPath();
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/vchTemp.pdf").getPath();
         int count = vchList.size(); //  总行数
         int pageCount = 20;       // 每页记录数
         int page = 0;             // 总共页数

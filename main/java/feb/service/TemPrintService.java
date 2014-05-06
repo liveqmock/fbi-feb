@@ -26,7 +26,7 @@ public class TemPrintService {
     private  String fileName ;
     public void printVchpenAct( String orgidt, String deptid, String actnum,
                                String actnam, String opndat, String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/cusOpnTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusOpnTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -45,7 +45,7 @@ public class TemPrintService {
     //关闭客户打印
     public void printVchclsCus(String orgidt, String depnum, String cusidt,
                                String actnam, String opndat,String clsdat, String teller) throws IOException, DocumentException {
-        fileName = TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/cusCloseTemp.pdf").getPath();
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusCloseTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -66,7 +66,7 @@ public class TemPrintService {
     //开户
     public void printOpnAct( String orgidt, String deptid, String actnum,
                                 String actnam, String opndat, String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/actOpnTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actOpnTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -86,7 +86,7 @@ public class TemPrintService {
     //关户
     public void printClsAct( String orgidt, String deptid, String actnum,
                                 String actnam, String opndat,String clsdat , String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/actClsTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actClsTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -112,7 +112,7 @@ public class TemPrintService {
             String craccm2,String cratsf2,String cacint2,
             String craccm3,String cratsf3,String cacint3,String cacint,String amount) throws IOException, DocumentException {
 
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/PdfTemplates/curInvTemp.pdf").getPath();
+        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/curInvTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
