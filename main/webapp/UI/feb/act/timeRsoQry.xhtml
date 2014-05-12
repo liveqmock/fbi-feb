@@ -1,0 +1,186 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:focus for="boknum"/>
+                <p:messages id="msgs" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="10" columnClasses="col-95,col-5">
+                        <h:panelGrid columns="6" cellspacing="5" columnClasses="col-label,
+                        col-input,col-label,col-input,col-label,col-input">
+                            <h:outputLabel value="账户号:" style="font-weight: bold"/>
+                            <p:inputText size="25" id="boknum" value="#{actrsoAction.ma276.BOKNUM}"/>
+                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.CUSIDT}"/>
+                            <h:outputLabel value="核算码:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.ANACDE}"/>
+                            <h:outputLabel value="币别:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.CURCDE}"/>
+                            <h:outputLabel value="户名:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.ACTNM1}"/>
+                            <h:outputLabel value="存款种类:" style="font-weight: bold"/>
+                            <p:selectOneMenu value="#{actrsoAction.ma276.DPTTYP}" style="width: 155px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDpttypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="存期:" style="font-weight: bold"/>
+                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 155px;">
+                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDptprdItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="最小存款金额:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.TXNAMT}"/>
+                            <h:outputLabel value="最大存款金额:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.ADVAMT}"/>
+                            <h:outputLabel value="起息日期起日:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.VALDAT}"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="起息日期止日:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.SGNDAT}"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="到期日期起日:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.ADVDAT}"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="到期日期止日:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.AUTSEQ}"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="状态:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.PAPSTS}"/>
+                            <h:outputLabel value="起始序号:" style="font-weight: bold"/>
+                            <p:inputText size="25" value="#{actrsoAction.ma276.CUSPW1}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
+                                     width="10%">
+                            <p:commandButton style="width:80px;" value="查询"
+                                             action="#{actrsoAction.onAllQuery()}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="状态：1-正常，0-结清，默认查询正常"/>
+                <p:separator/>
+                <p:dataTable id="dt" height="200" value="#{actrsoAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15"
+                             rowsPerPageTemplate="100,50,15,10,5" emptyMessage="数据记录为空...">
+                    <p:column headerText="账户号" style="text-align:center">
+                        <h:outputText value="#{record.BOKNUM}"/>
+                    </p:column>
+                    <p:column headerText="账号" style="text-align:left">
+                        <h:outputText value="#{record.ACTNUM}"/>
+                    </p:column>
+                    <p:column headerText="户名" style="text-align:left">
+                        <h:outputText value="#{record.ACTNAM}"/>
+                    </p:column>
+                    <p:column headerText="余额" style="text-align:left">
+                        <h:outputText value="#{record.CURBAL}">
+                            <f:convertNumber pattern="###,###,##0.00"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="开户日" style="text-align:left">
+                        <h:outputText value="#{record.OPNDAT}"/>
+                    </p:column>
+                    <p:column headerText="起息日" style="text-align:left">
+                        <h:outputText value="#{record.VALDAT}"/>
+                    </p:column>
+                    <p:column headerText="到期日" style="text-align:left">
+                        <h:outputText value="#{record.EXPDAT}"/>
+                    </p:column>
+                    <p:column headerText="存期" style="text-align:left">
+                        <h:outputText value="#{record.DPTPRD}"/>
+                    </p:column>
+                    <p:column headerText="自动转存标志" style="text-align:left">
+                        <h:outputText value="#{record.ATOFLG}"/>
+                    </p:column>
+                    <p:column headerText="利率码" style="text-align:left">
+                        <h:outputText value="#{record.INTCDE}"/>
+                    </p:column>
+                    <p:column headerText="存款种类" style="text-align:left">
+                        <h:outputText value="#{record.DPTTYP}"/>
+                    </p:column>
+                    <p:column headerText="凭证种类" style="text-align:left">
+                        <h:outputText value="#{record.VCHTYP}"/>
+                    </p:column>
+                    <p:column headerText="凭证号码" style="text-align:left">
+                        <h:outputText value="#{record.VCHNUM}"/>
+                    </p:column>
+                    <p:column headerText="证件种类" style="text-align:left">
+                        <h:outputText value="#{record.PASTYP}"/>
+                    </p:column>
+                    <p:column headerText="证件号码" style="text-align:left">
+                        <h:outputText value="#{record.PASSNO}"/>
+                    </p:column>
+                    <p:column headerText="支取方式" style="text-align:left">
+                        <h:outputText value="#{record.DRAMDE}"/>
+                    </p:column>
+                    <p:column headerText="状态" style="text-align:left">
+                        <h:outputText value="#{record.ACTSTS}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
