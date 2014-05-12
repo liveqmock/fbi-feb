@@ -44,8 +44,25 @@
                             <p:inputText id="cusidt" value="#{timeDepositAction.ma271.CUSIDT}" required="true"
                                          requiredMessage="必须输入7位客户号" maxlength="7"
                                          onblur="document.getElementById('form:txnamt').focus();">
-                                <p:ajax event="blur" update="msgs,dataPanel,showpanel"
+                                <p:ajax event="blur" update="msgs,dataPanel"
                                         listener="#{timeDepositAction.onQry}"/>
+                            </p:inputText>
+                            <h:outputLabel value="户名:"/>
+                            <p:inputText value="#{timeDepositAction.ma271.ACTNM2}"/>
+                            <h:outputLabel value="*存款金额:"/>
+                            <p:inputText id="txnamt" value="#{timeDepositAction.ma271.TXNAMT}" required="true"
+                                         requiredMessage="必须输入存款金额!">
+                                <f:convertNumber pattern="###,###,##0.00"/>
+                            </p:inputText>
+                            <h:outputLabel value="*转账账号:"/>
+                            <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
+                                         requiredMessage="必须输入转账账号！">
+                                <p:ajax event="blur" update="msgs,dataPanel"
+                                        listener="#{timeDepositAction.onQryAct}"/>
+                            </p:inputText>
+                            <h:outputLabel value="*转账账户:"/>
+                            <p:inputText id="iptac2" value="#{timeDepositAction.ma271.IPTAC2}" required="true"
+                                         requiredMessage="必须输入转账账号！">
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
                             <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD2}" style="width: 138px;"
@@ -55,15 +72,6 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
                             <p:password value="#{timeDepositAction.ma271.CUSPW2}"/>
-
-                            <h:outputLabel value="户名:"/>
-                            <p:inputText value="#{timeDepositAction.ma271.ACTNM2}"/>
-
-                            <h:outputLabel value="*存款金额:"/>
-                            <p:inputText id="txnamt" value="#{timeDepositAction.ma271.TXNAMT}" required="true"
-                                         requiredMessage="必须输入存款金额!">
-                                <f:convertNumber pattern="###,###,##0.00"/>
-                            </p:inputText>
                             <h:outputLabel value="*起息日期:"/>
                             <p:inputText id="valdat" value="#{timeDepositAction.ma271.VALDAT}"
                                          required="true" requiredMessage="必须输入起息日期！"
@@ -104,10 +112,6 @@
                             <h:outputLabel value="*凭证号:"/>
                             <p:inputText value="#{timeDepositAction.ma271.VCHNUM}" required="true"
                                          requiredMessage="必须输入凭证号!"/>
-                            <h:outputLabel value="*转账账号:"/>
-                            <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
-                                         requiredMessage="必须输入转账账号！">
-                            </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
                             <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD1}" style="width: 138px;"
                                              required="true"
@@ -116,12 +120,10 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="客户密码:"/>
                             <p:password value="#{timeDepositAction.ma271.CUSPW1}"/>
-
                             <h:outputLabel value="协议利率:"/>
                             <p:inputText value="#{timeDepositAction.ma271.VCHUSERATE}"/>
                             <h:outputLabel value="摘要:"/>
                             <p:inputText value="#{timeDepositAction.ma271.REMARK}"/>
-
                             <h:outputLabel value="主管授权号:" style="font-weight: bold"/>
                             <p:inputText required="true"
                                          value="#{timeDepositAction.auttlr}" requiredMessage="主管号不能为空。"/>
@@ -133,14 +135,12 @@
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认开户"
                                              disabled="#{timeDepositAction.printable}"
                                              action="#{timeDepositAction.onCreate}" ajax="true"
-                                             update="msgs,btns,showpanel">
+                                             update="msgs,btns">
                             </p:commandButton>
-
-
                             <p:commandButton style="width:80px;margin-left:10px;" value="打印凭证"
                                              disabled="#{!timeDepositAction.printable}"
                                              action="#{timeDepositAction.onPrint}" ajax="false"
-                                             update="msgs,btns,showpanel">
+                                             update="msgs,btns">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
@@ -155,24 +155,6 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
-                <p:fieldset>
-                    <h:panelGrid id="showpanel" columns="6" cellpadding="0" cellspacing="5" border="0"
-                                 style="width:80%;"
-                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
-                        <h:outputLabel value="客户号:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.CUSIDT}"/>
-                        <h:outputLabel value="户名:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.ACTNAM}"/>
-                        <h:outputLabel value="证件类型:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.PASTYP}"/>
-                        <h:outputLabel value="证件号码:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.PASSNO}"/>
-                        <h:outputLabel value="地址:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.CORADD}"/>
-                        <h:outputLabel value="电话:"/>
-                        <h:outputText value="#{timeDepositAction.qryT132.TELNUM}"/>
-                    </h:panelGrid>
-                </p:fieldset>
             </h:form>
         </div>
     </ui:define>

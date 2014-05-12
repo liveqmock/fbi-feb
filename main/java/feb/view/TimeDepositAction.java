@@ -7,8 +7,10 @@ import feb.service.TemInvPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T016;
 import gateway.sbs.txn.model.form.T104;
+import gateway.sbs.txn.model.form.T108;
 import gateway.sbs.txn.model.form.T132;
 import gateway.sbs.txn.model.msg.M0003;
+import gateway.sbs.txn.model.msg.M8108;
 import gateway.sbs.txn.model.msg.Ma270;
 import gateway.sbs.txn.model.msg.Ma271;
 import org.apache.commons.lang.StringUtils;
@@ -46,6 +48,7 @@ public class TimeDepositAction implements Serializable {
     private T132 qryT132;
     private T016 t016;
     private T104 t104;
+    private T108 t108;
     private boolean printable = false;
     private BigDecimal bdTxnamt;   // 交易金额
 
@@ -78,6 +81,24 @@ public class TimeDepositAction implements Serializable {
         } catch (Exception e) {
             logger.error("定期存款开户查询失败", e);
             MessageUtil.addError("定期存款开户查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+    public void onQryAct() {
+        try {
+            M8108 m8108 = new M8108();
+            //BeanHelper.copyFields(ma271, m8108);
+            m8108.setACTNUM(ma271.getIPTAC1().substring(4,18));//包含头不包含尾
+            SOFForm form = dataExchangeService.callSbsTxn("8108", m8108).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("T108".equalsIgnoreCase(formcode)) {
+                t108 = (T108) form.getFormBody();
+                ma271.setIPTAC2(t108.getACTNAM());
+            } else {
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("转账账户不存在", e);
+            MessageUtil.addError("转账账户不存在." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
 
