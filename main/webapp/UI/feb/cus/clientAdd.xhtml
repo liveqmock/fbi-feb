@@ -33,19 +33,17 @@
             font-weight: bold;
         }
     </style>
-    <!--<script language="JavaScript" type="text/JavaScript">
+    <script language="JavaScript" type="text/JavaScript">
         function KeyDown() {
             if (event.keyCode == 13) {
-                if (event.srcElement.id == 'inputform:cusidt') {
+                if (event.srcElement.id == 'inputform:supdep') {
                     document.forms['inputform']['inputform:btns'].click();
-                }
-                if (event.srcElement.id == 'inputform:pastyp') {
-                    event.keyCode = 9;
-                } else {
+                }else {
                     event.keyCode = 9;
                 }
             }
-            if (event.keyCode == 38) {
+
+           /* if (event.keyCode == 38) {
                 if (event.srcElement.id == 'inputform:intnet') {
                     document.forms['inputform']['inputform:supdep'].focus();
                 } else if (event.srcElement.id == 'inputform:supdep') {
@@ -69,14 +67,7 @@
                 } else if (event.srcElement.id == 'inputform:shtnam') {
                     document.forms['inputform']['inputform:cusnam'].focus();
                 }
-            }
-        }
-    </script>-->
-    <script language="JavaScript" type="text/JavaScript">
-        document.onkeydown = function TabReplace() {
-            if (event.keyCode == 13) {
-                event.keyCode = 9;
-            }
+            }*/
         }
     </script>
 </ui:define>
