@@ -5,6 +5,8 @@ import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.T133;
 import gateway.sbs.txn.model.form.T554;
+import gateway.sbs.txn.model.form.T555;
+import gateway.sbs.txn.model.msg.Ma113;
 import gateway.sbs.txn.model.msg.Ma276;
 import gateway.sbs.txn.model.msg.Ma280;
 import org.slf4j.Logger;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 利率码
+ * 定期查询  通知存款查询
  */
 @ManagedBean
 @ViewScoped
@@ -36,34 +38,12 @@ public class ActrsoAction implements Serializable {
     @ManagedProperty(value = "#{rosPrintService}")
     private RosPrintService rosPrintService;
 
-    private String actty1;
-    private String iptac1;
-    private String dramd1;
-    private String txndat;
-    private String dueflg;
-    private String actty2;
-    private String iptac2;
-    private String nbkfl2;
-    private T133 rso = new T133();
-    private boolean printable = false;
-
-    //----------------
+    private T554 t554 = new T554();
+    private T555 t555 = new T555();
     private Ma276 ma276 = new Ma276();
-    private T554 t554;
+    private Ma113 ma113 = new Ma113();
     private List<T554.Bean> dataList = new ArrayList<>();
-    //----------------
-
-
-    @PostConstruct
-    public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-        actty1 = "07";
-        dramd1 = "0";
-        dueflg = "0";
-        actty2 = "01";
-        nbkfl2 = "0";
-    }
+    private List<T555.Bean> rosList = new ArrayList<>();
 
     //定期查询
     public String onAllQuery() {
@@ -87,92 +67,36 @@ public class ActrsoAction implements Serializable {
         return null;
     }
 
+    //通知存款查询
+    public String onRosQuery() {
+        try {
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("a113", ma113);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("T555".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        T555 t555 = (T555) form.getFormBody();
+                        rosList = t555.getBeanList();
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    //= = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
-    }
-
-    public T133 getRso() {
-        return rso;
-    }
-
-    public void setRso(T133 rso) {
-        this.rso = rso;
-    }
-
-    public String getActty1() {
-        return actty1;
-    }
-
-    public void setActty1(String actty1) {
-        this.actty1 = actty1;
-    }
-
-    public String getIptac1() {
-        return iptac1;
-    }
-
-    public void setIptac1(String iptac1) {
-        this.iptac1 = iptac1;
-    }
-
-    public String getDramd1() {
-        return dramd1;
-    }
-
-    public void setDramd1(String dramd1) {
-        this.dramd1 = dramd1;
-    }
-
-    public String getTxndat() {
-        return txndat;
-    }
-
-    public void setTxndat(String txndat) {
-        this.txndat = txndat;
-    }
-
-    public String getDueflg() {
-        return dueflg;
-    }
-
-    public void setDueflg(String dueflg) {
-        this.dueflg = dueflg;
-    }
-
-    public String getActty2() {
-        return actty2;
-    }
-
-    public void setActty2(String actty2) {
-        this.actty2 = actty2;
-    }
-
-    public String getIptac2() {
-        return iptac2;
-    }
-
-    public void setIptac2(String iptac2) {
-        this.iptac2 = iptac2;
-    }
-
-    public String getNbkfl2() {
-        return nbkfl2;
-    }
-
-    public void setNbkfl2(String nbkfl2) {
-        this.nbkfl2 = nbkfl2;
-    }
-
-    public boolean isPrintable() {
-        return printable;
-    }
-
-    public void setPrintable(boolean printable) {
-        this.printable = printable;
     }
 
     public RosPrintService getRosPrintService() {
@@ -205,5 +129,29 @@ public class ActrsoAction implements Serializable {
 
     public void setDataList(List<T554.Bean> dataList) {
         this.dataList = dataList;
+    }
+
+    public T555 getT555() {
+        return t555;
+    }
+
+    public void setT555(T555 t555) {
+        this.t555 = t555;
+    }
+
+    public Ma113 getMa113() {
+        return ma113;
+    }
+
+    public void setMa113(Ma113 ma113) {
+        this.ma113 = ma113;
+    }
+
+    public List<T555.Bean> getRosList() {
+        return rosList;
+    }
+
+    public void setRosList(List<T555.Bean> rosList) {
+        this.rosList = rosList;
     }
 }
