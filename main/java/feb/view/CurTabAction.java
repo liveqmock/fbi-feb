@@ -81,8 +81,8 @@ public class CurTabAction implements Serializable {
                     } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
 
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
@@ -103,8 +103,8 @@ public class CurTabAction implements Serializable {
                     if ("T850".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t850 = (T850) form.getFormBody();
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
