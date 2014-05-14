@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:curcde') {
+                        document.forms['inputform']['inputform:btns'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="false"/>
+                <p:focus for="curcde"/>
+                <p:panel id="basepanel">
+                    <h:panelGrid id="input" columns="2" style="width: 90%;" border="0">
+                        <h:panelGrid columns="4" cellpadding="1" cellspacing="5" border="0"
+                                     columnClasses="col-label,col-input,col-label,
+                                     col-input,col-label,col-input" style="width: 95%;font-weight: bold">
+                            <h:outputLabel value="币别码:"/>
+                            <p:inputText size="25" id="curcde" required="true" requiredMessage="币别不能为空"
+                                         value="#{rateTabAction.curcde}"/>
+                            <!--<h:outputLabel value="收费码:"/>
+                            <p:inputText id="frtcde" size="25" value="#{rateTabAction.frtcde}" />-->
+                            <h:outputLabel value="启用日期:"/>
+                            <p:inputText id="effdat" size="25" maxlength="8" required="true"
+                                         value="#{rateTabAction.effdat}" requiredMessage="启用日期不能为空 "/>
+                            <!--<h:outputLabel value="功能参数:"/>
+                            <p:inputText id="funcde" size="25"
+                                         value="#{rateTabAction.m9807.FUNCDE}" />-->
+                        </h:panelGrid>
+                        <h:panelGrid  id="btns" columns="1" cellspacing="5" cellpadding="0"
+                                      width="10%">
+                            <p:commandButton style="width:110px;" value="查询费率码"
+                                             action="#{rateTabAction.onAllQry}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <!--<p:outputLabel style="font-size: 12px !important;font-weight: bold;color: grey;"
+                               value="多笔查询的组合: 1. 查询启用日期,输入货币码 ,收费码,功能参数
+                    2. 查询费率版本,输入货币码,启用日期 ,功能参数 "/>
+                <p:separator/>-->
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{rateTabAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="收费码" style="text-align:center">
+                        <h:outputText value="#{record.FRTKD1}"/>
+                    </p:column>
+                    <p:column headerText="生效日期" style="text-align:left">
+                        <h:outputText value="#{record.EFFDAT}"/>
+                    </p:column>
+                    <p:column headerText="名称" style="text-align:left">
+                        <h:outputText value="#{record.FRTNAM}"/>
+                    </p:column>
+                    <p:column headerText="邮费" style="text-align:left">
+                        <h:outputText value="#{record.MALFEE}"/>
+                    </p:column>
+                    <p:column headerText="手续费" style="text-align:left">
+                        <h:outputText value="#{record.COMFEE}"/>
+                    </p:column>
+                    <p:column headerText="费率" style="text-align:left">
+                        <h:outputText value="#{record.FEERAT}"/>
+                    </p:column>
+                    <p:column headerText="周期" style="text-align:left">
+                        <h:outputText value="#{record.FEECYC}"/>
+                    </p:column>
+                    <p:column headerText="币别码" style="text-align:left">
+                        <h:outputText value="#{record.INTCUR}"/>
+                    </p:column>
+
+                    <p:column headerText="操作" style="text-align:center">
+                        <p:commandLink value="详细" immediate="true" ajax="false" action="#{rateTabAction.onClick()}"
+                                       style="color: blue">
+                            <f:param value="#{rateTabAction.curcde}" name="curcde"/>
+                            <f:param value="#{record.FRTKD1}" name="frtcde"/>
+                            <f:param value="#{rateTabAction.effdat}" name="effdat"/>
+                            <f:param value="detail" name="action"/>
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

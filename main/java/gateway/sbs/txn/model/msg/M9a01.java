@@ -29,7 +29,7 @@ public class M9a01 extends MTia {
    private String EFFDAT = "";    //启用日期
    private String EXPDAT = "";    //使用到期日
    private String FUNCDE = "";    //功能参数
-   private String BEGNUM = "";    //起始序号
+   private String BEGNUM = "000001";    //起始序号
 
     public String getBATSEQ() {
         return BATSEQ;
