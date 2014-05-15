@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Component
 public class Txn9815Action extends AbstractTxnAction {
-    private static Logger logger = LoggerFactory.getLogger(Txn9805Action.class);
+    private static Logger logger = LoggerFactory.getLogger(Txn9815Action.class);
     @Autowired
     private CoreTxnService coreTxnService;
 
@@ -31,25 +31,30 @@ public class Txn9815Action extends AbstractTxnAction {
     public List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
         M9815 m9815 = (M9815) tia;
-        logger.info("[9815-查询] 总账码：" + m9815.getGlcode() + " 核算码：");
+        logger.info("[9815-查询] 损益码：" + m9815.getPLCODE());
 
         List<String> paramList = new ArrayList<>();
-        paramList.add(m9815.getApcnam());
-        paramList.add(m9815.getApcode());
-        paramList.add(m9815.getApctyp());
-        paramList.add(m9815.getGlcode());
-        paramList.add(m9815.getPlcode());
+        paramList.add(m9815.getBATSEQ());
+        paramList.add(m9815.getORGIDT());
+        paramList.add(m9815.getDEPNUM());
+        paramList.add(m9815.getPLCODE());
+        paramList.add(m9815.getPLCNAM());
+        paramList.add(m9815.getGLCODE());
+        paramList.add(m9815.getPLSCDE());
+        paramList.add(m9815.getPLCTYP());
         paramList.add(m9815.getFUNCDE());
+        paramList.add(m9815.getBEGNUM());
 
         // 执行sbs交易
-        SBSResponse response = coreTxnService.execute(termid, tellerid, "9805", paramList);
+        SBSResponse response = coreTxnService.execute(termid, tellerid, "9815", paramList);
 
-        StringBuffer rtnFormCodes = new StringBuffer("[9815-查询] 总账码：" + m9815.getGlcode() + " 核算码："
+        StringBuffer rtnFormCodes = new StringBuffer("[9815-查询] 损益码：" + m9815.getPLCODE()
                 + " 返回码：");
         for (String formcode : response.getFormCodes()) {
             rtnFormCodes.append("[").append(formcode).append("]");
         }
         logger.info(rtnFormCodes.toString());
         return response.getSofForms();
+
     }
 }

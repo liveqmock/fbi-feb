@@ -3,63 +3,85 @@ package gateway.sbs.txn.model.msg;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 13-9-10
+ * Date: 14-5-15    损益码表查询
  * Time: 上午10:10
  * To change this template use File | Settings | File Templates.
  */
-//多笔查询
 public class M9815 extends MTia{
-    private String glcode=""; //总账码
-    private String apcode="";  //核算码
-    private String apcnam="";       //核算码名称
-    private String apctyp="";       //核算码类型
-    private String plcode="";       //对应损益吗
-    private String FUNCDE = "6";       // 操作类别  5-多笔查询（按利率码）6-多笔查询（按日期
 
-    //-----------------------------------------------------------------------
-    public M9815(String glcode,String apcode){
-        this.glcode=glcode;
-        this.apcode=apcode;
+    private String BATSEQ = "111111";     //平台顺序号
+    private String ORGIDT = "010";     //机构号
+    private String DEPNUM = "60";     //部门号
+    private String PLCODE = "";     //损益码
+    private String PLCNAM = "";     //损益项名称
+    private String GLCODE = "";     //总帐码
+    private String PLSCDE = "";     //损益子目
+    private String PLCTYP = "";     //损益类型
+    private String FUNCDE = "";     //操作类别
+    private String BEGNUM = "000001";     //起始笔数
 
-    }
-    public String getGlcode() {
-        return glcode;
-    }
-
-    public void setGlcode(String glcode) {
-        this.glcode = glcode;
+    public String getBATSEQ() {
+        return BATSEQ;
     }
 
-    public String getApcode() {
-        return apcode;
+    public void setBATSEQ(String BATSEQ) {
+        this.BATSEQ = BATSEQ;
     }
 
-    public void setApcode(String apcode) {
-        this.apcode = apcode;
+    public String getORGIDT() {
+        return ORGIDT;
     }
 
-    public String getApcnam() {
-        return apcnam;
+    public void setORGIDT(String ORGIDT) {
+        this.ORGIDT = ORGIDT;
     }
 
-    public void setApcnam(String apcnam) {
-        this.apcnam = apcnam;
+    public String getDEPNUM() {
+        return DEPNUM;
     }
 
-    public String getApctyp() {
-        return apctyp;
+    public void setDEPNUM(String DEPNUM) {
+        this.DEPNUM = DEPNUM;
     }
 
-    public void setApctyp(String apctyp) {
-        this.apctyp = apctyp;
+    public String getPLCODE() {
+        return PLCODE;
     }
 
-    public String getPlcode() {
-        return plcode;
+    public void setPLCODE(String PLCODE) {
+        this.PLCODE = PLCODE;
     }
 
-    public void setPlcode(String plcode) {
-        this.plcode = plcode;
+    public String getPLCNAM() {
+        return PLCNAM;
+    }
+
+    public void setPLCNAM(String PLCNAM) {
+        this.PLCNAM = PLCNAM;
+    }
+
+    public String getGLCODE() {
+        return GLCODE;
+    }
+
+    public void setGLCODE(String GLCODE) {
+        this.GLCODE = GLCODE;
+    }
+
+    public String getPLSCDE() {
+        return PLSCDE;
+    }
+
+    public void setPLSCDE(String PLSCDE) {
+        this.PLSCDE = PLSCDE;
+    }
+
+    public String getPLCTYP() {
+        return PLCTYP;
+    }
+
+    public void setPLCTYP(String PLCTYP) {
+        this.PLCTYP = PLCTYP;
     }
 
     public String getFUNCDE() {
@@ -68,5 +90,13 @@ public class M9815 extends MTia{
 
     public void setFUNCDE(String FUNCDE) {
         this.FUNCDE = FUNCDE;
+    }
+
+    public String getBEGNUM() {
+        return BEGNUM;
+    }
+
+    public void setBEGNUM(String BEGNUM) {
+        this.BEGNUM = BEGNUM;
     }
 }

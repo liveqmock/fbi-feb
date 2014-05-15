@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:panel id="basePanel">
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="2" cellspacing="3" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*损益码:"/>
+                            <p:inputText value="#{proTabAction.plcode}"/>
+                            <h:outputLabel value="*损益项名称:"/>
+                            <p:inputText value="#{proTabAction.t863.PLCNAM}"/>
+                            <h:outputLabel value="*总帐码:"/>
+                            <p:inputText value="#{proTabAction.t863.GLCODE}"/>
+                            <h:outputLabel value="*损益子目:"/>
+                            <p:inputText value="#{proTabAction.t863.PLSCDE}"/>
+                            <h:outputLabel value="*损益类型:"/>
+                            <p:inputText value="#{proTabAction.t863.PLCTYP}"/>
+                            <h:outputLabel value="*修改柜员:"/>
+                            <p:inputText value="#{proTabAction.t863.AMDTLR}"/>
+                            <h:outputLabel value="*修改日期:"/>
+                            <p:inputText value="#{proTabAction.t863.UPDDAT}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                             action="#{curTabAction.onBack}"
+                                             style="width:80px;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
