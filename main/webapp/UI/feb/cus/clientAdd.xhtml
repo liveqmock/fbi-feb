@@ -98,16 +98,18 @@
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
                         <h:outputLabel value="*证件类别:"/>
                         <p:selectOneMenu id="pastyp" value="#{clientAction.m8001.PASTYP}" style="width: 131px;"
-                                         onkeydown="KeyDown()" onfocus="this.select()">
+                                         onkeydown="KeyDown()" onfocus="this.select()" required="true"
+                                requiredMessage="证件类别不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*证件号:"/>
                         <h:inputText value="#{clientAction.m8001.PASSNO}" id="passno"
                                      required="true" requiredMessage="证件号不能为空"
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
-                        <h:outputLabel value="法人代表姓名:"/>
+                        <h:outputLabel value="*法人代表姓名:"/>
                         <h:inputText value="#{clientAction.m8001.LEGBDY}" id="legbdy"
-                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                                     onkeydown="KeyDown()" onfocus="this.select()"
+                                required="true" requiredMessage="法人代表姓名不能为空"/>
                         <h:outputLabel value="*组织机构代码:"/>
                         <h:inputText value="#{clientAction.m8001.ENTCDE}" id="entcde"
                                      required="true" requiredMessage="组织机构代码不能为空"
@@ -116,11 +118,11 @@
                         <p:inputText value="#{clientAction.m8001.BUSCDE}" id="buscde"
                                      required="true" requiredMessage="行业代码不能为空,输入格式为字母+4个数字的形式"
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
-                        <h:outputLabel value="客户分类码:"/>
+                        <h:outputLabel value="*客户分类码:"/>
                         <p:selectOneMenu value="#{clientAction.m8001.BOCGRP}" style="width: 131px;" id="bocgrp">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel value="*信用额度:"/>
+                        <h:outputLabel value="信用额度:"/>
                         <h:inputText value="#{clientAction.m8001.CRDLIM}" required="true"
                                      onkeydown="KeyDown()" onfocus="this.select()" id="crdlim"/>
                         <h:outputLabel value="注册国家码:"/>
@@ -132,12 +134,14 @@
                         <h:outputLabel value="地址:"/>
                         <h:inputText value="#{clientAction.m8001.REGADD}" id="regadd"
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
-                        <h:outputLabel value="企业性质:"/>
-                        <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;" id="enttyp">
+                        <h:outputLabel value="*企业性质:"/>
+                        <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;" id="enttyp"
+                                required="true" requiredMessage="企业性质不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel value="有无进口权:"/>
-                        <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;" id="custy1">
+                        <h:outputLabel value="*有无进口权:"/>
+                        <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;" id="custy1"
+                                required="true" requiredMessage="有无进口权不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*地址:"/>

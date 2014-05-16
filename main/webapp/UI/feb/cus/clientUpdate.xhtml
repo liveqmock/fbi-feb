@@ -90,33 +90,33 @@
                         <h:outputLabel value="*客户号:"/>
                         <h:inputText value="#{clientAction.m8004.CUSIDT}" readonly="true"/>
                         <h:outputLabel value="*客户名称:"/>
-                        <h:inputText value="#{clientAction.m8004.CUSNAM}"/>
-                        <h:outputLabel value="客户简称:"/>
-                        <h:inputText value="#{clientAction.m8004.SHTNAM}"/>
+                        <h:inputText value="#{clientAction.m8004.CUSNAM}" />
+                        <h:outputLabel value="*客户简称:"/>
+                        <h:inputText value="#{clientAction.m8004.SHTNAM}" required="true"/>
                         <h:outputLabel value="客户英文名:"/>
                         <h:inputText value="#{clientAction.m8004.ENGNAM}"/>
                         <h:outputLabel value="邮编:"/>
                         <h:inputText value="#{clientAction.m8004.ZIPCDE}"/>
                         <h:outputLabel value="*证件类别:"/>
-                        <p:selectOneMenu value="#{clientAction.m8004.PASTYP}" style="width: 131px;">
+                        <p:selectOneMenu value="#{clientAction.m8004.PASTYP}" style="width: 136px;" >
                             <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*证件号:"/>
-                        <h:inputText value="#{clientAction.m8004.PASSNO}"/>
-                        <h:outputLabel value="法人代表姓名:"/>
-                        <h:inputText value="#{clientAction.m8004.LEGBDY}"/>
-                        <h:outputLabel value="行业代码:"/>
-                        <h:inputText value="#{clientAction.m8004.BUSCDE}"/>
-                        <h:outputLabel value="客户分类码:"/>
-                        <p:selectOneMenu value="#{clientAction.m8004.BOCGRP}" style="width: 131px;">
+                        <h:inputText value="#{clientAction.m8004.PASSNO}" />
+                        <h:outputLabel value="*法人代表姓名:"/>
+                        <h:inputText value="#{clientAction.m8004.LEGBDY}" />
+                        <h:outputLabel value="*行业代码:"/>
+                        <h:inputText value="#{clientAction.m8004.BUSCDE}" />
+                        <h:outputLabel value="*客户分类码:"/>
+                        <p:selectOneMenu value="#{clientAction.m8004.BOCGRP}" style="width: 136px;" >
                             <f:selectItems value="#{selectEnumCusFieldAction.cusBocgrpItems}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel value="企业性质:"/>
-                        <p:selectOneMenu value="#{clientAction.m8004.ENTTYP}" style="width: 131px;">
+                        <h:outputLabel value="*企业性质:"/>
+                        <p:selectOneMenu value="#{clientAction.m8004.ENTTYP}" style="width: 136px;" >
                             <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel value="有无进口权:"/>
-                        <p:selectOneMenu value="#{clientAction.m8004.CUSTY1}" style="width: 131px;">
+                        <h:outputLabel value="*有无进口权:"/>
+                        <p:selectOneMenu value="#{clientAction.m8004.CUSTY1}" style="width: 136px;" >
                             <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="相关客户:"/>
@@ -127,24 +127,24 @@
                         <h:inputText value="#{clientAction.m8004.RSDCTR}"/>
                         <h:outputLabel value="所在国家码:"/>
                         <h:inputText value="#{clientAction.m8004.OPRCTR}"/>
-                        <h:outputLabel value="*公司地址:"/>
+                        <h:outputLabel value="公司地址:"/>
                         <h:inputText value="#{clientAction.m8004.CORADD}"/>
-                        <h:outputLabel value="*电话:"/>
+                        <h:outputLabel value="电话:"/>
                         <h:inputText value="#{clientAction.m8004.TELNUM}"/>
                         <h:outputLabel value="电传:"/>
                         <h:inputText value="#{clientAction.m8004.TELEXN}"/>
-                        <h:outputLabel value="企业标准号:"/>
-                        <h:inputText value="#{clientAction.m8004.ENTCDE}"/>
+                        <h:outputLabel value="组织机构代码:"/>
+                        <h:inputText value="#{clientAction.m8004.ENTCDE}" />
                         <h:outputLabel value="客户类别:"/>
                         <h:inputText value="#{clientAction.m8004.CUSTY2}"/>
                         <h:outputLabel value="信用等级:"/>
                         <h:inputText value="#{clientAction.m8004.TSTRNK}"/>
                         <h:outputLabel value="信用额度:"/>
                         <h:inputText value="#{clientAction.m8004.CRDLIM}"/>
-                        <h:outputLabel value="*密码:"/>
+                        <h:outputLabel value="密码:"/>
                         <h:inputText value="#{clientAction.m8004.CUSPWD}"/>
-                        <h:outputLabel value="客户类型码:"/>
-                        <h:inputText value="#{clientAction.m8004.CUSKID}"/>
+                        <h:outputLabel value="*客户类型码:"/>
+                        <h:inputText value="#{clientAction.m8004.CUSKID}" />
                         <h:outputLabel value="财务负责人姓名:"/>
                         <h:inputText value="#{clientAction.m8004.ACTBDY}"/>
                         <h:outputLabel value="风险组别:"/>
@@ -157,11 +157,11 @@
                         <h:inputText value="#{clientAction.m8004.REGCAP}"/>
                         <h:outputLabel value="第二货币:"/>
                         <h:inputText value="#{clientAction.m8004.REGCCY}"/>
-                        <h:outputLabel value="*公司地址:"/>
+                        <h:outputLabel value="公司地址:"/>
                         <h:inputText value="#{clientAction.m8004.REGADD}"/>
                         <h:outputLabel value="注册日期:"/>
                         <h:inputText value="#{clientAction.m8004.REGDAT}"/>
-                        <h:outputLabel value="*有效期(月):"/>
+                        <h:outputLabel value="有效期(月):"/>
                         <h:inputText value="#{clientAction.m8004.EFFDUR}"/>
                         <h:outputLabel value="国税号码:"/>
                         <h:inputText value="#{clientAction.m8004.CTXNUM}"/>
