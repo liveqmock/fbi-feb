@@ -32,66 +32,71 @@ public class ActhstAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-    private T851 hst = new T851();
-//    private M8823 hstDay = new M8823();
-    private String totcnt;
-    private String curcnt;
-
-    private String cusidt;
-    private String apcode;
-    private String curcde;
-    private String eryda1;
-    private String eryda2;
-    private String secamt;
-    private String ovelim;
-    private String tlenum;
-    private String vchset;
-    private String funcde;
-    private String regadd;
-    private String begnum;
+    private T851 t851 = new T851();
+    private String totcnt = "";
+    private String curcnt = "";
+    private String cusidt = "";
+    private String apcode = "";
+    private String curcde = "";
+    private String eryda1 = "";
+    private String eryda2 = "";
+    private String secamt = "";
+    private String ovelim = "";
+    private String tlenum = "";
+    private String vchset = "";
+    private String funcde = "";
+    private String regadd = "";
+    private String begnum = "";
     private boolean isExport;
-    private List<M8823> hstList = new ArrayList<>();
     private List<T851.Bean> dataList = new ArrayList<>();
 
-    @PostConstruct
-    public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-        cusidt = "";
-        regadd = "";
-        begnum = "";
 
 
-    }
     public String onAllQuery() {
+        int m = 0;//取整
+        int n = 0;//取余
         try {
-//            if (allone.contentEquals("0")){
-            M8823 m8823 = new M8823(cusidt,apcode,curcde,eryda1,eryda2,secamt,ovelim,tlenum,vchset,funcde,regadd,begnum);
+            M8823 m8823 = new M8823(cusidt, apcode, curcde, eryda1, eryda2, secamt, ovelim, tlenum, vchset, funcde, regadd, begnum);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("8823", m8823);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t851 = (T851) form.getFormBody();
+                        totcnt = t851.getFormBodyHeader().getTOTCNT();
+                        curcnt = t851.getFormBodyHeader().getCURCNT();
+                        dataList.addAll(t851.getBeanList());
+                        isExport = true;
+                    } else {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+            m = Integer.parseInt(totcnt) / 100;
+            n = Integer.parseInt(totcnt) % 100;
 
-                 if (formList != null && !formList.isEmpty()) {
-                        dataList = new ArrayList<>();
-
-                    for (SOFForm form : formList) {
-
+            if (n > 0) {
+                m++;
+            }
+            String tmp = "";
+            for (int j = 1; j < m; j++) {
+                tmp = j * 100 + 1 + "";
+                m8823.setBEGNUM(tmp);
+                List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8823", m8823);
+                if (formList2 != null && !formList2.isEmpty()) {
+                    for (SOFForm form : formList2) {
                         if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T851 t851 = (T851) form.getFormBody();
-                            totcnt = t851.getFormBodyHeader().getTOTCNT();
-                            curcnt = t851.getFormBodyHeader().getCURCNT();
+                            t851 = (T851) form.getFormBody();
                             dataList.addAll(t851.getBeanList());
-                            isExport  = true;
-                        }
-                        else {
+                            isExport = true;
+                        } else {
                             logger.info(form.getFormHeader().getFormCode());
-
-                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+                            pub.platform.MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                         }
                     }
-                    }
-//                if (cimqry == null) {
-//                    MessageUtil.addWarn("没有查询到数据。");
-//                }
+                }
+            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -99,7 +104,7 @@ public class ActhstAction implements Serializable {
         return null;
     }
 
-    public void exportExcel(Object document){
+    public void exportExcel(Object document) {
         HSSFWorkbook wb = (HSSFWorkbook) document;
         HSSFSheet sheet = wb.getSheetAt(0);
         HSSFRow header = sheet.getRow(0);
@@ -108,13 +113,14 @@ public class ActhstAction implements Serializable {
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
             HSSFCell cell = header.getCell(i);
 
             cell.setCellStyle(cellStyle);
         }
     }
-//-------------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------------
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
@@ -219,19 +225,12 @@ public class ActhstAction implements Serializable {
         this.begnum = begnum;
     }
 
-    public T851 getHst() {
-        return hst;
+    public T851 getT851() {
+        return t851;
     }
 
-    public void setHst(T851 hst) {
-        this.hst = hst;
-    }
-    public List<M8823> getHstList() {
-        return hstList;
-    }
-
-    public void setHstList(List<M8823> hstList) {
-        this.hstList = hstList;
+    public void setT851(T851 t851) {
+        this.t851 = t851;
     }
 
     public List<T851.Bean> getDataList() {

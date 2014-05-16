@@ -114,49 +114,37 @@
                 <p:dataTable id="dt" height="200"
                              value="#{bookDayQryAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
-                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
-                             总笔数：#{bookDayQryAction.totcnt}
-                             当前显示笔数：#{bookDayQryAction.curcnt}"
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
-                    <p:column sortBy="#{record.CUSIDT}" style="text-align:center">
+                    <p:column sortBy="#{record.ACTNUM}" style="text-align:center">
                         <f:facet name="header">
-                            <h:outputText value="客户号"/>
+                            <h:outputText value="账号"/>
                         </f:facet>
-                        <h:outputText value="#{record.CUSIDT}"/>
+                        <h:outputText value="#{record.ACTNUM}"/>
                     </p:column>
-                    <p:column sortBy="#{record.APCODE}"  style="text-align:center">
-                        <f:facet name="header">
-                            <h:outputText value="核算码"/>
-                        </f:facet>
-                        <h:outputText value="#{record.APCODE}"/>
-                    </p:column>
-                    <p:column  style="text-align:center">
-                        <f:facet name="header">
-                            <h:outputText value="币别"/>
-                        </f:facet>
-                        <h:outputText value="#{record.CURCDE}"/>
-                    </p:column>
+
                     <p:column style="text-align:left">
                         <f:facet name="header">
                             <h:outputText value="账户名称"/>
                         </f:facet>
                         <h:outputText value="#{record.ACTNAM}"/>
                     </p:column>
+                    <p:column sortBy="#{record.TXNAMT}"  style="text-align:right">
+                    <f:facet name="header">
+                        <h:outputText value="金额"/>
+                    </f:facet>
+                    <h:outputText value="#{record.TXNAMT}">
+                        <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                    </h:outputText>
+                </p:column>
                     <p:column sortBy="#{record.ERYDAT}" style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="交易日期"/>
                         </f:facet>
                         <h:outputText value="#{record.ERYDAT}"/>
                     </p:column>
-                    <p:column sortBy="#{record.TXNAMT}"  style="text-align:right">
-                        <f:facet name="header">
-                            <h:outputText value="金额"/>
-                        </f:facet>
-                        <h:outputText value="#{record.TXNAMT}">
-                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
-                        </h:outputText>
-                    </p:column>
+
                     <p:column sortBy="#{record.TLRNUM}" style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="柜员"/>

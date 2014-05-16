@@ -26,7 +26,7 @@ public class T851 extends SOFFormBody{
         do {
             Bean bean = new Bean();
             bean.assembleFields(index, buffer);
-            if (!bean.getCUSIDT().equals("")) {
+            if (!bean.getACTNUM().equals("")) {
                 beanList.add(bean);
             } else {
                 // System.out.print("=================");
@@ -65,9 +65,7 @@ public class T851 extends SOFFormBody{
     public class Bean extends AssembleModel {
 
 
-        private String CUSIDT;  //客户号
-        private String APCODE;  //核算码
-        private String CURCDE;  //币别
+        private String ACTNUM;  //账号
         private String ERYDAT;  //交易日期
         private BigDecimal TXNAMT;  //金额
         private String TLRNUM;  //柜员
@@ -80,32 +78,16 @@ public class T851 extends SOFFormBody{
         private String ACTNAM;  //账户名称
 
         {
-            fieldTypes = new int[]{1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1};//10
-            fieldLengths = new int[]{7, 4, 3, 8, 17, 4, 4, 2, 32, 6, 4 ,8, 72};
+            fieldTypes = new int[]{ 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1};//10
+            fieldLengths = new int[]{14, 8, 17, 4, 4, 2, 32, 6, 4 ,8, 72};
         }
 
-        public String getCUSIDT() {
-            return CUSIDT;
+        public String getACTNUM() {
+            return ACTNUM;
         }
 
-        public void setCUSIDT(String CUSIDT) {
-            this.CUSIDT = CUSIDT;
-        }
-
-        public String getAPCODE() {
-            return APCODE;
-        }
-
-        public void setAPCODE(String APCODE) {
-            this.APCODE = APCODE;
-        }
-
-        public String getCURCDE() {
-            return CURCDE;
-        }
-
-        public void setCURCDE(String CURCDE) {
-            this.CURCDE = CURCDE;
+        public void setACTNUM(String ACTNUM) {
+            this.ACTNUM = ACTNUM;
         }
 
         public String getERYDAT() {

@@ -58,6 +58,8 @@ public class BookDayQryAction implements Serializable {
     }
 
     public String onVchsetQry() {
+        int m = 0;//取整
+        int n = 0;//取余
         try {
             m8822 = new M8822(cusidt, apcode, curcde, secamt,
                     ovelim, tlrnum, vchset, funcde, fegadd, begnum);
@@ -65,25 +67,41 @@ public class BookDayQryAction implements Serializable {
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if (!"T851".equals(form.getFormHeader().getFormCode())) {
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                        return null;
-                    } else if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                    if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t851 = (T851) form.getFormBody();
                         dataList = t851.getBeanList();
                         totcnt = t851.getFormBodyHeader().getTOTCNT();
                         curcnt = t851.getFormBodyHeader().getCURCNT();
                         isExport = true;
-                    }  else if ("W012".equals(form.getFormHeader().getFormCode())) {
-
                     }else {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
+            m = Integer.parseInt(totcnt) / 100;
+            n = Integer.parseInt(totcnt) % 100;
+
+            if (n > 0) {
+                m++;
+            }
+            String tmp = "";
+            for (int j = 1; j < m; j++) {
+                tmp = j * 100 + 1 + "";
+                m8822.setBEGNUM(tmp);
+                List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8822", m8822);
+                if (formList2 != null && !formList2.isEmpty()) {
+                    for (SOFForm form : formList2) {
+                        if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                            t851 = (T851) form.getFormBody();
+                            dataList.addAll(t851.getBeanList());
+                            isExport = true;
+                        } else {
+                            logger.info(form.getFormHeader().getFormCode());
+                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
@@ -245,4 +263,5 @@ public class BookDayQryAction implements Serializable {
     public void setExport(boolean export) {
         isExport = export;
     }
+
 }
