@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:panel id="basePanel">
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="2" cellspacing="3" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*自动转帐码:"/>
+                            <p:inputText value="#{atrTabAction.t871.ATRCDE}"/>
+                            <h:outputLabel value="*名称:"/>
+                            <p:inputText value="#{atrTabAction.t871.ATRNAM}"/>
+                            <h:outputLabel value="*转帐周期:"/>
+                            <p:inputText value="#{atrTabAction.t871.CYCCDE}"/>
+                            <h:outputLabel value="*转帐日期:"/>
+                            <p:inputText value="#{atrTabAction.t871.CYCDAT}"/>
+                            <h:outputLabel value="*启动条件码:"/>
+                            <p:inputText value="#{atrTabAction.t871.TRICDE}"/>
+                            <h:outputLabel value="*启动金额:"/>
+                            <p:inputText value="#{atrTabAction.t871.TRIBAL}"/>
+                            <h:outputLabel value="*外汇买卖码:"/>
+                            <p:inputText value="#{atrTabAction.t871.FEXCDE}"/>
+                            <h:outputLabel value="*基数比例1:"/>
+                            <p:inputText value="#{atrTabAction.t871.BASRAT}"/>
+                            <h:outputLabel value="*基数比例2:"/>
+                            <p:inputText value="#{atrTabAction.t871.BASRT2}"/>
+                            <h:outputLabel value="*基数比例3:"/>
+                            <p:inputText value="#{atrTabAction.t871.BASRT3}"/>
+                            <h:outputLabel value="*基数比例4:"/>
+                            <p:inputText value="#{atrTabAction.t871.BASRT4}"/>
+                            <h:outputLabel value="*基数比例5:"/>
+                            <p:inputText value="#{atrTabAction.t871.BASRT5}"/>
+                            <h:outputLabel value="*适用货币范围:"/>
+                            <p:inputText value="#{atrTabAction.t871.CURRAG}"/>
+                            <h:outputLabel value="*特殊引用客户号:"/>
+                            <p:inputText value="#{atrTabAction.t871.CUSIDT}"/>
+                            <h:outputLabel value="*特殊引用核算码:"/>
+                            <p:inputText value="#{atrTabAction.t871.APCODE}"/>
+                            <h:outputLabel value="*特殊引用币别:"/>
+                            <p:inputText value="#{atrTabAction.t871.CURCDE}"/>
+                            <h:outputLabel value="*产品码:"/>
+                            <p:inputText value="#{atrTabAction.t871.PRDCDE}"/>
+                            <h:outputLabel value="*事件码:"/>
+                            <p:inputText value="#{atrTabAction.t871.EVTCDE}"/>
+                            <h:outputLabel value="*客户类型码:"/>
+                            <p:inputText value="#{atrTabAction.t871.CTPCDE}"/>
+                            <h:outputLabel value="*细分类码:"/>
+                            <p:inputText value="#{atrTabAction.t871.CATCDE}"/>
+                            <h:outputLabel value="*特别代码1:"/>
+                            <p:inputText value="#{atrTabAction.t871.SPECD1}"/>
+                            <h:outputLabel value="*特别代码2:"/>
+                            <p:inputText value="#{atrTabAction.t871.SPECD2}"/>
+                            <h:outputLabel value="*特别代码3:"/>
+                            <p:inputText value="#{atrTabAction.t871.SPECD3}"/>
+                            <h:outputLabel value="*处理区分:"/>
+                            <p:inputText value="#{atrTabAction.t871.PROFLG}"/>
+                            <h:outputLabel value="*描述:"/>
+                            <p:inputText value="#{atrTabAction.t871.ATRDCR}"/>
+                            <h:outputLabel value="*修改柜员:"/>
+                            <p:inputText value="#{atrTabAction.t871.AMDTLR}"/>
+                            <h:outputLabel value="*最后修改日期:"/>
+                            <p:inputText value="#{atrTabAction.t871.UPDDAT}"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                             action="#{atrTabAction.onBack}"
+                                             style="width:80px;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
