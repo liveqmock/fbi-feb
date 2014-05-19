@@ -10,7 +10,7 @@ import gateway.sbs.core.CtgManager;
 import gateway.sbs.core.SBSRequest;
 import gateway.sbs.core.SBSResponse;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T901;
+import gateway.sbs.txn.model.form.sc.T901;
 import gateway.sbs.txn.model.msg.M0001;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

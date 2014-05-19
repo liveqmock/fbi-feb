@@ -34,7 +34,8 @@ public class SOFForm {
             try {
                 // 实例化Form体
                 // 新增系统别判断
-                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormSys() + formHeader.getFormCode());
+                logger.info("Form class:" + "gateway.sbs.txn.model.form." + formHeader.getFormSys().toLowerCase() + "." + formHeader.getFormCode());
+                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormSys().toLowerCase() + "." + formHeader.getFormCode());
 //                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormCode());
                 formBody = (SOFFormBody) clazz.newInstance();
                 // 截取Form体字节数据
