@@ -79,9 +79,10 @@ public class BookDayQryAction implements Serializable {
                     }
                 }
             }
-            m = Integer.parseInt(totcnt) / 100;
-            n = Integer.parseInt(totcnt) % 100;
-
+            if (!totcnt.isEmpty()&&totcnt!=null){
+                m = Integer.parseInt(totcnt) / 100;
+                n = Integer.parseInt(totcnt) % 100;
+            }
             if (n > 0) {
                 m++;
             }
