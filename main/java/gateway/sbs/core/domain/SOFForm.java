@@ -33,7 +33,9 @@ public class SOFForm {
         if (formBodyLength != 0) {
             try {
                 // 实例化Form体
-                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormCode());
+                // 新增系统别判断
+                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormSys() + formHeader.getFormCode());
+//                Class clazz = Class.forName("gateway.sbs.txn.model.form." + formHeader.getFormCode());
                 formBody = (SOFFormBody) clazz.newInstance();
                 // 截取Form体字节数据
                 byte[] bodyBytes = new byte[formBodyLength];
