@@ -290,6 +290,19 @@ public class ClientActAction implements Serializable {
         return null;
     }
 
+    public void  handleCom(){
+        try{
+            String acttyp = clientAct.getACTTYP();
+            if (acttyp.equals("2")){
+                clientAct.setINTFLG("0");
+            }
+        }catch (Exception e){
+            logger.error("联动设置账页信息失败", e);
+            MessageUtil.addError("联动设置账页信息失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+
+    }
+
     // ------------------------------
 
     public PdfPrintService getPdfPrintService() {
