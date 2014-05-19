@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Component
 public class Txn9a24Action extends AbstractTxnAction {
-    private static Logger logger = LoggerFactory.getLogger(Txn9a18Action.class);
+    private static Logger logger = LoggerFactory.getLogger(Txn9a24Action.class);
     @Autowired
     private CoreTxnService coreTxnService;
     @Override
