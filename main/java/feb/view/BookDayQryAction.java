@@ -74,8 +74,8 @@ public class BookDayQryAction implements Serializable {
                         curcnt = t851.getFormBodyHeader().getCURCNT();
                         isExport = true;
                     }else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }

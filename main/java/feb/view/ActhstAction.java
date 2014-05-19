@@ -68,13 +68,15 @@ public class ActhstAction implements Serializable {
                         dataList.addAll(t851.getBeanList());
                         isExport = true;
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            m = Integer.parseInt(totcnt) / 100;
-            n = Integer.parseInt(totcnt) % 100;
+            if (!totcnt.isEmpty()&&totcnt!=null){
+                m = Integer.parseInt(totcnt) / 100;
+                n = Integer.parseInt(totcnt) % 100;
+            }
 
             if (n > 0) {
                 m++;
