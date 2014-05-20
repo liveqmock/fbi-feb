@@ -2,12 +2,11 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T951;
+import gateway.sbs.txn.model.form.ac.T951;
 import gateway.sbs.txn.model.msg.M8951;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;

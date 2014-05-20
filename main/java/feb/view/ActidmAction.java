@@ -2,8 +2,8 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T121;
-import gateway.sbs.txn.model.form.T007;
+import gateway.sbs.txn.model.form.re.T121;
+import gateway.sbs.txn.model.form.re.T007;
 import gateway.sbs.txn.model.msg.Mh805;
 import gateway.sbs.txn.model.msg.Mh803;
 import gateway.sbs.txn.model.msg.Mh804;
@@ -21,9 +21,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

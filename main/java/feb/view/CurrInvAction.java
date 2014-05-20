@@ -1,30 +1,21 @@
 package feb.view;
 
-import com.itextpdf.text.DocumentException;
 import feb.service.DataExchangeService;
-import feb.service.InvPrintService;
 import feb.service.TemPrintService;
-import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T114;
+import gateway.sbs.txn.model.form.ac.T114;
 import gateway.sbs.txn.model.msg.M8114;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 import pub.tools.BeanHelper;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

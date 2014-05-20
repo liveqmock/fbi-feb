@@ -3,8 +3,9 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T529;
-import gateway.sbs.txn.model.form.T552;
+import gateway.sbs.txn.model.form.ac.T529;
+import gateway.sbs.txn.model.form.ac.T536;
+import gateway.sbs.txn.model.form.ac.T552;
 import gateway.sbs.txn.model.msg.M5832;
 import gateway.sbs.txn.model.msg.M5834;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ public class PatTabAction implements Serializable {
     private M5832 m5832 = new M5832();
     private M5834 m5834 = new M5834();
     private T552 t552 = new T552();
+    private T536 t536 = new T536();
     private List<T552.Bean> dataList = new ArrayList<>();
 
     @PostConstruct
@@ -98,13 +100,8 @@ public class PatTabAction implements Serializable {
                 for (SOFForm form : formList) {
                     String formcode = form.getFormHeader().getFormCode();
                     String formsys = form.getFormHeader().getFormSys();
-                    if ("T552".equals(form.getFormHeader().getFormCode())) {
-                        t552 = (T552) form.getFormBody();
-                        dataList.addAll(t552.getBeanList());
-                    } else if ("W012".equals(form.getFormHeader().getFormCode())) {
-
-                    } else if ("T529".equals(form.getFormHeader().getFormCode())) {
-                        T529 t529 = (T529) form.getFormBody();
+                    if ("T536".equals(form.getFormHeader().getFormCode())) {
+                        t536 = (T536) form.getFormBody();
                     } else {
                         logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -198,5 +195,13 @@ public class PatTabAction implements Serializable {
 
     public void setM5834(M5834 m5834) {
         this.m5834 = m5834;
+    }
+
+    public T536 getT536() {
+        return t536;
+    }
+
+    public void setT536(T536 t536) {
+        this.t536 = t536;
     }
 }

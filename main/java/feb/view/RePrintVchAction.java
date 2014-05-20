@@ -5,8 +5,7 @@ import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
 import feb.service.VchRePrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T845;
-import gateway.sbs.txn.model.form.T898;
+import gateway.sbs.txn.model.form.ac.T898;
 import gateway.sbs.txn.model.msg.M8420;
 import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +15,6 @@ import pub.tools.BeanHelper;
 import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
 import pub.tools.SystemDate;
-import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;

@@ -4,7 +4,7 @@ import feb.service.DataExchangeService;
 import feb.service.PdfPrintService;
 import feb.service.TemPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.*;
+import gateway.sbs.txn.model.form.ac.*;
 import gateway.sbs.txn.model.msg.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.List;
 

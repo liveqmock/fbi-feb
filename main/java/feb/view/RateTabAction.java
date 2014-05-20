@@ -2,8 +2,8 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T806;
-import gateway.sbs.txn.model.form.T807;
+import gateway.sbs.txn.model.form.ac.T806;
+import gateway.sbs.txn.model.form.ac.T807;
 import gateway.sbs.txn.model.msg.M9807;
 import gateway.sbs.txn.model.msg.M9a06;
 import org.slf4j.Logger;

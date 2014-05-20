@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="false"/>
+                <p:focus for="curcde"/>
+                <p:panel id="basepanel">
+                    <h:panelGrid id="input" columns="2" style="width: 100%;" border="0">
+                        <h:panelGrid columns="2" cellpadding="1" cellspacing="5" border="0"
+                                     columnClasses="col-label,col-input" >
+                            <h:outputLabel value="自动转账码:"  style="width: 90%;font-weight: bold"/>
+                            <p:inputText size="25" id="curcde" required="true" requiredMessage="自动转账码不能为空"
+                                         value="#{trfTabAction.m9a25.ATRCDE}"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
+                            <p:commandButton style="width:110px;" value="要素表查询"
+                                             action="#{trfTabAction.onAllQry}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{trfTabAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:column headerText="自动转帐码" style="text-align:center">
+                        <h:outputText value="#{record.ATRCDE}"/>
+                    </p:column>
+                    <p:column headerText="要素顺序号" style="text-align:left">
+                        <h:outputText value="#{record.TRFSEQ}"/>
+                    </p:column>
+                    <p:column headerText="要素类别 " style="text-align:left">
+                        <h:outputText value="#{record.TRFKID}"/>
+                    </p:column>
+                    <p:column headerText="要素号" style="text-align:left">
+                        <h:outputText value="#{record.TRFNUM}"/>
+                    </p:column>
+                    <p:column headerText="操作码 " style="text-align:left">
+                        <h:outputText value="#{record.TRFOPR}"/>
+                    </p:column>
+                    <p:column headerText="金额类别" style="text-align:left">
+                        <h:outputText value="#{record.AMTTYP}"/>
+                    </p:column>
+                    <p:column headerText="借贷方向" style="text-align:left">
+                        <h:outputText value="#{record.AMTSDE}"/>
+                    </p:column>
+
+                    <p:column headerText="操作" style="text-align:center">
+                        <p:commandLink value="修改" immediate="true" ajax="false" action="#{trfTabAction.onUDClick()}"
+                                       style="color: blue">
+                            <f:param value="#{record.ATRCDE}" name="atrcde"/>
+                            <f:param value="#{record.TRFSEQ}" name="trfseq"/>
+                            <f:param value="update" name="action"/>
+                        </p:commandLink>
+                        <p:spacer width="15px"/>
+                        <p:commandLink value="删除" immediate="true" ajax="false" action="#{trfTabAction.onUDClick()}"
+                                       style="color: blue">
+                            <f:param value="#{record.ATRCDE}" name="atrcde"/>
+                            <f:param value="#{record.TRFSEQ}" name="trfseq"/>
+                            <f:param value="delete" name="action"/>
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

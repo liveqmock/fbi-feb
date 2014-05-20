@@ -2,14 +2,12 @@ package feb.view;
 
 import feb.print.model.Vch;
 import feb.service.DataExchangeService;
-import feb.service.PdfPrintService;
 import feb.service.TemInvPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T016;
-import gateway.sbs.txn.model.form.T104;
-import gateway.sbs.txn.model.form.T108;
-import gateway.sbs.txn.model.form.T132;
-import gateway.sbs.txn.model.msg.M0003;
+import gateway.sbs.txn.model.form.re.T016;
+import gateway.sbs.txn.model.form.re.T104;
+import gateway.sbs.txn.model.form.ac.T108;
+import gateway.sbs.txn.model.form.re.T132;
 import gateway.sbs.txn.model.msg.M8108;
 import gateway.sbs.txn.model.msg.Ma270;
 import gateway.sbs.txn.model.msg.Ma271;

@@ -161,6 +161,10 @@
             parent.window.reload = "true";
             parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
         }
+        window.onunload=function(){
+            parent.window.reload = "true";
+            parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
+        }
     </script>
 </head>
 

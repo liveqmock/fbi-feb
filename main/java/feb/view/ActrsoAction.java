@@ -3,25 +3,20 @@ package feb.view;
 import feb.service.DataExchangeService;
 import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T133;
-import gateway.sbs.txn.model.form.T554;
-import gateway.sbs.txn.model.form.T555;
+import gateway.sbs.txn.model.form.re.T554;
+import gateway.sbs.txn.model.form.ac.T555;
 import gateway.sbs.txn.model.msg.Ma113;
 import gateway.sbs.txn.model.msg.Ma276;
-import gateway.sbs.txn.model.msg.Ma280;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.MessageUtil;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 定期查询  通知存款查询

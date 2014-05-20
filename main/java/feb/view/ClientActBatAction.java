@@ -3,7 +3,7 @@ package feb.view;
 import feb.service.DataExchangeService;
 import feb.service.PdfPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T101;
+import gateway.sbs.txn.model.form.ac.T101;
 import gateway.sbs.txn.model.msg.M8101;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;

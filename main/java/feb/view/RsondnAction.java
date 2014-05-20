@@ -1,10 +1,9 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import feb.service.RosPrintService;
 import feb.service.TemRosPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T220;
+import gateway.sbs.txn.model.form.re.T220;
 import gateway.sbs.txn.model.msg.Ma111;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 

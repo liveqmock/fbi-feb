@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:focus for="atrcde"/>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="自动转帐码:"/>
+                            <p:inputText id="atrcde" value="#{trfTabAction.m9a25.ATRCDE}" required="true"
+                                         requiredMessage="必须输入自动转帐码"/>
+                            <h:outputLabel value="要素顺序号:"/>
+                            <p:inputText value="#{trfTabAction.m9a25.TRFSEQ}" maxlength="3" required="true"
+                                         requiredMessage="必须输入要素顺序号"/>
+                            <h:outputLabel value="要素类别:"/>
+                            <p:selectOneMenu value="#{trfTabAction.m9a25.TRFKID}" style="width: 136px;"
+                                             required="true" requiredMessage="必须输入要素类别">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfTrfkidItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="要素号:"/>
+                            <p:inputText value="#{trfTabAction.m9a25.TRFNUM}" required="true"
+                                         requiredMessage="必须输入要素号"/>
+                            <h:outputLabel value="要素操作码:"/>
+                            <p:selectOneMenu value="#{trfTabAction.m9a25.TRFOPR}" style="width: 136px;"
+                                             required="true" requiredMessage="必须输入要素操作码">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfTrfoprItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="要素金额类别:"/>
+                            <p:selectOneMenu value="#{trfTabAction.m9a25.AMTTYP}"
+                                             required="true" style="width: 136px;"
+                                             requiredMessage="必须输入要素金额类别">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfAmttypItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="要素借贷方向:"/>
+                            <p:selectOneMenu value="#{trfTabAction.m9a25.AMTSDE}"
+                                             required="true" style="width: 136px;"
+                                             requiredMessage="必须输入要素借贷方向">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfAmtsdeItems}"/>
+                            </p:selectOneMenu>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认添加"
+                                             action="#{trfTabAction.onAdd()}" ajax="true"
+                                             update="msgs,pg,btns">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -5,7 +5,7 @@ import feb.service.DataExchangeService;
 import feb.service.TemVchPrintService;
 import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T898;
+import gateway.sbs.txn.model.form.ac.T898;
 import gateway.sbs.txn.model.msg.M8401;
 import gateway.sbs.txn.model.msg.M8402;
 import gateway.sbs.txn.model.msg.M8409;

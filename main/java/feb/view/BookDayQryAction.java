@@ -2,7 +2,7 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T851;
+import gateway.sbs.txn.model.form.ac.T151;
 import gateway.sbs.txn.model.msg.M8822;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -36,8 +36,8 @@ public class BookDayQryAction implements Serializable {
     private DataExchangeService dataExchangeService;
 
     private M8822 m8822;
-    private T851 t851 = new T851();
-    private List<T851.Bean> dataList = new ArrayList<>();
+    private T151 t151 = new T151();
+    private List<T151.Bean> dataList = new ArrayList<>();
     private boolean isExport;
     private String cusidt = "";
     private String apcode = "";
@@ -67,11 +67,11 @@ public class BookDayQryAction implements Serializable {
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        t851 = (T851) form.getFormBody();
-                        dataList = t851.getBeanList();
-                        totcnt = t851.getFormBodyHeader().getTOTCNT();
-                        curcnt = t851.getFormBodyHeader().getCURCNT();
+                    if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t151 = (T151) form.getFormBody();
+                        dataList = t151.getBeanList();
+                        totcnt = t151.getFormBodyHeader().getTOTCNT();
+                        curcnt = t151.getFormBodyHeader().getCURCNT();
                         isExport = true;
                     }else {
                         logger.error(form.getFormHeader().getFormCode());
@@ -93,9 +93,9 @@ public class BookDayQryAction implements Serializable {
                 List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8822", m8822);
                 if (formList2 != null && !formList2.isEmpty()) {
                     for (SOFForm form : formList2) {
-                        if ("T851".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            t851 = (T851) form.getFormBody();
-                            dataList.addAll(t851.getBeanList());
+                        if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                            t151 = (T151) form.getFormBody();
+                            dataList.addAll(t151.getBeanList());
                             isExport = true;
                         } else {
                             logger.info(form.getFormHeader().getFormCode());
@@ -145,19 +145,19 @@ public class BookDayQryAction implements Serializable {
         this.m8822 = m8822;
     }
 
-    public T851 getT851() {
-        return t851;
+    public T151 getT151() {
+        return t151;
     }
 
-    public void setT851(T851 t851) {
-        this.t851 = t851;
+    public void setT151(T151 t151) {
+        this.t151 = t151;
     }
 
-    public List<T851.Bean> getDataList() {
+    public List<T151.Bean> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<T851.Bean> dataList) {
+    public void setDataList(List<T151.Bean> dataList) {
         this.dataList = dataList;
     }
 

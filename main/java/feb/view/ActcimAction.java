@@ -1,19 +1,15 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import gateway.sbs.core.domain.AssembleModel;
 import gateway.sbs.core.domain.SOFForm;
-import gateway.sbs.txn.model.form.T208;
+import gateway.sbs.txn.model.form.re.T208;
 
-import gateway.sbs.txn.model.form.T302;
+import gateway.sbs.txn.model.form.re.T302;
 import gateway.sbs.txn.model.msg.Mh820;
 import gateway.sbs.txn.model.msg.Mh830;
-import gateway.sbs.txn.model.form.T009;
-import gateway.sbs.txn.model.form.T302;
-import org.apache.commons.lang.StringUtils;
+import gateway.sbs.txn.model.form.re.T009;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +18,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
