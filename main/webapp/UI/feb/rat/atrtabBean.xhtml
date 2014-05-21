@@ -99,6 +99,14 @@
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton style="width:80px;" value="确认修改"
+                                             action="#{atrTabAction.onDetailMng('2')}" ajax="true"
+                                             rendered="#{atrTabAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;" value="删除"
+                                             action="#{atrTabAction.onDetailMng('3')}" ajax="true"
+                                             rendered="#{atrTabAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                              action="#{atrTabAction.onBack}"
                                              style="width:80px;"/>

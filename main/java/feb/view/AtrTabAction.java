@@ -8,6 +8,7 @@ import gateway.sbs.txn.model.msg.M9a24;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
+import pub.tools.BeanHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -36,6 +37,8 @@ public class AtrTabAction implements Serializable {
 
     private String atrcde;
     private String action;
+    private boolean updateable = false;
+    private boolean deleteable = false;
 
     private T824 t824 = new T824();
     private T871 t871 = new T871();
@@ -49,6 +52,12 @@ public class AtrTabAction implements Serializable {
         atrcde = params.get("atrcde");
         if (action != null) {
             onDetailQry();
+            if ("update".equals(action)) {
+                updateable = true;
+            }
+            if ("delete".equals(action)) {
+                deleteable = true;
+            }
         } else {
             onAllQry();
         }
@@ -91,18 +100,60 @@ public class AtrTabAction implements Serializable {
                 MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
             }
         } catch (Exception e) {
-            logger.error("²éÑ¯Ê§°Ü", e);
-            MessageUtil.addError("²éÑ¯Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+            logger.error("²Ù×÷Ê§°Ü", e);
+            MessageUtil.addError("²Ù×÷Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
     }
 
+    public String onDetailMng(String funcde) {
+        try {
+            m9a24.setFUNCDE(funcde);
+            BeanHelper.copyFields(t871, m9a24);
+            SOFForm form = dataExchangeService.callSbsTxn("9a24", m9a24).get(0);
+            if ("W001".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                logger.info(form.getFormHeader().getFormCode());
+                MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+            } else if ("W004".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                logger.info(form.getFormHeader().getFormCode());
+                MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+            } else {
+                logger.error(form.getFormHeader().getFormCode());
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        } catch (Exception e) {
+            logger.error("²Ù×÷Ê§°Ü", e);
+            MessageUtil.addError("²Ù×÷Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    public String onAdd() {
+        try {
+            m9a24.setFUNCDE("4");
+            SOFForm form = dataExchangeService.callSbsTxn("9a24", m9a24).get(0);
+            if ("W005".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                logger.info(form.getFormHeader().getFormCode());
+                MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+            } else {
+                logger.error(form.getFormHeader().getFormCode());
+                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+            }
+        } catch (Exception e) {
+            logger.error("²Ù×÷Ê§°Ü", e);
+            MessageUtil.addError("²Ù×÷Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
     public String onClick() {
         return "atrtabBean";
     }
 
     public String onBack() {
-        return "atrtabQry?faces-redirect=true";
+        if ("detail".equals(action)) {
+            return "atrtabQry?faces-redirect=true";
+        }
+        return "atrtabMng?faces-redirect=true";
     }
 
 
@@ -163,5 +214,21 @@ public class AtrTabAction implements Serializable {
 
     public void setM9a24(M9a24 m9a24) {
         this.m9a24 = m9a24;
+    }
+
+    public boolean isUpdateable() {
+        return updateable;
+    }
+
+    public void setUpdateable(boolean updateable) {
+        this.updateable = updateable;
+    }
+
+    public boolean isDeleteable() {
+        return deleteable;
+    }
+
+    public void setDeleteable(boolean deleteable) {
+        this.deleteable = deleteable;
     }
 }
