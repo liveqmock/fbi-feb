@@ -4,6 +4,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
 import feb.print.model.Vch;
+import gateway.sbs.txn.model.form.re.T130;
 import org.springframework.stereotype.Service;
 
 import javax.faces.context.FacesContext;
@@ -16,42 +17,50 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 14-4-18
+ * Date: 14-4-18    定期结清打印
  * Time: 下午3:02
  * To change this template use File | Settings | File Templates.
  */
 @Service
-public class TemInvPrintService {
+public class TemSqrPrintService {
 
     private String fileName;
     private String fileName2;
 
     public void printVch(String title, String trncde, String tlrnum, String trntim,
                          String vchset, String trndat, List<Vch> vchList,
-                         String title2, String cusidt, String outtef,String txndat, String orgnam,
-                         String actnam,String boknum,String valdat,String expdat,String intcur,
-                         String txnamt,String dpttyp,String dptprd,String intrat) throws IOException, DocumentException {
+                         String title2, T130 t130) throws IOException, DocumentException {
         fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/invTemp.pdf").getPath();
-        fileName2 =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/invOrdTemp.pdf").getPath();
+        fileName2 = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/t130Temp.pdf").getPath();
         PdfReader reader2 = new PdfReader(fileName2);
         ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         PdfStamper ps2 = new PdfStamper(reader2, baos2);
         AcroFields fields2 = ps2.getAcroFields();
         fields2.setField("title", title2);
-        fields2.setField("cusidt", cusidt);
-        fields2.setField("outtef", outtef);
-        fields2.setField("txndat", txndat);
-        fields2.setField("orgnam", orgnam);
-        fields2.setField("actnam", actnam);
-        fields2.setField("boknum", boknum);
-        fields2.setField("valdat", valdat);
-        fields2.setField("expdat", expdat);
-        fields2.setField("intcur", intcur);
-        fields2.setField("txnamt", txnamt);
-        fields2.setField("dpttyp", dpttyp);
-        fields2.setField("dptprd", dptprd);
-        fields2.setField("intrat", intrat);
-        fields2.setField("flag", "本证实书仅对存款人开户证实，不得作为质押权利凭证");
+        fields2.setField("txncde", t130.getTXNCDE());
+        fields2.setField("teller", t130.getTELLER());
+        fields2.setField("txndat", t130.getTXNDAT());
+        fields2.setField("iptac", t130.getIPTAC());
+        fields2.setField("valdat", t130.getVALDAT());
+        fields2.setField("actnam", t130.getACTNAM());
+        fields2.setField("txnamt", t130.getTXNAMT());
+        fields2.setField("opnint", t130.getOPNIRT());
+        fields2.setField("inint", t130.getININT());
+        fields2.setField("pintax", t130.getP_INTAX());
+        fields2.setField("uintax", t130.getU_INTAX());
+        fields2.setField("savirt", t130.getSAVIRT());
+        fields2.setField("outint", t130.getOUTINT());
+        fields2.setField("pouttax", t130.getP_OUTTAX());
+        fields2.setField("uouttax", t130.getU_OUTTAX());
+        fields2.setField("valirt", t130.getVALIRT());
+        fields2.setField("valint", t130.getVALINT());
+        fields2.setField("pvaltax", t130.getP_VALTAX());
+        fields2.setField("uvaltax", t130.getU_VALTAX());
+        fields2.setField("taxrate", t130.getTAXRATE());
+        fields2.setField("taxamt", t130.getTAXAMT());
+        fields2.setField("feeamt", t130.getFEEAMT());
+        fields2.setField("intcur", t130.getINTCUR());
+        fields2.setField("totint", t130.getTOTINT());
         ps2.setFormFlattening(true);
         ps2.close();
         int count = vchList.size(); //  总行数
@@ -76,12 +85,12 @@ public class TemInvPrintService {
             fields.setField("vchset", vchset);
             fields.setField("trndat", trndat);
             int i = 0;
-            int from = item*20;
-            int to = from +20;
-            if (to>count){
+            int from = item * 20;
+            int to = from + 20;
+            if (to > count) {
                 to = count;
             }
-            for (Vch vch : vchList.subList(from,to)) {
+            for (Vch vch : vchList.subList(from, to)) {
                 for (int j = 0; j < 4; j++) {
                     switch (j) {
                         case 0:
@@ -118,7 +127,7 @@ public class TemInvPrintService {
                     .toByteArray()), 1);
             pdfCopy.addPage(impPage);
         }
-        pdfCopy.addPage(pdfCopy.getImportedPage(new PdfReader(baos2.toByteArray()),1));
+        pdfCopy.addPage(pdfCopy.getImportedPage(new PdfReader(baos2.toByteArray()), 1));
         pdfCopy.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
         document.close();
         resp.reset();
@@ -132,10 +141,11 @@ public class TemInvPrintService {
         out.close();
         ctx.responseComplete();
     }
-    public void printInvOrd( String title, String cusidt, String outtef,String txndat, String orgnam,
-                            String actnam,String boknum,String valdat,String expdat,String intcur,
-                            String txnamt,String dpttyp,String dptprd,String intrat) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/invOrdTemp.pdf").getPath();
+
+    public void printInvOrd(String title, String cusidt, String outtef, String txndat, String orgnam,
+                            String actnam, String boknum, String valdat, String expdat, String intcur,
+                            String txnamt, String dpttyp, String dptprd, String intrat) throws IOException, DocumentException {
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/invOrdTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -160,6 +170,7 @@ public class TemInvPrintService {
         printTempPdf(baos);
 
     }
+
     private void printTempPdf(ByteArrayOutputStream baos) throws IOException, DocumentException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
