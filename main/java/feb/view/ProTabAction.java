@@ -8,6 +8,7 @@ import gateway.sbs.txn.model.msg.M9815;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
+import pub.tools.BeanHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -37,6 +38,8 @@ public class ProTabAction implements Serializable {
     private String plcode;
     private String glcode;
     private String action;
+    private boolean updateable = false;
+    private boolean deleteable = false;
 
     private T815 t815 = new T815();
     private T863 t863 = new T863();
@@ -50,8 +53,12 @@ public class ProTabAction implements Serializable {
         plcode = params.get("plcode");
         glcode = params.get("glcode");
         if (action != null) {
-            if ("detail".equals(action)){
-                onDetailQry();
+            onDetailQry();
+            if ("update".equals(action)) {
+                updateable = true;
+            }
+            if ("delete".equals(action)) {
+                deleteable = true;
             }
         } else {
             onAllQry();
@@ -106,12 +113,65 @@ public class ProTabAction implements Serializable {
         return null;
     }
 
+    public String onDetailMng(String funcde){
+        try {
+            m9815.setFUNCDE(funcde);
+            m9815.setPLCODE(plcode);
+            m9815.setGLCODE(glcode);
+            BeanHelper.copyFields(t863,m9815);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9815", m9815);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("W001".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    } else if ("W004".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    } else {
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("²Ù×÷Ê§°Ü", e);
+            MessageUtil.addError("²Ù×÷Ê§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    public String onAdd(){
+        try {
+            m9815.setFUNCDE("4");
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9815", m9815);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("W005".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        logger.info(form.getFormHeader().getFormCode());
+                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                    } else {
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Ìí¼ÓÊ§°Ü", e);
+            MessageUtil.addError("Ìí¼ÓÊ§°Ü." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
     public String  onClick(){
         return "protabBean";
     }
 
     public String onBack(){
-        return "protabQry?faces-redirect=true";
+        if ("detail".equals(action)) {
+            return "protabQry?faces-redirect=true";
+        }
+        return "protabMng?faces-redirect=true";
     }
 
 
@@ -180,5 +240,21 @@ public class ProTabAction implements Serializable {
 
     public void setM9815(M9815 m9815) {
         this.m9815 = m9815;
+    }
+
+    public boolean isUpdateable() {
+        return updateable;
+    }
+
+    public void setUpdateable(boolean updateable) {
+        this.updateable = updateable;
+    }
+
+    public boolean isDeleteable() {
+        return deleteable;
+    }
+
+    public void setDeleteable(boolean deleteable) {
+        this.deleteable = deleteable;
     }
 }

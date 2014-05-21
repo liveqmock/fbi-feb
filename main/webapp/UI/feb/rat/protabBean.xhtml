@@ -58,8 +58,16 @@
                             <p:inputText value="#{proTabAction.t863.UPDDAT}"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton style="width:80px;" value="确认修改"
+                                             action="#{proTabAction.onDetailMng('2')}" ajax="true"
+                                             rendered="#{proTabAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;" value="删除"
+                                             action="#{proTabAction.onDetailMng('3')}" ajax="true"
+                                             rendered="#{proTabAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                             action="#{curTabAction.onBack}"
+                                             action="#{proTabAction.onBack}"
                                              style="width:80px;"/>
                         </h:panelGrid>
                     </h:panelGrid>
