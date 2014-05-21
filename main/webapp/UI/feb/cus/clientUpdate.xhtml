@@ -51,7 +51,7 @@
         <div style="margin:5px">
             <h:form id="form">
                 <p:focus for="cusidt"/>
-                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:messages id="msgs" showSummary="true" showDetail="false"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
                         <h:panelGrid columns="2" cellspacing="5"
@@ -65,11 +65,11 @@
                         <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0"
                                      width="10%">
                             <p:commandButton style="width:110px;" value="客户信息查询" id="query"
-                                             action="#{clientAction.onQryCus()}" ajax="true"
+                                             action="#{clientAction.onQryCus()}" ajax="false"
                                              update="msgs,panel,dataPanel">
                             </p:commandButton>
-                            <p:commandButton style="width:110px;" value="确认修改"
-                                             disabled="#{!clientAction.updateable}" onkeydown="KeyDown()" onfocus="this.select()"
+                            <p:commandButton style="width:110px;" value="确认修改" onfocus="this.select()"
+                                             disabled="#{!clientAction.updateable}" onkeydown="KeyDown()"
                                              action="#{clientAction.onUpdate()}" ajax="true"
                                              update="msgs,panel,dataPanel">
                             </p:commandButton>
@@ -92,7 +92,7 @@
                         <h:outputLabel value="*客户名称:"/>
                         <h:inputText value="#{clientAction.m8004.CUSNAM}" />
                         <h:outputLabel value="*客户简称:"/>
-                        <h:inputText value="#{clientAction.m8004.SHTNAM}" required="true"/>
+                        <h:inputText value="#{clientAction.m8004.SHTNAM}" />
                         <h:outputLabel value="客户英文名:"/>
                         <h:inputText value="#{clientAction.m8004.ENGNAM}"/>
                         <h:outputLabel value="邮编:"/>
