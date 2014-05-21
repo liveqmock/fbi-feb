@@ -117,15 +117,11 @@
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="查询"
+                            <p:commandButton style="width:110px;" value="确认支取"
                                              action="#{partdraAction.onAllQuery()}"
-                                             disabled="#{actrsoAction.printable}" ajax="true"
-                                             update="msgs,dt">
+                                             ajax="true" update="msgs,dt">
                             </p:commandButton>
 
-
-
-                            <!---->
                             <p:commandButton style="width:110px;" value="打印凭证"
                                              disabled="#{!partdraAction.printable}"
                                              action="#{partdraAction.onPrintOpenAct()}" ajax="false"

@@ -4,6 +4,7 @@ import feb.print.model.Vch;
 import feb.service.DataExchangeService;
 import feb.service.PdfPrintService;
 import feb.service.RosPrintService;
+import feb.service.TemInvPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T016;
 import gateway.sbs.txn.model.form.re.T088;
@@ -42,11 +43,14 @@ public class PartdraAction implements Serializable {
     @ManagedProperty(value = "#{rosPrintService}")
     private RosPrintService rosPrintService;
 
-    @ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;
+    /*@ManagedProperty(value = "#{pdfPrintService}")
+    private PdfPrintService pdfPrintService;*/
+    @ManagedProperty(value = "#{temInvPrintService}")
+    private TemInvPrintService temInvPrintService;
 
     private T088 dra = new T088();
     private T104 Vrso;
+    private T104 t104 = new T104();
     private T016 t016;
     private T130 t130;
     private boolean printable = false;
@@ -116,37 +120,32 @@ public class PartdraAction implements Serializable {
         }
         return null;
     }
-
     public void onPrintOpenAct() {
         try {
-            /***
-             * 测试数据
-             * */
-            /*Vrso = new T104();
-            Vrso.setCUSIDT("0073680");
-            Vrso.setOURREF("010DFIX140000520");
-            Vrso.setTXNDAT("20140114");
-            Vrso.setORGNAM("新月集团");
-            Vrso.setACTNAM("新月集团");
-            Vrso.setBOKNUM("010600012700000468");
-            Vrso.setVALDAT("20130705");
-            Vrso.setEXPDAT("20140705");
-            Vrso.setINTCUR("CNY");
-            Vrso.setTXNAMT("000000499910000");
-            Vrso.setDPTTYP("31");
-            Vrso.setDPTPRD("12");
-            Vrso.setINTRAT("003300000");
-            //--------------------------------------
-            t016 = new T016();
-            t016.setTRNCDE("a281");
-            t016.setWATNUM("0000441");
-            t016.setTRNTIM("172041");
-            t016.setTLRNUM("SYS1");
-            t016.setVCHSET("0084");
-            t016.setVCHPAR("");
-            t016.setTRNDAT("20140114");
-            t016.setORGIDT("010");*/
+            List<Vch> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T016.Bean bean : t016.getBeanList()) {
+                if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
+                    printCnt++;
+                    logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
+                    Vch vch = new Vch();
+                    BeanHelper.copyFields(bean, vch);
+                    vchs.add(vch);
+                }
+            }
 
+            temInvPrintService.printVch(
+                    "联机传票/复核（授权）清单", t016.getTRNCDE(),t016.getTLRNUM(), t016.getTRNTIM(),
+                    t016.getVCHSET(),t016.getTRNDAT(), vchs,"单位定期存款证实书",t104.getCUSIDT(),t104.getOURREF(),t104.getTXNDAT(),
+                    t104.getORGNAM(),t104.getACTNAM(),t104.getBOKNUM(),t104.getVALDAT(),t104.getEXPDAT(),
+                    t104.getINTCUR(),t104.getTXNAMT(),t104.getDPTTYP(),t104.getDPTPRD(),t104.getINTRAT());
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+    /*public void onPrintOpenAct() {
+        try {
 
             if (t016 != null && Vrso != null) {
                 List<Vch> vchs = new ArrayList<>();
@@ -169,7 +168,7 @@ public class PartdraAction implements Serializable {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-    }
+    }*/
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -187,12 +186,20 @@ public class PartdraAction implements Serializable {
         this.rosPrintService = rosPrintService;
     }
 
-    public PdfPrintService getPdfPrintService() {
-        return pdfPrintService;
+    public TemInvPrintService getTemInvPrintService() {
+        return temInvPrintService;
     }
 
-    public void setPdfPrintService(PdfPrintService pdfPrintService) {
-        this.pdfPrintService = pdfPrintService;
+    public void setTemInvPrintService(TemInvPrintService temInvPrintService) {
+        this.temInvPrintService = temInvPrintService;
+    }
+
+    public T104 getT104() {
+        return t104;
+    }
+
+    public void setT104(T104 t104) {
+        this.t104 = t104;
     }
 
     public String getActty1() {
