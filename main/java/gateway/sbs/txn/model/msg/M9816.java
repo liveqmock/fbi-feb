@@ -19,7 +19,7 @@ public class M9816 extends MTia {
     private String DCTYPE = "";     //借贷及轧差标识
     private String OPRFLG = "";     //操作码
     private String GLCFLG = "";     //项目总计标志
-    private String SUMFLG = "";     //统一会计科目标志
+    private String SUMFLG = "1";     //统一会计科目标志
     private String ASTRWT = "";     //资产风险权数
     private String FUNCDE = "";     //操作类别
     private String BEGNUM = "000001";     //起始笔数

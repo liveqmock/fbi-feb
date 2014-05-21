@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="false" showDetail="true"/>
+                <p:focus for="atrcde"/>
+                <p:fieldset>
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="资产负债项目号:"/>
+                            <p:inputText id="atrcde" value="#{debTabAction.m9816.ALCODE}" required="true"
+                                         requiredMessage="必须输入资产负债项目号"/>
+                            <h:outputLabel value="该项目下总帐码:"/>
+                            <p:inputText value="#{debTabAction.m9816.GLCODE}" maxlength="34" required="true"
+                                         requiredMessage="必须输入该项目下总帐码"/>
+                            <h:outputLabel value="项目描述:"/>
+                            <p:inputText value="#{debTabAction.m9816.ALCNAM}" />
+                            <h:outputLabel value="资产负债类型:"/>
+                            <p:selectOneMenu value="#{debTabAction.m9816.ALCTYP}" style="width: 136px;"
+                                             required="true" requiredMessage="必须输入资产负债类型">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfDctypeItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="借贷及轧差标识:"/>
+                            <p:selectOneMenu value="#{debTabAction.m9816.DCTYPE}" style="width: 136px;"
+                                             required="true" requiredMessage="必须输入借贷及轧差标识">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfDctypeItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="操作码:"/>
+                            <p:selectOneMenu value="#{debTabAction.m9816.OPRFLG}" style="width: 136px;"
+                                             required="true" requiredMessage="必须输入操作码">
+                                <f:selectItems value="#{selectEnumTabFieldAction.ctfTrfoprItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="项目总计标志:"/>
+                            <p:inputText value="#{debTabAction.m9816.GLCFLG}"  required="true"
+                                         requiredMessage="必须输入项目总计标志"/>
+                            <h:outputLabel value="统一会计科目标志:"/>
+                            <p:inputText value="#{debTabAction.m9816.SUMFLG}"  required="true"
+                                         requiredMessage="必须输入统一会计科目标志"/>
+                            <h:outputLabel value="资产风险权数:"/>
+                            <p:inputText value="#{debTabAction.m9816.ASTRWT}"  required="true"
+                                         requiredMessage="必须输入资产风险权数"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:80px;margin-left:10px;" value="确认添加"
+                                             action="#{debTabAction.onAdd()}" ajax="true"
+                                             update="msgs,pg,btns">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="项目总计标志: 0- 单个科目计算 1- 按资产负债项目总计"/>
+                <p:separator/>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

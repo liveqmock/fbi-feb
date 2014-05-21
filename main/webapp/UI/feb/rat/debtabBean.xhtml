@@ -67,6 +67,14 @@
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton style="width:80px;" value="确认修改"
+                                             action="#{debTabAction.onDetailMng('2')}" ajax="true"
+                                             rendered="#{debTabAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;" value="删除"
+                                             action="#{debTabAction.onDetailMng('3')}" ajax="true"
+                                             rendered="#{debTabAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                              action="#{debTabAction.onBack}"
                                              style="width:80px;"/>

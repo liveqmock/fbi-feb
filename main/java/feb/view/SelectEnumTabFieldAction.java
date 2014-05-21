@@ -27,6 +27,8 @@ public class SelectEnumTabFieldAction implements Serializable {
     private List<SelectItem> ctfTrfoprItems;      // 要素操作码
     private List<SelectItem> ctfAmttypItems;      // 要素金额类别
     private List<SelectItem> ctfAmtsdeItems;      // 要素借贷方向
+    private List<SelectItem> ctfAlctypItems;      // 资产负债类型
+    private List<SelectItem> ctfDctypeItems;      // 借贷及轧差标识
 
 
     @PostConstruct
@@ -35,6 +37,8 @@ public class SelectEnumTabFieldAction implements Serializable {
         ctfTrfoprItems = skylineService.getEnuSelectItemList("CTF-TRFOPR", true, false);
         ctfAmttypItems = skylineService.getEnuSelectItemList("CTF-AMTTYP", true, false);
         ctfAmtsdeItems = skylineService.getEnuSelectItemList("CTF-AMTSDE", true, false);
+        ctfAlctypItems = skylineService.getEnuSelectItemList("CTF-ALCTYP", true, false);
+        ctfDctypeItems = skylineService.getEnuSelectItemList("CTF-DCTYPE", true, false);
 
     }
 
@@ -76,5 +80,21 @@ public class SelectEnumTabFieldAction implements Serializable {
 
     public void setCtfAmtsdeItems(List<SelectItem> ctfAmtsdeItems) {
         this.ctfAmtsdeItems = ctfAmtsdeItems;
+    }
+
+    public List<SelectItem> getCtfAlctypItems() {
+        return ctfAlctypItems;
+    }
+
+    public void setCtfAlctypItems(List<SelectItem> ctfAlctypItems) {
+        this.ctfAlctypItems = ctfAlctypItems;
+    }
+
+    public List<SelectItem> getCtfDctypeItems() {
+        return ctfDctypeItems;
+    }
+
+    public void setCtfDctypeItems(List<SelectItem> ctfDctypeItems) {
+        this.ctfDctypeItems = ctfDctypeItems;
     }
 }
