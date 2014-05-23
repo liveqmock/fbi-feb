@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{taxrTabAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+                    <p:column headerText="税码号" style="text-align:left">
+                        <h:outputText value="#{record.TAXTNO}"/>
+                    </p:column>
+                    <p:column headerText="税率码" style="text-align:center">
+                        <h:outputText value="#{record.TAXCDE}"/>
+                    </p:column>
+
+                    <p:column headerText="税率值" style="text-align:left">
+                        <h:outputText value="#{record.TAXRAT}"/>
+                    </p:column>
+
+                    <p:column headerText="操作" style="text-align:center">
+                        <p:commandLink value="修改" immediate="true" ajax="false" action="#{taxrTabAction.onClick()}"
+                                       style="color: blue">
+                            <f:param value="#{record.TAXTNO}" name="taxtno"/>
+                            <f:param value="#{record.TAXCDE}" name="taxcde"/>
+                            <f:param value="update" name="action"/>
+                        </p:commandLink>
+                        <p:spacer width="15"/>
+                        <p:commandLink value="删除" immediate="true" ajax="false" action="#{taxrTabAction.onClick()}"
+                                       style="color: blue">
+                            <f:param value="#{record.TAXTNO}" name="taxtno"/>
+                            <f:param value="#{record.TAXCDE}" name="taxcde"/>
+                            <f:param value="delete" name="action"/>
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
