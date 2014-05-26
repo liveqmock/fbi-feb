@@ -4,7 +4,7 @@ import feb.service.DataExchangeService;
 import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T554;
-import gateway.sbs.txn.model.form.ac.T555;
+import gateway.sbs.txn.model.form.re.T555;
 import gateway.sbs.txn.model.msg.Ma113;
 import gateway.sbs.txn.model.msg.Ma276;
 import org.slf4j.Logger;
