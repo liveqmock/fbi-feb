@@ -69,17 +69,17 @@ public class BookDayQryAction implements Serializable {
                         totcnt = t151.getFormBodyHeader().getTOTCNT();
                         curcnt = t151.getFormBodyHeader().getCURCNT();
                         isExport = true;
-                    }else {
+                    } else {
                         logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (!totcnt.isEmpty()&&totcnt!=""){
+            if (!totcnt.isEmpty() && totcnt != "") {
                 //因为 totcnt是全局变量，所有在第一次查询之后，发起第二次交易时totcnt就不为空，所有要在第一次发起交易时清空
                 m = Integer.parseInt(totcnt) / Integer.parseInt(curcnt);
                 n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
-                if (m>0&&n>0){
+                if (m > 0 && n > 0) {
                     String tmp = "";
                     for (int j = 1; j < m; j++) {
                         tmp = j * Integer.parseInt(curcnt) + 1 + "";
@@ -111,14 +111,24 @@ public class BookDayQryAction implements Serializable {
         HSSFWorkbook wb = (HSSFWorkbook) document;
         HSSFSheet sheet = wb.getSheetAt(0);
         HSSFRow header = sheet.getRow(0);
-
+        int rowLen = sheet.getLastRowNum();
         HSSFCellStyle cellStyle = wb.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-            HSSFCell cell = header.getCell(i);
+        for (int i = 1; i <= rowLen; i++) {
+            //HSSFCell cell = header.getCell(i);
+            HSSFCell cell = null;
+            for (int j = 0; j < header.getPhysicalNumberOfCells(); j++) {
+                if (j==2){
+                    cell = sheet.getRow(i).getCell(j);
+                    String a = cell.getStringCellValue().trim();
+                    //cell.setCellValue("111");对值操作
+                    //System.out.println(a);
+                }
 
+
+            }
             cell.setCellStyle(cellStyle);
         }
     }

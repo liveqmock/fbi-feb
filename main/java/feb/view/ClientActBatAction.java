@@ -2,6 +2,7 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import feb.service.TemPrintService;
+import feb.service.TemVchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T101;
 import gateway.sbs.txn.model.msg.M8101;
@@ -47,6 +48,8 @@ public class ClientActBatAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+    @ManagedProperty(value = "#{temPrintService}")
+    private TemPrintService temPrintService;
 
     private String actnum;
     private String tellerid;
@@ -55,8 +58,6 @@ public class ClientActBatAction implements Serializable {
     private UploadedFile file;  //客户文件
     private List<M8101> m8101errs;//批量创建账户失败集合
     private List<T101> t101s;//批量创建账户信息成功集合
-    @ManagedProperty(value = "#{temPrintService}")
-    private TemPrintService temPrintService;
     //private List<T101> selectedActs = new ArrayList<T101>();//用于批量打印时选择打印条数
 
     @PostConstruct
@@ -380,7 +381,7 @@ public class ClientActBatAction implements Serializable {
 
     // 打印开户确认书
     public void onPrintOpenAct() {
-        for (T101 bean : t101s){
+        for (T101 bean : t101s) {
             try {
                 temPrintService.printOpnAct(
                         bean.getORGIDT(), bean.getDEPNUM(), bean.getACTNUM(),
@@ -391,7 +392,6 @@ public class ClientActBatAction implements Serializable {
             }
         }
     }
-
 
     //======================================================================================
 
@@ -444,14 +444,6 @@ public class ClientActBatAction implements Serializable {
         this.t101s = t101s;
     }
 
-    public TemPrintService getTemPrintService() {
-        return temPrintService;
-    }
-
-    public void setTemPrintService(TemPrintService temPrintService) {
-        this.temPrintService = temPrintService;
-    }
-
     public String getActnum() {
         return actnum;
     }
@@ -460,4 +452,11 @@ public class ClientActBatAction implements Serializable {
         this.actnum = actnum;
     }
 
+    public TemPrintService getTemPrintService() {
+        return temPrintService;
+    }
+
+    public void setTemPrintService(TemPrintService temPrintService) {
+        this.temPrintService = temPrintService;
+    }
 }
