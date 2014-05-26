@@ -29,8 +29,7 @@ public class ActhstAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
     private T151 t151 = new T151();
-    private String totcnt = "";
-    private String curcnt = "";
+
     private String cusidt = "";
     private String apcode = "";
     private String curcde = "";
@@ -49,48 +48,50 @@ public class ActhstAction implements Serializable {
 
 
     public String onAllQuery() {
+        String totcnt = "";
+        String curcnt = "";
         int m = 0;//取整
         int n = 0;//取余
         try {
-            M8823 m8823 = new M8823(cusidt, apcode, curcde, eryda1, eryda2, secamt, ovelim, tlenum, vchset, funcde, regadd, begnum);
+            M8823 m8823 = new M8823(cusidt, apcode, curcde, eryda1, eryda2,
+                    secamt, ovelim, tlenum, vchset, funcde, regadd, begnum);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("8823", m8823);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t151 = (T151) form.getFormBody();
+                        dataList = t151.getBeanList();
                         totcnt = t151.getFormBodyHeader().getTOTCNT();
                         curcnt = t151.getFormBodyHeader().getCURCNT();
-                        dataList.addAll(t151.getBeanList());
                         isExport = true;
-                    } else {
+                    }else {
                         logger.error(form.getFormHeader().getFormCode());
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                        pub.platform.MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (!totcnt.isEmpty()&&totcnt!=null){
-                m = Integer.parseInt(totcnt) / 100;
-                n = Integer.parseInt(totcnt) % 100;
-            }
-
-            if (n > 0) {
-                m++;
-            }
-            String tmp = "";
-            for (int j = 1; j < m; j++) {
-                tmp = j * 100 + 1 + "";
-                m8823.setBEGNUM(tmp);
-                List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8823", m8823);
-                if (formList2 != null && !formList2.isEmpty()) {
-                    for (SOFForm form : formList2) {
-                        if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            t151 = (T151) form.getFormBody();
-                            dataList.addAll(t151.getBeanList());
-                            isExport = true;
-                        } else {
-                            logger.info(form.getFormHeader().getFormCode());
-                            pub.platform.MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+            if (!totcnt.isEmpty()&&totcnt!=""){
+                //因为 totcnt是全局变量，所有在第一次查询之后，发起第二次交易时totcnt就不为空，所有要在第一次发起交易时清空
+                m = Integer.parseInt(totcnt) / Integer.parseInt(curcnt);
+                n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
+                if (m>0&&n>0){
+                    String tmp = "";
+                    for (int j = 1; j < m; j++) {
+                        tmp = j * Integer.parseInt(curcnt) + 1 + "";
+                        m8823.setBEGNUM(tmp);
+                        List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8823", m8823);
+                        if (formList2 != null && !formList2.isEmpty()) {
+                            for (SOFForm form : formList2) {
+                                if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                                    t151 = (T151) form.getFormBody();
+                                    dataList.addAll(t151.getBeanList());
+                                    isExport = true;
+                                } else {
+                                    logger.error(form.getFormHeader().getFormCode());
+                                    pub.platform.MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                                }
+                            }
                         }
                     }
                 }
@@ -239,21 +240,6 @@ public class ActhstAction implements Serializable {
         this.dataList = dataList;
     }
 
-    public String getTotcnt() {
-        return totcnt;
-    }
-
-    public void setTotcnt(String totcnt) {
-        this.totcnt = totcnt;
-    }
-
-    public String getCurcnt() {
-        return curcnt;
-    }
-
-    public void setCurcnt(String curcnt) {
-        this.curcnt = curcnt;
-    }
 
     public boolean isExport() {
         return isExport;

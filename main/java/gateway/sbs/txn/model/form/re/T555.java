@@ -1,4 +1,4 @@
-package gateway.sbs.txn.model.form.ac;
+package gateway.sbs.txn.model.form.re;
 
 import gateway.sbs.core.domain.AssembleModel;
 import gateway.sbs.core.domain.SOFFormBody;
