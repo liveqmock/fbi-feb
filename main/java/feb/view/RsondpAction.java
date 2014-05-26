@@ -33,8 +33,6 @@ public class RsondpAction implements Serializable {
 
     @ManagedProperty(value = "#{temRosPrintService}")
     private TemRosPrintService temRosPrintService;
-    /*@ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;*/
 
     private T220 ndp = new T220();
 
@@ -97,17 +95,6 @@ public class RsondpAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
-   /* public void onPrintOpenAct() {
-        try {
-            if (ndp != null) {
-                rosPrintService.printRevoNote("撤销通知单", ndp);
-            }
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
-
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;

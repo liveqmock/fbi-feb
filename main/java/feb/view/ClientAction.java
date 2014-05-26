@@ -2,7 +2,6 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import feb.service.TemPrintService;
-import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T001;
 import gateway.sbs.txn.model.form.ac.T003;
@@ -49,9 +48,6 @@ public class ClientAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-
-    @ManagedProperty(value = "#{vchPrintService}")
-    private VchPrintService vchPrintService;
 
     @ManagedProperty(value = "#{temPrintService}")
     private TemPrintService temPrintService;
@@ -121,17 +117,6 @@ public class ClientAction implements Serializable {
         return null;
     }
 
-    // 打印确认书
-   /* public void onPrintOpenAct() {
-        try {
-            vchPrintService.printVchpenAct(
-                    "     客户建立确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
-                    t001.getCUSNAM(), t001.getOPNDAT(), "", tellerid);
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
     public void onTempPrintOpen() {
         try {
             temPrintService.printVchpenAct(
@@ -152,16 +137,7 @@ public class ClientAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
-    /*public void onPrintCloseAct() {
-        try {
-            vchPrintService.printVchClsAct(
-                    "     客户关闭确认书", t001.getORGIDT(), t001.getDEPNUM(), t001.getCUSIDT(),
-                    t001.getCUSNAM(), t001.getOPNDAT(), t001.getCLSDAT(), tellerid);
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
+
 
     public String onQryCus() {
         try {
@@ -465,13 +441,6 @@ public class ClientAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public VchPrintService getVchPrintService() {
-        return vchPrintService;
-    }
-
-    public void setVchPrintService(VchPrintService vchPrintService) {
-        this.vchPrintService = vchPrintService;
-    }
 
     public M8002 getM8002() {
         return m8002;

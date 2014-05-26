@@ -3,7 +3,7 @@ package feb.view;
 
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
-import feb.service.VchRePrintService;
+import feb.service.TemVchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T898;
 import gateway.sbs.txn.model.msg.M8420;
@@ -15,6 +15,7 @@ import pub.tools.BeanHelper;
 import pub.tools.DateUtil;
 import pub.tools.MessageUtil;
 import pub.tools.SystemDate;
+import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -45,13 +46,15 @@ public class RePrintVchAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{vchRePrintService}")
-    private VchRePrintService vchRePrintService;
+    @ManagedProperty(value = "#{temVchPrintService}")
+    private TemVchPrintService temVchPrintService;
 
 
     private String vchset = "";
     private String txntim;                //时间
     private String sysdat;                //日期
+    private String tlrnum;                //柜员
+
     private boolean isPrint ;
     private T898 t898 = new T898();
     private M8420 m8420 = new M8420();
@@ -62,7 +65,7 @@ public class RePrintVchAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        //tlrnum = SkylineService.getOperId();//============>得到当前柜员号
+        tlrnum = SkylineService.getOperId();//============>得到当前柜员号
         sysdat =new SimpleDateFormat("yyyy/MM/dd").format(new SystemDate().getSysdate2());//sbs时间
     }
 
@@ -141,12 +144,8 @@ public class RePrintVchAction implements Serializable {
                     vchs.add(vch);
                 }
             }
-            for (; printCnt < 20; printCnt++) {
-                vchs.add(new Vchset());
-            }
             txntim = DateUtil.getCurrentTime();//系统时间
-            vchRePrintService.printVch(
-                    "              传   票   流   水   账", vchset, sysdat, txntim, "010", "", "", vchs);
+            temVchPrintService.printVch( vchset, sysdat, txntim,tlrnum,vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -162,12 +161,28 @@ public class RePrintVchAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public VchRePrintService getVchRePrintService() {
-        return vchRePrintService;
+    public TemVchPrintService getTemVchPrintService() {
+        return temVchPrintService;
     }
 
-    public void setVchRePrintService(VchRePrintService vchRePrintService) {
-        this.vchRePrintService = vchRePrintService;
+    public void setTemVchPrintService(TemVchPrintService temVchPrintService) {
+        this.temVchPrintService = temVchPrintService;
+    }
+
+    public List<T898.Bean> getAllList() {
+        return allList;
+    }
+
+    public void setAllList(List<T898.Bean> allList) {
+        this.allList = allList;
+    }
+
+    public M85a2 getM85a2() {
+        return m85a2;
+    }
+
+    public void setM85a2(M85a2 m85a2) {
+        this.m85a2 = m85a2;
     }
 
     public String getVchset() {

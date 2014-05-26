@@ -32,9 +32,6 @@ public class CurrInvAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    /*@ManagedProperty(value = "#{invPrintService}")
-    private InvPrintService invPrintService;*/
-
     @ManagedProperty(value = "#{temPrintService}")
     private TemPrintService temPrintService;
 
@@ -81,19 +78,7 @@ public class CurrInvAction implements Serializable {
             pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
-    /*public void onPrintInv() {
-        try {
-            clsdat = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getCLSDAT()));
-            lintdt = new SimpleDateFormat("yyyy/MM/dd").format(new SimpleDateFormat("yyyyMMdd").parse(t114.getLINTDT()));
-            invPrintService.printCurrInv(" 活期存款清单",t114.getORGIDT(),t114.getACTNUM(),t114.getACTNAM(),
-                    t114.getAVABAL(),clsdat,lintdt,t114.getCRACCM1(),t114.getCRATSF1(),
-                    t114.getCACINT1(),t114.getCRACCM2(),t114.getCRATSF2(),t114.getCACINT2(),t114.getCRACCM3(),
-                    t114.getCRATSF3(),t114.getCACINT3(),t114.getCACINT(),t114.getAMOUNT());
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
+
 
     // - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - -
     public DataExchangeService getDataExchangeService() {
@@ -103,14 +88,6 @@ public class CurrInvAction implements Serializable {
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
     }
-
-    /*public InvPrintService getInvPrintService() {
-        return invPrintService;
-    }
-
-    public void setInvPrintService(InvPrintService invPrintService) {
-        this.invPrintService = invPrintService;
-    }*/
 
     public String getOrgid3() {
         return orgid3;

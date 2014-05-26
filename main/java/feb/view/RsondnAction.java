@@ -31,9 +31,6 @@ public class RsondnAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-   /* @ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;*/
-
     @ManagedProperty(value = "#{temRosPrintService}")
     private TemRosPrintService temRosPrintService;
 

@@ -1,7 +1,6 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import feb.service.PdfPrintService;
 import feb.service.TemPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.*;
@@ -29,9 +28,6 @@ public class ClientActAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-
-    @ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;
 
     @ManagedProperty(value = "#{temPrintService}")
     private TemPrintService temPrintService;
@@ -77,17 +73,6 @@ public class ClientActAction implements Serializable {
     }
 
     // 打印开户确认书
-   /* public void onPrintOpenAct() {
-        try {
-            pdfPrintService.printVch4OpenClsAct(
-                    "       开户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
-                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), "", tellerid);
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
-    // 打印开户确认书
     public void onPrintOpenAct() {
         try {
             temPrintService.printOpnAct(
@@ -109,16 +94,6 @@ public class ClientActAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
-    /*public void onPrintCloseAct() {
-        try {
-            pdfPrintService.printVch4OpenClsAct(
-                    "       销户确认书", rtnActInfo.getORGIDT(), rtnActInfo.getDEPNUM(), rtnActInfo.getACTNUM(),
-                    rtnActInfo.getCUSNAM(), rtnActInfo.getOPNDAT(), rtnActInfo.getCLSDAT(), tellerid);
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
 
     public String onCreateInternalAct() {
         try {
@@ -302,14 +277,6 @@ public class ClientActAction implements Serializable {
     }
 
     // ------------------------------
-
-    public PdfPrintService getPdfPrintService() {
-        return pdfPrintService;
-    }
-
-    public void setPdfPrintService(PdfPrintService pdfPrintService) {
-        this.pdfPrintService = pdfPrintService;
-    }
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;

@@ -1,7 +1,7 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import feb.service.PdfPrintService;
+import feb.service.TemPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T101;
 import gateway.sbs.txn.model.msg.M8101;
@@ -48,9 +48,6 @@ public class ClientActBatAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;
-
     private String actnum;
     private String tellerid;
     private M8101 m8101 = new M8101();   // 账户
@@ -58,6 +55,8 @@ public class ClientActBatAction implements Serializable {
     private UploadedFile file;  //客户文件
     private List<M8101> m8101errs;//批量创建账户失败集合
     private List<T101> t101s;//批量创建账户信息成功集合
+    @ManagedProperty(value = "#{temPrintService}")
+    private TemPrintService temPrintService;
     //private List<T101> selectedActs = new ArrayList<T101>();//用于批量打印时选择打印条数
 
     @PostConstruct
@@ -118,15 +117,15 @@ public class ClientActBatAction implements Serializable {
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue().trim();
-                            if ("".equals(tmp)){
+                            if ("".equals(tmp)) {
                                 continue;
                             }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
-                            if ("0".equals(tmp)){
+                            if ("0".equals(tmp)) {
                                 continue;
                             }
-                        }else if (cell.getCellType()==3){
+                        } else if (cell.getCellType() == 3) {
                             continue;
                         }
                     } else continue;
@@ -229,7 +228,7 @@ public class ClientActBatAction implements Serializable {
 
     /**
      * 读取Office 2007 excel
-     *
+     * <p/>
      * 原poi不可以读取2007
      * 所以需要额外的dom4j-1.6.1.jar  poi-ooxml-schemas-3.7-20101029.jar
      * xmlbeans-2.3.0.jar三个jar包
@@ -252,15 +251,15 @@ public class ClientActBatAction implements Serializable {
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
                             tmp = cell.getStringCellValue();
-                            if ("".equals(tmp)){
+                            if ("".equals(tmp)) {
                                 continue;
                             }
                         } else if (cell.getCellType() == 0) {
                             tmp = NumberFormat.getNumberInstance().format(cell.getNumericCellValue()).replaceAll(",", "");
-                            if ("0".equals(tmp)){
+                            if ("0".equals(tmp)) {
                                 continue;
                             }
-                        }else if (cell.getCellType()==3){
+                        } else if (cell.getCellType() == 3) {
                             continue;
                         }
                     } else continue;
@@ -370,7 +369,7 @@ public class ClientActBatAction implements Serializable {
                 t101s.add(t101);
             } else {
                 m8101errs.add(m8101);
-                m8101.setERROCDE(formcode+MessagePropertyManager.getProperty(formcode));
+                m8101.setERROCDE(formcode + MessagePropertyManager.getProperty(formcode));
             }
         } catch (Exception e) {
             logger.error("8101账户开户失败", e);
@@ -381,17 +380,18 @@ public class ClientActBatAction implements Serializable {
 
     // 打印开户确认书
     public void onPrintOpenAct() {
-        for (T101 bean : t101s) {
+        for (T101 bean : t101s){
             try {
-                pdfPrintService.printVch4OpenClsAct(
-                        "       开户确认书", bean.getORGIDT(), bean.getDEPNUM(), actnum,
-                        bean.getCUSNAM(), bean.getOPNDAT(), "", tellerid);
+                temPrintService.printOpnAct(
+                        bean.getORGIDT(), bean.getDEPNUM(), bean.getACTNUM(),
+                        bean.getCUSNAM(), bean.getOPNDAT(), tellerid);
             } catch (Exception e) {
                 logger.error("打印失败", e);
                 pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
             }
         }
     }
+
 
     //======================================================================================
 
@@ -444,12 +444,12 @@ public class ClientActBatAction implements Serializable {
         this.t101s = t101s;
     }
 
-    public PdfPrintService getPdfPrintService() {
-        return pdfPrintService;
+    public TemPrintService getTemPrintService() {
+        return temPrintService;
     }
 
-    public void setPdfPrintService(PdfPrintService pdfPrintService) {
-        this.pdfPrintService = pdfPrintService;
+    public void setTemPrintService(TemPrintService temPrintService) {
+        this.temPrintService = temPrintService;
     }
 
     public String getActnum() {

@@ -2,8 +2,6 @@ package feb.view;
 
 import feb.print.model.Vch;
 import feb.service.DataExchangeService;
-import feb.service.PdfPrintService;
-import feb.service.RosPrintService;
 import feb.service.TemInvPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T016;
@@ -40,11 +38,6 @@ public class PartdraAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;
-
-    /*@ManagedProperty(value = "#{pdfPrintService}")
-    private PdfPrintService pdfPrintService;*/
     @ManagedProperty(value = "#{temInvPrintService}")
     private TemInvPrintService temInvPrintService;
 
@@ -144,31 +137,7 @@ public class PartdraAction implements Serializable {
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
-    /*public void onPrintOpenAct() {
-        try {
 
-            if (t016 != null && Vrso != null) {
-                List<Vch> vchs = new ArrayList<>();
-                int printCnt = 0;
-                for (T016.Bean bean : t016.getBeanList()) {
-                    if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
-                        printCnt++;
-                        logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
-                        Vch vch = new Vch();
-                        BeanHelper.copyFields(bean, vch);
-                        vchs.add(vch);
-                    }
-                }
-                for (; printCnt < 11; printCnt++) {
-                    vchs.add(new Vch());
-                }
-                rosPrintService.printCP_ZSS("联机传票/复核（授权）清单", t016, vchs, "存款证实书", Vrso);
-            }
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -176,14 +145,6 @@ public class PartdraAction implements Serializable {
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
-    }
-
-    public RosPrintService getRosPrintService() {
-        return rosPrintService;
-    }
-
-    public void setRosPrintService(RosPrintService rosPrintService) {
-        this.rosPrintService = rosPrintService;
     }
 
     public TemInvPrintService getTemInvPrintService() {

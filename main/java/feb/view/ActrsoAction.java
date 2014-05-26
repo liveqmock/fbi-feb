@@ -1,7 +1,6 @@
 package feb.view;
 
 import feb.service.DataExchangeService;
-import feb.service.RosPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T554;
 import gateway.sbs.txn.model.form.re.T555;
@@ -30,8 +29,6 @@ public class ActrsoAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
-    @ManagedProperty(value = "#{rosPrintService}")
-    private RosPrintService rosPrintService;
 
     private T554 t554 = new T554();
     private T555 t555 = new T555();
@@ -94,13 +91,6 @@ public class ActrsoAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
-    public RosPrintService getRosPrintService() {
-        return rosPrintService;
-    }
-
-    public void setRosPrintService(RosPrintService rosPrintService) {
-        this.rosPrintService = rosPrintService;
-    }
 
     public Ma276 getMa276() {
         return ma276;

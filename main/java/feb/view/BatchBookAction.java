@@ -3,7 +3,6 @@ package feb.view;
 import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
 import feb.service.TemVchPrintService;
-import feb.service.VchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T898;
 import gateway.sbs.txn.model.msg.M8401;
@@ -46,9 +45,6 @@ public class BatchBookAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
-
-    @ManagedProperty(value = "#{vchPrintService}")
-    private VchPrintService vchPrintService;
 
     @ManagedProperty(value = "#{temVchPrintService}")
     private TemVchPrintService temVchPrintService;
@@ -130,36 +126,6 @@ public class BatchBookAction implements Serializable {
         return null;
     }
 
-    /*
-       DecimalFormat df = new DecimalFormat("###,###,##0.00");
-       m8401.setTXNAMT(df.format(new BigDecimal(Double.parseDouble(m8401.getTXNAMT())/100)));
-    */
-    //TODO 传票打印  +++++++++++++
-   /* public void onPrint() {
-        try {
-            List<Vchset> vchs = new ArrayList<>();
-            int printCnt = 0;
-            for (T898.Bean bean : dataList) {
-                if (!StringUtils.isEmpty(bean.getACTNUM()) || !StringUtils.isEmpty(bean.getTXNAMT())) {
-                    printCnt++;
-                    Vchset vch = new Vchset();
-                    BeanHelper.copyFields(bean, vch);
-                    DecimalFormat df = new DecimalFormat("###,###,##0.00");
-                    vch.setTXNAMT(df.format(new BigDecimal(bean.getTXNAMT())));
-                    vchs.add(vch);
-                }
-            }
-            for (; printCnt < 20; printCnt++) {
-                vchs.add(new Vchset());
-            }
-            txntim = DateUtil.getCurrentTime();//系统时间
-            vchPrintService.printVch(
-                    "              传   票   流   水   账", vchset, sysdat, txntim, "010", "", "", vchs);
-        } catch (Exception e) {
-            logger.error("打印失败", e);
-            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-    }*/
     public void onPrint() {
         try {
             List<Vchset> vchs = new ArrayList<>();
@@ -638,14 +604,6 @@ public class BatchBookAction implements Serializable {
 
     public void setFurinf(String furinf) {
         this.furinf = furinf;
-    }
-
-    public VchPrintService getVchPrintService() {
-        return vchPrintService;
-    }
-
-    public void setVchPrintService(VchPrintService vchPrintService) {
-        this.vchPrintService = vchPrintService;
     }
 
     public boolean isPrintable() {
