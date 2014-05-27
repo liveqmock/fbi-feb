@@ -15,7 +15,7 @@ public class Ma111 extends MTia {
     private String PASTYP = "";      //证件种类
     private String PASSNO = "";      //证件号
     private String REMARK = "";      //地址
-    private String MAGFL2 = "";      //账号输入方式
+    private String MAGFL2 = "0";      //账号输入方式
 
     public Ma111(String ACTTY2, String IPTAC2,String ADVNUM, String DRAMD2, String ADVAMT,String ADVDAT) {
         this.ACTTY2 = ACTTY2;

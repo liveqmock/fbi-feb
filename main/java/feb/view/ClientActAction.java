@@ -268,6 +268,8 @@ public class ClientActAction implements Serializable {
             String acttyp = clientAct.getACTTYP();
             if (acttyp.equals("2")){
                 clientAct.setINTFLG("0");
+                clientAct.setSTMFMT("O");
+                clientAct.setLEGFMT("O");
             }
         }catch (Exception e){
             logger.error("联动设置账页信息失败", e);

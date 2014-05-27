@@ -57,7 +57,7 @@
                             <h:outputLabel value="*转账账号:"/>
                             <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
                                          requiredMessage="必须输入转账账号！">
-                                <p:ajax event="blur" update="msgs,dataPanel"
+                                <p:ajax event="blur" update="msgs,iptac2"
                                         listener="#{timeDepositAction.onQryAct}"/>
                             </p:inputText>
                             <h:outputLabel value="*转账账户:"/>

@@ -82,6 +82,12 @@
                                          value="#{rsondnAction.advdat}"
                                          requiredMessage="支取日期不能为空。"
                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="主管授权号:" style="font-weight: bold"/>
+                            <p:inputText required="true" style="width: 156px;"
+                                         value="#{rsondnAction.auttlr}" requiredMessage="主管号不能为空。"/>
+                            <h:outputLabel value="主管授权密码:" style="font-weight: bold"/>
+                            <p:password required="true" style="width: 156px;"
+                                        value="#{rsondnAction.autpwd}" requiredMessage="密码不能为空。"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">

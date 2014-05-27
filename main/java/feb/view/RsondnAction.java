@@ -56,7 +56,6 @@ public class RsondnAction implements Serializable {
 //        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
         actty2 = "07";
         dramd2 = "0";
-        advamt = "1";
 
     }
 
