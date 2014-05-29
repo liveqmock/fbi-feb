@@ -23,6 +23,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +48,6 @@ public class TimeDepositAction implements Serializable {
     private T104 t104;
     private T108 t108;
     private boolean printable = false;
-    private BigDecimal bdTxnamt;   // 交易金额
 
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
@@ -145,12 +145,16 @@ public class TimeDepositAction implements Serializable {
                     vchs.add(vch);
                 }
             }
-
+            String tmp ="";
+            DecimalFormat df = new DecimalFormat("###,###,##0.00");
+            if(t104.getTXNAMT()!=null){
+                tmp = df.format(new BigDecimal(t104.getTXNAMT()));
+            }
             temInvPrintService.printVch(
                     "联机传票/复核（授权）清单", t016.getTRNCDE(),t016.getTLRNUM(), t016.getTRNTIM(),
                     t016.getVCHSET(),t016.getTRNDAT(), vchs,"单位定期存款证实书",t104.getCUSIDT(),t104.getOURREF(),t104.getTXNDAT(),
                     t104.getORGNAM(),t104.getACTNAM(),t104.getBOKNUM(),t104.getVALDAT(),t104.getEXPDAT(),
-                    t104.getINTCUR(),t104.getTXNAMT(),t104.getDPTTYP(),t104.getDPTPRD(),t104.getINTRAT());
+                    t104.getINTCUR(),tmp,t104.getDPTTYP(),t104.getDPTPRD(),t104.getINTRAT());
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -184,13 +188,6 @@ public class TimeDepositAction implements Serializable {
         this.ma271 = ma271;
     }
 
-    public BigDecimal getBdTxnamt() {
-        return bdTxnamt;
-    }
-
-    public void setBdTxnamt(BigDecimal bdTxnamt) {
-        this.bdTxnamt = bdTxnamt;
-    }
 
     public T132 getQryT132() {
         return qryT132;
