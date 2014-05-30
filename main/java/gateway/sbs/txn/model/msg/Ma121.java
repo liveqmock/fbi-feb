@@ -1,12 +1,12 @@
 package gateway.sbs.txn.model.msg;
 
 /**
- * 签到
+ * 撤销通知存款
  */
 public class Ma121 extends MTia {
-    private String ACTTY2;      //账户类别 *
-    private String IPTAC2;      //账户号    *
-    private String DRAMD2;      //取款方式  *
+    private String ACTTY2 = "07";      //账户类别 *
+    private String IPTAC2 = "";      //账户号    *
+    private String DRAMD2 = "0";      //取款方式  *
     private String CUSPW2 = "";      //客户密码
     private String ADVNUM = "";      //通知单号
     private String TXNDAT = "";      //交易日期
@@ -15,18 +15,6 @@ public class Ma121 extends MTia {
     private String REMARK = "";      //地址
     private String MAGFL2 = "";      //账号输入方式
 
-
-
-
-
-
-
-    public Ma121(String ACTTY2, String IPTAC2, String DRAMD2) {
-        this.ACTTY2 = ACTTY2;
-        this.IPTAC2 = IPTAC2;
-        this.DRAMD2 = DRAMD2;
-
-    }
 
     public String getACTTY2() {
         return ACTTY2;

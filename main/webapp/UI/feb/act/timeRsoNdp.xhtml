@@ -53,7 +53,7 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:focus for="actty1"/>
+                <p:focus for="iptac2"/>
                 <p:messages id="msgs" showDetail="true"/>
                 <p:fieldset id="panel">
                     <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
@@ -62,16 +62,20 @@
                                      col-input2">
                             <h:outputLabel value="账户号类型:" style="font-weight: bold"/>
                             <p:inputText size="25"
-                                         id="actty1" required="true" maxlength="2"
-                                         value="#{rsondpAction.actty2}" requiredMessage="账户号类型不能为空。"/>
-                            <h:outputLabel value="账户号:" style="font-weight: bold"/>
-                            <p:inputText size="25" required="true"
-                                         value="#{rsondpAction.iptac2}" requiredMessage="账户号不能为空。"/>
+                                         id="actty2" required="true" maxlength="2"
+                                         value="#{rsondpAction.ma121.ACTTY2}" requiredMessage="账户号类型不能为空。"/>
                             <h:outputLabel value="取款方式:" style="font-weight: bold"/>
-                            <p:selectOneMenu value="#{rsondpAction.dramd2}" style="width: 156px;" required="true"
+                            <p:selectOneMenu value="#{rsondpAction.ma121.DRAMD2}" style="width: 156px;" required="true"
                                              requiredMessage="取款方式不能为空。">
                                 <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdraItems}"/>
                             </p:selectOneMenu>
+                            <h:outputLabel value="账户号:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true" id="iptac2"
+                                         value="#{rsondpAction.ma121.IPTAC2}" requiredMessage="账户号不能为空。"/><h:outputLabel value="账户号:" style="font-weight: bold"/>
+                            <h:outputLabel value="交易日期:" style="font-weight: bold"/>
+                            <p:inputText size="25" required="true" id="iptac2"
+                                         value="#{rsondpAction.ma121.TXNDAT}" requiredMessage="交易日期不能为空。"
+                                    onclick="WdatePicker({dateFormat:'yyyyMMdd'})"/>
                             <h:outputLabel value="授权主管:" style="font-weight: bold"/>
                             <p:inputText size="25" id="auttlr" value="#{rsondpAction.auttlr}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
@@ -81,12 +85,12 @@
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:110px;" value="提交"
-                                             action="#{rsondpAction.onAllQuery()}" ajax="true"
+                            <p:commandButton style="width:80px;" value="确认"
+                                             action="#{rsondpAction.onDraRev()}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
 
-                            <p:commandButton style="width:110px;" value="打印凭证"
+                            <p:commandButton style="width:80px;" value="打印凭证"
                                              disabled="#{!rsondpAction.printable}"
                                              action="#{rsondpAction.onPrintOpenAct()}" ajax="false"
                                              update="msgs">
@@ -108,27 +112,27 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
                                 >
                             <h:outputLabel value="交易代码:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.TXNCDE}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.TXNCDE}"/>
                             <h:outputLabel value="柜员代码:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.TELLER}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.TELLER}"/>
                             <h:outputLabel value="交易日期:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.TXNDAT}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.TXNDAT}"/>
                             <h:outputLabel value="账户类别:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.ACTTY}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.ACTTY}"/>
                             <h:outputLabel value="帐号:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.IPTAC}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.IPTAC}"/>
                             <h:outputLabel value="通知日期:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.ADVDAT}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.ADVDAT}"/>
                             <h:outputLabel value="户名:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.ACTNAM}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.ACTNAM}"/>
                             <h:outputLabel value="币别:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.INTCUR}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.INTCUR}"/>
                             <h:outputLabel value="通知金额:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.TXNAMT}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.TXNAMT}"/>
                             <h:outputLabel value="通知单号:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.ADVNUM}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.ADVNUM}"/>
                             <h:outputLabel value="备注:"/>
-                            <p:outputLabel value="#{rsondpAction.ndp.REMARK}"/>
+                            <p:outputLabel value="#{rsondpAction.t220.REMARK}"/>
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>

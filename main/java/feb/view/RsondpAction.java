@@ -34,48 +34,26 @@ public class RsondpAction implements Serializable {
     @ManagedProperty(value = "#{temRosPrintService}")
     private TemRosPrintService temRosPrintService;
 
-    private T220 ndp = new T220();
+    private T220 t220 = new T220();
+    private Ma121 ma121 = new Ma121();
 
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
-
-
-    private String actty2;
-    private String iptac2;
-    private String dramd2;
-
     private boolean printable = false;
 
 
-    @PostConstruct
-    public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-        actty2 = "07";
-        dramd2 = "0";
-
-    }
-
-    public String onAllQuery() {
+    public String onDraRev() {
         try {
-//            if (allone.contentEquals("0")){
-            Ma121 ma121 = new Ma121(actty2, iptac2, dramd2);
             List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd, "a121", ma121);
             if (formList != null && !formList.isEmpty()) {
                 for (SOFForm form : formList) {
                     if ("T220".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T220 t220 = (T220) form.getFormBody();
-                        ndp = t220;
+                        t220 = (T220) form.getFormBody();
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
-
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-            }
-            if (ndp == null) {
-                MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
@@ -86,15 +64,17 @@ public class RsondpAction implements Serializable {
 
     public void onPrintOpenAct() {
         try {
-            String txnamt = StringMathFormat.strFormat2(ndp.getTXNAMT().toString());
-            temRosPrintService.printRosdn("七天撤销存款通知单",ndp.getTXNCDE(),ndp.getTELLER(),ndp.getTXNDAT(),
-                    ndp.getIPTAC(),ndp.getADVDAT(),ndp.getACTNAM(),ndp.getINTCUR(),txnamt,
-                    ndp.getADVNUM(),ndp.getREMARK());
+            String txnamt = StringMathFormat.strFormat2(t220.getTXNAMT().toString());
+            temRosPrintService.printRosdn("七天撤销存款通知单",t220.getTXNCDE(),t220.getTELLER(),t220.getTXNDAT(),
+                    t220.getIPTAC(),t220.getADVDAT(),t220.getACTNAM(),t220.getINTCUR(),txnamt,
+                    t220.getADVNUM(),t220.getREMARK());
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
     }
+
+    //= = = = = = = = = = = = = = = =  = = = = = = = = = = = = = = = = =
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -112,29 +92,6 @@ public class RsondpAction implements Serializable {
         this.temRosPrintService = temRosPrintService;
     }
 
-    public String getActty2() {
-        return actty2;
-    }
-
-    public void setActty2(String actty2) {
-        this.actty2 = actty2;
-    }
-
-    public String getIptac2() {
-        return iptac2;
-    }
-
-    public void setIptac2(String iptac2) {
-        this.iptac2 = iptac2;
-    }
-
-    public String getDramd2() {
-        return dramd2;
-    }
-
-    public void setDramd2(String dramd2) {
-        this.dramd2 = dramd2;
-    }
 
     public String getAuttlr() {
         return auttlr;
@@ -152,12 +109,20 @@ public class RsondpAction implements Serializable {
         this.autpwd = autpwd;
     }
 
-    public T220 getNdp() {
-        return ndp;
+    public T220 getT220() {
+        return t220;
     }
 
-    public void setNdp(T220 ndp) {
-        this.ndp = ndp;
+    public void setT220(T220 t220) {
+        this.t220 = t220;
+    }
+
+    public Ma121 getMa121() {
+        return ma121;
+    }
+
+    public void setMa121(Ma121 ma121) {
+        this.ma121 = ma121;
     }
 
     public boolean isPrintable() {
