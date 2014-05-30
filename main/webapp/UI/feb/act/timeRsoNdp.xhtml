@@ -56,24 +56,23 @@
                 <p:focus for="iptac2"/>
                 <p:messages id="msgs" showDetail="true"/>
                 <p:fieldset id="panel">
-                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
-                        <h:panelGrid columns="6" cellspacing="2"
-                                     columnClasses="col-label2, col-input2,col-label2, col-input2,col-label2,
-                                     col-input2">
+                    <h:panelGrid columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="1" cellspacing="5" border="0" style="width:80%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="账户号类型:" style="font-weight: bold"/>
                             <p:inputText size="25"
                                          id="actty2" required="true" maxlength="2"
                                          value="#{rsondpAction.ma121.ACTTY2}" requiredMessage="账户号类型不能为空。"/>
                             <h:outputLabel value="取款方式:" style="font-weight: bold"/>
-                            <p:selectOneMenu value="#{rsondpAction.ma121.DRAMD2}" style="width: 156px;" required="true"
+                            <p:selectOneMenu value="#{rsondpAction.ma121.DRAMD2}" style="width: 161px;" required="true"
                                              requiredMessage="取款方式不能为空。">
                                 <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdraItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="账户号:" style="font-weight: bold"/>
                             <p:inputText size="25" required="true" id="iptac2"
-                                         value="#{rsondpAction.ma121.IPTAC2}" requiredMessage="账户号不能为空。"/><h:outputLabel value="账户号:" style="font-weight: bold"/>
+                                         value="#{rsondpAction.ma121.IPTAC2}" requiredMessage="账户号不能为空。"/>
                             <h:outputLabel value="交易日期:" style="font-weight: bold"/>
-                            <p:inputText size="25" required="true" id="iptac2"
+                            <p:inputText size="25" required="true" id="txndat"
                                          value="#{rsondpAction.ma121.TXNDAT}" requiredMessage="交易日期不能为空。"
                                     onclick="WdatePicker({dateFormat:'yyyyMMdd'})"/>
                             <h:outputLabel value="授权主管:" style="font-weight: bold"/>
