@@ -10,22 +10,22 @@ import java.math.BigDecimal;
 
 public class T220 extends SOFFormBody {
 
-   {
-    fieldTypes = new int[]{1,1,1,1,1,1,1,1,3,1,1};
-    fieldLengths = new int[]{4,4,8,2,22,8,72, 3, 15, 16, 18} ;
-   }
+    {
+        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1};
+        fieldLengths = new int[]{4, 4, 8, 2, 22, 8, 72, 3, 16, 16, 8};
+    }
 
-    private String TXNCDE	;         //交易代码
-    private String TELLER	;         //柜员代码
-    private String TXNDAT	;         //交易日期
-    private String ACTTY 	;         //账户类别
-    private String IPTAC 	;         //帐号
-    private String ADVDAT	;         //通知日期
-    private String ACTNAM	;         //户名
-    private String INTCUR ;         //币别
-    private BigDecimal TXNAMT ;     //通知金额
-    private String ADVNUM ;         //通知单号
-    private String REMARK ;         //备注
+    private String TXNCDE;         //交易代码
+    private String TELLER;         //柜员代码
+    private String TXNDAT;         //交易日期
+    private String ACTTY;         //账户类别
+    private String IPTAC;         //帐号
+    private String ADVDAT;         //通知日期
+    private String ACTNAM;         //户名
+    private String INTCUR;         //币别
+    private BigDecimal TXNAMT;     //通知金额
+    private String ADVNUM;         //通知单号
+    private String REMARK;         //备注
 
 
     public String getTXNCDE() {

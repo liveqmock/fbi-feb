@@ -34,18 +34,11 @@ public class RsondnAction implements Serializable {
     @ManagedProperty(value = "#{temRosPrintService}")
     private TemRosPrintService temRosPrintService;
 
-    private T220 ndn = new T220();
+    private T220 t220 = new T220();
+    private Ma111 ma111 = new Ma111();
 
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
-
-
-    private String actty2;
-    private String iptac2;
-    private String advnum;
-    private String dramd2;
-    private String advamt;
-    private String advdat;
 
     private boolean printable = false;
 
@@ -53,32 +46,21 @@ public class RsondnAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-        actty2 = "07";
-        dramd2 = "0";
 
     }
 
-    public String onAllQuery() {
+    public String onDraNot() {
         try {
-//            if (allone.contentEquals("0")){
-            Ma111 ma111 = new Ma111(actty2, iptac2, advnum, dramd2, advamt, advdat);
             List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd, "a111", ma111);
             if (formList != null && !formList.isEmpty()) {
                 for (SOFForm form : formList) {
                     if ("T220".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T220 t220 = (T220) form.getFormBody();
-                        ndn = t220;
+                        t220 = (T220) form.getFormBody();
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
-
-                        MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-            }
-            if (ndn == null) {
-                MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
@@ -89,10 +71,10 @@ public class RsondnAction implements Serializable {
 
     public void onPrintOpenAct() {
         try {
-            String txnamt = StringMathFormat.strFormat2(ndn.getTXNAMT().toString());
-            temRosPrintService.printRosdn("七天通知存款通知单",ndn.getTXNCDE(),ndn.getTELLER(),ndn.getTXNDAT(),
-                    ndn.getIPTAC(),ndn.getADVDAT(),ndn.getACTNAM(),ndn.getINTCUR(),txnamt,
-                    ndn.getADVNUM(),ndn.getREMARK());
+            String txnamt = StringMathFormat.strFormat2(t220.getTXNAMT().toString());
+            temRosPrintService.printRosdn("七天通知存款通知单",t220.getTXNCDE(),t220.getTELLER(),t220.getTXNDAT(),
+                    t220.getIPTAC(),t220.getADVDAT(),t220.getACTNAM(),t220.getINTCUR(),txnamt,
+                    t220.getADVNUM(),t220.getREMARK());
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -115,44 +97,12 @@ public class RsondnAction implements Serializable {
         this.temRosPrintService = temRosPrintService;
     }
 
-    public String getActty2() {
-        return actty2;
+    public T220 getT220() {
+        return t220;
     }
 
-    public void setActty2(String actty2) {
-        this.actty2 = actty2;
-    }
-
-    public String getIptac2() {
-        return iptac2;
-    }
-
-    public void setIptac2(String iptac2) {
-        this.iptac2 = iptac2;
-    }
-
-    public T220 getNdn() {
-        return ndn;
-    }
-
-    public void setNdn(T220 ndn) {
-        this.ndn = ndn;
-    }
-
-    public String getDramd2() {
-        return dramd2;
-    }
-
-    public void setDramd2(String dramd2) {
-        this.dramd2 = dramd2;
-    }
-
-    public String getAdvamt() {
-        return advamt;
-    }
-
-    public void setAdvamt(String advamt) {
-        this.advamt = advamt;
+    public void setT220(T220 t220) {
+        this.t220 = t220;
     }
 
     public String getAuttlr() {
@@ -171,27 +121,19 @@ public class RsondnAction implements Serializable {
         this.autpwd = autpwd;
     }
 
-    public String getAdvnum() {
-        return advnum;
-    }
-
-    public void setAdvnum(String advnum) {
-        this.advnum = advnum;
-    }
-
-    public String getAdvdat() {
-        return advdat;
-    }
-
-    public void setAdvdat(String advdat) {
-        this.advdat = advdat;
-    }
-
     public boolean isPrintable() {
         return printable;
     }
 
     public void setPrintable(boolean printable) {
         this.printable = printable;
+    }
+
+    public Ma111 getMa111() {
+        return ma111;
+    }
+
+    public void setMa111(Ma111 ma111) {
+        this.ma111 = ma111;
     }
 }

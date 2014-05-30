@@ -1,30 +1,22 @@
 package gateway.sbs.txn.model.msg;
 
 /**
- * 签到
+ * 提款通知
  */
 public class Ma111 extends MTia {
-    private String ACTTY2;      //账户类别 *
-    private String IPTAC2;      //账户号    *
-    private String DRAMD2;      //取款方式  *
+    private String ACTTY2 = "07";      //账户类别 *
+    private String IPTAC2 = "";      //账户号    *
+    private String DRAMD2 = "0";      //取款方式  *
     private String CUSPW2 = "";      //客户密码
-    private String ADVNUM;      //通知单号
+    private String ADVNUM = "";      //通知单号
     private String TXNDAT = "";      //交易日期
-    private String ADVAMT;      //支取金额   *
+    private String ADVAMT = "";      //支取金额   *
     private String ADVDAT = "";      //支取日期
     private String PASTYP = "";      //证件种类
     private String PASSNO = "";      //证件号
     private String REMARK = "";      //地址
     private String MAGFL2 = "0";      //账号输入方式
 
-    public Ma111(String ACTTY2, String IPTAC2,String ADVNUM, String DRAMD2, String ADVAMT,String ADVDAT) {
-        this.ACTTY2 = ACTTY2;
-        this.IPTAC2 = IPTAC2;
-        this.ADVNUM = ADVNUM;
-        this.DRAMD2 = DRAMD2;
-        this.ADVAMT = ADVAMT;
-        this.ADVDAT = ADVDAT;
-    }
 
     public String getACTTY2() {
         return ACTTY2;
