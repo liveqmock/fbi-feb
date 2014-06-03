@@ -48,8 +48,7 @@ public class ReprintAction implements Serializable {
 
     public String onPrint() {
         try {
-            rePrintService.printVchpenAct(
-                    tellerid, fileName);
+            rePrintService.printVchpenAct(tellerid, fileName);
         } catch (Exception e) {
             logger.error("¥Ú”° ß∞‹", e);
             MessageUtil.addError("¥Ú”° ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
