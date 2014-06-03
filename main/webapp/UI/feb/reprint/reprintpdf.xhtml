@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="inputform">
+            <p:messages id="msgs" showDetail="true" showSummary="false"/>
+            <p:focus for="fileName"/>
+            <p:panel cellspacing="5" header="::重印凭证::">
+                <h:panelGrid columns="3" cellspacing="5" cellpadding="10"
+                             columnClasses="col-label,col-input" style="width: 100%">
+                    <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                    <p:inputText id="fileName" size="25" value="#{reprintAction.fileName}"
+                                 onkeydown="KeyDown()" onfocus="this.select()"/>
+                    <p:commandButton style="width:90px;margin-left: 0px" value="凭证重印"
+                                     action="#{reprintAction.onPrint()}" ajax="false"
+                                     update="msgs">
+                    </p:commandButton>
+                </h:panelGrid>
+            </p:panel>
+            <br/>
+            <p:ajaxStatus style="height:18px;text-align:center">
+                <f:facet name="start">
+                    <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+        </h:form>
+    </ui:define>
+</ui:composition>

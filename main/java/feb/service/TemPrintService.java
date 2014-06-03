@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 //import com.lowagie.tools.Executable;
@@ -24,9 +25,11 @@ import java.io.IOException;
 public class TemPrintService {
 
     private  String fileName ;
+    private  String outPath = "";
     public void printVchpenAct( String orgidt, String deptid, String actnum,
                                String actnam, String opndat, String teller) throws IOException, DocumentException {
         fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusOpnTemp.pdf").getPath();
+        outPath = TemPrintService.class.getClassLoader().getResource("feb/resultsPdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -39,6 +42,13 @@ public class TemPrintService {
         fields.setField("pl", teller);
         ps.setFormFlattening(true);
         ps.close();
+        //保存 输出
+        FileOutputStream fos = new FileOutputStream(outPath+teller+actnum+".pdf");
+        FileOutputStream fos2 = new FileOutputStream(outPath+teller+"1.pdf");
+        fos.write(baos.toByteArray());
+        fos2.write(baos.toByteArray());
+        fos.close();
+        fos2.close();
         printTempPdf(baos);
 
     }
@@ -46,6 +56,7 @@ public class TemPrintService {
     public void printVchclsCus(String orgidt, String depnum, String cusidt,
                                String actnam, String opndat,String clsdat, String teller) throws IOException, DocumentException {
         fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusCloseTemp.pdf").getPath();
+        outPath = TemPrintService.class.getClassLoader().getResource("feb/resultsPdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -59,8 +70,13 @@ public class TemPrintService {
         fields.setField("amdtlr", teller);
         ps.setFormFlattening(true);
         ps.close();
+        FileOutputStream fos = new FileOutputStream(outPath+teller+cusidt+".pdf");
+        FileOutputStream fos2 = new FileOutputStream(outPath+"1.pdf");
+        fos.write(baos.toByteArray());
+        fos2.write(baos.toByteArray());
+        fos.close();
+        fos2.close();
         printTempPdf(baos);
-
     }
 
     //开户
