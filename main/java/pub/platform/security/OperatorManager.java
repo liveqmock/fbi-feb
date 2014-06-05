@@ -12,6 +12,7 @@ import gateway.sbs.core.SBSResponse;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.sc.T901;
 import gateway.sbs.txn.model.msg.M0001;
+import gateway.sbs.txn.model.msg.M0004;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.advance.utils.PropertyManager;
@@ -168,7 +169,7 @@ public class OperatorManager implements Serializable {
                 isLogin = false;
                 return "FEB不存在此用戶，登录校验失败";
             }
-            
+            sbsOut(operid, password);   //柜员自行签退
             String formcode = sbsLogin(operid, password);
             if (!"T901".equals(formcode)) return formcode;
 
@@ -228,6 +229,19 @@ public class OperatorManager implements Serializable {
         return forms.get(0).getFormHeader().getFormCode();
     }
 
+    /**
+     * 柜员签到之前自行签退
+     */
+    public boolean sbsOut(String tellerId,String tellerPwd) {
+        //M0004 m0004 = new M0004(tellerPwd);
+        List<String> paramList = new ArrayList<>();
+        paramList.add(tellerPwd);
+        CtgManager ctgManager = new CtgManager();
+        SBSRequest sbsRequest = new SBSRequest(tellerId, tellerId, "0004", paramList);
+        SBSResponse sbsResponse = new SBSResponse();
+        ctgManager.processSingleResponsePkg(sbsRequest, sbsResponse);
+        return sbsResponse.getFormCodes().contains("W001");
+    }
     public boolean sbsLogout(String tellerId, String termId) {
         List<String> paramList = new ArrayList<>();
         CtgManager ctgManager = new CtgManager();
