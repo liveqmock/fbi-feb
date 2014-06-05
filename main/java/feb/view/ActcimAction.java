@@ -73,22 +73,14 @@ public class ActcimAction implements Serializable {
                 if (formList != null && !formList.isEmpty()) {
                     dataListPz = new ArrayList<>();
                     for (SOFForm form : formList) {
-
                         if ("T009".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                             T009 t009 = (T009) form.getFormBody();
                             dataListPz.addAll(t009.getBeanList());
-
-
                         } else {
-                            logger.info(form.getFormHeader().getFormCode());
-
-                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
+                            logger.error(form.getFormHeader().getFormCode());
+                            MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                         }
                     }
-                }
-                if (cimqry == null) {
-                    MessageUtil.addWarn("没有查询到数据。");
                 }
             }
         } catch (Exception e) {

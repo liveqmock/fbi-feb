@@ -101,14 +101,12 @@ public class ActidmAction implements Serializable {
                         idm.setSCTMAK("");
                         idm.setVCHAMT(null);
                         idm.setVCHNAM("");
-                        logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-            if (idm.getSCTMAK() == null|| idm.getSCTMAK().isEmpty() ) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }
+
         } catch (Exception e) {
 //            logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -127,13 +125,10 @@ public class ActidmAction implements Serializable {
                         dataList.addAll(t121.getBeanList());
                     }
                     else {
-                        logger.info(form.getFormHeader().getFormCode());
-                        // MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
-            }
-            if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
             }
         } catch (Exception e) {
             logger.error("查询失败", e);
