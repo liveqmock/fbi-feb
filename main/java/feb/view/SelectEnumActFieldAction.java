@@ -36,6 +36,10 @@ public class SelectEnumActFieldAction implements Serializable {
      */
     private List<SelectItem> ctfInterActtypItems;         //内部账户类型
     private List<SelectItem> cusInterLegfmtItems;         //内部分户账帐页形式
+    private List<SelectItem> ctfPromodItems;         //处理模式
+    private List<SelectItem> ctfFrzmodItems;         //冻结方式
+    private List<SelectItem> ctfFrzflgItems;         //存取规定
+    private List<SelectItem> ctfFrzrsnItems;         //冻结原因
 
     @PostConstruct
     public void init() {
@@ -51,6 +55,11 @@ public class SelectEnumActFieldAction implements Serializable {
 
         ctfInterActtypItems = skylineService.getEnuSelectItemList("CTF-INTERACTTYP", true, false);
         cusInterLegfmtItems = skylineService.getEnuSelectItemList("CTF-INTERLEGFMT", true, false);
+
+        ctfPromodItems = skylineService.getEnuSelectItemList("CTF-PROMOD", true, false);
+        ctfFrzmodItems = skylineService.getEnuSelectItemList("CTF-FRZMOD", true, false);
+        ctfFrzflgItems = skylineService.getEnuSelectItemList("CTF-FRZFLG", true, false);
+        ctfFrzrsnItems = skylineService.getEnuSelectItemList("CTF-FRZRSN", true, false);
     }
 
 
@@ -149,5 +158,37 @@ public class SelectEnumActFieldAction implements Serializable {
 
     public void setCusInterLegfmtItems(List<SelectItem> cusInterLegfmtItems) {
         this.cusInterLegfmtItems = cusInterLegfmtItems;
+    }
+
+    public List<SelectItem> getCtfPromodItems() {
+        return ctfPromodItems;
+    }
+
+    public void setCtfPromodItems(List<SelectItem> ctfPromodItems) {
+        this.ctfPromodItems = ctfPromodItems;
+    }
+
+    public List<SelectItem> getCtfFrzmodItems() {
+        return ctfFrzmodItems;
+    }
+
+    public void setCtfFrzmodItems(List<SelectItem> ctfFrzmodItems) {
+        this.ctfFrzmodItems = ctfFrzmodItems;
+    }
+
+    public List<SelectItem> getCtfFrzflgItems() {
+        return ctfFrzflgItems;
+    }
+
+    public void setCtfFrzflgItems(List<SelectItem> ctfFrzflgItems) {
+        this.ctfFrzflgItems = ctfFrzflgItems;
+    }
+
+    public List<SelectItem> getCtfFrzrsnItems() {
+        return ctfFrzrsnItems;
+    }
+
+    public void setCtfFrzrsnItems(List<SelectItem> ctfFrzrsnItems) {
+        this.ctfFrzrsnItems = ctfFrzrsnItems;
     }
 }

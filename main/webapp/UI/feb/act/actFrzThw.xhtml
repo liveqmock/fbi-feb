@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="true"/>
+                <p:focus for="actnum"/>
+                <p:panel>
+                    <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="*处理模式:"/>
+                            <p:selectOneMenu value="#{actFrzThwAction.m7280.PROMOD}" style="width: 136px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfPromodItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="*账号:"/>
+                            <p:inputText id="actnum" value="#{actFrzThwAction.m7280.ACTNUM}" required="true"
+                                         requiredMessage="必须输入14位账号" maxlength="14">
+                            </p:inputText>
+                            <h:outputLabel value="*冻结金额:"/>
+                            <p:inputText  value="#{actFrzThwAction.m7280.TXNAMT}" required="true"
+                                         requiredMessage="必须输入冻结金额">
+                            </p:inputText>
+                            <h:outputLabel value="冻结方式:"/>
+                            <p:selectOneMenu value="#{actFrzThwAction.m7280.FRZMOD}" style="width: 136px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfFrzmodItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="存取规定:"/>
+                            <p:selectOneMenu value="#{actFrzThwAction.m7280.FRZFLG}" style="width: 136px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfFrzflgItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="冻结原因:"/>
+                            <p:selectOneMenu value="#{actFrzThwAction.m7280.FRZRSN}" style="width: 136px;">
+                                <f:selectItems value="#{selectEnumActFieldAction.ctfFrzrsnItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="冻结日期:"/>
+                            <p:inputText  value="#{actFrzThwAction.m7280.FRZDAT}"
+                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})">
+                            </p:inputText>
+                            <h:outputLabel  value="解冻日期:"/>
+                            <p:inputText id="frzedt" value="#{actFrzThwAction.m7280.FRZEDT}"
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})">
+                            </p:inputText>
+                            <h:outputLabel  value="冻结序号:"/>
+                            <p:inputText  value="#{actFrzThwAction.m7280.PRDSEQ}">
+                            </p:inputText>
+                            <h:outputLabel value="主管授权号:" style="font-weight: bold"/>
+                            <p:inputText required="true"
+                                         value="#{actFrzThwAction.auttlr}" requiredMessage="主管号不能为空。"/>
+                            <h:outputLabel value="主管授权密码:" style="font-weight: bold"/>
+                            <p:password required="true"
+                                        value="#{actFrzThwAction.autpwd}" requiredMessage="密码不能为空。"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
+                            <p:commandButton style="width:110px;margin-left:10px;" value="冻结及解冻"
+                                             action="#{actFrzThwAction.onFrzThw}" ajax="true"
+                                             update="msgs,frzactInfo">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:separator/>
+                <br/>
+                <p:fieldset>
+                    <h:panelGrid id="frzactInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
+                                 style="width:80%;"
+                                 columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                        <h:outputLabel value="部门号:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.ORGIDT}"/>
+                        <h:outputLabel value="机构号:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.DEPNUM}"/>
+                        <h:outputLabel value="账号:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.ACTNUM}"/>
+                        <h:outputLabel value="账户名称:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.ACTNAM}"/>
+                        <h:outputLabel value="冻结金额:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.TXNAMT}"/>
+                        <h:outputLabel value="冻结日期:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.FRZDAT}"/>
+                        <h:outputLabel value="解冻日期:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.FRZEDT}"/>
+                        <h:outputLabel value="冻结原因:"/>
+                        <p:selectOneMenu value="#{actFrzThwAction.m7280.FRZRSN}" style="width: 136px;">
+                            <f:selectItems value="#{selectEnumActFieldAction.ctfFrzrsnItems}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="冻结方式:"/>
+                        <p:selectOneMenu value="#{actFrzThwAction.m7280.FRZFLG}" style="width: 136px;">
+                            <f:selectItems value="#{selectEnumActFieldAction.ctfFrzflgItems}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="冻结序号:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.PDNSEQ}"/>
+                        <h:outputLabel value="操作员:"/>
+                        <h:outputText value="#{actFrzThwAction.t225.AMDTLR}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
