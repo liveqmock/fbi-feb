@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+<ui:define name="head">
+    <style type="text/css">
+        .col-95 {
+            width: 95%;
+        }
+
+        .col-5 {
+            width: 5%;
+        }
+
+        .col-label {
+            width: 148px;
+            text-align: right;
+        }
+
+        .col-input {
+            width: 180px;
+            text-align: left;
+        }
+
+        .col-label2 {
+            width: 180px;
+            text-align: right;
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+
+        .col-input2 {
+            width: 180px;
+            text-align: left;
+        }
+    </style>
+    <script language="JavaScript" type="text/JavaScript">
+        document.onkeydown = function TabReplace() {
+            if (event.keyCode == 13) {
+                if (event.srcElement.tagName != 'BUTTON')
+                    event.keyCode = 9;
+                else
+                    event.srcElement.click();
+            }
+        }
+    </script>
+</ui:define>
+<ui:define name="content">
+    <div style="margin:5px">
+        <h:form id="form">
+            <p:messages id="msgs" showSummary="true" showDetail="true"/>
+
+            <p:panel id="dataPanel">
+                <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
+                             columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                    <h:outputLabel value="流水号:"/>
+                    <h:outputText value="#{telLstWatAction.t206.WATNUM}"/>
+                    <h:outputLabel value="传票套号:"/>
+                    <h:outputText value="#{telLstWatAction.t206.VCHSET}"/>
+                    <h:outputLabel value="交易名称:"/>
+                    <h:outputText value="#{telLstWatAction.t206.TXNDCR}"/>
+                    <h:outputLabel value="交易码:"/>
+                    <h:outputText value="#{telLstWatAction.t206.TXNCDE}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </div>
+</ui:define>
+</ui:composition>
