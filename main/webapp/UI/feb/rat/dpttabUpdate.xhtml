@@ -97,7 +97,7 @@
                 </p:ajaxStatus>
                 <p:dataTable id="dt" height="200"
                              value="#{dptTabAction.dataList}" var="record"
-                             rowKey="#{record.DPTTYP}"
+                             rowKey="#{record.pkid}"
                              selectionMode="single"
                              selection="#{dptTabAction.beanSelected}"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}

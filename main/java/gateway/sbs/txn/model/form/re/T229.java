@@ -52,10 +52,13 @@ public class T229 extends SOFFormBody {
             fieldLengths = new int[]{2, 1, 4, 1};
         }
 
+
         private String DPTTYP;
         private String CHFMAK;
         private String APCODE;
         private String RECSTS;
+
+        private String pkid;/////adddd
 
         public String getDPTTYP() {
             return DPTTYP;
@@ -87,6 +90,14 @@ public class T229 extends SOFFormBody {
 
         public void setRECSTS(String RECSTS) {
             this.RECSTS = RECSTS;
+        }
+
+        public String getPkid() {
+            return pkid;
+        }
+
+        public void setPkid(String pkid) {
+            this.pkid = pkid;
         }
     }
 }

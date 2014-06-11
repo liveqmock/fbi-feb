@@ -11,7 +11,6 @@ import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
-import pub.tools.BeanHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -68,6 +68,10 @@ public class DptTabAction implements Serializable {
                     if ("T229".equals(form.getFormHeader().getFormCode())) {
                         t229 = (T229) form.getFormBody();
                         dataList.addAll(t229.getBeanList());
+
+                        for (int j = 0; j < dataList.size(); j++) {
+                            dataList.get(j).setPkid(UUID.randomUUID().toString());
+                        }
                     } else if ("W001".equals(form.getFormHeader().getFormCode())) {
 
                     } else {
@@ -109,8 +113,12 @@ public class DptTabAction implements Serializable {
     public String onUpdate() {
         try {
             //BeanHelper.copyFields(t228, ma824);
+            int position = dataList.indexOf(beanSelected);
+            dataList.remove(beanSelected);
             SOFForm form = dataExchangeService.callSbsTxn("a824", ma824).get(0);
             if ("W001".equals(form.getFormHeader().getFormCode())) {
+                BeanUtils.copyProperties(beanSelected, ma824);
+                dataList.add(position, beanSelected);
                 logger.info(form.getFormHeader().getFormCode());
                 MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
             } else {
@@ -175,6 +183,7 @@ public class DptTabAction implements Serializable {
     }
 
     public void onRowSelect(SelectEvent event) {
+        beanSelected = (T229.Bean) event.getObject();
         try {
             BeanUtils.copyProperties(ma824, beanSelected);
         } catch (Exception e) {

@@ -36,8 +36,15 @@
         <script language="JavaScript" type="text/JavaScript">
             document.onkeydown = function TabReplace() {
                 if (event.keyCode == 13) {
-                    event.keyCode = 9;
+                     if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
                 }
+            };
+            function myfocus(){
+                document.getElementById(":form:atrcde").focus();
+                return true;
             }
         </script>
     </ui:define>
@@ -65,7 +72,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认添加"
-                                             action="#{dptTabAction.onAdd()}" ajax="true"
+                                             action="#{dptTabAction.onAdd()}" onclick="myfocus();"
                                              update="msgs,pg,btns">
                             </p:commandButton>
                         </h:panelGrid>
