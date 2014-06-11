@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="false"/>
+                <p:focus for="atrcde"/>
+                <p:panel id="basepanel">
+                    <h:panelGrid id="input" columns="2" style="width: 100%;" border="0">
+                        <h:panelGrid columns="4" cellpadding="0" cellspacing="5" border="0"
+                                     style="width:90%;font-weight: bold"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="存款种类:"/>
+                            <p:inputText id="atrcde" value="#{dptTabAction.ma824.DPTTYP}" readonly="true"/>
+                            <h:outputLabel value="本外币标识:"/>
+                            <p:inputText value="#{dptTabAction.ma824.CHFMAK}" readonly="true"/>
+                            <h:outputLabel value="对应核算码:"/>
+                            <p:inputText value="#{dptTabAction.ma824.APCODE}"/>
+                            <h:outputLabel value="记录状态:"/>
+                            <p:inputText value="#{dptTabAction.ma824.RECSTS}" />
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
+                            <!--<p:commandButton style="width:110px;" value="存款种类码查询"
+                                             action="#{dptTabAction.onAllQry}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>-->
+                            <p:commandButton style="width:110px;" value="确认修改"
+                                             action="#{dptTabAction.onUpdate()}" ajax="true"
+                                             update="msgs,dt,input">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="本外币标识：0--本币,1--外币"/>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="记录状态：1--正常,0--失效"/>
+                <p:separator />
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{dptTabAction.dataList}" var="record"
+                             rowKey="#{record.DPTTYP}"
+                             selectionMode="single"
+                             selection="#{dptTabAction.beanSelected}"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <p:ajax event="rowSelect" listener="#{dptTabAction.onRowSelect}"  update=":form:basepanel,:form:dt"/>
+
+                    <p:column headerText="存款种类" style="text-align:center">
+                        <h:outputText value="#{record.DPTTYP}"/>
+                    </p:column>
+                    <p:column headerText="本外币标识" style="text-align:center">
+                        <h:outputText value="#{record.CHFMAK}"/>
+                    </p:column>
+                    <p:column headerText="对应核算码 " style="text-align:center">
+                        <h:outputText value="#{record.APCODE}"/>
+                    </p:column>
+                    <p:column headerText="记录状态" style="text-align:center">
+                        <h:outputText value="#{record.RECSTS}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
