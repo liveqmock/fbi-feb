@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=GBK" %>
 
-<%@ page import="java.util.*" %>
-<%@ page import="pub.platform.form.config.SystemAttributeNames" %>
-<%@ page import="pub.platform.security.OperatorManager" %>
 <%@ page import="pub.platform.advance.utils.MessagePropertyManager" %>
+<%@ page import="pub.platform.form.config.SystemAttributeNames" %>
+<%@ page import="pub.platform.security.OnLineOpersManager" %>
+<%@ page import="pub.platform.security.OperatorManager" %>
 <%
     String path = request.getContextPath();
     String loginUsername = request.getParameter("username");
@@ -68,6 +68,13 @@
                 out.println("<script language=\"javascript\">alert ('" + loginCode + "'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
             } else
                 out.println("<script language=\"javascript\">alert ('" + loginErrMsg + "'); if(top){ top.location.href='" + path + "/pages/security/loginPage.jsp'; } else { location.href = '" + path + "/pages/security/loginPage.jsp';} </script>");
+        }else {
+            if (!OnLineOpersManager.isHasUserList(application)) {
+                OnLineOpersManager.setUserListToServer(application);
+                OnLineOpersManager.addOperToServer(session.getId() + loginUsername.toUpperCase(), loginOM, application);
+            } else {
+                OnLineOpersManager.addOperToServer(session.getId() + loginUsername.toUpperCase(), loginOM, application);
+            }
         }
     } catch (Exception e) {
         e.printStackTrace();

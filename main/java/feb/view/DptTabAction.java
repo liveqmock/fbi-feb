@@ -41,8 +41,6 @@ public class DptTabAction implements Serializable {
     private String dpttyp;
     private String chfmak;
     private String action;
-    private boolean updateable = false;
-    private boolean deleteable = false;
     private T229 t229 = new T229();
     private T228 t228 = new T228();
     private Ma825 ma825 = new Ma825();
@@ -87,29 +85,6 @@ public class DptTabAction implements Serializable {
         return null;
     }
 
-    /*public String onDetailQry() {
-        try {
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("a823", ma823);
-            if (!formList.isEmpty() && formList != null) {
-                dataList = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if ("T228".equals(form.getFormHeader().getFormCode())) {
-                        t228 = (T228) form.getFormBody();
-                    } else if ("W001".equals(form.getFormHeader().getFormCode())) {
-
-                    } else {
-                        logger.error(form.getFormHeader().getFormCode());
-                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("≤È—Ø ß∞‹", e);
-            MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }*/
-
     public String onUpdate() {
         try {
             //BeanHelper.copyFields(t228, ma824);
@@ -133,20 +108,17 @@ public class DptTabAction implements Serializable {
     }
 
 
-    public String onDelete() {
+    public String onDelete(T229.Bean bean) {
         try {
-            Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-            dpttyp = StringUtils.isEmpty(params.get("dpttyp")) ? "" : params.get("dpttyp");
-            chfmak = StringUtils.isEmpty(params.get("chfmak")) ? "" : params.get("chfmak");
-            ma822.setDPTTYP(dpttyp);
-            ma822.setCHFMAK(chfmak);
+            ma822.setDPTTYP(bean.getDPTTYP());
+            ma822.setCHFMAK(bean.getCHFMAK());
             List<SOFForm> formList = dataExchangeService.callSbsTxn("a822", ma822);
             if (!formList.isEmpty() && formList != null) {
                 for (SOFForm form : formList) {
                     if ("W004".equals(form.getFormHeader().getFormCode())) {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-                        onAllQry();
+                        dataList.remove(bean);
                     } else {
                         logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -227,21 +199,6 @@ public class DptTabAction implements Serializable {
         this.action = action;
     }
 
-    public boolean isUpdateable() {
-        return updateable;
-    }
-
-    public void setUpdateable(boolean updateable) {
-        this.updateable = updateable;
-    }
-
-    public boolean isDeleteable() {
-        return deleteable;
-    }
-
-    public void setDeleteable(boolean deleteable) {
-        this.deleteable = deleteable;
-    }
 
     public T229 getT229() {
         return t229;

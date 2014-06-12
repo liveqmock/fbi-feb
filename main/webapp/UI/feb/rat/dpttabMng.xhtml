@@ -109,10 +109,8 @@
                         <h:outputText value="#{record.RECSTS}"/>
                     </p:column>
                     <p:column headerText="操作" style="text-align:center">
-                        <p:commandLink value="删除" ajax="ture" action="#{dptTabAction.onDelete()}"
+                        <p:commandLink value="删除" ajax="ture" action="#{dptTabAction.onDelete(record)}"
                                        style="color: blue" update="dt">
-                            <f:param value="#{record.DPTTYP}" name="dpttyp"/>
-                            <f:param value="#{record.CHFMAK}" name="chfmak"/>
                         </p:commandLink>
                     </p:column>
 
