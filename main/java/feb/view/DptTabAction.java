@@ -142,11 +142,11 @@ public class DptTabAction implements Serializable {
             ma822.setCHFMAK(chfmak);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("a822", ma822);
             if (!formList.isEmpty() && formList != null) {
-                dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("W004".equals(form.getFormHeader().getFormCode())) {
                         logger.info(form.getFormHeader().getFormCode());
                         MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
+                        onAllQry();
                     } else {
                         logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
