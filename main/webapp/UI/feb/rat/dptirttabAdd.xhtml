@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.tagName != 'BUTTON')
+                        event.keyCode = 9;
+                    else
+                        event.srcElement.click();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showSummary="true" showDetail="false"/>
+                <p:focus for="atrcde"/>
+                <p:panel id="basepanel">
+                    <h:panelGrid id="input" columns="2" style="width: 100%;" border="0">
+                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0"
+                                     style="width:90%;font-weight: bold"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="存款种类:"/>
+                            <h:inputText id="atrcde" value="#{dptIrtTabAction.ma831.DPTTYP}"
+                                    required="true" requiredMessage="存款种类不能为空"/>
+                            <h:outputLabel value="货币代码:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.CURCDE}"
+                                         required="true" requiredMessage="存款种类不能为空"/>
+                            <h:outputLabel value="帐户类型:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.ACTTYP}"
+                                         required="true" requiredMessage="存款种类不能为空"/>
+                            <h:outputLabel value="存期种类:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.PRDTYP}"
+                                         required="true" requiredMessage="存期种类不能为空"/>
+                            <h:outputLabel value="对应存期:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.DPTPRD}"
+                                         required="true" requiredMessage="对应存期不能为空"/>
+                            <h:outputLabel value="记录状态:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.RECSTS}"
+                                         required="true" requiredMessage="记录状态不能为空"/>
+                            <h:outputLabel value="对应利率码:"/>
+                            <h:inputText value="#{dptIrtTabAction.ma831.INTCDE}"
+                                         required="true" requiredMessage="对应利率码不能为空"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
+                            <p:commandButton style="width:110px;" value="确认添加"
+                                             action="#{dptIrtTabAction.onAdd()}" ajax="true"
+                                             update="msgs,input">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="本外币标识：0--本币,1--外币"/>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="记录状态：1--正常,0--失效"/>
+                <p:separator />
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

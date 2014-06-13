@@ -3,12 +3,11 @@ package feb.view;
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T227;
-import gateway.sbs.txn.model.form.re.T229;
+import gateway.sbs.txn.model.msg.Ma831;
 import gateway.sbs.txn.model.msg.Ma832;
 import gateway.sbs.txn.model.msg.Ma834;
 import gateway.sbs.txn.model.msg.Ma835;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +18,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -44,6 +41,7 @@ public class DptIrtTabAction implements Serializable {
 
     private T227 t227 = new T227();
     private Ma835 ma835 = new Ma835();
+    private Ma831 ma831 = new Ma831();
     private Ma832 ma832 = new Ma832();
     private Ma834 ma834 = new Ma834();
     private List<T227.Bean> dataList ;
@@ -54,6 +52,8 @@ public class DptIrtTabAction implements Serializable {
     public void init(){
         onDptirtQry();
     }
+
+
     public String onDptirtQry(){
         try {
             SOFForm form = dataExchangeService.callSbsTxn("a835",ma835).get(0);
@@ -76,7 +76,23 @@ public class DptIrtTabAction implements Serializable {
         return null;
     }
 
-
+    public String onAdd(){
+        try {
+            SOFForm form = dataExchangeService.callSbsTxn("a831",ma831).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equals(formcode)){
+                logger.info(formcode);
+                pub.tools.MessageUtil.addInfoWithClientID("msgs", formcode);
+            }else {
+                logger.error(formcode);
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("ÃÌº” ß∞‹", e);
+            MessageUtil.addError("ÃÌº” ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
     public String onDelete(T227.Bean bean){
         try {
             BeanHelper.copyFields(bean,ma832);
@@ -181,6 +197,14 @@ public class DptIrtTabAction implements Serializable {
 
     public List<T227.Bean> getDataList() {
         return dataList;
+    }
+
+    public Ma831 getMa831() {
+        return ma831;
+    }
+
+    public void setMa831(Ma831 ma831) {
+        this.ma831 = ma831;
     }
 
     public void setDataList(List<T227.Bean> dataList) {
