@@ -258,7 +258,8 @@ public class ClientAction implements Serializable {
                     updateable = false;
                     MessageUtil.addInfo("客户信息修改成功，客户号：" + t004.getCUSIDT());
                 } else {
-                    MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                    logger.info(formcode);
+                    MessageUtil.addErrorWithClientID("msgs", formcode);
                 }
             }
         } catch (Exception e) {
