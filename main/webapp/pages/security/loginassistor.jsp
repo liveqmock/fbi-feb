@@ -27,13 +27,13 @@
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (("usernamecookie").equals(cookie.getName())) {
-                    if (!loginUsername.equals(cookie.getValue())) {
-                        cookie.setValue(loginUsername);
-                        cookie.setPath(request.getContextPath() + "/pages");
-                        cookie.setMaxAge(cookieMaxAge);
-                        response.addCookie(cookie);
-                    }
-                    isFound = true;
+                        if (!loginUsername.equals(cookie.getValue())) {
+                            cookie.setValue(loginUsername);
+                            cookie.setPath(request.getContextPath() + "/pages");
+                            cookie.setMaxAge(cookieMaxAge);
+                            response.addCookie(cookie);
+                        }
+                        isFound = true;
                 }
             }
         }
