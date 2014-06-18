@@ -1,12 +1,19 @@
 package feb.view;
 
+import feb.print.model.Vch;
 import feb.service.DataExchangeService;
+import feb.service.TemSqrPrintService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.re.T016;
 import gateway.sbs.txn.model.form.re.T091;
+import gateway.sbs.txn.model.form.re.T106;
+import gateway.sbs.txn.model.form.re.T130;
 import gateway.sbs.txn.model.msg.Ma130;
 import gateway.sbs.txn.model.msg.Ma131;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +22,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,12 +38,18 @@ public class RsodraAction implements Serializable {
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
 
+    @ManagedProperty(value = "#{temSqrPrintService}")
+    private TemSqrPrintService temSqrPrintService;
+
     private T091 dra = new T091();
+    private T130 t130 = new T130();
+    private T016 t016 = new T016();
     private Ma130 ma130 = new Ma130();
     private Ma131 ma131 = new Ma131();
 
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
+    private boolean printable = false;
 
 
     @PostConstruct
@@ -76,9 +90,9 @@ public class RsodraAction implements Serializable {
                     if ("T091".equals(form.getFormHeader().getFormCode())) {
                         dra = (T091) form.getFormBody();
                     } else if ("T016".equals(form.getFormHeader().getFormCode())){
-
+                        t016 = (T016) form.getFormBody();
                     }else if ("T130".equals(form.getFormHeader().getFormCode())){
-
+                        t130 = (T130) form.getFormBody();
                     }else {
                         logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
@@ -92,6 +106,29 @@ public class RsodraAction implements Serializable {
         return null;
     }
 
+
+    public void onPrintOpenAct() {
+        try {
+            List<Vch> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T016.Bean bean : t016.getBeanList()) {
+                if (!StringUtils.isEmpty(bean.getDEBACT()) || !StringUtils.isEmpty(bean.getDEBAMT())) {
+                    printCnt++;
+                    logger.info(t016.getVCHSET() + " :  " + bean.getDEBACT() + bean.getDEBAMT() + bean.getCREACT() + bean.getCREAMT());
+                    Vch vch = new Vch();
+                    BeanHelper.copyFields(bean, vch);
+                    vchs.add(vch);
+                }
+            }
+
+            temSqrPrintService.printVch(
+                    "联机传票/复核（授权）清单", t016.getTRNCDE(),t016.getTLRNUM(), t016.getTRNTIM(),
+                    t016.getVCHSET(),t016.getTRNDAT(), vchs,"利息单",t130);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
     //= = = =  = = = = = =  = = = =  = = = =  = = = = = = = = =
 
     public DataExchangeService getDataExchangeService() {
@@ -102,6 +139,37 @@ public class RsodraAction implements Serializable {
         this.dataExchangeService = dataExchangeService;
     }
 
+    public TemSqrPrintService getTemSqrPrintService() {
+        return temSqrPrintService;
+    }
+
+    public void setTemSqrPrintService(TemSqrPrintService temSqrPrintService) {
+        this.temSqrPrintService = temSqrPrintService;
+    }
+
+    public boolean isPrintable() {
+        return printable;
+    }
+
+    public void setPrintable(boolean printable) {
+        this.printable = printable;
+    }
+
+    public T130 getT130() {
+        return t130;
+    }
+
+    public void setT130(T130 t130) {
+        this.t130 = t130;
+    }
+
+    public T016 getT016() {
+        return t016;
+    }
+
+    public void setT016(T016 t016) {
+        this.t016 = t016;
+    }
 
     public Ma130 getMa130() {
         return ma130;
