@@ -3,7 +3,6 @@ package feb.view;
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T091;
-import gateway.sbs.txn.model.form.re.T399;
 import gateway.sbs.txn.model.msg.Ma130;
 import gateway.sbs.txn.model.msg.Ma131;
 import org.slf4j.Logger;
@@ -14,13 +13,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  *  通知存款结清
