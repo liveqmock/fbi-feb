@@ -61,45 +61,45 @@
                                      columnClasses="col-label,col-input,col-label,col-input,col-label,col-input">
                             <h:outputLabel value="账户号类型:" style="font-weight: bold"/>
                             <p:inputText  size="25" id="actty1" required="true"  maxlength="2"
-                                         value="#{rsodraAction.ma130.ACTTY1}" requiredMessage="账户号类型不能为空。"/>
+                                         value="#{rsodraAction.ma131.ACTTY1}" requiredMessage="账户号类型不能为空。"/>
                             <h:outputLabel value="账户号:" style="font-weight: bold"/>
                             <p:inputText  size="25" required="true"
-                                          value="#{rsodraAction.ma130.IPTAC1}" requiredMessage="账户号不能为空。"/>
+                                          value="#{rsodraAction.ma131.IPTAC1}" requiredMessage="账户号不能为空。"/>
                             <h:outputLabel value="取款方式:" style="font-weight: bold"/>
-                            <p:selectOneMenu value="#{rsodraAction.ma130.DRAMD1}" style="width: 165px;" required="true"
+                            <p:selectOneMenu value="#{rsodraAction.ma131.DRAMD1}" style="width: 165px;" required="true"
                                              requiredMessage="取款方式不能为空。">
                                 <f:selectItems value="#{selectEnumCimFieldAction.rsoStmdraItems}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel value="交易日期:" style="font-weight: bold"/>
                             <p:inputText  size="25"
-                                          value="#{rsodraAction.ma130.TXNDAT}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})" />
+                                          value="#{rsodraAction.ma131.TXNDAT}" onclick="WdatePicker({dateFmt:'yyyyMMdd'})" />
                             <h:outputLabel value="通知单号:" style="font-weight: bold"/>
-                            <p:inputText  size="25"  value="#{rsodraAction.ma130.ADVNUM}"/>
+                            <p:inputText  size="25"  value="#{rsodraAction.ma131.ADVNUM}"/>
 
                             <h:outputLabel value="交易金额:" style="font-weight: bold"/>
                             <p:inputText  size="25" required="true"
-                                          value="#{rsodraAction.ma130.TXNAMT}" requiredMessage="交易金额不能为空。"/>
+                                          value="#{rsodraAction.ma131.TXNAMT}" requiredMessage="交易金额不能为空。"/>
 
                             <h:outputLabel value="转入账户类型:" style="font-weight: bold"/>
                             <p:inputText  size="25" required="true"
-                                          value="#{rsodraAction.ma130.ACTTY2}" requiredMessage="转入账户类型不能为空。"/>
+                                          value="#{rsodraAction.ma131.ACTTY2}" requiredMessage="转入账户类型不能为空。"/>
                             <h:outputLabel value="转入账号:" style="font-weight: bold"/>
                             <p:inputText  size="25" required="true"
-                                          value="#{rsodraAction.ma130.IPTAC2}" requiredMessage="转入账号不能为空。"/>
+                                          value="#{rsodraAction.ma131.IPTAC2}" requiredMessage="转入账号不能为空。"/>
                             <h:outputLabel value="证件种类:" style="font-weight: bold"/>
-                            <p:selectOneMenu id="pastyp" value="#{rsodraAction.ma130.PASTYP}" style="width: 165px;"
-                                             required="true" requiredMessage="证件类别不能为空" >
-                                <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
-                            </p:selectOneMenu>
+                            <p:selectOneMenu id="pastyp" value="#{rsodraAction.ma131.PASTYP}"  style="width: 165px;"
+                                                               required="true" requiredMessage="证件类别不能为空" >
+                            <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
+                        </p:selectOneMenu>
                             <h:outputLabel value="证件号码:" style="font-weight: bold"/>
                             <p:inputText  size="25" required="true"
-                                          value="#{rsodraAction.ma130.PASSNO}" requiredMessage="证件号码不能为空。"/>
+                                          value="#{rsodraAction.ma131.PASSNO}" requiredMessage="证件号码不能为空。"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">
-                            <p:commandButton style="width:130px;" value="通知存款结清查询"
-                                             action="#{rsodraAction.onAllQuery()}" ajax="true"
+                            <p:commandButton style="width:110px;" value="通知存款结清"
+                                             action="#{rsodraAction.onDeal()}" ajax="true"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
@@ -129,7 +129,6 @@
                             <p:outputLabel value="#{rsodraAction.dra.OPNDAT}"/>
                             <h:outputLabel value="余额:"/>
                             <p:outputLabel value="#{rsodraAction.dra.CURBAL}"/>
-
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>

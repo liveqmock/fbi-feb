@@ -4,37 +4,21 @@ package gateway.sbs.txn.model.msg;
  * 签到
  */
 public class Ma130 extends MTia {
-    private String ACTTY1;         //帐户号类型
-    private String IPTAC1;         //帐户号
-    private String DRAMD1;         //取款方式
+    private String ACTTY1 = "";         //帐户号类型
+    private String IPTAC1 = "";         //帐户号
+    private String DRAMD1 = "";         //取款方式
     private String CUSPW1= "";         //客户密码
     private String TXNDAT="";         //交易日期
     private String ADVNUM="";         //通知单号
-    private String TXNAMT;         //交易金额
-    private String ACTTY2;         //转入账户类型
-    private String IPTAC2;         //转入账号
+    private String TXNAMT = "";         //交易金额
+    private String ACTTY2 = "";         //转入账户类型
+    private String IPTAC2 = "";         //转入账号
     private String PASTYP= "";         //证件种类
     private String PASSNO= "";         //证件号
     private String REMARK= "";         //摘要
     private String ANACDE= "";         //分类统计码
     private String MAGFL1= "";         //刷磁条读入帐号标志
     private String MAGFL2= "";         //备用字段
-
-
-
-
-
-
-    public Ma130(String ACTTY1, String IPTAC1, String DRAMD1, String TXNDAT, String ADVNUM, String TXNAMT, String ACTTY2, String IPTAC2) {
-        this.ACTTY1 = ACTTY1;
-        this.IPTAC1 = IPTAC1;
-        this.DRAMD1 = DRAMD1;
-        this.TXNDAT = TXNDAT;
-        this.ADVNUM = ADVNUM;
-        this.TXNAMT = TXNAMT;
-        this.ACTTY2 = ACTTY2;
-        this.IPTAC2 = IPTAC2;
-    }
 
     public String getACTTY1() {
         return ACTTY1;

@@ -3,7 +3,9 @@ package feb.view;
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.re.T091;
+import gateway.sbs.txn.model.form.re.T399;
 import gateway.sbs.txn.model.msg.Ma130;
+import gateway.sbs.txn.model.msg.Ma131;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.MessageUtil;
@@ -14,12 +16,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- *
+ *  通知存款结清
  */
 @ManagedBean
 @ViewScoped
@@ -29,61 +33,70 @@ public class RsodraAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+
     private T091 dra = new T091();
+    private Ma130 ma130 = new Ma130();
+    private Ma131 ma131 = new Ma131();
 
     private String auttlr;                     // 授权主管柜员号
     private String autpwd;                     // 授权主管密码
 
 
-    private String actty1;
-    private String iptac1;
-    private String dramd1;
-    private String txndat;
-    private String advnum;
-    private String txnamt;
-    private String actty2;
-    private String iptac2;
-
-    private List<Ma130> hstList = new ArrayList<>();
-
     @PostConstruct
     public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
-        actty1 = "07";
-        dramd1 = "0";
-        actty2 = "01";
-
+        ma130.setACTTY1("07");
+        ma130.setACTTY2("01");
+        ma130.setTXNDAT(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        ma131.setACTTY1("07");
+        ma131.setACTTY2("01");
+        ma131.setTXNDAT(new SimpleDateFormat("yyyyMMdd").format(new Date()));
     }
+
     public String onAllQuery() {
         try {
-//            if (allone.contentEquals("0")){
-            Ma130 ma130 = new Ma130(actty1,iptac1,dramd1,txndat,advnum,txnamt,actty2,iptac2);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd,"a130", ma130);
-                 if (formList != null && !formList.isEmpty()) {
-                    for (SOFForm form : formList) {
-                        if ("T091".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                            T091 t091 = (T091) form.getFormBody();
-                            dra = t091;
-                        }
-                        else {
-                            logger.info(form.getFormHeader().getFormCode());
-
-                            MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
-//                            MessageUtil.addInfoWithClientID("msgs", "查询成功");
-                        }
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("a130", ma130);
+            if (formList != null && !formList.isEmpty()) {
+                for (SOFForm form : formList) {
+                    if ("T091".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        dra = (T091) form.getFormBody();
+                    } else {
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
-                    }
-                if (dra == null) {
-                    MessageUtil.addWarn("没有查询到数据。");
                 }
+            }
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-
         return null;
     }
+
+    public String onDeal() {
+        try {
+            List<SOFForm> formList = dataExchangeService.callSbsTxn(auttlr, autpwd, "a131", ma131);
+            if (formList != null && !formList.isEmpty()){
+                for (SOFForm form : formList){
+                    if ("T091".equals(form.getFormHeader().getFormCode())) {
+                        dra = (T091) form.getFormBody();
+                    } else if ("T016".equals(form.getFormHeader().getFormCode())){
+
+                    }else if ("T130".equals(form.getFormHeader().getFormCode())){
+
+                    }else {
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("结清失败", e);
+            MessageUtil.addError("结清失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+
+    //= = = =  = = = = = =  = = = =  = = = =  = = = = = = = = =
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -94,78 +107,20 @@ public class RsodraAction implements Serializable {
     }
 
 
-    public String getActty1() {
-        return actty1;
+    public Ma130 getMa130() {
+        return ma130;
     }
 
-    public void setActty1(String actty1) {
-        this.actty1 = actty1;
+    public void setMa130(Ma130 ma130) {
+        this.ma130 = ma130;
     }
 
-    public String getIptac1() {
-        return iptac1;
+    public Ma131 getMa131() {
+        return ma131;
     }
 
-    public void setIptac1(String iptac1) {
-        this.iptac1 = iptac1;
-    }
-
-    public String getDramd1() {
-        return dramd1;
-    }
-
-    public void setDramd1(String dramd1) {
-        this.dramd1 = dramd1;
-    }
-
-    public String getTxndat() {
-        return txndat;
-    }
-
-    public void setTxndat(String txndat) {
-        this.txndat = txndat;
-    }
-
-
-
-    public String getActty2() {
-        return actty2;
-    }
-
-    public void setActty2(String actty2) {
-        this.actty2 = actty2;
-    }
-
-    public String getIptac2() {
-        return iptac2;
-    }
-
-    public void setIptac2(String iptac2) {
-        this.iptac2 = iptac2;
-    }
-
-    public String getAdvnum() {
-        return advnum;
-    }
-
-    public void setAdvnum(String advnum) {
-        this.advnum = advnum;
-    }
-
-    public String getTxnamt() {
-        return txnamt;
-    }
-
-    public void setTxnamt(String txnamt) {
-        this.txnamt = txnamt;
-    }
-
-    public List<Ma130> getHstList() {
-        return hstList;
-    }
-
-    public void setHstList(List<Ma130> hstList) {
-        this.hstList = hstList;
+    public void setMa131(Ma131 ma131) {
+        this.ma131 = ma131;
     }
 
     public String getAuttlr() {
