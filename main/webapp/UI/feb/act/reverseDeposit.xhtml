@@ -61,24 +61,11 @@
                                      columnClasses="col-label,col-input,col-label,col-input,
                                      col-label,col-input,col-label,col-input,col-label,col-input">
                             <h:outputLabel value="*冲正流水号:" style="font-weight: bold"/>
-                            <p:inputText id="rvskey" size="25"  value="#{reverseDepositAction.rvskey}"
+                            <p:inputText id="rvskey" size="25"  value="#{reverseDepositAction.ma000.RVSKEY}"
                                          required="true" requiredMessage="冲正流水号不能为空"  />
                             <h:outputLabel value="*冲正交易码:" style="font-weight: bold"/>
-                            <p:inputText size="25"  id="rvstcd" value="#{reverseDepositAction.rvstcd}"
+                            <p:inputText size="25"  id="rvstcd" value="#{reverseDepositAction.ma000.RVSTCD}"
                                          required="true"  requiredMessage="冲正交易码不能为空"/>
-                            <h:outputLabel value="取出/结清帐户号类型:" style="font-weight: bold"/>
-                            <p:inputText id="actty1" size="25"  value="#{reverseDepositAction.actty1}" />
-                            <h:outputLabel value="取出/结清帐户号:" style="font-weight: bold"/>
-                            <p:inputText id="iptac1" size="25"  value="#{reverseDepositAction.iptac1}" />
-                            <h:outputLabel value="存入/开户帐户号类型:" style="font-weight: bold"/>
-                            <p:inputText id="actty2" size="25"  value="#{reverseDepositAction.actty2}" />
-                            <h:outputLabel value="存入/开户帐户号:" style="font-weight: bold"/>
-                            <p:inputText id="iptac2" size="25"  value="#{reverseDepositAction.iptac2}" />
-                            <h:outputLabel value="*冲正交易金额:" style="font-weight: bold"/>
-                            <p:inputText id="txnamt" size="25"  value="#{reverseDepositAction.txnamt}"
-                                         required="true" requiredMessage="冲正交易金额不能为空"  />
-                            <h:outputLabel value="摘要:" style="font-weight: bold"/>
-                            <p:inputText id="remark" size="25"  value="#{reverseDepositAction.remark}" />
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
                                      width="10%">

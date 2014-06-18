@@ -30,7 +30,7 @@ public class Txna000Action extends AbstractTxnAction {
     @Override
     protected List<SOFForm> process(String termid, String tellerid, String auttlr, String autpwd, MTia tia) throws Exception {
 
-        Ma000 ma000 = new Ma000();
+        Ma000 ma000 =(Ma000) tia;
         logger.info("³åÕýÁ÷Ë®ºÅ£º" + ma000.getRVSKEY());
         List<String> paramList = new ArrayList<>();
         paramList.add(ma000.getRVSKEY());

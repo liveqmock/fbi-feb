@@ -3,7 +3,7 @@ package gateway.sbs.txn.model.msg;
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
- * Date: 14-4-8
+ * Date: 14-4-8   存款冲正
  * Time: 上午8:56
  * To change this template use File | Settings | File Templates.
  */
@@ -20,22 +20,6 @@ public class Ma000 extends MTia {
     private String MAGFL1 = "";    //        备用
     private String MAGFL2 = "";    //备用
 
-
-    public Ma000() {
-    }
-
-    public Ma000(String RVSKEY, String RVSTCD, String ACTTY1,
-                 String IPTAC1, String ACTTY2, String IPTAC2,
-                 String TXNAMT, String REMARK) {
-        this.RVSKEY = RVSKEY;
-        this.RVSTCD = RVSTCD;
-        this.ACTTY1 = ACTTY1;
-        this.IPTAC1 = IPTAC1;
-        this.ACTTY2 = ACTTY2;
-        this.IPTAC2 = IPTAC2;
-        this.TXNAMT = TXNAMT;
-        this.REMARK = REMARK;
-    }
 
     public String getRVSKEY() {
         return RVSKEY;
