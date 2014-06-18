@@ -42,6 +42,13 @@
                         event.srcElement.click();
                 }
             }
+            /*$(function () {
+                $("#form\\:actnum").blur(function () {
+                var a = parseInt($(this).val())+1
+                    $(this).val(a);
+                });
+            });*/
+
         </script>
 
     </ui:define>
@@ -55,7 +62,8 @@
                         <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:90%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="*账号:"/>
-                            <p:inputText id="actnum" value="#{clientActAction.clientAct.ACTNUM}" required="true"
+                            <p:inputText id="actnum" value="#{clientActAction.clientAct.ACTNUM}"
+                                         required="true"
                                          requiredMessage="必须输入14位账号" maxlength="14">
                                 <p:ajax event="blur" update="msgs,actnam,stmadd,stmzip,inttra"
                                         listener="#{clientActAction.onQryCustom}"/>
@@ -94,7 +102,7 @@
                             <p:inputText value="#{clientActAction.clientAct.STMCDT}"/>
                             <h:outputLabel value="贷方利率代码:"/>
                             <p:inputText id="cinrat" maxlength="3"
-                                         value="#{clientActAction.clientAct.CINRAT}" >
+                                         value="#{clientActAction.clientAct.CINRAT}">
                             </p:inputText>
                             <h:outputLabel value="账户用途:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.LEGZIP}" style="width: 131px;">
