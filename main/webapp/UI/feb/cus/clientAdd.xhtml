@@ -34,41 +34,43 @@
         }
     </style>
     <script language="JavaScript" type="text/JavaScript">
-        function KeyDown() {
-            if (event.keyCode == 13) {
-                if (event.srcElement.id == 'inputform:supdep') {
-                    document.forms['inputform']['inputform:btns'].click();
-                }else {
-                    event.keyCode = 9;
-                }
-            }
 
-           /* if (event.keyCode == 38) {
-                if (event.srcElement.id == 'inputform:intnet') {
-                    document.forms['inputform']['inputform:supdep'].focus();
-                } else if (event.srcElement.id == 'inputform:supdep') {
-                    document.forms['inputform']['inputform:ltxnum'].focus();
-                } else if (event.srcElement.id == 'inputform:ltxnum') {
-                    document.forms['inputform']['inputform:ctxnum'].focus();
-                } else if (event.srcElement.id == 'inputform:ctxnum') {
-                    document.forms['inputform']['inputform:effdur'].focus();
-                } else if (event.srcElement.id == 'inputform:effdur') {
-                    document.forms['inputform']['inputform:regdur'].focus();
-                } else if (event.srcElement.id == 'inputform:entcde') {
-                    document.forms['inputform']['inputform:buscde'].focus();
-                } else if (event.srcElement.id == 'inputform:buscde') {
-                    document.forms['inputform']['inputform:telnum'].focus();
-                } else if (event.srcElement.id == 'inputform:telnum') {
-                    document.forms['inputform']['inputform:zipcde'].focus();
-                } else if (event.srcElement.id == 'inputform:zipcde') {
-                    document.forms['inputform']['inputform:coradd'].focus();
-                } else if (event.srcElement.id == 'inputform:coradd') {
-                    document.forms['inputform']['inputform:shtnam'].focus();
-                } else if (event.srcElement.id == 'inputform:shtnam') {
-                    document.forms['inputform']['inputform:cusnam'].focus();
-                }
-            }*/
+    function KeyDown() {
+        if (event.keyCode == 13) {
+        alert(event.srcElement.id);
+            if (event.srcElement.id == 'inputform:supdep') {
+                document.forms['inputform']['inputform:btns'].click();
+            }else {
+                event.keyCode = 9;
+            }
         }
+
+        /* if (event.keyCode == 38) {
+         if (event.srcElement.id == 'inputform:intnet') {
+         document.forms['inputform']['inputform:supdep'].focus();
+         } else if (event.srcElement.id == 'inputform:supdep') {
+         document.forms['inputform']['inputform:ltxnum'].focus();
+         } else if (event.srcElement.id == 'inputform:ltxnum') {
+         document.forms['inputform']['inputform:ctxnum'].focus();
+         } else if (event.srcElement.id == 'inputform:ctxnum') {
+         document.forms['inputform']['inputform:effdur'].focus();
+         } else if (event.srcElement.id == 'inputform:effdur') {
+         document.forms['inputform']['inputform:regdur'].focus();
+         } else if (event.srcElement.id == 'inputform:entcde') {
+         document.forms['inputform']['inputform:buscde'].focus();
+         } else if (event.srcElement.id == 'inputform:buscde') {
+         document.forms['inputform']['inputform:telnum'].focus();
+         } else if (event.srcElement.id == 'inputform:telnum') {
+         document.forms['inputform']['inputform:zipcde'].focus();
+         } else if (event.srcElement.id == 'inputform:zipcde') {
+         document.forms['inputform']['inputform:coradd'].focus();
+         } else if (event.srcElement.id == 'inputform:coradd') {
+         document.forms['inputform']['inputform:shtnam'].focus();
+         } else if (event.srcElement.id == 'inputform:shtnam') {
+         document.forms['inputform']['inputform:cusnam'].focus();
+         }
+         }*/
+    }
     </script>
 </ui:define>
 <ui:define name="content">
@@ -98,18 +100,19 @@
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
                         <h:outputLabel value="*证件类别:"/>
                         <p:selectOneMenu id="pastyp" value="#{clientAction.m8001.PASTYP}" style="width: 131px;"
-                                         onkeydown="KeyDown()" onfocus="this.select()" required="true"
-                                requiredMessage="证件类别不能为空">
+                                         onchange="KeyDown2();"
+                                         required="true"
+                                         requiredMessage="证件类别不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusPastypItems}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*证件号:"/>
                         <h:inputText value="#{clientAction.m8001.PASSNO}" id="passno"
                                      required="true" requiredMessage="证件号不能为空"
-                                     onkeydown="KeyDown()" onfocus="this.select()"/>
+                                     onkeydown="KeyDown()"/>
                         <h:outputLabel value="*法人代表姓名:"/>
                         <h:inputText value="#{clientAction.m8001.LEGBDY}" id="legbdy"
                                      onkeydown="KeyDown()" onfocus="this.select()"
-                                required="true" requiredMessage="法人代表姓名不能为空"/>
+                                     required="true" requiredMessage="法人代表姓名不能为空"/>
                         <h:outputLabel value="*组织机构代码:"/>
                         <h:inputText value="#{clientAction.m8001.ENTCDE}" id="entcde"
                                      required="true" requiredMessage="组织机构代码不能为空"
@@ -136,12 +139,12 @@
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
                         <h:outputLabel value="*企业性质:"/>
                         <p:selectOneMenu value="#{clientAction.m8001.ENTTYP}" style="width: 131px;" id="enttyp"
-                                required="true" requiredMessage="企业性质不能为空">
+                                         required="true" requiredMessage="企业性质不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusEnttypItems}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*有无进口权:"/>
                         <p:selectOneMenu value="#{clientAction.m8001.CUSTY1}" style="width: 131px;" id="custy1"
-                                required="true" requiredMessage="有无进口权不能为空">
+                                         required="true" requiredMessage="有无进口权不能为空">
                             <f:selectItems value="#{selectEnumCusFieldAction.cusCusty1Items}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="*地址:"/>
@@ -151,7 +154,6 @@
                         <h:outputLabel value="电话:"/>
                         <h:inputText value="#{clientAction.m8001.TELNUM}" id="telnum"
                                      onkeydown="KeyDown()" onfocus="this.select()"/>
-
 
 
                         <h:outputLabel value="信用等级:"/>

@@ -13,7 +13,7 @@ public class Ma113 extends MTia{
    private String PAPSTS = "";    //通知状态
    private String VALDAT = "";    //通知日期
    private String SGNDAT = "";    //协定取款日
-   private String CUSPW1 = "";    //起始序号
+   private String CUSPW1 = "1";    //起始序号
 
     public String getBOKNUM() {
         return BOKNUM;

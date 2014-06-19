@@ -64,10 +64,9 @@
                             <p:inputText id="frtcde" size="25" value="#{rateTabAction.frtcde}" />-->
                             <h:outputLabel value="启用日期:"/>
                             <p:inputText id="effdat" size="25" maxlength="8" required="true"
-                                         value="#{rateTabAction.effdat}" requiredMessage="启用日期不能为空 "/>
-                            <!--<h:outputLabel value="功能参数:"/>
-                            <p:inputText id="funcde" size="25"
-                                         value="#{rateTabAction.m9807.FUNCDE}" />-->
+                                         value="#{rateTabAction.effdat}" requiredMessage="启用日期不能为空 "
+                                    onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+
                         </h:panelGrid>
                         <h:panelGrid  id="btns" columns="1" cellspacing="5" cellpadding="0"
                                       width="10%">
