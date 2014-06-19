@@ -6,8 +6,10 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import feb.service.RePrintService;
+import gateway.sbs.txn.model.form.ac.T001;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.form.control.ListGenerator;
 import pub.tools.MessageUtil;
 import skyline.service.SkylineService;
 
@@ -18,8 +20,10 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,16 +38,21 @@ import java.util.Map;
 public class ReprintAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ReprintAction.class);
 
-    private String tellerid = "";
-    private String fileName = "";
+
     @ManagedProperty(value = "#{rePrintService}")
     private RePrintService rePrintService;
+
+    private String tellerid = "";
+    private String fileName = "";
+    private String path = null;
+    private T001 t001 = new T001();
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         fileName = params.get("filename");
         tellerid = SkylineService.getOperId();
+        onReadtxt();
     }
 
     public String onPrint() {
@@ -55,6 +64,40 @@ public class ReprintAction implements Serializable {
         }
         return null;
     }
+
+    public String onReadtxt(){
+        File file= null;
+        try {
+            String encoding="UTF-8";
+            path = ReprintAction.class.getClassLoader().getResource("feb/resultsTxt/Result.txt").getPath();
+            file = new File(path);
+            InputStreamReader read = new InputStreamReader(
+                    new FileInputStream(file),encoding);
+            BufferedReader br=new BufferedReader(read);
+            String [] ss = null;
+            String line = br.readLine();
+            while (line!=null){
+                /*if (line.startsWith("af")){
+                    ss = line.split(" ");
+                    for (String s:ss){
+                        System.out.println(s);
+                    }
+                }*/
+                ss = line.split(",");
+                for (String s:ss){
+
+                    System.out.println(s);
+
+                }
+                line = br.readLine();
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
    /* public String onQryVoV(){
         PdfReader reader = null;
         try {
@@ -105,6 +148,14 @@ public class ReprintAction implements Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public T001 getT001() {
+        return t001;
+    }
+
+    public void setT001(T001 t001) {
+        this.t001 = t001;
     }
 
     public RePrintService getRePrintService() {
