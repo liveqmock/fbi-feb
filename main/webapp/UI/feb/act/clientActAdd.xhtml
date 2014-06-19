@@ -69,25 +69,25 @@
                                         listener="#{clientActAction.onQryCustom}"/>
                             </p:inputText>
                             <h:outputLabel value="*账户名称:"/>
-                            <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}" maxlength="36"
+                            <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}"
                                          required="true" requiredMessage="必须输入账户名称"/>
                             <h:outputLabel value="账户类型:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
-                                <p:ajax update="dataPanel" listener="#{clientActAction.handleCom}"/>
+                                <p:ajax update="intflg,inttra" listener="#{clientActAction.handleCom}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="计息周期:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.INTCYC}" style="width: 131px;">
+                            <p:selectOneMenu id="intcyc" value="#{clientActAction.clientAct.INTCYC}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfIntcycItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="转息账户:"/>
                             <p:inputText id="inttra" value="#{clientActAction.clientAct.INTTRA}"/>
                             <h:outputLabel value="支票/存折标志:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.CQEFLG}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.CQEFLG}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfCqeflgItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="账页形式:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.STMFMT}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.STMFMT}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfStmfmtItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="对账单分发部门:"/>
@@ -95,7 +95,7 @@
                             <h:outputLabel value="出账份数:"/>
                             <p:inputText value="#{clientActAction.clientAct.STMSHT}"/>
                             <h:outputLabel value="对账单出账周期:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.STMCYC}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.STMCYC}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfStmcycItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="出账日期:"/>
@@ -105,7 +105,7 @@
                                          value="#{clientActAction.clientAct.CINRAT}">
                             </p:inputText>
                             <h:outputLabel value="账户用途:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGZIP}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGZIP}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfLegzipItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="对账单地址:"/>
@@ -113,7 +113,7 @@
                             <h:outputLabel value="邮编:"/>
                             <p:inputText id="stmzip" value="#{clientActAction.clientAct.STMZIP}"/>
                             <h:outputLabel value="计息标志:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.INTFLG}" style="width: 131px;">
+                            <p:selectOneMenu id="intflg" value="#{clientActAction.clientAct.INTFLG}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfIntflgItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="协定账户余额限度:"/>
@@ -129,13 +129,13 @@
                             <h:outputLabel value="贷方固定或浮动利率:"/>
                             <p:inputText value="#{clientActAction.clientAct.CRATSF}"/>
                             <h:outputLabel value="分户账出账周期:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGCYC}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGCYC}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfLegcycItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="分户账出账日期:"/>
                             <p:inputText value="#{clientActAction.clientAct.LEGCDT}"/>
                             <h:outputLabel value="分户账账页形式:"/>
-                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGFMT}" style="width: 131px;">
+                            <p:selectOneMenu value="#{clientActAction.clientAct.LEGFMT}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfLegfmtItems}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="分户账地址:"/>
@@ -167,6 +167,7 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:separator/>
+                <br/>
                 <p:fieldset>
                     <h:panelGrid id="rtnActInfo" columns="6" cellpadding="0" cellspacing="5" border="0"
                                  style="width:80%;"

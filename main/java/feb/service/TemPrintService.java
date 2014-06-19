@@ -43,12 +43,12 @@ public class TemPrintService {
         ps.setFormFlattening(true);
         ps.close();
         //±£´æ Êä³ö
-        FileOutputStream fos = new FileOutputStream(outPath+teller+actnum+".pdf");
+        /*FileOutputStream fos = new FileOutputStream(outPath+teller+actnum+".pdf");
         FileOutputStream fos2 = new FileOutputStream(outPath+teller+"1.pdf");
         fos.write(baos.toByteArray());
         fos2.write(baos.toByteArray());
         fos.close();
-        fos2.close();
+        fos2.close();*/
         printTempPdf(baos);
 
     }
@@ -70,12 +70,12 @@ public class TemPrintService {
         fields.setField("amdtlr", teller);
         ps.setFormFlattening(true);
         ps.close();
-        FileOutputStream fos = new FileOutputStream(outPath+teller+cusidt+".pdf");
+        /*FileOutputStream fos = new FileOutputStream(outPath+teller+cusidt+".pdf");
         FileOutputStream fos2 = new FileOutputStream(outPath+"1.pdf");
         fos.write(baos.toByteArray());
         fos2.write(baos.toByteArray());
         fos.close();
-        fos2.close();
+        fos2.close();*/
         printTempPdf(baos);
     }
 
