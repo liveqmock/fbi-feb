@@ -20,7 +20,7 @@
         <property name="validationQuery" value="select 1 from dual"/>
         <property name="timeBetweenEvictionRunsMillis" value="600000"/>
         <property name="numTestsPerEvictionRun" value="15"/>
-        <property name="minEvictableIdleTimeMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="600000"/>
     </bean>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
