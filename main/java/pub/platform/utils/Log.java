@@ -2,7 +2,6 @@ package pub.platform.utils;
 
 import org.apache.log4j.*;
 import java.io.InputStream;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -26,7 +25,7 @@ public  class Log {
 
     private static Logger logger = null;
 
-    private static final String  fileName="/log4j.properties";
+    private static final String  fileName= "/log4j.properties";
 
 
 

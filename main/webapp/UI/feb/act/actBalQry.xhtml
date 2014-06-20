@@ -36,13 +36,12 @@
         </style>
 
         <script language="JavaScript" type="text/JavaScript">
-            function KeyDown() {
+            document.onkeydown = function TabReplace() {
                 if (event.keyCode == 13) {
-                    if (event.srcElement.id == 'inputform:cusidt') {
-                        //document.forms['inputform']['inputform:query'].click();
-                    } else {
+                    if (event.srcElement.tagName != 'BUTTON')
                         event.keyCode = 9;
-                    }
+                    else
+                        event.srcElement.click();
                 }
             }
         </script>

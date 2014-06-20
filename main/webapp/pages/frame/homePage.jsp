@@ -127,10 +127,9 @@
         }
     </style>
     <%--<script language="javascript">
-        window.onbeforeunload=function checkLeave(e)
-        {
+        window.onbeforeunload = function checkLeave(e) {
             var evt = e ? e : (window.event ? window.event : null);
-            evt.returnValue='确认是否已签退！！！！！！';
+            evt.returnValue = "";
         }
     </script>--%>
     <script type="text/javascript">
@@ -161,11 +160,10 @@
             parent.window.reload = "true";
             parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
         }
-        window.onbeforeunload=function checkLeave(e)
-        {
-            parent.window.reload = "true";
-            parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
-        }
+        window.onunload = function checkLeave(e) {
+         parent.window.reload = "true";
+         parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
+         }
     </script>
 </head>
 
