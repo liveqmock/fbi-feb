@@ -24,11 +24,12 @@ import java.io.IOException;
 @Service
 public class TemPrintService {
 
-    private  String fileName ;
-    private  String outPath = "";
-    public void printVchpenAct( String orgidt, String deptid, String actnum,
+    private String fileName;
+    private String outPath = "";
+
+    public void printVchpenAct(String orgidt, String deptid, String actnum,
                                String actnam, String opndat, String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusOpnTemp.pdf").getPath();
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusOpnTemp.pdf").getPath();
         outPath = TemPrintService.class.getClassLoader().getResource("feb/resultsPdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -52,9 +53,10 @@ public class TemPrintService {
         printTempPdf(baos);
 
     }
+
     //关闭客户打印
     public void printVchclsCus(String orgidt, String depnum, String cusidt,
-                               String actnam, String opndat,String clsdat, String teller) throws IOException, DocumentException {
+                               String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
         fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/cusCloseTemp.pdf").getPath();
         outPath = TemPrintService.class.getClassLoader().getResource("feb/resultsPdf").getPath();
         PdfReader reader = new PdfReader(fileName);
@@ -80,9 +82,9 @@ public class TemPrintService {
     }
 
     //开户
-    public void printOpnAct( String orgidt, String deptid, String actnum,
-                                String actnam, String opndat, String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actOpnTemp.pdf").getPath();
+    public void printOpnAct(String orgidt, String deptid, String actnum,
+                            String actnam, String opndat, String teller) throws IOException, DocumentException {
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actOpnTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -100,9 +102,9 @@ public class TemPrintService {
     }
 
     //关户
-    public void printClsAct( String orgidt, String deptid, String actnum,
-                                String actnam, String opndat,String clsdat , String teller) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actClsTemp.pdf").getPath();
+    public void printClsAct(String orgidt, String deptid, String actnum,
+                            String actnam, String opndat, String clsdat, String teller) throws IOException, DocumentException {
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/actClsTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -123,12 +125,12 @@ public class TemPrintService {
     /**
      * 活期清单打印
      */
-    public void printCurrInv(String orgidt,String actnum,String actnam,
-            String avabal,String clsdat,String lintdt,String craccm1,String cratsf1,String cacint1,
-            String craccm2,String cratsf2,String cacint2,
-            String craccm3,String cratsf3,String cacint3,String cacint,String amount) throws IOException, DocumentException {
+    public void printCurrInv(String orgidt, String actnum, String actnam,
+                             String avabal, String clsdat, String lintdt, String craccm1, String cratsf1, String cacint1,
+                             String craccm2, String cratsf2, String cacint2,
+                             String craccm3, String cratsf3, String cacint3, String cacint, String amount) throws IOException, DocumentException {
 
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/curInvTemp.pdf").getPath();
+        fileName = TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/curInvTemp.pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);
@@ -160,11 +162,14 @@ public class TemPrintService {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
-        writer.setPageEvent(new PdfPageEventHelper());
+        PdfCopy pdfCopy = new PdfCopy(document, baos);
         document.open();
-        writer.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
-        //document.close();     //关闭回报nopage错误
+        PdfImportedPage impPage = null;
+        impPage = pdfCopy.getImportedPage(new PdfReader(baos
+                .toByteArray()), 1);
+        pdfCopy.addPage(impPage);
+        pdfCopy.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
+        document.close();
         resp.reset();
         ServletOutputStream out = resp.getOutputStream();
         resp.setContentType("application/pdf");

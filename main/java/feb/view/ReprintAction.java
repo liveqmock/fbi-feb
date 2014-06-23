@@ -52,7 +52,7 @@ public class ReprintAction implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         fileName = params.get("filename");
         tellerid = SkylineService.getOperId();
-        onReadtxt();
+        //onReadtxt();
     }
 
     public String onPrint() {
