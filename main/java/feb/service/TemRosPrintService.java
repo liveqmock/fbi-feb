@@ -76,11 +76,14 @@ public class TemRosPrintService {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
-        writer.setPageEvent(new PdfPageEventHelper());
+        PdfCopy pdfCopy = new PdfCopy(document, baos);
         document.open();
-        writer.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
-        //document.close();     //¹Ø±Õ»Ø±¨nopage´íÎó
+        PdfImportedPage impPage = null;
+        impPage = pdfCopy.getImportedPage(new PdfReader(baos
+                .toByteArray()), 1);
+        pdfCopy.addPage(impPage);
+        pdfCopy.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
+        document.close();
         resp.reset();
         ServletOutputStream out = resp.getOutputStream();
         resp.setContentType("application/pdf");
