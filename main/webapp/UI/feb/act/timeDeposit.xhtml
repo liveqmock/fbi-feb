@@ -54,15 +54,15 @@
                                          requiredMessage="必须输入存款金额!">
                                 <f:convertNumber pattern="###,###,##0.00"/>
                             </p:inputText>
-                            <h:outputLabel value="*转账账号:"/>
+                            <h:outputLabel value="*账号:"/>
                             <p:inputText id="iptac1" value="#{timeDepositAction.ma271.IPTAC1}" required="true"
-                                         requiredMessage="必须输入转账账号！">
+                                         requiredMessage="必须输入账号！">
                                 <p:ajax event="blur" update="msgs,iptac2"
                                         listener="#{timeDepositAction.onQryAct}"/>
                             </p:inputText>
-                            <h:outputLabel value="*转账账户:"/>
+                            <h:outputLabel value="*转息账户:"/>
                             <p:inputText id="iptac2" value="#{timeDepositAction.ma271.IPTAC2}" required="true"
-                                         requiredMessage="必须输入转账账号！">
+                                         requiredMessage="必须输入转息账户！">
                             </p:inputText>
                             <h:outputLabel value="*取款方式:"/>
                             <p:selectOneMenu value="#{timeDepositAction.ma271.DRAMD2}" style="width: 138px;"

@@ -24,7 +24,7 @@ public class Ma271 extends MTia {
     private String ATOFLG = "1";        // 自动转存标志
     private String VCHTYP = "";        // 凭证种类
     private String VCHNUM = "";        // 凭证号
-    private String ACTTY1 = "";        // 账号类型
+    private String ACTTY1 = "01";        // 账号类型
     private String IPTAC1 = "";        // 账号
     private String DRAMD1 = "0";        // 取款方式
     private String CUSPW1 = "";        // 客户密码
@@ -34,7 +34,7 @@ public class Ma271 extends MTia {
     private String SGNDAT = "";        // 签发日
     private String REMARK = "";        // 摘要
     private String ACTTY2 = "";        // 转息账户号类型
-    private String IPTAC2 = "";        // 转息账户
+    private String IPTAC2 = "01";        // 转息账户
     private String VCHUSERATE = "";    // 协议利率
     private String MAGFL1 = "0";        // 账号输入方式
 
