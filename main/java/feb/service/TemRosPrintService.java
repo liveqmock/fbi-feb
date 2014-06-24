@@ -48,30 +48,6 @@ public class TemRosPrintService {
 
     }
 
-    public void printRosdp( String title,String txncde,String teller,String txndat,String iptac,
-                            String advdat,String actnam,String intcur,String txnamt,
-                            String advnum,String remark) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/rosTemp.pdf").getPath();
-        PdfReader reader = new PdfReader(fileName);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfStamper ps = new PdfStamper(reader, baos);
-        AcroFields fields = ps.getAcroFields();
-        fields.setField("title", title);
-        fields.setField("txncde", txncde);
-        fields.setField("teller", teller);
-        fields.setField("txndat", txndat);
-        fields.setField("iptac", iptac);
-        fields.setField("advdat", advdat);
-        fields.setField("actnam", actnam);
-        fields.setField("intcur", intcur);
-        fields.setField("txnamt", txnamt);
-        fields.setField("advnum", advnum);
-        fields.setField("remark", remark);
-        ps.setFormFlattening(true);
-        ps.close();
-        printTempPdf(baos);
-
-    }
     private void printTempPdf(ByteArrayOutputStream baos) throws IOException, DocumentException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
