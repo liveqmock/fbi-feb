@@ -107,16 +107,15 @@
                             <p:inputText value="#{actglcAction.irt.UPDDAT}"/>
                             <h:outputLabel value="引用号:"/>
                             <p:inputText value="#{actglcAction.irt.GLCORD}"/>
-
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" width="20%">
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
                                              action="#{actglcAction.onUpdate}" ajax="true"
-                                             disabled="#{!actglcAction.updateable}" update="msgs,btns">
+                                             rendered="#{actglcAction.updateable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton style="width:80px;margin-left:10px;" value="删除"
                                              action="#{actglcAction.onDelete}" ajax="true"
-                                             disabled="#{!actglcAction.deleteable}" update="msgs,btns">
+                                             rendered="#{actglcAction.deleteable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
                                              action="#{actglcAction.onBack}"

@@ -31,19 +31,14 @@ import java.util.Map;
 public class ActglcAction implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(ActglcAction.class);
 
-    private String action;
+    private String action = "";
     private String glcode = "";
-    private String extdat;
-    private String glcnam;
-    private String irtdate;
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
     private List<T813.Bean> dataList = new ArrayList<>();
-    //    private List<T861.Bean> DdataList = new ArrayList<>();
     private T861 irt = new T861();
     private T813 t813 = new T813();
-    private T861 t861 = new T861();
 
     private boolean updateable = false;
     private boolean deleteable = false;
@@ -54,64 +49,43 @@ public class ActglcAction implements Serializable {
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        glcode = StringUtils.isEmpty(params.get("glcode")) ? "1040" : params.get("glcode");
         glcode = params.get("glcode");
-        extdat = params.get("extdat");
-        glcnam = params.get("glcnam");
         action = params.get("action");
-        irtdate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        if (!StringUtils.isEmpty(glcode)) {
-            M9813 m9813 = new M9813(glcode);
-            SOFForm form = dataExchangeService.callSbsTxn("9813", m9813).get(0);
-            if (!"T861".equals(form.getFormHeader().getFormCode())) {
-                MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
-            } else {
-                irt = (T861) form.getFormBody();
-//                irt.getBeanList().addAll(DdataList);
+        if (action != null) {
+            onDetailQry();
+            if ("update".equals(action)) {
+                updateable = true;
+            }
+            if ("delete".equals(action)) {
+                deleteable = true;
             }
         } else {
-            // 添加利率 初始化 addirt
-            initAddirt();
-
+            onAllQuery();
         }
-        if ("update".equals(action)) {
-            updateable = true;
-            readonly = true;
-        }
-        if ("delete".equals(action)) {
-            deleteable = true;
-            readonly = true;
-        }
-        if ("query".equals(action)) onAllT813Query();
     }
 
     private void initAddirt() {
         addirt = new M9813();
     }
 
-    public String onAllQuery() {
+    public String onDetailQry() {
         try {
-            M9813 m9813 = new M9813(glcode);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", m9813);
+            addirt.setFUNCDE("0");
+            addirt.setGLCODE(glcode);
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", addirt);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T861".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        irt = (T861) form.getFormBody();
+                        irt = (T861)form.getFormBody();
+                    } else if ("W012".equals(form.getFormHeader().getFormCode())) {
 
                     } else {
-                        logger.info(form.getFormHeader().getFormCode());
+                        logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-/*
-            if (irt.getGLCCAT() == null|| irt.getGLCCAT().isEmpty() ) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }
-           *//* if (DdataList == null || DdataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }*/
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -119,33 +93,23 @@ public class ActglcAction implements Serializable {
         return null;
     }
 
-    public String onAllT813Query() {
+    public String onAllQuery() {
         try {
-            if (glcode == null) {
-                glcode = "";
-            }
-            M9813 m9813 = new M9813(glcode);
-            if (glcode.isEmpty()) {
-                m9813.setFUNCDE("1");
-            }
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", m9813);
+            addirt.setFUNCDE("1");
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("9813", addirt);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
                     if ("T813".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        T813 t813 = (T813) form.getFormBody();
+                        t813 = (T813) form.getFormBody();
                         dataList.addAll(t813.getBeanList());
-                    } else if ("W012".equalsIgnoreCase(form.getFormHeader().getFormCode())){
-
-                    }else {
-                        //logger.info(form.getFormHeader().getFormCode());
+                    } else if ("W012".equals(form.getFormHeader().getFormCode())) {
+                    } else {
+                        logger.error(form.getFormHeader().getFormCode());
                         MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
                     }
                 }
             }
-           /* if (dataList == null || dataList.isEmpty()) {
-                MessageUtil.addWarn("没有查询到数据。");
-            }*/
         } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -222,10 +186,14 @@ public class ActglcAction implements Serializable {
     }
 
     public String onBack() {
-        return "actglcMng?faces-redirect=true&action=query";
+        if ("detail".equals(action)) {
+            return "actglcQry?faces-redirect=true";
+        }
+        return "actglcMng?faces-redirect=true";
     }
-    // --------------------
 
+
+    // - - - - - - - -  - - - - - - - - - - - -
 
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
@@ -236,14 +204,6 @@ public class ActglcAction implements Serializable {
     }
 
 
-    public String getIrtdate() {
-        return irtdate;
-    }
-
-    public void setIrtdate(String irtdate) {
-        this.irtdate = irtdate;
-    }
-
     public String getAction() {
         return action;
     }
@@ -251,23 +211,6 @@ public class ActglcAction implements Serializable {
     public void setAction(String action) {
         this.action = action;
     }
-
-//    public List<T813.Bean> getDataList() {
-//        return dataList;
-//    }
-//
-//    public void setDataList(List<T813.Bean> dataList) {
-//        this.dataList = dataList;
-//    }
-
-    public String getExtdat() {
-        return extdat;
-    }
-
-    public void setExtdat(String extdat) {
-        this.extdat = extdat;
-    }
-
 
     public T861 getIrt() {
         return irt;
@@ -325,22 +268,6 @@ public class ActglcAction implements Serializable {
         this.glcode = glcode;
     }
 
-    public String getGlcnam() {
-        return glcnam;
-    }
-
-    public void setGlcnam(String glcnam) {
-        this.glcnam = glcnam;
-    }
-
-    /*public List<T861.Bean> getDdataList() {
-        return DdataList;
-    }
-
-    public void setDdataList(List<T861.Bean> ddataList) {
-        DdataList = ddataList;
-    }*/
-
     public List<T813.Bean> getDataList() {
         return dataList;
     }
@@ -357,11 +284,4 @@ public class ActglcAction implements Serializable {
         this.t813 = t813;
     }
 
-    public T861 getT861() {
-        return t861;
-    }
-
-    public void setT861(T861 t861) {
-        this.t861 = t861;
-    }
 }

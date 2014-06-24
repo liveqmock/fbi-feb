@@ -51,26 +51,7 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:focus for="glcode"/>
                 <p:messages id="msgs" showDetail="true"/>
-                <p:fieldset id="panel">
-                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
-                        <h:panelGrid columns="4" cellspacing="5"
-                                     columnClasses="col-label,col-input,col-label,col-input">
-                            <h:outputLabel value="总账码:" style="font-weight: bold"/>
-                            <p:inputText  size="25"
-                                         id="glcode" required="true"
-                                         value="#{actglcAction.glcode}" requiredMessage="总账码不能为空。"/>
-                        </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0"
-                                     width="10%">
-                            <p:commandButton style="width:110px;" value="查询"
-                                             action="#{actglcAction.onAllQuery}" ajax="true"
-                                             update="msgs,panel,dt">
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </h:panelGrid>
-                </p:fieldset>
                 <p:ajaxStatus style="height:18px;text-align:center">
                     <f:facet name="start">
                         <h:graphicImage value="/images/ajaxloadingbar.gif"/>
@@ -79,63 +60,27 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
-                <p:fieldset>
-                    <h:panelGrid id="dt" columns="2" style="width: 100%;">
-                        <h:panelGrid columns="6" cellpadding="0" cellspacing="5" border="0" style="width:80%;"
-                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2"
-                                >
-                            <h:outputLabel value="总账码:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCODE}"/>
-                            <h:outputLabel value="总账码名称:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCNAM}" />
-                            <h:outputLabel value="科目级别:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCCLS}"/>
-                            <h:outputLabel value="并入科目:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCGRP}"/>
-                            <h:outputLabel value="科目属性:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCTYP}"/>
-                            <h:outputLabel value="科目类别:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCCAT}"/>
-                            <h:outputLabel value="允许货币标志:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCCCY}"/>
-                            <h:outputLabel value="余额方向标志:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCBAL}"/>
-                            <h:outputLabel value="发生额方向标志:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCOCC}"/>
-                            <h:outputLabel value="记息种类:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCINT}"/>
-                            <h:outputLabel value="利率种类:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCRAT}"/>
-                            <h:outputLabel value="自动开户允许标志:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCOPN}"/>
-                            <h:outputLabel value="冲帐允许标志:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCRVS}"/>
-                            <h:outputLabel value="备用标志1:"/>
-                            <p:outputLabel value="#{actglcAction.irt.RSVFG1}"/>
-                            <h:outputLabel value="备用标志2:"/>
-                            <p:outputLabel value="#{actglcAction.irt.RSVFG2}"/>
-                            <h:outputLabel value="备用标志3:"/>
-                            <p:outputLabel value="#{actglcAction.irt.RSVFG3}"/>
-                            <h:outputLabel value="备用标志4:"/>
-                            <p:outputLabel value="#{actglcAction.irt.RSVFG4}"/>
-                            <h:outputLabel value="备用标志5:"/>
-                            <p:outputLabel value="#{actglcAction.irt.RSVFG5}"/>
-                            <h:outputLabel value="科目所属:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCBEL}"/>
-                            <h:outputLabel value="科目启用日期:"/>
-                            <p:outputLabel value="#{actglcAction.irt.EFFDAT}"/>
-                            <h:outputLabel value="科目使用到期日:"/>
-                            <p:outputLabel value="#{actglcAction.irt.EXPDAT}"/>
-                            <h:outputLabel value="建立柜员:"/>
-                            <p:outputLabel value="#{actglcAction.irt.AMDTLR}"/>
-                            <h:outputLabel value="修改日期:"/>
-                            <p:outputLabel value="#{actglcAction.irt.UPDDAT}"/>
-                            <h:outputLabel value="引用号:"/>
-                            <p:outputLabel value="#{actglcAction.irt.GLCORD}"/>
+                    <p:dataTable id="dt" height="200"
+                                 value="#{actglcAction.dataList}" var="record"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                                 emptyMessage="数据记录为空...">
 
-                        </h:panelGrid>
-                    </h:panelGrid>
-                </p:fieldset>
+                        <p:column headerText="总账码" style="text-align:center">
+                            <h:outputText value="#{record.GLCODE}"/>
+                        </p:column>
+
+                        <p:column headerText="总账码名称" style="text-align:center">
+                            <h:outputText value="#{record.GLCNAM}"/>
+                        </p:column>
+                        <p:column headerText="操作" style="text-align:center">
+                            <p:commandLink value="详细" immediate="true"  action="#{actglcAction.onClick()}"
+                                           style="color: blue" ajax="false">
+                                <f:param value="#{record.GLCODE}" name="glcode"/>
+                                <f:param value="detail" name="action"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
             </h:form>
         </div>
     </ui:define>

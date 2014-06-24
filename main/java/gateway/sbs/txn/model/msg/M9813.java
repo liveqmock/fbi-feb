@@ -32,13 +32,13 @@ public class M9813 extends MTia {
     private String GLCBEL = "";          // 科目所属
     private String EFFDAT = "";          // 科目启用日期
     private String EXPDAT = "";          // 科目使用到期日
-    private String FUNCDE = "0";          //功功能码
-    private String BEGNUM = "000000";          //开始序号
-    private String RSVRF3 = "000000";          //引用号
+    private String FUNCDE = "";          //功功能码
+    private String BEGNUM = "1";          //开始序号
+    private String RSVRF3 = "";          //引用号
 
-    public M9813(){
-
+    public M9813() {
     }
+
     public M9813(String GLCODE) {
         this.GLCODE = GLCODE;
     }
