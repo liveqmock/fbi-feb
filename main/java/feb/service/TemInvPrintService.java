@@ -132,52 +132,5 @@ public class TemInvPrintService {
         out.close();
         ctx.responseComplete();
     }
-    public void printInvOrd( String title, String cusidt, String outtef,String txndat, String orgnam,
-                            String actnam,String boknum,String valdat,String expdat,String intcur,
-                            String txnamt,String dpttyp,String dptprd,String intrat) throws IOException, DocumentException {
-        fileName =  TemPrintService.class.getClassLoader().getResource("feb/pdfTemplates/invOrdTemp.pdf").getPath();
-        PdfReader reader = new PdfReader(fileName);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfStamper ps = new PdfStamper(reader, baos);
-        AcroFields fields = ps.getAcroFields();
-        fields.setField("title", title);
-        fields.setField("cusidt", cusidt);
-        fields.setField("outtef", outtef);
-        fields.setField("txndat", txndat);
-        fields.setField("orgnam", orgnam);
-        fields.setField("actnam", actnam);
-        fields.setField("boknum", boknum);
-        fields.setField("valdat", valdat);
-        fields.setField("expdat", expdat);
-        fields.setField("intcur", intcur);
-        fields.setField("txnamt", txnamt);
-        fields.setField("dpttyp", dpttyp);
-        fields.setField("dptprd", dptprd);
-        fields.setField("intrat", intrat);
-        fields.setField("flag", "本证实书仅对存款人开户证实，不得作为质押权利凭证");
-        ps.setFormFlattening(true);
-        ps.close();
-        printTempPdf(baos);
 
-    }
-    private void printTempPdf(ByteArrayOutputStream baos) throws IOException, DocumentException {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
-        Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
-        writer.setPageEvent(new PdfPageEventHelper());
-        document.open();
-        writer.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
-        //document.close();     //关闭回报nopage错误
-        resp.reset();
-        ServletOutputStream out = resp.getOutputStream();
-        resp.setContentType("application/pdf");
-        resp.setHeader("Content-disposition", "inline");
-        resp.setContentLength(baos.size());
-        resp.setHeader("Cache-Control", "max-age=30");
-        baos.writeTo(out);
-        out.flush();
-        out.close();
-        ctx.responseComplete();
-    }
 }
