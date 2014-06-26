@@ -74,7 +74,7 @@
                             <h:outputLabel value="账户类型:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
-                                <p:ajax update="intflg,inttra" listener="#{clientActAction.handleCom}"/>
+                                <!--<p:ajax update="intflg,inttra" listener="#{clientActAction.handleCom}"/>-->
                             </p:selectOneMenu>
                             <h:outputLabel value="计息周期:"/>
                             <p:selectOneMenu id="intcyc" value="#{clientActAction.clientAct.INTCYC}" style="width: 137px;">
