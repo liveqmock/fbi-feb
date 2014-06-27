@@ -112,8 +112,8 @@ public class ClientActBatAction implements Serializable {
             String tmp = "";
             for (int i = 1; i <= rowLen; i++) {
                 m8101 = new M8101();
-                //int cellNum = sheet.getRow(i).getLastCellNum();
-                for (int j = 0; j < 16; j++) {
+                int cellNum = sheet.getRow(i).getLastCellNum();
+                for (int j = 0; j < cellNum; j++) {
                     cell = sheet.getRow(i).getCell(j);
                     if (cell != null) {
                         if (cell.getCellType() == 1) {
