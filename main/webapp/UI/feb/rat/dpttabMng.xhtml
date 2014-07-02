@@ -50,30 +50,8 @@
     <ui:define name="content">
         <div class="entry">
             <h:form id="form">
-                <p:messages id="msgs" showSummary="true" showDetail="false"/>
-                <!--<p:focus for="dpttyp"/>
-                <p:panel id="basepanel">
-                    <h:panelGrid id="input" columns="2" style="width: 100%;" border="0">
-                        <h:panelGrid columns="4" cellpadding="1" cellspacing="5" border="0"
-                                     columnClasses="col-label,col-input" >
-                            <h:outputLabel value="存款种类:"  style="width: 90%;font-weight: bold"/>
-                            <p:selectOneMenu id="dpttyp" value="#{dptTabAction.ma825.DPTTYP}"
-                                             style="width: 138px;">
-                                <f:selectItems value="#{selectEnumTrbFieldAction.ctfDpttypItems}"/>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="本外币标识:"  style="width: 90%;font-weight: bold"/>
-                            <p:inputText size="25" id="chfmak" required="true"
-                                         requiredMessage="本外币标识不能为空"
-                                         value="#{dptTabAction.ma825.CHFMAK}"/>
-                        </h:panelGrid>
-                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
-                            <p:commandButton style="width:110px;" value="存款种类码查询"
-                                             action="#{dptTabAction.onAllQry}" ajax="true"
-                                             update="msgs,dt">
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </h:panelGrid>
-                </p:panel>-->
+                <p:messages id="msgs"  showDetail="true"/>
+
                 <p:separator />
                 <p:outputLabel
                         style="font-size: 12px !important;font-weight: bold;color: grey;"
