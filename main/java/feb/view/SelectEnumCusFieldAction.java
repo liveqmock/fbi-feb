@@ -28,13 +28,13 @@ public class SelectEnumCusFieldAction implements Serializable {
     private List<SelectItem> cusEnttypItems;      //企业性质
     private List<SelectItem> cusCusty1Items;      //有无进口权
 
+
     @PostConstruct
     public void init() {
         cusPastypItems = skylineService.getEnuSelectItemList("CTF-PASTYP", true, false);
         cusBocgrpItems = skylineService.getEnuSelectItemList("CTF-BOCGRP", true, false);
         cusEnttypItems = skylineService.getEnuSelectItemList("CTF-ENTTYP", true, false);
         cusCusty1Items = skylineService.getEnuSelectItemList("CTF-CUSTY1", true, false);
-
     }
 
     public SkylineService getSkylineService() {
