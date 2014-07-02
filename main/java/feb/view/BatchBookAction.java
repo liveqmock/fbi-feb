@@ -9,6 +9,7 @@ import gateway.sbs.txn.model.msg.M8401;
 import gateway.sbs.txn.model.msg.M8402;
 import gateway.sbs.txn.model.msg.M8409;
 import gateway.sbs.txn.model.msg.M85a2;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -50,6 +52,7 @@ public class BatchBookAction implements Serializable {
     private TemVchPrintService temVchPrintService;
 
     private String vchset;//传票套号
+    private String vchsetTmp ="0000";//传票套号
     private String setseq;//套内序号
     private String tlrnum;//柜员号
     private String totnum;//总笔数
@@ -65,9 +68,11 @@ public class BatchBookAction implements Serializable {
 
     //--------------------------------------
     private M8401 m8401 = new M8401();
+    private M8409 m8409 = new M8409();
     private T898 t898 = new T898();
-    private T898.Bean[] selectedRecords;
+    private List<T898.Bean> selectedRecords;
     private M8402 m8402 = new M8402();
+    private M85a2 m85a2 = new M85a2();
     private List<T898.Bean> dataList = new ArrayList<>();
     private List<T898.Bean> allList = new ArrayList<>();
     private double totalDebitAmt;    //借方
@@ -84,7 +89,7 @@ public class BatchBookAction implements Serializable {
 
         tlrnum = SkylineService.getOperId();//============>得到当前柜员号
         sysdat =new SimpleDateFormat("yyyy/MM/dd").format(systemDate.getSysdate2());//sbs时间
-        onBatchQry();  // 初始化查询
+        onBatchQry("0000");  // 初始化查询
         initAddBat();
     }
 
@@ -148,9 +153,9 @@ public class BatchBookAction implements Serializable {
         }
     }
     //套票查询
-    public String onBatchQry() {
+    public String onBatchQry(String tmp) {
         try {
-            M85a2 m85a2 = new M85a2("0000");
+            m85a2.setVCHSET(tmp);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
@@ -192,7 +197,7 @@ public class BatchBookAction implements Serializable {
     }
 
     //传票录入
-    public String onCreateNewRecord() {
+    public void onCreateNewRecord() {
         int tmp = Integer.parseInt(totnum) + 1;
         String str = tmp + "";
         try {
@@ -202,13 +207,12 @@ public class BatchBookAction implements Serializable {
             /*
             * 不通过ajax提交 自行对摘要字段转码，get得到utf-8，new Str转换成java运行编码utf-16
             */
-            m8401.setFURINF(new String(m8401.getFURINF().getBytes("ISO-8859-1"),"UTF-8"));
-
+            //m8401.setFURINF(new String(m8401.getFURINF().getBytes("ISO-8859-1"),"UTF-8"));
             SOFForm form = dataExchangeService.callSbsTxn("8401", m8401).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
                 //MessageUtil.addInfo("传票录入成功：");
-                onModifyVchset();
+                onBatchQry(vchset);
                 initAddBat();
                 flushTotalData();
             } else if ("M402".equalsIgnoreCase(formcode)){
@@ -220,7 +224,6 @@ public class BatchBookAction implements Serializable {
             logger.error("8401传票录入失败", e);
             MessageUtil.addError("8401传票录入失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        return null;
     }
 
     //计算轧差
@@ -250,8 +253,8 @@ public class BatchBookAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode) || "M124".equalsIgnoreCase(formcode)) {
                 onPrint();
-                onBatchQry();//如果添加打印按钮，可以在此处使用onModifyRecord()打印之后再查询最新
-                initAddBat();
+                //onBatchQry();//如果添加打印按钮，可以在此处使用onModifyRecord()打印之后再查询最新
+                //initAddBat();
                 MessageUtil.addInfo("传票套平成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -272,7 +275,7 @@ public class BatchBookAction implements Serializable {
             SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-                onBatchQry();
+                onBatchQry("0000");
                 MessageUtil.addInfo("套票删除成功：");
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
@@ -293,97 +296,49 @@ public class BatchBookAction implements Serializable {
         return "batchBookMng";
     }
 
-    public String onModifyRecord() { //套票单笔修改 =》单笔删除再添加
-        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        setseq = param.get("setseq");
-        txnamt = param.get("txnamt");
-        M8409 m8409 = new M8409(vchset, setseq);
-        m8409.setFUNCDE("1");    //0套删除 1 单笔删除
-        SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
-        String formcode = form.getFormHeader().getFormCode();
-        if ("W001".equalsIgnoreCase(formcode)) {
-            //onModifyVchset();
-            //flushTotalData();
-        } else {
-            MessageUtil.addErrorWithClientID("msgs", formcode);
+    public void onModifyRecord(T898.Bean bean){//套票单笔修改 ==>单笔删除再添加
+        try {
+            m8409.setVCHSET(vchset);
+            m8409.setSETSEQ(bean.getSETSEQ());
+            m8409.setFUNCDE("1");    //0套删除 1 单笔删除
+            SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equalsIgnoreCase(formcode)) {
+                BeanUtils.copyProperties(m8401,bean);
+                txnamt = bean.getTXNAMT();
+            } else {
+                logger.error("传票单笔修改删除失败！");
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
-        double d = Double.parseDouble(txnamt) * 100;
-        String str = "";
-        if (d > 2147483646 || d < -2147483645) {
-            str = d + "";  //前台会用科学计数法表示2.147483647E9
-        } else {
-            int i = (int) (d);
-            str = i + "";
-        }
-        // - - - - - - - - - - - - - - - - - -
-        m8401.setACTNUM(param.get("actnum"));
-        m8401.setTXNAMT(str);
-        m8401.setRVSLBL(param.get("rvslbl"));
-        m8401.setOPNDA2(param.get("valdat"));
-        m8401.setANACDE(param.get("anacde"));
-        m8401.setFURINF(param.get("furinf"));
-        // - - - - - - - - - - - - - - - - - -
-        return null;
     }
 
     //套号修改
-    public String onBoolVchset() {//存在问题：传票修改时套号变
-        if (this.dataList.size() > 0) {
+    public String onBoolVchset() {
+        if (this.dataList.size() > 0) {//存在问题：传票修改时套号变
             MessageUtil.addError("存在未套平传票...");
         } else {
-            onModifyVchset();
+            onBatchQry(vchsetTmp);
         }
         return null;
     }
 
-    public String onModifyVchset() {
-        try {
-            M85a2 m85a2 = new M85a2(vchset);
-            List<SOFForm> formList = dataExchangeService.callSbsTxn("85a2", m85a2);
-            if (formList != null && !formList.isEmpty()) {
-                dataList = new ArrayList<>();
-                allList = new ArrayList<>();
-                for (SOFForm form : formList) {
-                    if ("T898".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        t898 = (T898) form.getFormBody();
-                        allList.addAll(t898.getBeanList());
-                        for (T898.Bean bean : allList) {
-                            if (!bean.getRECSTS().equals("I")) {
-                                bean.setTMPAMT(new BigDecimal(bean.getTXNAMT()));//金额格式化
-                                dataList.add(bean);
-                            }
-                        }
-                        tlrnum = t898.getFormBodyHeader().getTLRNUM();
-                        vchset = t898.getFormBodyHeader().getVCHSET();
-                        totnum = t898.getFormBodyHeader().getTOTNUM();//总笔数
-                        flushTotalData();
-                    } else {
-                        if ("M319".equals(form.getFormHeader().getFormCode())) {
-                            onBatchQry();
-                        }
-                        logger.info(form.getFormHeader().getFormCode());
-                        MessageUtil.addWarnWithClientID("msgs", form.getFormHeader().getFormCode());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("查询失败", e);
-            //MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
-        }
-        return null;
-    }
 
     //单笔删除
-    public String onDeleteRecord() {
-        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        setseq = param.get("setseq");
+    public String onDeleteRecord(T898.Bean bean) {
+        setseq = bean.getSETSEQ();
         try {
             M8409 m8409 = new M8409(vchset, setseq);
             m8409.setFUNCDE("1");    //0套删除 1 单笔删除
             SOFForm form = dataExchangeService.callSbsTxn("8409", m8409).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W001".equalsIgnoreCase(formcode)) {
-                MessageUtil.addInfo("套票单笔删除成功：");
+                MessageUtil.addInfo("套票单笔删除成功.");
+                dataList.remove(bean);
             } else {
                 MessageUtil.addErrorWithClientID("msgs", formcode);
             }
@@ -391,7 +346,6 @@ public class BatchBookAction implements Serializable {
             logger.error("套票单笔删除失败", e);
             MessageUtil.addError("套票单笔删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
-        onModifyVchset();
         flushTotalData();
         return null;
     }
@@ -403,7 +357,7 @@ public class BatchBookAction implements Serializable {
 //    }
 
     public String onMultiConfirm() {
-        if (selectedRecords == null || selectedRecords.length == 0) {
+        if (selectedRecords == null || selectedRecords.size() == 0) {
             MessageUtil.addWarn("至少选择一笔数据记录！");
             return null;
         }
@@ -426,12 +380,11 @@ public class BatchBookAction implements Serializable {
                 }
             }
             MessageUtil.addInfo("删除笔数： " + cnt);
-
+            dataList.removeAll(selectedRecords);
         } catch (Exception e) {
             logger.error("多笔删除失败", e);
             MessageUtil.addError("多笔删除异常.");
         }
-        onModifyVchset();
         flushTotalData();
         return null;
     }
@@ -456,6 +409,22 @@ public class BatchBookAction implements Serializable {
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
+    }
+
+    public String getVchsetTmp() {
+        return vchsetTmp;
+    }
+
+    public void setVchsetTmp(String vchsetTmp) {
+        this.vchsetTmp = vchsetTmp;
+    }
+
+    public M8409 getM8409() {
+        return m8409;
+    }
+
+    public void setM8409(M8409 m8409) {
+        this.m8409 = m8409;
     }
 
     public String getVchset() {
@@ -542,12 +511,12 @@ public class BatchBookAction implements Serializable {
         this.tlrnum = tlrnum;
     }
 
-    public void setSelectedRecords(T898.Bean[] selectedRecords) {
-        this.selectedRecords = selectedRecords;
+    public List<T898.Bean> getSelectedRecords() {
+        return selectedRecords;
     }
 
-    public T898.Bean[] getSelectedRecords() {
-        return selectedRecords;
+    public void setSelectedRecords(List<T898.Bean> selectedRecords) {
+        this.selectedRecords = selectedRecords;
     }
 
     public String getTotnum() {
