@@ -126,12 +126,7 @@
             background-image: url(../../images/top_right.jpg)
         }
     </style>
-    <%--<script language="javascript">
-        window.onbeforeunload = function checkLeave(e) {
-            var evt = e ? e : (window.event ? window.event : null);
-            evt.returnValue = "";
-        }
-    </script>--%>
+
     <script type="text/javascript">
         var contextPath = '<%=contextPath%>';
         var defaultMenuStr = '<%=jsonDefaultMenu%>';
@@ -160,10 +155,14 @@
             parent.window.reload = "true";
             parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
         }
+        /*window.onbeforeunload = function checkLeave(e) {
+            var evt = e ? e : (window.event ? window.event : null);
+            evt.returnValue = "确定要注销吗!";
+        }
         window.onunload = function checkLeave(e) {
-         parent.window.reload = "true";
-         parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
-         }
+            parent.window.reload = "true";
+            parent.window.location.replace("<%=contextPath%>/pages/security/logout.jsp");
+        }*/
     </script>
 </head>
 
