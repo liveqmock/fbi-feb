@@ -33,8 +33,8 @@ public class Ma271 extends MTia {
     private String PAPMAC = "";        // 支票密码
     private String SGNDAT = "";        // 签发日
     private String REMARK = "";        // 摘要
-    private String ACTTY2 = "";        // 转息账户号类型
-    private String IPTAC2 = "01";        // 转息账户
+    private String ACTTY2 = "01";        // 转息账户号类型
+    private String IPTAC2 = "";        // 转息账户
     private String VCHUSERATE = "";    // 协议利率
     private String MAGFL1 = "0";        // 账号输入方式
 

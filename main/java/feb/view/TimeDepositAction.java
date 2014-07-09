@@ -109,7 +109,7 @@ public class TimeDepositAction implements Serializable {
 
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
-                if (!"T132".equals(formcode) && !"T016".equals(formcode) && !"T104".equals(formcode)) {
+                if (!"T132".equals(formcode) && !"T016".equals(formcode) && !"T104".equals(formcode)&&!"M115".equals(formcode)) {
                     MessageUtil.addErrorWithClientID("msgs", formcode);
                 } else {
                     if ("T016".equals(formcode)) {
@@ -119,6 +119,8 @@ public class TimeDepositAction implements Serializable {
                     if ("T104".equals(formcode)) {
                         t104 = (T104) form.getFormBody();
                         printable = true;
+                    }if ("M115".equals(formcode)) {
+                        MessageUtil.addErrorWithClientID("msgs", formcode);
                     }
                 }
             }
