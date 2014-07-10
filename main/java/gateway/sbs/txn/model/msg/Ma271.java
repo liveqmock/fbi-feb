@@ -18,7 +18,6 @@ public class Ma271 extends MTia {
     private String VALDAT = "";        // 起息日期
     private String ACTTYP = "00";        // 账户类型
     private String DPTTYP = "20";        // 存款种类
-
     private String DPTPRD = "";        // 存期
     private String DRICYC = "00";        // 取息周期
     private String ATOFLG = "1";        // 自动转存标志
