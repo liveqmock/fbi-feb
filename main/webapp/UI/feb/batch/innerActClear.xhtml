@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+        </style>
+
+    </ui:define>
+    <ui:define name="content">
+        <div style="margin:5px;">
+            <h:form id="form" >
+                <p:messages id="msgs" showDetail="true"/>
+                <p:panel header="内部总分账户余额清算" style="height: 100px">
+                        <p:commandButton type="push" value="内部总分账户余额清算"  icon="ui-icon ui-icon-gear"
+                                    ajax="true"  style="margin-top: 15px;margin-left: 10px;"
+                                    actionListener="#{innerActClearAction.onDeal}" update="msgs"/>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
