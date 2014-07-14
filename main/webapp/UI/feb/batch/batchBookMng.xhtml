@@ -150,7 +150,7 @@
                         </p:inputText>
                     </h:panelGrid>
                     <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0" width="10%">
-                        <p:commandButton id="save" value="确定" onclick="return checkData();"
+                        <p:commandButton id="save" value="确定" onclick="return checkData();" ajax="false"
                                          actionListener="#{batchBookAction.onCreateNewRecord}"
                                          style="width:74px;" oncomplete="rtnForm()" update="show,addtable">
                         </p:commandButton>
