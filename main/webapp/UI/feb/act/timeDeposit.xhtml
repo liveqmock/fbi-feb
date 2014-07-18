@@ -92,11 +92,13 @@
                                 <h:outputLabel style="color: red;" value="*"/>
                                 <h:outputLabel value="存期:"/>
                             </p:columnGroup>
-                            <p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 138px;"
+                            <p:inputText id="dptprd" value="#{timeDepositAction.ma271.DPTPRD}"
+                                         required="true" requiredMessage="必须输入存期!"/>
+                            <!--<p:selectOneMenu value="#{timeDepositAction.ma271.DPTPRD}" style="width: 138px;"
                                              required="true"
                                              requiredMessage="必须选择存期!">
                                 <f:selectItems value="#{selectEnumTrbFieldAction.ctfDptprdItems}"/>
-                            </p:selectOneMenu>
+                            </p:selectOneMenu>-->
                             <h:outputLabel value="*自动转存标志:"/>
                             <p:selectOneMenu value="#{timeDepositAction.ma271.ATOFLG}" style="width: 138px;"
                                              required="true"

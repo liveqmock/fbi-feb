@@ -105,6 +105,8 @@ public class TimeDepositAction implements Serializable {
             if (!StringUtils.isEmpty(ma271.getIPTAC1()) && !ma271.getIPTAC1().startsWith("8010")) {
                 ma271.setIPTAC1("8010" + ma271.getIPTAC1());
             }
+            DecimalFormat df = new DecimalFormat("######0.00");
+            ma271.setTXNAMT(df.format(new BigDecimal(ma271.getTXNAMT())));
             List<SOFForm> forms = dataExchangeService.callSbsTxn(auttlr, autpwd, "a271", ma271);
 
             for (SOFForm form : forms) {

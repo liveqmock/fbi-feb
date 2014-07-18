@@ -80,7 +80,7 @@ public class DptIrtTabAction implements Serializable {
         try {
             SOFForm form = dataExchangeService.callSbsTxn("a831",ma831).get(0);
             String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equals(formcode)){
+            if ("W005".equals(formcode)){
                 logger.info(formcode);
                 pub.tools.MessageUtil.addInfoWithClientID("msgs", formcode);
             }else {
