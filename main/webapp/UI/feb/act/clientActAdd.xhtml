@@ -70,7 +70,7 @@
                             </p:inputText>
                             <h:outputLabel value="*账户名称:"/>
                             <p:inputText id="actnam" value="#{clientActAction.clientAct.ACTNAM}"
-                                         required="true" requiredMessage="必须输入账户名称"/>
+                                         required="true" requiredMessage="必须输入账户名称" maxlength="100"/>
                             <h:outputLabel value="账户类型:"/>
                             <p:selectOneMenu value="#{clientActAction.clientAct.ACTTYP}" style="width: 137px;">
                                 <f:selectItems value="#{selectEnumActFieldAction.ctfActtypItems}"/>
