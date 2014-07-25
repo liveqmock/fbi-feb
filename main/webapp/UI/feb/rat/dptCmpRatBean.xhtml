@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-label {
+                text-align: right;
+                font-size: 12px !important;
+                font-weight: bold;
+            }
+
+            .col-input {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:panel id="basePanel">
+                    <h:panelGrid id="pg" columns="2" style="width: 100%;">
+                        <h:panelGrid columns="6" cellpadding="2" cellspacing="3" border="0" style="width:90%;"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="分公司账号:"/>
+                            <p:inputText value="#{dptCmpRatAction.ma842.IPTAC1}" maxlength="34" required="true"
+                                         requiredMessage="必须输入分公司账号"/>
+                            <h:outputLabel value="总公司账号 :"/>
+                            <p:inputText value="#{dptCmpRatAction.ma842.ACTNM1}" />
+                            <h:outputLabel value="上划下拨方式:"/>
+                            <p:inputText value="#{dptCmpRatAction.ma842.ACTNM2}" disabled="true"/>
+                            <h:outputLabel value="日终保留余额:"/>
+                            <p:inputText value="#{dptCmpRatAction.ma842.REASON}"/>
+                            <h:outputLabel value="备注:"/>
+                            <p:inputText value="#{dptCmpRatAction.ma842.REMARK}"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" style="text-align:center;">
+                            <p:commandButton style="width:80px;" value="确认修改"
+                                             action="#{dptCmpRatAction.onDptMng('U')}" ajax="true"
+                                             rendered="#{dptCmpRatAction.updateable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton style="width:80px;" value="确认删除"
+                                             action="#{dptCmpRatAction.onDptMng('D')}" ajax="true"
+                                             rendered="#{dptCmpRatAction.deleteable}" update="msgs,btns">
+                            </p:commandButton>
+                            <p:commandButton id="back" ajax="false" value="返回" immediate="true"
+                                             action="#{dptCmpRatAction.onBack}"
+                                             style="width:80px;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
