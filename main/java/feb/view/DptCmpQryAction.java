@@ -103,7 +103,7 @@ public class DptCmpQryAction implements Serializable {
             String formcode = form.getFormHeader().getFormCode();
             dataList = new ArrayList<>();
             if ("W005".equals(formcode)) {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
+                MessageUtil.addInfoWithClientID("msgs", formcode);
             } else {
                 logger.error(formcode);
                 MessageUtil.addErrorWithClientID("msgs", formcode);

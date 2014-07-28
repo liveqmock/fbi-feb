@@ -98,11 +98,11 @@ public class DptCmpRatAction implements Serializable {
         try {
             ma842.setPASTYP("A");
             ma842.setACTTY1("26");
-            ma842.setACTNM2("1");
+            ma842.setREASON("1");
             SOFForm form = dataExchangeService.callSbsTxn("a842", ma842).get(0);
             String formcode = form.getFormHeader().getFormCode();
             if ("W005".equals(formcode)) {
-                MessageUtil.addErrorWithClientID("msgs", formcode);
+                MessageUtil.addInfoWithClientID("msgs", formcode);
             } else {
                 logger.error(formcode);
                 MessageUtil.addErrorWithClientID("msgs", formcode);
