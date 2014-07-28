@@ -68,8 +68,8 @@ public class T250 extends SOFFormBody {
 
         private String CODNUM;    //分公司账号
         private String CODVAL;    //总公司账号
-        private String CODVL1;    //上划下拨方式
-        private String CODVL2;    //日终保留余额
+        private String CODVL1;    //日终保留余额
+        private String CODVL2;    //上划下拨方式
         private String CODNAM;    //备注
 
     // = = = = = = = = = = = = = == = = = = = = =

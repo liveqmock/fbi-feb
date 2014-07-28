@@ -82,17 +82,17 @@
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
 
-                    <p:column headerText="分公司账号" >
-                        <h:outputText  value="#{record.CODNUM}"/>
+                    <p:column headerText="分公司账号" style="text-align: center">
+                        <h:outputText  value="#{record.CODNUM}" />
                     </p:column>
-                    <p:column headerText="总公司账号" >
-                        <h:outputText  value="#{record.CODVAL}"/>
+                    <p:column headerText="总公司账号" style="text-align: center">
+                        <h:outputText  value="#{record.CODVAL}" />
                     </p:column>
-                    <p:column headerText="上划下拨方式" >
+                    <p:column headerText="日终保留余额" style="text-align:right" sortBy="#{record.CODVL1}" >
                         <h:outputText  value="#{record.CODVL1}"/>
                     </p:column>
-                    <p:column headerText="日终保留余额" style="text-align:right" sortBy="#{record.CODVL2}">
-                        <h:outputText value="#{record.CODVL2}"/>
+                    <p:column headerText="上划下拨方式" style="text-align: center">
+                        <h:outputText value="#{record.CODVL2}" />
                     </p:column>
                     <p:column headerText="备注" >
                         <h:outputText  value="#{record.CODNAM}"/>
