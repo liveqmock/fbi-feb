@@ -11,6 +11,7 @@ import gateway.sbs.txn.model.msg.M8409;
 import gateway.sbs.txn.model.msg.M85a2;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ecs.html.Big;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.BeanHelper;
@@ -75,9 +76,9 @@ public class BatchBookAction implements Serializable {
     private M85a2 m85a2 = new M85a2();
     private List<T898.Bean> dataList = new ArrayList<>();
     private List<T898.Bean> allList = new ArrayList<>();
-    private double totalDebitAmt;    //½è·½
-    private double totalCreditAmt;   //´û·½
-    private double totalAmt;         //Ôþ²î
+    private BigDecimal totalDebitAmt;    //½è·½
+    private BigDecimal totalCreditAmt;   //´û·½
+    private BigDecimal totalAmt;         //Ôþ²î
     private boolean printable = false;
     SystemDate systemDate = new SystemDate();
 
@@ -228,19 +229,29 @@ public class BatchBookAction implements Serializable {
 
     //¼ÆËãÔþ²î
     public void flushTotalData() {
-        double amt = 0.0;
-        totalDebitAmt = 0.0;
-        totalCreditAmt = 0.0;
-        totalAmt = 0.0;
+        BigDecimal amt ;
+        totalDebitAmt = new BigDecimal("0");
+        totalCreditAmt = new BigDecimal("0");
+        totalAmt = new BigDecimal("0");
         for (T898.Bean t898s : dataList) {
-            amt = Double.parseDouble(t898s.getTXNAMT());
-            if (amt > 0) {
-                totalCreditAmt += amt;
+            amt = new BigDecimal(t898s.getTXNAMT());
+            if (amt.compareTo(new BigDecimal("0"))>0) {
+                if ("22".equals(t898s.getRVSLBL())){
+                    totalCreditAmt = totalCreditAmt.subtract(amt);
+                }else {
+                    totalCreditAmt = totalCreditAmt.add(amt);
+                }
+
             } else {
-                totalDebitAmt += (-amt);
+                if ("22".equals(t898s.getRVSLBL())){
+                    totalDebitAmt = totalDebitAmt.add(amt);
+                }else {
+                    totalDebitAmt = totalDebitAmt.subtract(amt);
+                }
+
             }
         }
-        totalAmt = totalCreditAmt - totalDebitAmt;
+        totalAmt = totalCreditAmt.subtract(totalDebitAmt);
     }
 
     //Ì×Æ½
@@ -467,31 +478,27 @@ public class BatchBookAction implements Serializable {
         this.m8402 = m8402;
     }
 
-    public double getTotalDebitAmt() {
+    public BigDecimal getTotalDebitAmt() {
         return totalDebitAmt;
     }
 
-    public void setTotalDebitAmt(double totalDebitAmt) {
+    public void setTotalDebitAmt(BigDecimal totalDebitAmt) {
         this.totalDebitAmt = totalDebitAmt;
     }
 
-    public double getTotalCreditAmt() {
+    public BigDecimal getTotalCreditAmt() {
         return totalCreditAmt;
     }
 
-    public void setTotalCreditAmt(double totalCreditAmt) {
+    public void setTotalCreditAmt(BigDecimal totalCreditAmt) {
         this.totalCreditAmt = totalCreditAmt;
     }
 
-    public double getTotalAmt() {
+    public BigDecimal getTotalAmt() {
         return totalAmt;
     }
 
-    public void setTotalAmt(double totalAmt) {
-        this.totalAmt = totalAmt;
-    }
-
-    public void setTotalAmt(float totalAmt) {
+    public void setTotalAmt(BigDecimal totalAmt) {
         this.totalAmt = totalAmt;
     }
 
