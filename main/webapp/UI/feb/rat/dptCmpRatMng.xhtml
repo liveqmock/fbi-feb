@@ -58,6 +58,7 @@
                                              actionListener="#{dptCmpRatAction.onDptQry()}" ajax="true"
                                              update="msgs,dt,panel">
                             </p:commandButton>
+
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:fieldset>
@@ -74,47 +75,47 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
-                <p:dataTable id="dt" height="200"
+                <p:dataTable id="dt" height="200" editable="true"
                              value="#{dptCmpRatAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
                              {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
+                    <p:ajax event="rowEdit" listener="#{dptCmpRatAction.onRowEdit}" update=":form:msgs" />
 
                     <p:column headerText="分公司账号" style="text-align: center">
                         <h:outputText  value="#{record.CODNUM}" />
                     </p:column>
                     <p:column headerText="总公司账号" style="text-align: center">
-                        <h:outputText  value="#{record.CODVAL}" />
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText  value="#{record.CODVAL}"/></f:facet>
+                            <f:facet name="input"><p:inputText  value="#{record.CODVAL}" style="width: 100%" /></f:facet>
+                        </p:cellEditor>
                     </p:column>
-                    <p:column headerText="日终保留余额" style="text-align:right" sortBy="#{record.CODVL1}">
-                        <h:outputText  value="#{record.CODVL1}"/>
+                    <p:column headerText="日终保留余额" style="text-align:right" sortBy="#{record.CODVL1}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText  value="#{record.CODVL1}"/></f:facet>
+                            <f:facet name="input"><p:inputText  value="#{record.CODVL1}" style="width: 100%" /></f:facet>
+                        </p:cellEditor>
                     </p:column>
                     <p:column headerText="上划下拨方式" style="text-align: center">
-                        <h:outputText value="#{record.CODVL2}" />
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText  value="#{record.CODVL2}"/></f:facet>
+                            <f:facet name="input"><p:inputText  value="#{record.CODVL2}" style="width: 100%" /></f:facet>
+                        </p:cellEditor>
                     </p:column>
                     <p:column headerText="备注" >
-                        <h:outputText  value="#{record.CODNAM}"/>
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText  value="#{record.CODNAM}"/></f:facet>
+                            <f:facet name="input"><p:inputText  value="#{record.CODNAM}" style="width: 100%" /></f:facet>
+                        </p:cellEditor>
                     </p:column>
-                    <p:column headerText="操作" style="text-align:center">
-                        <p:commandLink value="修改" immediate="true" ajax="false" action="#{dptCmpRatAction.onClick()}"
+                    <p:column headerText="修改" style="text-align:center">
+                        <p:rowEditor/>
+                    </p:column>
+                    <p:column headerText="删除" style="text-align:center">
+                        <p:commandLink value="删除" ajax="true" update=":form:msgs,dt" action="#{dptCmpRatAction.onDptDel(record)}"
                                        style="color: blue">
-                            <f:param value="update" name="action"/>
-                            <f:param value="#{record.CODNUM}" name="codnum"/>
-                            <f:param value="#{record.CODVAL}" name="codval"/>
-                            <f:param value="#{record.CODVL1}" name="codvl1"/>
-                            <f:param value="#{record.CODVL2}" name="codvl2"/>
-                            <f:param value="#{record.CODNAM}" name="codnam"/>
-                        </p:commandLink>
-                        <p:spacer width="15px"/>
-                        <p:commandLink value="删除" immediate="true" ajax="false" action="#{dptCmpRatAction.onClick()}"
-                                       style="color: blue">
-                            <f:param value="#{record.CODNUM}" name="codnum"/>
-                            <f:param value="#{record.CODVAL}" name="codval"/>
-                            <f:param value="#{record.CODVL1}" name="codvl1"/>
-                            <f:param value="#{record.CODVL2}" name="codvl2"/>
-                            <f:param value="#{record.CODNAM}" name="codnam"/>
-                            <f:param value="delete" name="action"/>
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>

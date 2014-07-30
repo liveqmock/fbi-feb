@@ -2,15 +2,19 @@ package feb.view;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.ac.T824;
 import gateway.sbs.txn.model.form.re.T250;
 import gateway.sbs.txn.model.msg.Ma841;
 import gateway.sbs.txn.model.msg.Ma842;
 import org.apache.commons.beanutils.BeanUtils;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.tools.BeanHelper;
 import pub.tools.MessageUtil;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -37,45 +41,17 @@ public class DptCmpQryAction implements Serializable {
     private DataExchangeService dataExchangeService;
 
     private String dpttyp = "24";  //操作类别
-    private String codnum;  //分公司账号
-    private String codval;  //总公司账号
-    private String codvl1;  //上划下拨方式
-    private String codvl2;  //日中保留余额
-    private String codnam;  //备注
-    private String action;
-    private boolean updateable = false;
-    private boolean deleteable = false;
     private Ma841 ma841 = new Ma841();
     private Ma842 ma842 = new Ma842();
     private T250 t250 = new T250();
     private List<T250.Bean> dataList;
 
     @PostConstruct
-    public void init() {
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        action = params.get("action");
-        codnum = params.get("codnum");
-        codval = params.get("codval");
-        codvl1 = params.get("codvl1");
-        codvl2 = params.get("codvl2");
-        codnam = params.get("codnam");
-        ma841.setDPTTYP("24");
-        if (action != null) {
-            if ("update".equals(action)) {
-                onCopyBean();
-                updateable = true;
-            }
-            if ("delete".equals(action)) {
-                onCopyBean();
-                deleteable = true;
-            }
-            if ("query".equals(action)) {
-                ma841.setDPTTYP(dpttyp);
-                onDptQry();
-            }
-        }
-    }
+    public void init(){
+        ma841.setDPTTYP(dpttyp);
+        ma842.setACTTY1(dpttyp);
 
+    }
     public void onDptQry() {
         try {
             SOFForm form = dataExchangeService.callSbsTxn("a841", ma841).get(0);
@@ -98,7 +74,6 @@ public class DptCmpQryAction implements Serializable {
     public void onDptAdd() {
         try {
             ma842.setPASTYP("A");
-            ma842.setACTTY1("24");
             SOFForm form = dataExchangeService.callSbsTxn("a842", ma842).get(0);
             String formcode = form.getFormHeader().getFormCode();
             dataList = new ArrayList<>();
@@ -114,13 +89,41 @@ public class DptCmpQryAction implements Serializable {
         }
     }
 
-    public void onDptMng(String pastyp) {
+    public void onDptDel(T250.Bean bean) {
         try {
-            ma842.setPASTYP(pastyp);
-            ma842.setACTTY1(dpttyp);
+            ma842.setPASTYP("D");
+            ma842.setIPTAC1(bean.getCODNUM());
+            ma842.setACTNM1(bean.getCODVAL());
+            ma842.setACTNM2(bean.getCODVL1());
+            ma842.setREASON(bean.getCODVL2());
+            ma842.setREMARK(bean.getCODNAM());
             SOFForm form = dataExchangeService.callSbsTxn("a842", ma842).get(0);
             String formcode = form.getFormHeader().getFormCode();
-            if ("W001".equals(formcode)||"W004".equals(formcode)) {
+            if ("W004".equals(formcode)) {
+                MessageUtil.addInfoWithClientID("msgs", formcode);
+                dataList.remove(bean);
+            }else {
+                logger.error(formcode);
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("总分账号对照删除失败", e);
+            MessageUtil.addError("总分账号对照删除失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        try {
+            T250.Bean bean = (T250.Bean) event.getObject();
+            ma842.setPASTYP("U");
+            ma842.setIPTAC1(bean.getCODNUM());
+            ma842.setACTNM1(bean.getCODVAL());
+            ma842.setACTNM2(bean.getCODVL1());
+            ma842.setREASON(bean.getCODVL2());
+            ma842.setREMARK(bean.getCODNAM());
+            SOFForm form = dataExchangeService.callSbsTxn("a842", ma842).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equals(formcode)) {
                 MessageUtil.addInfoWithClientID("msgs", formcode);
             }else {
                 logger.error(formcode);
@@ -132,21 +135,6 @@ public class DptCmpQryAction implements Serializable {
         }
     }
 
-    public void onCopyBean() {
-        ma842.setIPTAC1(codnum);
-        ma842.setACTNM1(codval);
-        ma842.setACTNM2(codvl1);
-        ma842.setREASON(codvl2);
-        ma842.setREMARK(codnam);
-    }
-
-    public String onClick() {
-        return "dptCmpBean";
-    }
-
-    public String onBack() {
-        return "dptCmpMng?faces-redirect=true&&action=query&&dpttyp=" + dpttyp;
-    }
     // = = = = = = = = = = = = = = = = = = = = = = = =  =
 
     public DataExchangeService getDataExchangeService() {
@@ -155,46 +143,6 @@ public class DptCmpQryAction implements Serializable {
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
-    }
-
-    public String getCodnum() {
-        return codnum;
-    }
-
-    public void setCodnum(String codnum) {
-        this.codnum = codnum;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public boolean isUpdateable() {
-        return updateable;
-    }
-
-    public void setUpdateable(boolean updateable) {
-        this.updateable = updateable;
-    }
-
-    public boolean isDeleteable() {
-        return deleteable;
-    }
-
-    public void setDeleteable(boolean deleteable) {
-        this.deleteable = deleteable;
-    }
-
-    public String getDpttyp() {
-        return dpttyp;
-    }
-
-    public void setDpttyp(String dpttyp) {
-        this.dpttyp = dpttyp;
     }
 
     public Ma842 getMa842() {
