@@ -28,8 +28,8 @@ public class RePrintService {
 
     private  String fileName ;
 
-    public void printVchpenAct(String orgid,String teller) throws IOException, DocumentException {
-        fileName =  RePrintService.class.getClassLoader().getResource("feb/resultsPdf/"+orgid+teller+".pdf").getPath();
+    public void printVchpenAct(String reptyp,String orgid,String teller) throws IOException, DocumentException {
+        fileName =  RePrintService.class.getClassLoader().getResource("feb/resultsPdf/"+reptyp+orgid+teller+".pdf").getPath();
         PdfReader reader = new PdfReader(fileName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfStamper ps = new PdfStamper(reader, baos);

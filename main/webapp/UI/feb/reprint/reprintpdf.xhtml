@@ -22,11 +22,15 @@
     </ui:define>
     <ui:define name="content">
         <h:form id="inputform">
-            <p:messages id="msgs" showDetail="true" showSummary="false"/>
+            <p:messages id="msgs" showDetail="true" />
             <p:focus for="fileName"/>
             <p:panel cellspacing="5" header="::重印凭证::">
-                <h:panelGrid columns="3" cellspacing="5" cellpadding="10"
-                             columnClasses="col-label,col-input" style="width: 100%">
+                <h:panelGrid columns="6" cellspacing="5" cellpadding="3" style="width: 80%"
+                             columnClasses="col-label,col-input,col-label,col-input" >
+                    <h:outputLabel value="重印类型:"/>
+                    <p:selectOneMenu value="#{reprintAction.reptyp}" style="width: 137px;">
+                        <f:selectItems value="#{reprintAction.reptypItems}"/>
+                    </p:selectOneMenu>
                     <h:outputLabel value="客户号:" style="font-weight: bold"/>
                     <p:inputText id="fileName" size="25" value="#{reprintAction.fileName}"
                                  onkeydown="KeyDown()" onfocus="this.select()"/>

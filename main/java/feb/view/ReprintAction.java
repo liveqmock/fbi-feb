@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -42,22 +43,28 @@ public class ReprintAction implements Serializable {
     @ManagedProperty(value = "#{rePrintService}")
     private RePrintService rePrintService;
 
+    @ManagedProperty(value = "#{skylineService}")
+    private SkylineService skylineService;
+
+    private String reptyp = "";
     private String tellerid = "";
     private String fileName = "";
     private String path = null;
-    private T001 t001 = new T001();
+
+    private List<SelectItem> reptypItems;      //重印类型
 
     @PostConstruct
     public void init() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         fileName = params.get("filename");
         tellerid = SkylineService.getOperId();
+        reptypItems = skylineService.getEnuSelectItemList("CTF-REPTYP", true, false);
         //onReadtxt();
     }
 
     public String onPrint() {
         try {
-            rePrintService.printVchpenAct(tellerid, fileName);
+            rePrintService.printVchpenAct(reptyp,tellerid, fileName);
         } catch (Exception e) {
             logger.error("打印失败", e);
             MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -98,41 +105,17 @@ public class ReprintAction implements Serializable {
         return null;
     }
 
-   /* public String onQryVoV(){
-        PdfReader reader = null;
-        try {
-            reader = new PdfReader(resultsPath+fileName+tellerid+".pdf");
-            //reader = new PdfReader("d:/001.pdf");
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            PdfStamper stamp = new PdfStamper(reader, bos);
-            stamp.setFormFlattening(true);//必须要调用这个，否则文档不会生成的
-            stamp.close();
-            FacesContext ctx = FacesContext.getCurrentInstance();
-            HttpServletResponse resp = (HttpServletResponse) ctx.getExternalContext().getResponse();
-            Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, bos);
-            writer.setPageEvent(new PdfPageEventHelper());
-            document.open();
-            writer.addJavaScript("this.print({bUI: false,bSilent: true,bShrinkToFit: false});" + "\r\nthis.closeDoc();");
-            //document.close();     //关闭回报nopage错误
-            resp.reset();
-            ServletOutputStream out = resp.getOutputStream();
-            resp.setContentType("application/pdf");
-            resp.setHeader("Content-disposition", "inline");
-            resp.setContentLength(bos.size());
-            resp.setHeader("Cache-Control", "max-age=30");
-            bos.writeTo(out);
-            out.flush();
-            out.close();
-            ctx.responseComplete();
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
-    }*/
-
 
     //= = = = = = = = = = = = = = == = =  = = = =
+
+
+    public String getReptyp() {
+        return reptyp;
+    }
+
+    public void setReptyp(String reptyp) {
+        this.reptyp = reptyp;
+    }
 
     public String getTellerid() {
         return tellerid;
@@ -150,14 +133,6 @@ public class ReprintAction implements Serializable {
         this.fileName = fileName;
     }
 
-    public T001 getT001() {
-        return t001;
-    }
-
-    public void setT001(T001 t001) {
-        this.t001 = t001;
-    }
-
     public RePrintService getRePrintService() {
         return rePrintService;
     }
@@ -166,4 +141,19 @@ public class ReprintAction implements Serializable {
         this.rePrintService = rePrintService;
     }
 
+    public SkylineService getSkylineService() {
+        return skylineService;
+    }
+
+    public void setSkylineService(SkylineService skylineService) {
+        this.skylineService = skylineService;
+    }
+
+    public List<SelectItem> getReptypItems() {
+        return reptypItems;
+    }
+
+    public void setReptypItems(List<SelectItem> reptypItems) {
+        this.reptypItems = reptypItems;
+    }
 }
