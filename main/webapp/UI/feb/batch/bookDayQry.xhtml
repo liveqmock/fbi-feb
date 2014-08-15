@@ -175,10 +175,8 @@
                         </f:facet>
                         <h:outputText value="#{record.ERYTIM}"/>
                     </p:column>
-                    <p:column style="text-align:center">
-                        <f:facet name="header">
-                            <h:outputText value="统计码"/>
-                        </f:facet>
+                    <p:column filterBy="#{record.ANACDE}" headerText="统计码"
+                              filterMatchMode="contains" style="text-align:center">
                         <h:outputText value="#{record.ANACDE}"/>
                     </p:column>
                     <p:column sortBy="#{record.VALDAT}" style="text-align:center">
