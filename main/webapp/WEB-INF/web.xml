@@ -10,6 +10,7 @@
     </session-config>
 
     <!--2014.1上传FileUpload-->
+
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
         <filter-class>pub.tools.CharacterEncodingFilter</filter-class>
@@ -18,6 +19,7 @@
         <filter-name>Character Encoding Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -135,9 +137,9 @@
         <welcome-file>index.login</welcome-file>
     </welcome-file-list>
 
-<!--
-    <listener>
-        <listener-class>pub.auth.OperOnLineSessionListener</listener-class>
-    </listener>
--->
+    <!--
+        <listener>
+            <listener-class>pub.auth.OperOnLineSessionListener</listener-class>
+        </listener>
+    -->
 </web-app>
