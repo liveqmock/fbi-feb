@@ -6,10 +6,10 @@ import java.util.Date;
 public class PrintBean {
     private int idOne;             //idOne
     private int idTwo;             //idTwo
-    private String acntCodeOne;    //账号一
-    private String acntNameOne;    //账户名一
-    private String acntCodeTwo;    //账号二
-    private String acntNameTwo;    //账户名二
+    private String acntCodeOne="";    //账号一
+    private String acntNameOne="";    //账户名一
+    private String acntCodeTwo="";    //账号二
+    private String acntNameTwo="";    //账户名二
     private BigDecimal creditAmt;  //交易金额
     private BigDecimal debitAmt;   //交易金额
     private String remarkOne;      //摘要一
@@ -21,8 +21,15 @@ public class PrintBean {
     private String csmOtherName;   //交易对手名称
     private BigDecimal loanRate;   //合同利率
     private Date termDate;         //到期日期
+    private int trflag;
 
-    public PrintBean(int idOne, int idTwo, String acntCodeOne, String acntNameOne, String acntCodeTwo, String acntNameTwo, BigDecimal creditAmt, BigDecimal debitAmt, String remarkOne, String remarkTwo, String curCodeOne, String curCodeTwo, Date bizDate, String remark2, String csmOtherName, BigDecimal loanRate, Date termDate) {
+    public PrintBean() {
+    }
+
+    public PrintBean(int idOne, int idTwo, String acntCodeOne, String acntNameOne, String acntCodeTwo,
+                     String acntNameTwo, BigDecimal creditAmt, BigDecimal debitAmt, String remarkOne,
+                     String remarkTwo, String curCodeOne, String curCodeTwo, Date bizDate, String remark2,
+                     String csmOtherName, BigDecimal loanRate, Date termDate) {
         this.idOne = idOne;
         this.idTwo = idTwo;
         this.acntCodeOne = acntCodeOne;
@@ -176,5 +183,13 @@ public class PrintBean {
 
     public void setTermDate(Date termDate) {
         this.termDate = termDate;
+    }
+
+    public int getTrflag() {
+        return trflag;
+    }
+
+    public void setTrflag(int trflag) {
+        this.trflag = trflag;
     }
 }

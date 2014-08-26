@@ -26,7 +26,7 @@ public class CommonService {
                 " INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3 " +
                 "FROM bi.w06_sta_glentry@bidata where id not in(select id from w06_sta_glentry)";
         return jdbcTemplate.update(sql);
-    }
+    }//select * from w06_sta_glentry t where t.input_datetime like  to_date('2012/10/13','yyyy/mm/dd');
 
     public List<PrintBean> getPrintBeans() throws DataAccessException {
         String sql = "select w1.id as idOne," +
@@ -69,13 +69,25 @@ public class CommonService {
                 new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE});
         jdbcTemplate.update(upSql);
     }
-    public List<PrintBean> obtainVocherInfos() throws DataAccessException {//0：未打印 1：已打印
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void delVocherInfo(PrintBean selectedPrintBean) throws DataAccessException {
+        String sql = "insert into printdata (IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE,TRFLAG) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String upSql = "update w06_sta_glentry t  set t.PRFLAG = 1 where t.id = " + selectedPrintBean.getIdOne() + " or t.id = " + selectedPrintBean.getIdTwo();
+        jdbcTemplate.update(sql, new Object[]{selectedPrintBean.getIdOne(), selectedPrintBean.getIdTwo(), selectedPrintBean.getAcntCodeOne(), selectedPrintBean.getAcntNameOne(), selectedPrintBean.getAcntCodeTwo(), selectedPrintBean.getAcntNameTwo(), selectedPrintBean.getCreditAmt(), selectedPrintBean.getDebitAmt(), selectedPrintBean.getRemarkOne(), selectedPrintBean.getRemarkTwo(), selectedPrintBean.getCurCodeOne(), selectedPrintBean.getCurCodeTwo(), selectedPrintBean.getBizDate(), selectedPrintBean.getRemark2(), selectedPrintBean.getCsmOtherName(), selectedPrintBean.getLoanRate(), selectedPrintBean.getTermDate(),selectedPrintBean.getTrflag()},
+                new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE,Types.INTEGER});
+        jdbcTemplate.update(upSql);
+    }
+
+    public List<PrintBean> obtainVocherInfos() throws DataAccessException {//根据日期查询记账信息
         String sql = "select IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE from printdata where TRFLAG = 0";
         return jdbcTemplate.query(sql, new PrintBeanRowMapper());
     }
 
-    public void updatePrintdata(PrintBean selectedPrintBean) throws DataAccessException {
-        String upSql = "update printdata t  set t.TRFLAG = 1 where t.IDONE = " + selectedPrintBean.getIdOne();
-        jdbcTemplate.update(upSql);
+    public void updateVochdata(PrintBean selectedPrintBean) throws DataAccessException {
+        String upSql1 = "update w06_sta_glentry t  set t.ACNT_CODE = '"+selectedPrintBean.getAcntCodeOne()+"' where t.id = " + selectedPrintBean.getIdOne();
+        String upSql2 = "update w06_sta_glentry t  set t.ACNT_CODE = '"+selectedPrintBean.getAcntCodeTwo()+"' where t.id = " + selectedPrintBean.getIdTwo();
+        jdbcTemplate.update(upSql1);
+        jdbcTemplate.update(upSql2);
     }
 }

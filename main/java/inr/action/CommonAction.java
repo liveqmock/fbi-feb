@@ -1,18 +1,21 @@
 package inr.action;
 
+import feb.service.DataExchangeService;
+import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.msg.Maa41;
 import inr.bean.PrintBean;
 import inr.service.CommonService;
 import org.apache.log4j.Logger;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
 import pub.platform.MessageUtil;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,87 +28,137 @@ public class CommonAction implements Serializable {
     @ManagedProperty(value = "#{commonService}")
     private CommonService commonService;
 
-    private List<PrintBean> printBeans;
-    private PrintBean selectedPrintBean;
+    @ManagedProperty(value = "#{dataExchangeService}")
+    private DataExchangeService dataExchangeService;
 
+    private PrintBean printBean = new PrintBean();
+
+    private String dysdate;
     private List<PrintBean> vochers;
     private PrintBean selectedVocher;
 
-
-    @PostConstruct
-    public void init() {
-        //importToDB();//è·å–æœ€æ–°æ•°æ®
-    }
+    Maa41 maa41;
+    private List<PrintBean> dataList;
+    private PrintBean[] selectedRecords;
 
     /**
-     * ç»Ÿè®¡æ•°æ®
-     */
-    public void stasticData() {
-        try {
-            printBeans = commonService.getPrintBeans();
-        } catch (DataAccessException e) {
-            MessageUtil.addError("æ•°æ®åº“è¿æ¥å¤±è´¥!");
-            logger.error(new Date().toString() + " æ•°æ®åº“è¿æ¥å¤±è´¥!");
-        }
-    }
-
-    /**
-     * å¯¼å…¥åˆ°æœ¬åœ°æ•°æ®åº“
+     * µ¼Èëµ½±¾µØÊı¾İ¿â
      */
     public void importToDB() {
         try {
             int num = commonService.importToLocalDB();
-            MessageUtil.addInfo("å¯¼å…¥" + num + "æ¡æ•°æ®!");
+            MessageUtil.addInfo("µ¼Èë" + num + "ÌõÊı¾İ!");
         } catch (Exception e) {
-            MessageUtil.addError("æ•°æ®åº“è¿æ¥å¤±è´¥!");
-            logger.error(new Date().toString() + " æ•°æ®åº“è¿æ¥å¤±è´¥!");
+            MessageUtil.addError("Êı¾İ¿âÁ¬½ÓÊ§°Ü!");
+            logger.error(new Date().toString() + " Êı¾İ¿âÁ¬½ÓÊ§°Ü!");
         }
     }
 
+    /**
+     * Í³¼ÆÊı¾İ
+     */
+    public void stasticData() {
+        try {
+            dataList = commonService.getPrintBeans();
+        } catch (DataAccessException e) {
+            MessageUtil.addError("Êı¾İ¿âÁ¬½ÓÊ§°Ü!");
+            logger.error(new Date().toString() + " Êı¾İ¿âÁ¬½ÓÊ§°Ü!");
+        }
+    }
 
     /**
-     * æ‰“å°å‡­è¯
+     * ×÷·Ï
      */
     public void printVoucher(PrintBean bean) {
         try {
-            //printPdf();
-            commonService.addVocherInfo(bean);
-            printBeans.remove(bean);
-            MessageUtil.addInfo("æ‰§è¡ŒæˆåŠŸ!");
+            bean.setTrflag(1);
+            commonService.delVocherInfo(bean);
+            dataList.remove(bean);
+            MessageUtil.addInfo("Ö´ĞĞ³É¹¦!");
         } catch (DataAccessException e) {
-            MessageUtil.addError("sqlæ‰§è¡Œå¤±è´¥!");
-            logger.error(new Date().toString() + " sqlæ‰§è¡Œå¤±è´¥!");
+            MessageUtil.addError("sqlÖ´ĞĞÊ§°Ü!");
+            logger.error(new Date().toString() + " sqlÖ´ĞĞÊ§°Ü!");
         }
     }
 
     /**
-     * æ‰“å°pdfæ–‡ä»¶
+     * ¼ÇÕË
      */
-    public void printPdf() {
+    public String onAllConfirm() {
+        selectedRecords = dataList.toArray(selectedRecords);
+        onMultiConfirm();
+        return null;
+    }
 
+    public String onMultiConfirm() {
+        if (selectedRecords == null || selectedRecords.length == 0) {
+            MessageUtil.addWarn("ÖÁÉÙÑ¡ÔñÒ»±ÊÊı¾İ¼ÇÂ¼£¡");
+            return null;
+        }
+        try {
+            // È·ÈÏ
+            int cnt = 0;
+            for (PrintBean bean : selectedRecords) {
+                String amt = bean.getDebitAmt().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
+                String bizdate = sdf.format(new Date()); //¸ñÊ½»¯ÒµÎñÈÕÆÚ
+                maa41 = new Maa41("8010" + bean.getAcntCodeOne(), "8010" + bean.getAcntCodeTwo(), amt);
+                maa41.setTXNDAT(bizdate);
+                maa41.setPASSNO("feb"+bizdate + bean.getIdOne());//µ±Ç°ÈÕÆÚ+print±íµÄidone
+                List<SOFForm> formList = dataExchangeService.callSbsTxn("aa41", maa41);
+                if (formList != null && !formList.isEmpty()) {
+                    String formcode = formList.get(0).getFormHeader().getFormCode();
+                    if ("T531".equals(formcode)) {
+                        commonService.addVocherInfo(bean);
+                        dataList.remove(bean);
+                        cnt++;
+                    } else {
+                        MessageUtil.addErrorWithClientID("msgs", formcode);
+                        break;
+                    }
+                } else {
+                    MessageUtil.addError("SBSÏµÍ³ÏìÓ¦³¬Ê±¡£");
+                }
+            }
+            MessageUtil.addInfo("Íê³ÉÄÚ×ª±ÊÊı£º " + cnt);
+        } catch (Exception e) {
+            logger.error("ÅúÁ¿ÄÚ×ªÊ§°Ü", e);
+            MessageUtil.addError("ÅúÁ¿ÄÚ×ªÒì³£.");
+        }
+        return null;
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        try {
+            PrintBean bean = (PrintBean) event.getObject();
+            commonService.updateVochdata(bean);
+            MessageUtil.addInfo("Ö´ĞĞ³É¹¦!");
+        } catch (DataAccessException e) {
+            MessageUtil.addError("sqlÖ´ĞĞÊ§°Ü!");
+            logger.error(new Date().toString() + " sqlÖ´ĞĞÊ§°Ü!");
+        }
     }
 
     /**
-     * è®°è´¦é¡µé¢ä¿¡æ¯æ£€ç´¢
+     * ¼ÇÕË²é¿´Ò³ÃæĞÅÏ¢¼ìË÷
      */
     public void obtainVocherInfos() {
         try {
             vochers = commonService.obtainVocherInfos();
-            for (PrintBean bean : vochers){
-            }
         } catch (DataAccessException e) {
-            MessageUtil.addError("sqlæ‰§è¡Œå¤±è´¥!");
-            logger.error(new Date().toString() + " sqlæ‰§è¡Œå¤±è´¥!");
+            MessageUtil.addError("sqlÖ´ĞĞÊ§°Ü!");
+            logger.error(new Date().toString() + " sqlÖ´ĞĞÊ§°Ü!");
         }
     }
 
-    /**
-     * æ·»åŠ å‰å°é¡µé¢æ˜¾ç¤ºå†…å®¹
-     *
-     * @param msgStr
-     */
-    public void addMessage(FacesMessage.Severity severity, String msgStr) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, msgStr, msgStr));
+    // = = = = = = = = = = = = = get set = = = = = =  = = = = =  =
+
+    public String getDysdate() {
+        return dysdate;
+    }
+
+    public void setDysdate(String dysdate) {
+        this.dysdate = dysdate;
     }
 
     public CommonService getCommonService() {
@@ -116,20 +169,12 @@ public class CommonAction implements Serializable {
         this.commonService = commonService;
     }
 
-    public List<PrintBean> getPrintBeans() {
-        return printBeans;
+    public PrintBean getPrintBean() {
+        return printBean;
     }
 
-    public void setPrintBeans(List<PrintBean> printBeans) {
-        this.printBeans = printBeans;
-    }
-
-    public PrintBean getSelectedPrintBean() {
-        return selectedPrintBean;
-    }
-
-    public void setSelectedPrintBean(PrintBean selectedPrintBean) {
-        this.selectedPrintBean = selectedPrintBean;
+    public void setPrintBean(PrintBean printBean) {
+        this.printBean = printBean;
     }
 
     public List<PrintBean> getVochers() {
@@ -147,5 +192,38 @@ public class CommonAction implements Serializable {
     public void setSelectedVocher(PrintBean selectedVocher) {
         this.selectedVocher = selectedVocher;
     }
+
+    public DataExchangeService getDataExchangeService() {
+        return dataExchangeService;
+    }
+
+    public void setDataExchangeService(DataExchangeService dataExchangeService) {
+        this.dataExchangeService = dataExchangeService;
+    }
+
+    public Maa41 getMaa41() {
+        return maa41;
+    }
+
+    public void setMaa41(Maa41 maa41) {
+        this.maa41 = maa41;
+    }
+
+    public List<PrintBean> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<PrintBean> dataList) {
+        this.dataList = dataList;
+    }
+
+    public PrintBean[] getSelectedRecords() {
+        return selectedRecords;
+    }
+
+    public void setSelectedRecords(PrintBean[] selectedRecords) {
+        this.selectedRecords = selectedRecords;
+    }
 }
+
 

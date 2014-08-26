@@ -27,14 +27,14 @@
     </ui:define>
     <ui:define name="content">
         <h:form id="inputform" enctype="multipart/form-data">
-            <p:messages id="msgs" showSummary="true" showDetail="true"/>
+            <p:messages id="msgs" showDetail="true" />
             <p:panel>
                 <h:panelGrid id="dataPanel" columns="1" style="width: 100%;">
                     <h:panelGrid id="qbtn" columns="2" style="text-align:center;">
                         <p:commandButton type="push" value="获取BI数据"  icon="ui-icon ui-icon-gear"
                                          ajax="true"  style="width: 130px; margin-left: 10px; "
                                          actionListener="#{commonAction.importToDB}" update="msgs"/>
-                        <p:commandButton value="获取当日特转打印数据" icon="ui-icon ui-icon-gear"
+                        <p:commandButton value="查询当日记账数据" icon="ui-icon ui-icon-gear"
                                          style="width:160px; margin-left: 15px;" ajax="true"
                                          actionListener="#{commonAction.stasticData()}" update="msgs,dt">
                         </p:commandButton>
@@ -49,37 +49,58 @@
                     <h:outputText value=""/>
                 </f:facet>
             </p:ajaxStatus>
-
-            <p:dataTable id="dt" height="200"
+            <p:menubar>
+                <p:menuitem type="push" value="多笔入账" icon="ui-icon ui-icon-disk" ajax="true"
+                            action="#{commonAction.onMultiConfirm}" update="msgs, dt"/>
+                <p:menuitem type="push" value="全部入账" icon="ui-icon ui-icon-document" ajax="true"
+                            action="#{commonAction.onAllConfirm}" update="msgs, dt"/>
+            </p:menubar>
+            <!--<p:dataTable id="dt" height="200"
                          value="#{commonAction.printBeans}" var="record"
                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                         emptyMessage="数据记录为空...">-->
+            <p:dataTable id="dt" height="200" selection="#{commonAction.selectedRecords}"
+                         value="#{commonAction.dataList}" var="record"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" rows="15"
+                         rowKey="#{record.idOne}" editable="true"
+                         rowsPerPageTemplate="100,50,15,10,5"
                          emptyMessage="数据记录为空...">
                 <f:facet name="header">
                     特转凭证信息
                 </f:facet>
-                <p:column style="text-align:center">
-                    <f:facet name="header">
-                        <h:outputText value="付款人账号"/>
-                    </f:facet>
-                    <h:outputText value="#{record.acntCodeOne}"/>
+                <p:ajax event="rowEdit" listener="#{commonAction.onRowEdit}"  />
+
+                <p:column style="display:none;" headerText="pkid">
+                    <h:outputText value="#{record.idOne}"/>
                 </p:column>
 
-                <p:column style="text-align:center" sortBy="#{record.acntNameOne}">
+                <p:column selectionMode="multiple"/>
+
+                <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeOne}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeOne}" style="width:96%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="付款人名称"/>
                     </f:facet>
                     <h:outputText value="#{record.acntNameOne}"/>
                 </p:column>
+                <p:column style="text-align:center" sortBy="#{record.acntCodeTwo}" headerText="收款人账号">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeTwo}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeTwo}" style="width:96%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
 
                 <p:column style="text-align:center">
-                    <f:facet name="header">
-                        <h:outputText value="收款人账号"/>
-                    </f:facet>
-                    <h:outputText value="#{record.acntCodeTwo}"/>
-                </p:column>
-                <p:column style="text-align:center" sortBy="#{record.acntNameTwo}">
                     <f:facet name="header">
                         <h:outputText value="收款人名称"/>
                     </f:facet>
@@ -92,13 +113,13 @@
                     </f:facet>
                     <h:outputText value="#{record.creditAmt}"/>
                 </p:column>
-                <p:column style="text-align:center">
+                <!--<p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="到期日"/>
                     </f:facet>
                     <h:outputText
                             value="#{record.termDate}"/>
-                </p:column>
+                </p:column>-->
                 <p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="利率"/>
@@ -113,9 +134,11 @@
                     <h:outputText
                             value="#{record.csmOtherName}"/>
                 </p:column>
-
-                <p:column headerText="操作" style="text-align:center">
-                    <p:commandLink value="打印"  ajax="true" action="#{commonAction.printVoucher(record)}"
+                <p:column headerText="修改" style="text-align:center">
+                    <p:rowEditor/>
+                </p:column>
+                <p:column headerText="删除" style="text-align:center">
+                    <p:commandLink value="删除"  ajax="true" action="#{commonAction.printVoucher(record)}"
                                    style="color: blue" update="dt">
                     </p:commandLink>
                 </p:column>
