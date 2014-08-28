@@ -223,7 +223,7 @@ public class ActapcAction implements Serializable {
     // 利率修改和删除
     private String txn9814ForUD() throws IllegalAccessException {
         M9814 m9814 = new M9814(glcode, apcode);
-        BeanHelper.copyFields(t404, m9814);
+        BeanHelper.copyFields(t862, m9814);
         m9814.setMODFLG("1");
         if ("update".equals(action)) {
             m9814.setFUNCDE("2");
