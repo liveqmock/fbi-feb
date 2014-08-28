@@ -170,7 +170,7 @@ public class ActapcAction implements Serializable {
 
     public String onAdd() {
         try {
-            addapc.setMODFLG("1");
+            //addapc.setMODFLG("1");
             addapc.setFUNCDE("4");
             SOFForm form = dataExchangeService.callSbsTxn("9814", addapc).get(0);
             String formcode = form.getFormHeader().getFormCode();
@@ -224,7 +224,8 @@ public class ActapcAction implements Serializable {
     private String txn9814ForUD() throws IllegalAccessException {
         M9814 m9814 = new M9814(glcode, apcode);
         BeanHelper.copyFields(t862, m9814);
-        m9814.setMODFLG("1");
+        m9814.setCLRFLG("1");
+        //m9814.setMODFLG("1");
         if ("update".equals(action)) {
             m9814.setFUNCDE("2");
             m9814.setEBKCDE(apcode);
