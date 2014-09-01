@@ -198,6 +198,7 @@ public class ClientActAction implements Serializable {
 
     public String onUpdate() {
         try {
+            updateAct.setBALLIM(updateAct.getBALLIM().replace(",",""));
             List<SOFForm> forms = dataExchangeService.callSbsTxn(auttlr, autpwd, "8102", updateAct);
             for (SOFForm form : forms) {
                 String formcode = form.getFormHeader().getFormCode();
