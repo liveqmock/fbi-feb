@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 150px;
+                font-size: 12px !important;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .col-input2 {
+                font-size: 12px !important;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            document.onkeydown = function TabReplace() {
+                if (event.keyCode == 13) {
+                    document.forms['form']['form:btn'].click();
+                    event.keyCode = 9;
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true"/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                    <p:dataTable id="dt" height="200"
+                                 value="#{actglcAction.dataList}" var="record"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                                 emptyMessage="数据记录为空...">
+
+                        <p:column headerText="总账码" style="text-align:center">
+                            <h:outputText value="#{record.GLCODE}"/>
+                        </p:column>
+
+                        <p:column headerText="总账码名称" style="text-align:center">
+                            <h:outputText value="#{record.GLCNAM}"/>
+                        </p:column>
+                        <p:column headerText="操作" style="text-align:center">
+                            <p:commandLink value="详细" immediate="true"  action="#{actglcAction.onClick()}"
+                                           style="color: blue" ajax="false">
+                                <f:param value="#{record.GLCODE}" name="glcode"/>
+                                <f:param value="detail" name="action"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
