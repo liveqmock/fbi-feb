@@ -27,17 +27,23 @@
     </ui:define>
     <ui:define name="content">
         <h:form id="inputform" enctype="multipart/form-data">
-            <p:messages id="msgs" showDetail="true" />
+            <p:messages id="msgs" showDetail="true"/>
             <p:panel>
-                <h:panelGrid id="dataPanel" columns="1" style="width: 100%;">
-                    <h:panelGrid id="qbtn" columns="2" style="text-align:center;">
-                        <p:commandButton type="push" value="获取BI数据"  icon="ui-icon ui-icon-gear"
-                                         ajax="true"  style="width: 130px; margin-left: 10px; "
-                                         actionListener="#{commonAction.importToDB}" update="msgs"/>
-                        <p:commandButton value="查询当日记账数据" icon="ui-icon ui-icon-gear"
+                <h:panelGrid id="dataPanel" columns="2" style="width: 100%;">
+                    <h:panelGrid id="qbtn" columns="2" style="text-align:center;" columnClasses="col-label2,col-input2">
+                        <h:outputLabel value="票据日期:"/>
+                        <p:inputText id="effdat" size="25" maxlength="8" required="true"
+                                     value="#{commonAction.bizdate}" requiredMessage="日期不能为空 "
+                                     onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="btns" columns="2" cellspacing="5" cellpadding="0" width="10%">
+                        <p:commandButton value="查询记账数据" icon="ui-icon ui-icon-gear"
                                          style="width:160px; margin-left: 15px;" ajax="true"
                                          actionListener="#{commonAction.stasticData()}" update="msgs,dt">
                         </p:commandButton>
+                        <p:commandButton type="push" value="获取BI数据"  icon="ui-icon ui-icon-gear"
+                                         ajax="true"  style="width: 130px; margin-left: 10px; "
+                                         actionListener="#{commonAction.importToDB}" update="msgs"/>
                     </h:panelGrid>
                 </h:panelGrid>
             </p:panel>
@@ -72,7 +78,7 @@
                 <f:facet name="header">
                     特转凭证信息
                 </f:facet>
-                <p:ajax event="rowEdit" listener="#{commonAction.onRowEdit}"  />
+                <p:ajax event="rowEdit" listener="#{commonAction.onRowEdit}"/>
 
                 <p:column style="display:none;" headerText="pkid">
                     <h:outputText value="#{record.idOne}"/>
@@ -82,12 +88,12 @@
 
                 <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{record.acntCodeOne}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{record.acntCodeOne}" style="width:96%" /></f:facet>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeOne}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeOne}" style="width:96%"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column style="text-align:center">
+                <p:column style="text-align:left">
                     <f:facet name="header">
                         <h:outputText value="付款人名称"/>
                     </f:facet>
@@ -95,12 +101,12 @@
                 </p:column>
                 <p:column style="text-align:center" sortBy="#{record.acntCodeTwo}" headerText="收款人账号">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{record.acntCodeTwo}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{record.acntCodeTwo}" style="width:96%" /></f:facet>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeTwo}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeTwo}" style="width:96%"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column style="text-align:center">
+                <p:column style="text-align:left">
                     <f:facet name="header">
                         <h:outputText value="收款人名称"/>
                     </f:facet>
@@ -138,7 +144,7 @@
                     <p:rowEditor/>
                 </p:column>
                 <p:column headerText="删除" style="text-align:center">
-                    <p:commandLink value="删除"  ajax="true" action="#{commonAction.printVoucher(record)}"
+                    <p:commandLink value="删除" ajax="true" action="#{commonAction.printVoucher(record)}"
                                    style="color: blue" update="dt">
                     </p:commandLink>
                 </p:column>

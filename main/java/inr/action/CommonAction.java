@@ -40,6 +40,7 @@ public class CommonAction implements Serializable {
     Maa41 maa41;
     private List<PrintBean> dataList;
     private PrintBean[] selectedRecords;
+    private String bizdate = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
     /**
      * 导入到本地数据库
@@ -59,7 +60,7 @@ public class CommonAction implements Serializable {
      */
     public void stasticData() {
         try {
-            dataList = commonService.getPrintBeans();
+            dataList = commonService.getPrintBeans(bizdate);
         } catch (DataAccessException e) {
             MessageUtil.addError("数据库连接失败!");
             logger.error(new Date().toString() + " 数据库连接失败!");
@@ -223,6 +224,14 @@ public class CommonAction implements Serializable {
 
     public void setSelectedRecords(PrintBean[] selectedRecords) {
         this.selectedRecords = selectedRecords;
+    }
+
+    public void setBizdate(String bizdate) {
+        this.bizdate = bizdate;
+    }
+
+    public String getBizdate() {
+        return bizdate;
     }
 }
 

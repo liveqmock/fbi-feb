@@ -24,11 +24,11 @@ public class CommonService {
         String sql = "INSERT INTO w06_sta_glentry (id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES,INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3) " +
                 "SELECT id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES," +
                 " INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3 " +
-                "FROM bi.w06_sta_glentry@bidata where id not in(select id from w06_sta_glentry)";
+                "FROM bi.w06_sta_glentry@bidata where NOT EXISTS (SELECT id FROM w06_sta_glentry WHERE bi.w06_sta_glentry.id = w06_sta_glentry.id)";
         return jdbcTemplate.update(sql);
     }//select * from w06_sta_glentry t where t.input_datetime like  to_date('2012/10/13','yyyy/mm/dd');
 
-    public List<PrintBean> getPrintBeans() throws DataAccessException {
+    public List<PrintBean> getPrintBeans(String bizdate) throws DataAccessException {
         String sql = "select w1.id as idOne," +
                 "w2.id as idTwo," +
                 "w1.acnt_code as acntCodeOne," +
@@ -49,7 +49,8 @@ public class CommonService {
                 " from w06_sta_glentry w1, w06_sta_glentry w2" +
                 " where w1.debit_amt = w2.credit_amt" +
                 " and w1.input_datetime = w2.input_datetime" +
-                " and (w1.remark=w2.remark or (w1.remark is null and w2.remark is null)) and w1.prflag=0 and w2.prflag = 0";
+                " and (w1.remark=w2.remark or (w1.remark is null and w2.remark is null)) and " +
+                "w1.biz_date = to_date('"+bizdate +"','yyyymmdd') and w2.biz_date = to_date('" +bizdate+"','yyyymmdd')";
         return jdbcTemplate.query(sql, new PrintBeanRowMapper());
     }
 
