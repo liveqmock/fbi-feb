@@ -42,6 +42,7 @@ public class Txn8823Action extends AbstractTxnAction {
         paramList.add(m8823.getFUNCDE());
         paramList.add(m8823.getREGADD());
         paramList.add(m8823.getBEGNUM());
+        paramList.add(m8823.getANACDE());
 
         // Ö´ÐÐsbs½»Ò×
         SBSResponse response = coreTxnService.execute(termid, tellerid, "8823", paramList);

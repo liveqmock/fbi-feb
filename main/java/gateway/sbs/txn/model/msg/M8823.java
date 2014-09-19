@@ -16,6 +16,10 @@ public class M8823 extends MTia {
     private String FUNCDE;           //借贷别
     private String REGADD;           //排序字段
     private String BEGNUM;           //起始笔数
+    private String ANACDE;           //统计分析码
+
+    public M8823() {
+    }
 
     public M8823(String CUSIDT, String APCODE, String CURCDE, String ERYDA1, String ERYDA2, String SECAMT, String OVELIM, String TLRNUM ,
                  String VCHSET ,String FUNCDE, String REGADD ,String BEGNUM) {
@@ -126,5 +130,13 @@ public class M8823 extends MTia {
 
     public void setBEGNUM(String BEGNUM) {
         this.BEGNUM = BEGNUM;
+    }
+
+    public String getANACDE() {
+        return ANACDE;
+    }
+
+    public void setANACDE(String ANACDE) {
+        this.ANACDE = ANACDE;
     }
 }

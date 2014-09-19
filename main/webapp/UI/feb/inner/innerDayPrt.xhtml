@@ -1,0 +1,191 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:cusidt') {
+                        //document.forms['inputform']['inputform:query'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="form">
+                <p:focus for="cusidt"/>
+                <p:messages id="msgs" showDetail="true"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,
+                                  col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="客户号:" style="font-weight: bold"/>
+                            <p:inputText id="cusidt" size="25" value="#{bookDayQryAction.cusidt}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="核算码:" style="font-weight: bold"/>
+                            <p:inputText id="apcode" size="25" value="#{bookDayQryAction.apcode}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="币别:" style="font-weight: bold"/>
+                            <p:inputText id="curcde" size="25" value="#{bookDayQryAction.curcde}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="最小金额:" style="font-weight: bold"/>
+                            <p:inputText id="secamt" size="25" value="#{bookDayQryAction.secamt}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="最大金额:" style="font-weight: bold"/>
+                            <p:inputText id="ovelim" size="25" value="#{bookDayQryAction.ovelim}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="柜员号:" style="font-weight: bold"/>
+                            <p:inputText id="tlrnum" size="25" value="#{bookDayQryAction.tlrnum}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="传票套号:" style="font-weight: bold"/>
+                            <p:inputText id="vchset" size="25" value="#{bookDayQryAction.vchset}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="借贷别:" style="font-weight: bold"/>
+                            <p:inputText id="funcde" size="25" value="#{bookDayQryAction.funcde}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
+                            <p:commandButton style="width:125px;" value="当日特转记账查询"
+                                             action="#{bookDayQryAction.onInnerQry()}" ajax="true"
+                                             update="msgs,dt,btnex">
+                            </p:commandButton>
+                            <p:commandButton id="btnex" value="当日特转记账打印"
+                                             disabled="#{!bookDayQryAction.export}"
+                                             style="width:125px;" ajax="false">
+                                <p:dataExporter type="xls" target="dt" fileName="record"
+                                                postProcessor="#{bookDayQryAction.onPrint()}"/>
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="借贷别：借 - D , 贷 - C"/>
+                <p:separator/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{bookDayQryAction.dataList}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+                    <p:column sortBy="#{record.ACTNUM}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="账号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ACTNUM}"/>
+                    </p:column>
+
+                    <p:column style="text-align:left">
+                        <f:facet name="header">
+                            <h:outputText value="账户名称"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ACTNAM}"/>
+                    </p:column>
+                    <p:column   style="text-align:right">
+                    <f:facet name="header">
+                        <h:outputText value="金额"/>
+                    </f:facet>
+                    <h:outputText value="#{record.TXNAMT}">
+                        <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                    </h:outputText>
+                </p:column>
+                    <p:column sortBy="#{record.ERYDAT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="交易日期"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ERYDAT}"/>
+                    </p:column>
+
+                    <p:column  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="柜员"/>
+                        </f:facet>
+                        <h:outputText value="#{record.TLRNUM}"/>
+                    </p:column>
+                    <!--<p:column sortBy="#{record.VCHSET}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="传票套号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.VCHSET}"/>
+                    </p:column>
+                    <p:column sortBy="#{record.SETSEQ}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="套内序号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.SETSEQ}"/>
+                    </p:column>
+                    <p:column  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="摘要"/>
+                        </f:facet>
+                        <h:outputText value="#{record.FURINF}"/>
+                    </p:column>-->
+                    <p:column sortBy="#{record.ERYTIM}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="交易时间"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ERYTIM}"/>
+                    </p:column>
+                    <p:column headerText="统计码" style="text-align:center">
+                        <h:outputText value="#{record.ANACDE}"/>
+                    </p:column>
+                    <!--<p:column  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="起息日期"/>
+                        </f:facet>
+                        <h:outputText value="#{record.VALDAT}"/>
+                    </p:column>-->
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

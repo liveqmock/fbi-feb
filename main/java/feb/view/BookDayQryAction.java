@@ -1,14 +1,21 @@
 package feb.view;
 
+import feb.print.model.Vchset;
 import feb.service.DataExchangeService;
+import feb.service.TemVchPrintService;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T151;
+import gateway.sbs.txn.model.form.ac.T898;
 import gateway.sbs.txn.model.msg.M8822;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
+import pub.tools.BeanHelper;
+import pub.tools.DateUtil;
+import pub.tools.SystemDate;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +23,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +44,8 @@ public class BookDayQryAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+    @ManagedProperty(value = "#{temVchPrintService}")
+    private TemVchPrintService temVchPrintService;
 
     private M8822 m8822;
     private T151 t151 = new T151();
@@ -49,6 +61,9 @@ public class BookDayQryAction implements Serializable {
     private String funcde = "";
     private String fegadd = "";
     private String begnum = "";
+    private String txntim = "";
+    SystemDate systemDate = new SystemDate();
+    private String sysdat = new SimpleDateFormat("yyyy/MM/dd").format(systemDate.getSysdate2());//sbs时间;
 
 
     public String onVchsetQry() {
@@ -134,7 +149,66 @@ public class BookDayQryAction implements Serializable {
     }
 
 
+    /**
+     * 特转查询
+     * @return
+     */
+    public String onInnerQry() {
+        try{
+            m8822 = new M8822(cusidt, apcode, curcde, secamt,
+                    ovelim, tlrnum, vchset, funcde, fegadd, begnum);
+            m8822.setANACDE("BI01");
+            List<SOFForm> formList = dataExchangeService.callSbsTxn("8822", m8822);
+            if (formList != null && !formList.isEmpty()) {
+                dataList = new ArrayList<>();
+                for (SOFForm form : formList) {
+                    if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                        t151 = (T151) form.getFormBody();
+                        dataList = t151.getBeanList();
+                        isExport = true;
+                    } else {
+                        logger.error(form.getFormHeader().getFormCode());
+                        MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                    }
+                }
+            }
+        }catch (Exception e){
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+    public void onPrint() {
+        try {
+            List<Vchset> vchs = new ArrayList<>();
+            int printCnt = 0;
+            for (T151.Bean bean : dataList) {
+                if (!StringUtils.isEmpty(bean.getACTNUM())) {
+                    printCnt++;
+                    Vchset vch = new Vchset();
+                    //BeanHelper.copyFields(bean, vch);
+                    vch.setSETSEQ(String.valueOf(printCnt));
+                    vch.setACTNUM(bean.getACTNUM());
+                    vch.setRVSLBL("12");
+                    DecimalFormat df = new DecimalFormat("###,###,##0.00");
+                    vch.setTXNAMT(df.format(bean.getTXNAMT()));
+                    vch.setFURINF(bean.getFURINF());
+                    vch.setVALDAT(bean.getVALDAT());
+                    vch.setANACDE(bean.getANACDE());
+                    vch.setVCHATT("000");
+                    vchs.add(vch);
+                }
+            }
+            txntim = DateUtil.getCurrentTime();//系统时间
+            temVchPrintService.printVch( "0001", sysdat, txntim,tlrnum,vchs);
+        } catch (Exception e) {
+            logger.error("打印失败", e);
+            pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+    }
+
     //==========================================================================
+
     public DataExchangeService getDataExchangeService() {
         return dataExchangeService;
     }
@@ -256,4 +330,11 @@ public class BookDayQryAction implements Serializable {
         isExport = export;
     }
 
+    public TemVchPrintService getTemVchPrintService() {
+        return temVchPrintService;
+    }
+
+    public void setTemVchPrintService(TemVchPrintService temVchPrintService) {
+        this.temVchPrintService = temVchPrintService;
+    }
 }
