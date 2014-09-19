@@ -6,7 +6,6 @@ import gateway.sbs.txn.model.msg.Maa41;
 import inr.bean.PrintBean;
 import inr.service.CommonService;
 import org.apache.log4j.Logger;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
 import pub.platform.MessageUtil;
@@ -33,16 +32,16 @@ public class CommonAction implements Serializable {
     private DataExchangeService dataExchangeService;
 
     private PrintBean printBean = new PrintBean();
-
     private String dysdate;
     private List<PrintBean> vochers;
     private PrintBean selectedVocher;
 
-    Maa41 maa41;
+    private Maa41 maa41;
     private List<PrintBean> dataList;
     private PrintBean[] selectedRecords;
     SystemDate systemDate = new SystemDate();
     private String bizdate = new SimpleDateFormat("yyyyMMdd").format(systemDate.getSysdate2());
+
 
     /**
      * 导入到本地数据库
@@ -107,7 +106,7 @@ public class CommonAction implements Serializable {
                 ///String bizdate = sdf.format(systemDate); //格式化业务日期
                 maa41 = new Maa41("8010" + bean.getAcntCodeOne(), "8010" + bean.getAcntCodeTwo(), amt);
                 maa41.setTXNDAT(bizdate);
-                maa41.setPASSNO("feb"+bizdate + bean.getIdOne());//当前日期+print表的idone
+                maa41.setPASSNO("bi" + bizdate + bean.getIdOne());//当前日期+print表的idone
                 List<SOFForm> formList = dataExchangeService.callSbsTxn("aa41", maa41);
                 if (formList != null && !formList.isEmpty()) {
                     String formcode = formList.get(0).getFormHeader().getFormCode();
@@ -235,6 +234,7 @@ public class CommonAction implements Serializable {
     public String getBizdate() {
         return bizdate;
     }
+
 }
 
 
