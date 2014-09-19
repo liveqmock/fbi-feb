@@ -21,17 +21,18 @@ public class CommonService {
     private JdbcTemplate jdbcTemplate;
 
     public int importToLocalDB() throws Exception {
-        String sql = "INSERT INTO w06_sta_glentry (id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES,INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3) " +
+        String sql = "INSERT INTO w06_sta_glentry (id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES,INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3,SERIALNUM) " +
                 "SELECT id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES," +
-                " INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3 " +
+                " INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3,SERIALNUM " +
                 "FROM bi.w06_sta_glentry@bidata where NOT EXISTS (SELECT id FROM w06_sta_glentry WHERE bi.w06_sta_glentry.id = w06_sta_glentry.id)";
         return jdbcTemplate.update(sql);
     }//select * from w06_sta_glentry t where t.input_datetime like  to_date('2012/10/13','yyyy/mm/dd');
 
     public List<PrintBean> getPrintBeans(String bizdate) throws DataAccessException {
-        String sql = "select w1.id as idOne," +
-                "w2.id as idTwo," +
-                "w1.acnt_code as acntCodeOne," +
+        String sql = "select w1.serialnum as serialnum1 ," +
+                " w1.id as idOne," +
+                " w2.id as idTwo," +
+                " w1.acnt_code as acntCodeOne," +
                 " w1.acnt_name as acntNameOne," +
                 " w2.acnt_code as acntCodeTwo," +
                 " w2.acnt_name as acntNameTwo," +

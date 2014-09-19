@@ -29,7 +29,7 @@ public class Maa41 extends MTia {
    private String NBKFL2 = "";  //无折标识
    private String TXNDAT = "";  //交易日期
    private String REMARK = "";  //摘要
-   private String ANACDE = "";  //产品码
+   private String ANACDE = "BI01";  //统计分析码
    private String MAGFL1 = "";  //
    private String MAGFL2 = "";  //是否见单（1-是0-否）
 

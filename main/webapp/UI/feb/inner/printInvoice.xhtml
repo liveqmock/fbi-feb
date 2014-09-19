@@ -86,6 +86,13 @@
 
                 <p:column selectionMode="multiple"/>
 
+                <p:column style="text-align:center" sortBy="#{record.serialnum1}" headerText="凭证编号">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{record.serialnum1}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.serialnum1}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
                 <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{record.acntCodeOne}"/></f:facet>
@@ -113,7 +120,7 @@
                     <h:outputText
                             value="#{record.acntNameTwo}"/>
                 </p:column>
-                <p:column style="text-align:right">
+                <p:column style="text-align:right" sortBy="#{record.creditAmt}">
                     <f:facet name="header">
                         <h:outputText value="交易金额"/>
                     </f:facet>
@@ -126,20 +133,20 @@
                     <h:outputText
                             value="#{record.termDate}"/>
                 </p:column>-->
-                <p:column style="text-align:center">
+                <!--<p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="利率"/>
                     </f:facet>
                     <h:outputText
                             value="#{record.loanRate}"/>
-                </p:column>
-                <p:column style="text-align:center">
+                </p:column>-->
+                <!--<p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="交易对手名"/>
                     </f:facet>
                     <h:outputText
                             value="#{record.csmOtherName}"/>
-                </p:column>
+                </p:column>-->
                 <p:column headerText="修改" style="text-align:center">
                     <p:rowEditor/>
                 </p:column>

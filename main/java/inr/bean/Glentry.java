@@ -33,6 +33,7 @@ public class Glentry {
     private String remark2;                  //打印分类  01：业务打印  02：任意打印
     private String remark3;                  //摘要
     private int prFlag;                      //打印标记 0：未打印 1：已打印
+    private String serialnum;                 //凭证编号
 
     public int getId() {
         return id;
@@ -240,5 +241,13 @@ public class Glentry {
 
     public void setPrFlag(int prFlag) {
         this.prFlag = prFlag;
+    }
+
+    public String getSerialnum() {
+        return serialnum;
+    }
+
+    public void setSerialnum(String serialnum) {
+        this.serialnum = serialnum;
     }
 }

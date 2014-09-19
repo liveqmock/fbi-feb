@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PrintBean {
+    private String serialnum1;
     private int idOne;             //idOne
     private int idTwo;             //idTwo
     private String acntCodeOne="";    //账号一
@@ -26,10 +27,12 @@ public class PrintBean {
     public PrintBean() {
     }
 
-    public PrintBean(int idOne, int idTwo, String acntCodeOne, String acntNameOne, String acntCodeTwo,
+    public PrintBean(String serialnum1, int idOne, int idTwo, String acntCodeOne, String acntNameOne, String acntCodeTwo,
                      String acntNameTwo, BigDecimal creditAmt, BigDecimal debitAmt, String remarkOne,
                      String remarkTwo, String curCodeOne, String curCodeTwo, Date bizDate, String remark2,
                      String csmOtherName, BigDecimal loanRate, Date termDate) {
+
+        this.serialnum1 = serialnum1;
         this.idOne = idOne;
         this.idTwo = idTwo;
         this.acntCodeOne = acntCodeOne;
@@ -47,6 +50,14 @@ public class PrintBean {
         this.csmOtherName = csmOtherName;
         this.loanRate = loanRate;
         this.termDate = termDate;
+    }
+
+    public String getSerialnum1() {
+        return serialnum1;
+    }
+
+    public void setSerialnum1(String serialnum1) {
+        this.serialnum1 = serialnum1;
     }
 
     public int getIdOne() {

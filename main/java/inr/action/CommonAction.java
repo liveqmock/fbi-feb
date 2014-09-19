@@ -10,6 +10,7 @@ import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
 import pub.platform.MessageUtil;
+import pub.tools.SystemDate;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -40,7 +41,8 @@ public class CommonAction implements Serializable {
     Maa41 maa41;
     private List<PrintBean> dataList;
     private PrintBean[] selectedRecords;
-    private String bizdate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+    SystemDate systemDate = new SystemDate();
+    private String bizdate = new SimpleDateFormat("yyyyMMdd").format(systemDate.getSysdate2());
 
     /**
      * 导入到本地数据库
@@ -101,8 +103,8 @@ public class CommonAction implements Serializable {
             int cnt = 0;
             for (PrintBean bean : selectedRecords) {
                 String amt = bean.getDebitAmt().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
-                String bizdate = sdf.format(new Date()); //格式化业务日期
+                //SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
+                ///String bizdate = sdf.format(systemDate); //格式化业务日期
                 maa41 = new Maa41("8010" + bean.getAcntCodeOne(), "8010" + bean.getAcntCodeTwo(), amt);
                 maa41.setTXNDAT(bizdate);
                 maa41.setPASSNO("feb"+bizdate + bean.getIdOne());//当前日期+print表的idone
