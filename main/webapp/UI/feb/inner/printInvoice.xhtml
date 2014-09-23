@@ -124,7 +124,9 @@
                     <f:facet name="header">
                         <h:outputText value="交易金额"/>
                     </f:facet>
-                    <h:outputText value="#{record.creditAmt}"/>
+                    <h:outputText value="#{record.creditAmt}">
+                        <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                    </h:outputText>
                 </p:column>
                 <!--<p:column style="text-align:center">
                     <f:facet name="header">

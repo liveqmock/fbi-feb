@@ -85,13 +85,13 @@
 
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
-                            <p:commandButton style="width:125px;" value="当日特转记账查询"
+                            <p:commandButton style="width:130px;" value="当日特转记账查询"
                                              action="#{bookDayQryAction.onInnerQry()}" ajax="true"
                                              update="msgs,dt,btnex">
                             </p:commandButton>
                             <p:commandButton id="btnex" value="当日特转记账打印"
                                              disabled="#{!bookDayQryAction.export}"
-                                             style="width:125px;" ajax="false">
+                                             style="width:130px;" ajax="false">
                                 <p:dataExporter type="xls" target="dt" fileName="record"
                                                 postProcessor="#{bookDayQryAction.onPrint()}"/>
                             </p:commandButton>
@@ -117,13 +117,19 @@
                              {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
+
+                    <p:column sortBy="#{record.VCHSET}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="传票套号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.VCHSET}"/>
+                    </p:column>
                     <p:column sortBy="#{record.ACTNUM}" style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="账号"/>
                         </f:facet>
                         <h:outputText value="#{record.ACTNUM}"/>
                     </p:column>
-
                     <p:column style="text-align:left">
                         <f:facet name="header">
                             <h:outputText value="账户名称"/>
@@ -151,12 +157,7 @@
                         </f:facet>
                         <h:outputText value="#{record.TLRNUM}"/>
                     </p:column>
-                    <!--<p:column sortBy="#{record.VCHSET}"  style="text-align:center">
-                        <f:facet name="header">
-                            <h:outputText value="传票套号"/>
-                        </f:facet>
-                        <h:outputText value="#{record.VCHSET}"/>
-                    </p:column>
+                    <!--
                     <p:column sortBy="#{record.SETSEQ}" style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="套内序号"/>
@@ -168,13 +169,13 @@
                             <h:outputText value="摘要"/>
                         </f:facet>
                         <h:outputText value="#{record.FURINF}"/>
-                    </p:column>-->
+                    </p:column>
                     <p:column sortBy="#{record.ERYTIM}"  style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="交易时间"/>
                         </f:facet>
                         <h:outputText value="#{record.ERYTIM}"/>
-                    </p:column>
+                    </p:column>-->
                     <p:column headerText="统计码" style="text-align:center">
                         <h:outputText value="#{record.ANACDE}"/>
                     </p:column>

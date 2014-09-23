@@ -189,7 +189,7 @@ public class BookDayQryAction implements Serializable {
                     printCnt++;
                     Vchset vch = new Vchset();
                     //BeanHelper.copyFields(bean, vch);
-                    vch.setSETSEQ(String.valueOf(printCnt));
+                    vch.setSETSEQ(bean.getVCHSET());
                     vch.setACTNUM(bean.getACTNUM());
                     vch.setRVSLBL("12");
                     DecimalFormat df = new DecimalFormat("###,###,##0.00");
@@ -202,7 +202,7 @@ public class BookDayQryAction implements Serializable {
                 }
             }
             txntim = DateUtil.getCurrentTime();//系统时间
-            temVchPrintService.printVch( "0001", sysdat, txntim,tlrnum,vchs);
+            temVchPrintService.printVch( "0000", sysdat, txntim,tlrnum,vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));
