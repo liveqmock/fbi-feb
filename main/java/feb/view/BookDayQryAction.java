@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static skyline.service.SkylineService.getOperId;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Lichao.W
@@ -56,7 +58,7 @@ public class BookDayQryAction implements Serializable {
     private String curcde = "";
     private String secamt = "";
     private String ovelim = "";
-    private String tlrnum = "";
+    private String tlrnum = getOperId();
     private String vchset = "";
     private String funcde = "";
     private String fegadd = "";

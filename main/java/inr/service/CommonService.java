@@ -51,7 +51,8 @@ public class CommonService {
                 " where w1.debit_amt = w2.credit_amt" +
                 " and w1.input_datetime = w2.input_datetime" +
                 " and (w1.remark=w2.remark or (w1.remark is null and w2.remark is null)) and " +
-                "w1.biz_date = to_date('"+bizdate +"','yyyymmdd') and w2.biz_date = to_date('" +bizdate+"','yyyymmdd')";
+                "w1.biz_date = to_date('"+bizdate +"','yyyymmdd') and w2.biz_date = to_date('" +bizdate+"','yyyymmdd')" +
+                "and w1.prflag=0 and w2.prflag = 0";
         return jdbcTemplate.query(sql, new PrintBeanRowMapper());
     }
 
@@ -65,19 +66,19 @@ public class CommonService {
     }*/
     @Transactional(propagation = Propagation.REQUIRED) //事务
     public void addVocherInfo(PrintBean selectedPrintBean) throws DataAccessException {
-        String sql = "insert into printdata (IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into printdata (SERIALNUM,IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String upSql = "update w06_sta_glentry t  set t.PRFLAG = 1 where t.id = " + selectedPrintBean.getIdOne() + " or t.id = " + selectedPrintBean.getIdTwo();
-        jdbcTemplate.update(sql, new Object[]{selectedPrintBean.getIdOne(), selectedPrintBean.getIdTwo(), selectedPrintBean.getAcntCodeOne(), selectedPrintBean.getAcntNameOne(), selectedPrintBean.getAcntCodeTwo(), selectedPrintBean.getAcntNameTwo(), selectedPrintBean.getCreditAmt(), selectedPrintBean.getDebitAmt(), selectedPrintBean.getRemarkOne(), selectedPrintBean.getRemarkTwo(), selectedPrintBean.getCurCodeOne(), selectedPrintBean.getCurCodeTwo(), selectedPrintBean.getBizDate(), selectedPrintBean.getRemark2(), selectedPrintBean.getCsmOtherName(), selectedPrintBean.getLoanRate(), selectedPrintBean.getTermDate()},
-                new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE});
+        jdbcTemplate.update(sql, new Object[]{selectedPrintBean.getSerialnum1(),selectedPrintBean.getIdOne(), selectedPrintBean.getIdTwo(), selectedPrintBean.getAcntCodeOne(), selectedPrintBean.getAcntNameOne(), selectedPrintBean.getAcntCodeTwo(), selectedPrintBean.getAcntNameTwo(), selectedPrintBean.getCreditAmt(), selectedPrintBean.getDebitAmt(), selectedPrintBean.getRemarkOne(), selectedPrintBean.getRemarkTwo(), selectedPrintBean.getCurCodeOne(), selectedPrintBean.getCurCodeTwo(), selectedPrintBean.getBizDate(), selectedPrintBean.getRemark2(), selectedPrintBean.getCsmOtherName(), selectedPrintBean.getLoanRate(), selectedPrintBean.getTermDate()},
+                new int[]{Types.VARCHAR,Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE});
         jdbcTemplate.update(upSql);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void delVocherInfo(PrintBean selectedPrintBean) throws DataAccessException {
-        String sql = "insert into printdata (IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE,TRFLAG) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        String upSql = "update w06_sta_glentry t  set t.PRFLAG = 1 where t.id = " + selectedPrintBean.getIdOne() + " or t.id = " + selectedPrintBean.getIdTwo();
-        jdbcTemplate.update(sql, new Object[]{selectedPrintBean.getIdOne(), selectedPrintBean.getIdTwo(), selectedPrintBean.getAcntCodeOne(), selectedPrintBean.getAcntNameOne(), selectedPrintBean.getAcntCodeTwo(), selectedPrintBean.getAcntNameTwo(), selectedPrintBean.getCreditAmt(), selectedPrintBean.getDebitAmt(), selectedPrintBean.getRemarkOne(), selectedPrintBean.getRemarkTwo(), selectedPrintBean.getCurCodeOne(), selectedPrintBean.getCurCodeTwo(), selectedPrintBean.getBizDate(), selectedPrintBean.getRemark2(), selectedPrintBean.getCsmOtherName(), selectedPrintBean.getLoanRate(), selectedPrintBean.getTermDate(),selectedPrintBean.getTrflag()},
-                new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE,Types.INTEGER});
+        String sql = "insert into printdata (SERIALNUM,IDONE,IDTWO,ACNTCODEONE,ACNTNAMEONE,ACNTCODETWO,ACNTNAMETWO,CREDITAMT,DEBITAMT,REMARKONE,REMARKTWO,CURCODEONE,CURCODETWO,BIZDATE,REMARK2,CSMOTHERNAME,LOANRATE,TERMDATE,TRFLAG) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String upSql = "update w06_sta_glentry t  set t.PRFLAG = 2 where t.id = " + selectedPrintBean.getIdOne() + " or t.id = " + selectedPrintBean.getIdTwo();
+        jdbcTemplate.update(sql, new Object[]{selectedPrintBean.getSerialnum1(),selectedPrintBean.getIdOne(), selectedPrintBean.getIdTwo(), selectedPrintBean.getAcntCodeOne(), selectedPrintBean.getAcntNameOne(), selectedPrintBean.getAcntCodeTwo(), selectedPrintBean.getAcntNameTwo(), selectedPrintBean.getCreditAmt(), selectedPrintBean.getDebitAmt(), selectedPrintBean.getRemarkOne(), selectedPrintBean.getRemarkTwo(), selectedPrintBean.getCurCodeOne(), selectedPrintBean.getCurCodeTwo(), selectedPrintBean.getBizDate(), selectedPrintBean.getRemark2(), selectedPrintBean.getCsmOtherName(), selectedPrintBean.getLoanRate(), selectedPrintBean.getTermDate(),selectedPrintBean.getTrflag()},
+                new int[]{Types.VARCHAR,Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DECIMAL, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.DECIMAL, Types.DATE,Types.INTEGER});
         jdbcTemplate.update(upSql);
     }
 
