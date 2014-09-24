@@ -196,13 +196,13 @@ public class BookDayQryAction implements Serializable {
                     vch.setTXNAMT(df.format(bean.getTXNAMT()));
                     vch.setFURINF(bean.getFURINF());
                     vch.setVALDAT(bean.getVALDAT());
-                    vch.setANACDE(bean.getANACDE());
+                    vch.setANACDE("");
                     vch.setVCHATT("000");
                     vchs.add(vch);
                 }
             }
             txntim = DateUtil.getCurrentTime();//系统时间
-            temVchPrintService.printVch( "0000", sysdat, txntim,tlrnum,vchs);
+            temVchPrintService.printVch( "0001", sysdat, txntim,tlrnum,vchs);
         } catch (Exception e) {
             logger.error("打印失败", e);
             pub.tools.MessageUtil.addError("打印失败." + (e.getMessage() == null ? "" : e.getMessage()));

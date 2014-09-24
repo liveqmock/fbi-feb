@@ -24,6 +24,7 @@
                 color: red;
             }
         </style>
+
     </ui:define>
     <ui:define name="content">
         <h:form id="inputform" enctype="multipart/form-data">
@@ -86,11 +87,8 @@
 
                 <p:column selectionMode="multiple"/>
 
-                <p:column style="text-align:center" sortBy="#{record.serialnum1}" headerText="凭证编号">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{record.serialnum1}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{record.serialnum1}" style="width:96%"/></f:facet>
-                    </p:cellEditor>
+                <p:column id="serialnum" style="text-align:center" sortBy="#{record.serialnum1}" headerText="凭证编号">
+                        <h:outputText value="#{record.serialnum1}"/>
                 </p:column>
 
                 <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
@@ -100,7 +98,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column style="text-align:left">
+                <p:column style="width:300px;text-align:left">
                     <f:facet name="header">
                         <h:outputText value="付款人名称"/>
                     </f:facet>
@@ -113,7 +111,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column style="text-align:left">
+                <p:column style="width:300px;text-align:left">
                     <f:facet name="header">
                         <h:outputText value="收款人名称"/>
                     </f:facet>
