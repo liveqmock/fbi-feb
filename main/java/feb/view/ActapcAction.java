@@ -37,6 +37,7 @@ public class ActapcAction implements Serializable {
 
     private String glcode = "";
     private String apcode = "";
+    private String begnum = "1";
     private String action;
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
@@ -99,13 +100,12 @@ public class ActapcAction implements Serializable {
             //apcode = (apcode == null ? "" : apcode);
             M9814 m9814 = new M9814(glcode, apcode);
             m9814.setFUNCDE("1");
+            m9814.setBEGNUM(begnum);
             List<SOFForm> formList = dataExchangeService.callSbsTxn("9814", m9814);
             if (formList != null && !formList.isEmpty()) {
                 dataList = new ArrayList<>();
                 for (SOFForm form : formList) {
-                    if ("T862".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
-                        t862 = (T862) form.getFormBody();
-                    } else if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                   if ("T814".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         T814 t814 = (T814) form.getFormBody();
                         dataList.addAll(t814.getBeanList());
                     } else if (form.getFormHeader().getFormCode().contains("W012")) {
@@ -117,7 +117,7 @@ public class ActapcAction implements Serializable {
                     }
                 }
             }
-            m9814.setBEGNUM("000451");
+      /*      m9814.setBEGNUM("000451");
             List<SOFForm> formList2 = dataExchangeService.callSbsTxn("9814", m9814);
             for (SOFForm form : formList2) {
                 if (form.getFormBody() != null) {
@@ -128,7 +128,7 @@ public class ActapcAction implements Serializable {
                         return null;
                     }
                 }
-            }
+            }*/
         } catch (Exception e) {
             logger.error("≤È—Ø ß∞‹", e);
             MessageUtil.addError("≤È—Ø ß∞‹." + (e.getMessage() == null ? "" : e.getMessage()));
@@ -382,4 +382,11 @@ public class ActapcAction implements Serializable {
         this.t862 = t862;
     }
 
+    public String getBegnum() {
+        return begnum;
+    }
+
+    public void setBegnum(String begnum) {
+        this.begnum = begnum;
+    }
 }
