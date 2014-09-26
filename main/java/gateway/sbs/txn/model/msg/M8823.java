@@ -1,22 +1,22 @@
 package gateway.sbs.txn.model.msg;
 
 /**
- * 签到
+ * 历史传票查询
  */
 public class M8823 extends MTia {
-    private String CUSIDT;           //客户号
-    private String APCODE;           //核算码
-    private String CURCDE;           //币别
-    private String ERYDA1;           //起始日期
-    private String ERYDA2;           //终止日期
-    private String SECAMT;           //最小金额
-    private String OVELIM;           //最大金额
-    private String TLRNUM;           //柜员号
-    private String VCHSET;           //传票套号
-    private String FUNCDE;           //借贷别
-    private String REGADD;           //排序字段
-    private String BEGNUM;           //起始笔数
-    private String ANACDE;           //统计分析码
+    private String CUSIDT = "";           //客户号
+    private String APCODE = "";           //核算码
+    private String CURCDE = "";           //币别
+    private String ERYDA1 = "";           //起始日期
+    private String ERYDA2 = "";           //终止日期
+    private String SECAMT = "";           //最小金额
+    private String OVELIM = "";           //最大金额
+    private String TLRNUM = "";           //柜员号
+    private String VCHSET = "";           //传票套号
+    private String FUNCDE = "";           //借贷别
+    private String REGADD = "";           //排序字段
+    private String BEGNUM = "";           //起始笔数
+    private String ANACDE = "";           //统计分析码
 
     public M8823() {
     }
