@@ -189,6 +189,7 @@ public class BookDayQryAction implements Serializable {
                     for (int j = 1; j < m; j++) {
                         tmp = j * Integer.parseInt(curcnt) + 1 + "";
                         m8822.setBEGNUM(tmp);
+                        m8822.setANACDE("BI01");
                         List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8822", m8822);
                         if (formList2 != null && !formList2.isEmpty()) {
                             for (SOFForm form : formList2) {
