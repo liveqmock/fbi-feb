@@ -20,12 +20,11 @@ public class CommonService {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    //修改按日期导入
-    public int importToLocalDB(String bizdate) throws Exception {
+    public int importToLocalDB() throws Exception {
         String sql = "INSERT INTO w06_sta_glentry (id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES,INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3,SERIALNUM) " +
                 "SELECT id,BIZ_DATE,ASSET_DEBT_ID,CONTRACT_NO,LNCI_NO,REPAYMENT_TYPE,ENTRY_INDEX,REMARK,LEDGER_CODE,LEDGER_NAME,ACCOUNTINT_CODE,ACCOUNTINT_NAME,ACNT_CODE,ACNT_NAME,CUR_CODE,DEBIT_AMT,CREDIT_AMT,DATA_SOURCES," +
                 " INPUT_DATETIME,CSM_OTHER_NAME,LOAN_RATE,ISSUE_DATE,TERM_DATE,REMARK2,REMARK3,SERIALNUM " +
-                "FROM bi.w06_sta_glentry@bidata where biz_date = to_date('"+bizdate +"','yyyymmdd')";
+                "FROM bi.w06_sta_glentry@bidata where NOT EXISTS (SELECT id FROM w06_sta_glentry WHERE bi.w06_sta_glentry.id = w06_sta_glentry.id)";
         return jdbcTemplate.update(sql);
     }//select * from w06_sta_glentry t where t.input_datetime like  to_date('2012/10/13','yyyy/mm/dd');
 

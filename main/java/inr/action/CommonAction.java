@@ -48,7 +48,7 @@ public class CommonAction implements Serializable {
      */
     public void importToDB() {
         try {
-            int num = commonService.importToLocalDB(bizdate);
+            int num = commonService.importToLocalDB();
             MessageUtil.addInfo("导入" + num + "条数据!");
         } catch (Exception e) {
             MessageUtil.addError("数据库连接失败!");
