@@ -156,7 +156,11 @@ public class BookDayQryAction implements Serializable {
      * @return
      */
     public String onInnerQry() {
-        try{
+        String totcnt = "";
+        String curcnt = "";
+        int m = 0;//取整
+        int n = 0;//取余
+        try {
             m8822 = new M8822(cusidt, apcode, curcde, secamt,
                     ovelim, tlrnum, vchset, funcde, fegadd, begnum);
             m8822.setANACDE("BI01");
@@ -167,6 +171,8 @@ public class BookDayQryAction implements Serializable {
                     if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                         t151 = (T151) form.getFormBody();
                         dataList = t151.getBeanList();
+                        totcnt = t151.getFormBodyHeader().getTOTCNT();
+                        curcnt = t151.getFormBodyHeader().getCURCNT();
                         isExport = true;
                     } else {
                         logger.error(form.getFormHeader().getFormCode());
@@ -174,11 +180,37 @@ public class BookDayQryAction implements Serializable {
                     }
                 }
             }
-        }catch (Exception e){
+            if (!totcnt.isEmpty() && totcnt != "") {
+                //因为 totcnt是全局变量，所有在第一次查询之后，发起第二次交易时totcnt就不为空，所有要在第一次发起交易时清空
+                m = Integer.parseInt(totcnt) / Integer.parseInt(curcnt);
+                n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
+                if (m > 0 && n > 0) {
+                    String tmp = "";
+                    for (int j = 1; j < m; j++) {
+                        tmp = j * Integer.parseInt(curcnt) + 1 + "";
+                        m8822.setBEGNUM(tmp);
+                        List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8822", m8822);
+                        if (formList2 != null && !formList2.isEmpty()) {
+                            for (SOFForm form : formList2) {
+                                if ("T151".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
+                                    t151 = (T151) form.getFormBody();
+                                    dataList.addAll(t151.getBeanList());
+                                    isExport = true;
+                                } else {
+                                    logger.error(form.getFormHeader().getFormCode());
+                                    MessageUtil.addErrorWithClientID("msgs", form.getFormHeader().getFormCode());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
             logger.error("查询失败", e);
             MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
         }
         return null;
+
     }
     public void onPrint() {
         try {
