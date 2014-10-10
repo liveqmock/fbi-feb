@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static skyline.service.SkylineService.getOperId;
+
 /**
  * ÀûÂÊÂë
  */
@@ -37,7 +39,7 @@ public class ActhstAction implements Serializable {
     private String eryda2 = "";
     private String secamt = "";
     private String ovelim = "";
-    private String tlenum = "";
+    private String tlenum = getOperId();
     private String vchset = "";
     private String funcde = "";
     private String regadd = "";
@@ -77,7 +79,7 @@ public class ActhstAction implements Serializable {
                 n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
                 if (m>0&&n>0){
                     String tmp = "";
-                    for (int j = 1; j < m; j++) {
+                    for (int j = 1; j <= m; j++) {
                         tmp = j * Integer.parseInt(curcnt) + 1 + "";
                         m8823.setBEGNUM(tmp);
                         List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8823", m8823);

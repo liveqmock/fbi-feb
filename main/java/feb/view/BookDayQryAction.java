@@ -98,7 +98,7 @@ public class BookDayQryAction implements Serializable {
                 n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
                 if (m > 0 && n > 0) {
                     String tmp = "";
-                    for (int j = 1; j < m; j++) {
+                    for (int j = 1; j <= m; j++) {
                         tmp = j * Integer.parseInt(curcnt) + 1 + "";
                         m8822.setBEGNUM(tmp);
                         List<SOFForm> formList2 = dataExchangeService.callSbsTxn("8822", m8822);
@@ -186,7 +186,7 @@ public class BookDayQryAction implements Serializable {
                 n = Integer.parseInt(totcnt) % Integer.parseInt(curcnt);
                 if (m > 0 && n > 0) {
                     String tmp = "";
-                    for (int j = 1; j < m; j++) {
+                    for (int j = 1; j <= m; j++) {
                         tmp = j * Integer.parseInt(curcnt) + 1 + "";
                         m8822.setBEGNUM(tmp);
                         m8822.setANACDE("BI01");
