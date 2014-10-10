@@ -41,6 +41,7 @@ public class ActAccDtlQryAction implements Serializable {
 
     public String ondtlQry() {
         try {
+            m8853.setACTNUM("8010"+m8853.getACTNUM());
             SOFForm form = dataExchangeService.callSbsTxn("8853", m8853).get(0);
             String formcode = form.getFormHeader().getFormCode();
             dataList = new ArrayList<>();
@@ -59,6 +60,7 @@ public class ActAccDtlQryAction implements Serializable {
                             try {
                                 tmp = i * Integer.parseInt(curcnt) + 1 + "";
                                 m8853.setBEGNUM(tmp);
+                                m8853.setACTNUM("8010"+m8853.getACTNUM());
                                 SOFForm form2 = dataExchangeService.callSbsTxn("8853", m8853).get(0);
                                 String formcode2 = form.getFormHeader().getFormCode();
                                 if ("T923".equals(formcode)) {
