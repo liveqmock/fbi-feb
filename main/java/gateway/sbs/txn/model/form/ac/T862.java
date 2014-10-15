@@ -17,8 +17,8 @@ import java.util.List;
 public class T862 extends SOFFormBody {
 
     {
-        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //15
-        fieldLengths = new int[]{4, 1, 34, 4, 4, 4, 4, 4, 50, 4, 4, 4, 8, 4, 4};
+        fieldTypes = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //15
+        fieldLengths = new int[]{4, 1, 34, 4, 4, 4, 4, 4, 50, 4, 4, 4, 8, 1, 4, 4};
     }
 
     private String APCODE;         //核算码                         Y
@@ -34,9 +34,9 @@ public class T862 extends SOFFormBody {
     private String INTCAC;         //应收利息账户核算码      Y
     private String AMDTLR;         //建立柜员
     private String UPDDAT;         //修改日期
+    private String CLRFLG;         //停用标记                 Y
     private String DOMCDE;         //备用标志1
     private String CCYFIL;         //备用标志2
-    private String CLRFLG;         //引用号                 Y
     private String EBKCDE;            //对应总行核算码
 
     public String getCLRFLG() {

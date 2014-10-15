@@ -83,14 +83,16 @@
                             <p:inputText value="#{actapcAction.t862.UPDDAT}"/>
                             <h:outputLabel value="建立柜员:"/>
                             <p:inputText value="#{actapcAction.t862.AMDTLR}"/>
+                            <h:outputLabel value="停用标志:"/>
+                            <p:inputText value="#{actapcAction.t862.CLRFLG}"/>
                     </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" style="text-align:center;" >
                             <p:commandButton style="width:80px;margin-left:10px;" value="确认修改"
                                              action="#{actapcAction.onUpdate}" ajax="true"
-                                             disabled="#{!actapcAction.updateable}" update="msgs,btns">
+                                             rendered="#{actapcAction.updateable}" update="msgs,btns">
                             </p:commandButton>
                             <p:commandButton id="back" ajax="false" value="返回" immediate="true"
-                                             action="#{actapcAction.onBack}"
+                                             action="#{actapcAction.onBack2}"
                                              style="margin-left:10px;width:80px;"/>
                         </h:panelGrid>
                     </h:panelGrid>
