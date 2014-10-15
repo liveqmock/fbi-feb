@@ -48,7 +48,7 @@ public class CommonAction implements Serializable {
      */
     public void importToDB() {
         try {
-            int num = commonService.importToLocalDB();
+            int num = commonService.importToLocalDB(bizdate);
             MessageUtil.addInfo("导入" + num + "条数据!");
         } catch (Exception e) {
             MessageUtil.addError("数据库连接失败!");
@@ -73,7 +73,7 @@ public class CommonAction implements Serializable {
      */
     public void printVoucher(PrintBean bean) {
         try {
-            bean.setTrflag(1);
+            bean.setTrflag(1);        //printdata中的字段是w06中的作废数据标志
             commonService.delVocherInfo(bean);
             dataList.remove(bean);
             MessageUtil.addInfo("执行成功!");

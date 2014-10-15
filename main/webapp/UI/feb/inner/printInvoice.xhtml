@@ -57,10 +57,10 @@
                 </f:facet>
             </p:ajaxStatus>
             <p:menubar>
-                <p:menuitem type="push" value="多笔入账" icon="ui-icon ui-icon-disk" ajax="true"
-                            action="#{commonAction.onMultiConfirm}" update="msgs, dt"/>
-                <p:menuitem type="push" value="全部入账" icon="ui-icon ui-icon-document" ajax="true"
-                            action="#{commonAction.onAllConfirm}" update="msgs, dt"/>
+                <p:menuitem  value="多笔入账" icon="ui-icon ui-icon-disk" ajax="true"
+                            actionListener="#{commonAction.onMultiConfirm}" update="msgs, dt"/>
+                <p:menuitem value="全部入账" icon="ui-icon ui-icon-document" ajax="true"
+                            actionListener="#{commonAction.onAllConfirm}" update="msgs, dt"/>
             </p:menubar>
             <!--<p:dataTable id="dt" height="200"
                          value="#{commonAction.printBeans}" var="record"

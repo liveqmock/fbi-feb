@@ -265,9 +265,14 @@ public class ActapcAction implements Serializable {
         if ("detail".equals(action)) {
             return "actapcQry?faces-redirect=true&action=query";
         }
-        return "actapcMng?faces-redirect=true&action=query";
+        return "actapcMng?faces-redirect=true&apcode="+t862.getAPCODE();
     }
-
+    public String onBack2() {
+        if ("detail".equals(action)) {
+            return "actapcQry?faces-redirect=true&action=query";
+        }
+        return "actapcUpdate?faces-redirect=true&apcode="+t862.getAPCODE();
+    }
 //---------------------------------------------------------------------------
 
     public T814 getT814() {
