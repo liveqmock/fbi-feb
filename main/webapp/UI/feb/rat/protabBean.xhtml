@@ -43,11 +43,11 @@
                         <h:panelGrid columns="6" cellpadding="2" cellspacing="3" border="0" style="width:90%;"
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="*损益码:"/>
-                            <p:inputText value="#{proTabAction.plcode}"/>
+                            <p:inputText value="#{proTabAction.plcode}" readonly="true"/>
                             <h:outputLabel value="*损益项名称:"/>
                             <p:inputText value="#{proTabAction.t863.PLCNAM}"/>
                             <h:outputLabel value="*总帐码:"/>
-                            <p:inputText value="#{proTabAction.t863.GLCODE}"/>
+                            <p:inputText value="#{proTabAction.t863.GLCODE}" readonly="true"/>
                             <h:outputLabel value="*损益子目:"/>
                             <p:inputText value="#{proTabAction.t863.PLSCDE}"/>
                             <h:outputLabel value="*损益类型:"/>
