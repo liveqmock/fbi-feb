@@ -91,33 +91,6 @@
                         <h:outputText value="#{record.serialnum1}"/>
                 </p:column>
 
-                <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{record.acntCodeOne}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{record.acntCodeOne}" style="width:96%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-
-                <p:column style="width:300px;text-align:left">
-                    <f:facet name="header">
-                        <h:outputText value="付款人名称"/>
-                    </f:facet>
-                    <h:outputText value="#{record.acntNameOne}"/>
-                </p:column>
-                <p:column style="text-align:center" sortBy="#{record.acntCodeTwo}" headerText="收款人账号">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{record.acntCodeTwo}"/></f:facet>
-                        <f:facet name="input"><p:inputText value="#{record.acntCodeTwo}" style="width:96%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-
-                <p:column style="width:300px;overflow:hidden;text-align:left">
-                    <f:facet name="header">
-                        <h:outputText value="收款人名称"/>
-                    </f:facet>
-                    <h:outputText
-                            value="#{record.acntNameTwo}"/>
-                </p:column>
                 <p:column style="text-align:right" sortBy="#{record.creditAmt}">
                     <f:facet name="header">
                         <h:outputText value="交易金额"/>
@@ -126,6 +99,35 @@
                         <f:convertNumber pattern="###,###,###,###,##0.00"/>
                     </h:outputText>
                 </p:column>
+
+                <p:column style="text-align:center" sortBy="#{record.acntCodeOne}" headerText="付款人账号">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeOne}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeOne}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:300px;">
+                    <f:facet name="header">
+                        <h:outputText value="付款人名称" style="text-align:center"/>
+                    </f:facet>
+                    <h:outputText value="#{record.acntNameOne}" style="text-align:left"/>
+                </p:column>
+                <p:column style="text-align:center" sortBy="#{record.acntCodeTwo}" headerText="收款人账号">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{record.acntCodeTwo}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{record.acntCodeTwo}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:300px;overflow:hidden;">
+                    <f:facet name="header">
+                        <h:outputText value="收款人名称" style="text-align:center"/>
+                    </f:facet>
+                    <h:outputText
+                            value="#{record.acntNameTwo}" style="text-align:left"/>
+                </p:column>
+
                 <!--<p:column style="text-align:center">
                     <f:facet name="header">
                         <h:outputText value="到期日"/>
