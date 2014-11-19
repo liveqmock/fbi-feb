@@ -229,6 +229,9 @@ public class ActapcAction implements Serializable {
         if ("update".equals(action)) {
             m9814.setFUNCDE("2");
             m9814.setEBKCDE(apcode);
+            m9814.setTRNIDT(t862.getDOMCDE());
+            m9814.setFEEAPC(t862.getCCYFIL());
+            m9814.setEBKCDE(apcode);
         } else if ("delete".equals(action)) {
             m9814.setFUNCDE("3");
         } else m9814.setFUNCDE("4");
