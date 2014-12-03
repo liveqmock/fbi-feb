@@ -1,4 +1,4 @@
-package feb.view.onekeyactchk.wsclient;
+package feb.view.onekeyactchk.httpclient;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;

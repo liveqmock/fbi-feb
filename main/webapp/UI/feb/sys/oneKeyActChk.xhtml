@@ -16,12 +16,17 @@
                     <p:tabView dynamic="true" cache="false" style="font-weight:normal;font-style:normal">
                         <p:tab title="财务公司一键对账">
                             <p:messages id="msgs" showDetail="true"/>
-                            <p:poll interval="10" update="msgs,pdt"/>
+                            <p:poll listener="#{oneKeyActChkAction.onPoll}"
+                                    stop="#{oneKeyActChkAction.pollStop}"
+                                    interval="5"
+                                    widgetVar="poll"
+                                    autoStart="false"
+                                    update="msgs,pdt"/>
 
                             <p:menubar>
                                 <p:menuitem type="push" value="发起对账" icon="ui-icon ui-icon-document"
                                             action="#{oneKeyActChkAction.onStartAcctChk}" update="msgs, pdt"
-                                            ajax="true"/>
+                                            ajax="true" oncomplete="poll.start()" />
                                 <p:menuitem type="push" value="重置状态" icon="ui-icon ui-icon-disk"
                                             action="#{oneKeyActChkAction.onResetStatus}" update="msgs, pdt"/>
                             </p:menubar>

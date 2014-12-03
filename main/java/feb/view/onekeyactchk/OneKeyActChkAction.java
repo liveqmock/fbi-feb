@@ -1,9 +1,9 @@
 package feb.view.onekeyactchk;
 
-import feb.view.onekeyactchk.wsclient.T1001Request;
-import feb.view.onekeyactchk.wsclient.T1001Response;
-import feb.view.onekeyactchk.wsclient.T1002Request;
-import feb.view.onekeyactchk.wsclient.T1002Response;
+import feb.view.onekeyactchk.httpclient.T1001Request;
+import feb.view.onekeyactchk.httpclient.T1001Response;
+import feb.view.onekeyactchk.httpclient.T1002Request;
+import feb.view.onekeyactchk.httpclient.T1002Response;
 import feb.view.onekeyactchk.wsclient.spc1.SBSSysServiceServiceLocator;
 import feb.view.onekeyactchk.wsclient.spc1.SBSSysServiceSoapBindingStub;
 import feb.view.onekeyactchk.wsclient.spc1.ScfDzInfoVO;
@@ -21,11 +21,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 import pub.platform.dao.PTENUDETAIL;
+import pub.platform.form.config.SystemAttributeNames;
+import pub.platform.security.OperatorManager;
 import skyline.utils.SmsHelper;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -50,8 +54,7 @@ public class OneKeyActChkAction implements Serializable {
     private static final long serialVersionUID = 1366227629931959859L;
 
     private String txnDate;
-
-    private List<PTENUDETAIL> ptenudetails;
+    private boolean pollStop = false;
 
     private List<PeripheralAppInfo> apps = new ArrayList<PeripheralAppInfo>();
 
@@ -64,10 +67,7 @@ public class OneKeyActChkAction implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        DateTime dt = new DateTime();
-        //this.txnDate = dt.minusMonths(1).dayOfMonth().withMaximumValue().toString("yyyyMMdd");
-        this.txnDate = dt.toString("yyyyMMdd");
-
+        this.txnDate = getOperatorManager().getSysBusinessDate();
         List<PTENUDETAIL> ptenudetails = new PTENUDETAIL().findByWhere(" where enutype ='" + enuId + "' order by dispno");
 
         for (PTENUDETAIL enu : ptenudetails) {
@@ -84,19 +84,36 @@ public class OneKeyActChkAction implements Serializable {
         }
     }
 
+      public void onPoll() {
+        boolean hasUnderway = false;
+        for (final PeripheralAppInfo app : selectedRecords) {
+            TxnStatus status = TxnStatus.valueOfAlias(app.getStatus());
+            if (TxnStatus.ACCT_UNDERWAY == status
+                    ||TxnStatus.INFORM_SUCC == status
+                    ||TxnStatus.INIT == status) {
+                hasUnderway = true;
+            }
+        }
+        if (!hasUnderway) {
+            this.pollStop = true;
+        }
+    }
 
     public String onStartAcctChk() {
+        this.txnDate = getOperatorManager().getSysBusinessDate();
         if (selectedRecords.length == 0) {
             MessageUtil.addError("请选择需对账的系统...");
             return null;
         }
+
+        this.pollStop = false;
         try {
             for (final PeripheralAppInfo app : selectedRecords) {
                 if (StringUtils.isEmpty(app.getUrl())) {
                     app.setRtnMsg("此系统的对账服务未开启");
                     //短信通知
                     if (!StringUtils.isEmpty(app.getSmsDesc())) {
-                        processSMS(app);
+                        SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "开始对账:" + txnDate);
                     }
                     continue;
                 }
@@ -140,8 +157,20 @@ public class OneKeyActChkAction implements Serializable {
                                         Thread.sleep(5 * 1000);
                                         break;
                                     case ACCT_SUCC_BANLANCE:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账结果:平帐" + txnDate);
+                                        loop = false;
+                                        break;
                                     case ACCT_SUCC_NOTBANLANCE:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账结果:不平" + txnDate);
+                                        loop = false;
+                                        break;
                                     case ACCT_FAIL_EXCEPTION:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账异常" + txnDate);
+                                        loop = false;
+                                        break;
                                     default:
                                         loop = false;
                                 }
@@ -193,10 +222,11 @@ public class OneKeyActChkAction implements Serializable {
         return null;
     }
 
+
     private void processInformTxn(PeripheralAppInfo app) {
         //短信通知
         if (!StringUtils.isEmpty(app.getSmsDesc())) {
-            processSMS(app);
+            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "开始对账:" + txnDate);
         }
         if ("SPC1".equals(app.getAppChnCode())) {
             processInformTxn_webservice(app);
@@ -308,7 +338,9 @@ public class OneKeyActChkAction implements Serializable {
         } else if ("1000".equals(rtncode)) {
             app.setStatus(TxnStatus.ACCT_SUCC_NOTBANLANCE.getCode());
         } else if ("0001".equals(rtncode)) {
-            app.setStatus(TxnStatus.ACCT_SUCC_NOTBANLANCE.getCode());
+            app.setStatus(TxnStatus.ACCT_UNDERWAY.getCode());
+        } else {
+            app.setStatus(TxnStatus.ACCT_FAIL_EXCEPTION.getCode());
         }
         app.setRtnCode(rtncode);
         app.setRtnMsg(response.getINFO().getRTNMSG());
@@ -346,8 +378,11 @@ public class OneKeyActChkAction implements Serializable {
         } else if ("1000".equals(rtncode)) {
             app.setStatus(TxnStatus.ACCT_SUCC_NOTBANLANCE.getCode());
         } else if ("0001".equals(rtncode)) {
-            app.setStatus(TxnStatus.ACCT_SUCC_NOTBANLANCE.getCode());
+            app.setStatus(TxnStatus.ACCT_UNDERWAY.getCode());
+        } else {
+            app.setStatus(TxnStatus.ACCT_FAIL_EXCEPTION.getCode());
         }
+
         app.setRtnCode(rtncode);
         app.setRtnMsg(respVo.getRtnMsg());
         app.setResultQryTime(new DateTime().toString("HH:mm:ss"));
@@ -382,8 +417,13 @@ public class OneKeyActChkAction implements Serializable {
         }
     }
 
-    private void processSMS(PeripheralAppInfo app) {
-        SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "开始对账:" + txnDate);
+    private OperatorManager getOperatorManager() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        OperatorManager om = (OperatorManager) session.getAttribute(SystemAttributeNames.USER_INFO_NAME);
+        if (om == null) {
+            throw new RuntimeException("用户未登录！");
+        }
+        return om;
     }
 
     public String getTxnDate() {
@@ -418,5 +458,13 @@ public class OneKeyActChkAction implements Serializable {
 
     public void setTxnStatus(TxnStatus txnStatus) {
         this.txnStatus = txnStatus;
+    }
+
+    public boolean isPollStop() {
+        return pollStop;
+    }
+
+    public void setPollStop(boolean pollStop) {
+        this.pollStop = pollStop;
     }
 }

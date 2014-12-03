@@ -3,6 +3,7 @@ package skyline.utils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pub.platform.advance.utils.PropertyManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,8 @@ public class SmsHelper {
 
     private static int MSG_HEADER_LENGTH = 8;
 
+    //txMsg: 电话号码|信息内容
+    //多个电话号码以“，”分割
     public static void asyncSendSms(final String phones, final String msg) {
         Runnable task = new Runnable() {
             @Override
@@ -30,25 +33,38 @@ public class SmsHelper {
                 }
             }
         };
-        Thread t = new Thread(task);
-        t.start();
+        new Thread(task).start();
     }
 
-    private static String sendMsgToDep(String msg) throws IOException {
-        InetAddress addr = InetAddress.getByName("10.143.18.20");
+    //txMsg: 电话号码|信息内容
+    //多个电话号码以“，”分割
+    public static String syncSendSms(final String phones, final String msg) throws IOException {
+        String rtnMsg = "0000"; //已正常发送
+        try {
+            rtnMsg = sendMsgToDep(phones + "|" + msg);
+        } catch (IOException e) {
+            rtnMsg = "9999"; //处理异常
+            logger.error("短信发送失败", e);
+        }
+        return rtnMsg;
+    }
+
+    public static String sendMsgToDep(String txMsg) throws IOException {
+        InetAddress addr = InetAddress.getByName(PropertyManager.getProperty("haier.dep.server.ip"));
         Socket socket = new Socket();
         int timeout_ms = 30 * 1000;
         try {
-            socket.connect(new InetSocketAddress(addr, 61002), timeout_ms);
+            int port = PropertyManager.getIntProperty("haier.dep.server.port.sms");
+            socket.connect(new InetSocketAddress(addr, port), timeout_ms);
             socket.setSoTimeout(timeout_ms);
 
             //组报文头
             String smsTxnCode = "0011";
-            msg = smsTxnCode + msg;
-            String msgLen = StringUtils.rightPad("" + (msg.getBytes("GBK").length + MSG_HEADER_LENGTH), MSG_HEADER_LENGTH, " ");
+            txMsg = smsTxnCode + txMsg;
+            String msgLen = StringUtils.rightPad("" + (txMsg.getBytes("GBK").length + MSG_HEADER_LENGTH), MSG_HEADER_LENGTH, " ");
 
             OutputStream os = socket.getOutputStream();
-            os.write((msgLen + msg).getBytes("GBK"));
+            os.write((msgLen + txMsg).getBytes("GBK"));
             os.flush();
             InputStream is = socket.getInputStream();
 
@@ -69,7 +85,7 @@ public class SmsHelper {
                 throw new RuntimeException("报文长度错误,应为:[" + bodyLen + "], 实际获取长度:[" + readNum + "]");
             }
 
-            return new String(inBodyBuf, "GBK");
+            return new String(inBodyBuf, "GBK");  //返回报文体内容
         } finally {
             try {
                 socket.close();
