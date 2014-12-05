@@ -85,6 +85,7 @@ public class OneKeyActChkAction implements Serializable {
     }
 
     public void onPoll() {
+        List<PeripheralAppInfo> filteredUnBalanceAppList = new ArrayList<>();
         boolean hasUnderway = false;
         for (final PeripheralAppInfo app : selectedRecords) {
             TxnStatus status = TxnStatus.valueOfAlias(app.getStatus());
@@ -93,6 +94,9 @@ public class OneKeyActChkAction implements Serializable {
                     || TxnStatus.INFORM_STARTED == status
                     || TxnStatus.ACCT_RESULT_QRY_STARTED == status) {
                 hasUnderway = true;
+            }
+            if (TxnStatus.ACCT_SUCC_BANLANCE != status) {
+                filteredUnBalanceAppList.add(app);
             }
         }
         if (!hasUnderway) {
@@ -109,6 +113,7 @@ public class OneKeyActChkAction implements Serializable {
             };
             new Thread(task).start();
         }
+        selectedRecords = filteredUnBalanceAppList.toArray(new PeripheralAppInfo[0]);
     }
 
     public String onStartAcctChk() {
