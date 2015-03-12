@@ -84,19 +84,36 @@ public class OneKeyActChkAction implements Serializable {
         }
     }
 
-      public void onPoll() {
+    public void onPoll() {
+        List<PeripheralAppInfo> filteredUnBalanceAppList = new ArrayList<>();
         boolean hasUnderway = false;
         for (final PeripheralAppInfo app : selectedRecords) {
             TxnStatus status = TxnStatus.valueOfAlias(app.getStatus());
             if (TxnStatus.ACCT_UNDERWAY == status
-                    ||TxnStatus.INFORM_SUCC == status
-                    ||TxnStatus.INIT == status) {
+                    || TxnStatus.INFORM_SUCC == status
+                    || TxnStatus.INFORM_STARTED == status
+                    || TxnStatus.ACCT_RESULT_QRY_STARTED == status) {
                 hasUnderway = true;
+            }
+            if (TxnStatus.ACCT_SUCC_BANLANCE != status) {
+                filteredUnBalanceAppList.add(app);
             }
         }
         if (!hasUnderway) {
-            this.pollStop = true;
+            Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(15 * 1000);
+                    } catch (InterruptedException e) {
+                        //
+                    }
+                    pollStop = true;
+                }
+            };
+            new Thread(task).start();
         }
+        selectedRecords = filteredUnBalanceAppList.toArray(new PeripheralAppInfo[0]);
     }
 
     public String onStartAcctChk() {
@@ -127,7 +144,7 @@ public class OneKeyActChkAction implements Serializable {
                 }
 
                 //初始化状态 准备发起对账处理任务
-                app.setStatus(TxnStatus.INIT.getCode());
+                app.setStatus(TxnStatus.INFORM_STARTED.getCode());
                 app.setInformTime("");
                 app.setResultQryTime("");
 
@@ -149,6 +166,7 @@ public class OneKeyActChkAction implements Serializable {
                             do {
                                 app.setRtnCode("");
                                 app.setRtnMsg("");
+                                app.setStatus(TxnStatus.ACCT_RESULT_QRY_STARTED.getCode());
                                 processResultQryTxn(app);
                                 status = TxnStatus.valueOfAlias(app.getStatus());
                                 switch (status) {
@@ -176,8 +194,8 @@ public class OneKeyActChkAction implements Serializable {
                                 }
                             } while (loop);
                         } catch (Exception e) {
-                            app.setRtnCode("ERR1");
-                            app.setRtnMsg(e.getMessage());
+                            app.setRtnCode("ERR3");
+                            app.setRtnMsg("一键对账错误：" + e.getMessage());
                             logger.error("一键对账出错.", e);
                         }
                     }
@@ -191,6 +209,69 @@ public class OneKeyActChkAction implements Serializable {
         return null;
     }
 
+    public String onQryResult() {
+        this.txnDate = getOperatorManager().getSysBusinessDate();
+        if (selectedRecords.length == 0) {
+            MessageUtil.addError("请选择需对账的系统...");
+            return null;
+        }
+
+        this.pollStop = false;
+        try {
+            for (final PeripheralAppInfo app : selectedRecords) {
+                if (StringUtils.isEmpty(app.getUrl())) {
+                    app.setRtnMsg("此系统的对账服务未开启");
+                    continue;
+                }
+
+                Runnable task = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            boolean loop;
+                            do {
+                                app.setStatus(TxnStatus.ACCT_RESULT_QRY_STARTED.getCode());
+                                processResultQryTxn(app);
+                                TxnStatus status = TxnStatus.valueOfAlias(app.getStatus());
+                                switch (status) {
+                                    case ACCT_UNDERWAY:
+                                        loop = true;
+                                        Thread.sleep(5 * 1000);
+                                        break;
+                                    case ACCT_SUCC_BANLANCE:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账结果:平帐" + txnDate);
+                                        loop = false;
+                                        break;
+                                    case ACCT_SUCC_NOTBANLANCE:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账结果:不平" + txnDate);
+                                        loop = false;
+                                        break;
+                                    case ACCT_FAIL_EXCEPTION:
+                                        if (!StringUtils.isEmpty(app.getSmsDesc()))
+                                            SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "对账异常" + txnDate);
+                                        loop = false;
+                                        break;
+                                    default:
+                                        loop = false;
+                                }
+                            } while (loop);
+                        } catch (Exception e) {
+                            app.setRtnCode("ERR4");
+                            app.setRtnMsg("结果查询错误：" + e.getMessage());
+                            logger.error("一键对账出错.", e);
+                        }
+                    }
+                };
+                executor.execute(task);
+            }
+        } catch (Exception ex) {
+            logger.error("结果查询处理错误。", ex);
+            MessageUtil.addError("结果查询处理错误。" + ex.getMessage());
+        }
+        return null;
+    }
 
     public String onResetStatus() {
         if (selectedRecords.length == 0) {
@@ -219,6 +300,7 @@ public class OneKeyActChkAction implements Serializable {
             logger.error("状态设置处理错误。", ex);
             MessageUtil.addError("状态设置处理错误。" + ex.getMessage());
         }
+        this.pollStop = false;
         return null;
     }
 
@@ -228,10 +310,17 @@ public class OneKeyActChkAction implements Serializable {
         if (!StringUtils.isEmpty(app.getSmsDesc())) {
             SmsHelper.asyncSendSms(app.getSmsDesc(), app.getAppName() + "开始对账:" + txnDate);
         }
-        if ("SPC1".equals(app.getAppChnCode())) {
-            processInformTxn_webservice(app);
-        } else {
-            processInformTxn_Http(app);
+        try {
+            if ("SPC1".equals(app.getAppChnCode())) {
+                processInformTxn_webservice(app);
+            } else {
+                processInformTxn_Http(app);
+            }
+        } catch (Exception e) {
+            app.setStatus(TxnStatus.INFORM_STARTED.getCode());
+            app.setRtnCode("ERR1");
+            app.setRtnMsg("发起对账错误:" + e.getMessage());
+            logger.error("发起对账错误", e);
         }
     }
 
@@ -249,13 +338,13 @@ public class OneKeyActChkAction implements Serializable {
         request.getBODY().setREMARK("start txn : 1001");
 
         String reqXml = "<?xml version=\"1.0\" encoding=\"GBK\"?>\n" + request.toXml(request);
-        logger.info("一键对账T1001请求报文" + reqXml);
+        logger.info(app.getAppName() + "一键对账T1001请求报文" + reqXml);
 
         if (StringUtils.isEmpty(app.getUrl())) {
             throw new RuntimeException("系统渠道未定义服务URL");
         }
         String respXml = doPost(app.getUrl(), reqXml, "GBK");
-        logger.info("一键对账T1001响应报文" + respXml);
+        logger.info(app.getAppName() + "一键对账T1001响应报文" + respXml);
 
         T1001Response response = new T1001Response();
         response = (T1001Response) response.toBean(respXml);
@@ -287,11 +376,14 @@ public class OneKeyActChkAction implements Serializable {
         vo.setAction("1");
         vo.setChnCode("SPC1");
 
+        logger.info(app.getAppName() + "一键对账T1001请求报文" + vo);
+
         ScfDzInfoVO respVo = null;
         try {
             wsdlUrl = new URL(app.getUrl());
             service = (SBSSysServiceSoapBindingStub) new SBSSysServiceServiceLocator().getSBSSysService(wsdlUrl);
             respVo = service.acceptB2BDzInfo(vo);
+            logger.info(app.getAppName() + "一键对账T1001响应报文" + respVo);
         } catch (Exception e) {
             throw new RuntimeException("WebService处理错误", e);
         }
@@ -309,10 +401,17 @@ public class OneKeyActChkAction implements Serializable {
 
     //---
     private void processResultQryTxn(PeripheralAppInfo app) {
-        if ("SPC1".equals(app.getAppChnCode())) {
-            processResultQryTxn_webservice(app);
-        } else {
-            processResultQryTxn_http(app);
+        try {
+            if ("SPC1".equals(app.getAppChnCode())) {
+                processResultQryTxn_webservice(app);
+            } else {
+                processResultQryTxn_http(app);
+            }
+        } catch (Exception e) {
+            app.setStatus(TxnStatus.ACCT_FAIL_EXCEPTION.getCode());
+            app.setRtnCode("ERR2");
+            app.setRtnMsg("查询对账结果错误:" + e.getMessage());
+            logger.error("查询对账结果错误", e);
         }
     }
 
@@ -325,9 +424,9 @@ public class OneKeyActChkAction implements Serializable {
         request.getBODY().setCHANNEL(app.getAppChnCode());
 
         String reqXml = "<?xml version=\"1.0\" encoding=\"GBK\"?>\n" + request.toXml(request);
-        logger.info("一键对账T1002请求报文" + reqXml);
+        logger.info(app.getAppName() + "一键对账T1002请求报文" + reqXml);
         String respXml = doPost(app.getUrl(), reqXml, "GBK");
-        logger.info("一键对账T1002响应报文" + respXml);
+        logger.info(app.getAppName() + "一键对账T1002响应报文" + respXml);
 
         T1002Response response = new T1002Response();
         response = (T1002Response) response.toBean(respXml);
@@ -362,12 +461,14 @@ public class OneKeyActChkAction implements Serializable {
         vo.setTxnTime(new SimpleDateFormat("HHmmss").format(new Date()));
         vo.setAction("1");
         vo.setChannel("SPC1");
+        logger.info(app.getAppName() + "一键对账T1002请求报文" + vo);
 
         ScfDzInfoVO respVo = null;
         try {
             wsdlUrl = new URL(app.getUrl());
             service = (SBSSysServiceSoapBindingStub) new SBSSysServiceServiceLocator().getSBSSysService(wsdlUrl);
-            respVo = service.acceptB2BDzInfo(vo);
+            respVo = service.getScfDzResult(vo);
+            logger.info(app.getAppName() + "一键对账T1002响应报文" + respVo);
         } catch (Exception e) {
             throw new RuntimeException("WebService处理错误", e);
         }
@@ -393,9 +494,9 @@ public class OneKeyActChkAction implements Serializable {
         HttpClient httpclient = new DefaultHttpClient();
         try {
             //请求超时
-            httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 1000 * 20);
+            httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 1000 * 30);
             //读取超时
-            httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 1000 * 30);
+            httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 1000 * 180);
 
             HttpPost httppost = new HttpPost(serverUrl);
             httppost.getURI();

@@ -27,8 +27,10 @@
                                 <p:menuitem type="push" value="发起对账" icon="ui-icon ui-icon-document"
                                             action="#{oneKeyActChkAction.onStartAcctChk}" update="msgs, pdt"
                                             ajax="true" oncomplete="poll.start()" />
-                                <p:menuitem type="push" value="重置状态" icon="ui-icon ui-icon-disk"
+                                <p:menuitem type="push" value="重置状态" icon="ui-icon ui-icon-disk" onclick="poll.stop()"
                                             action="#{oneKeyActChkAction.onResetStatus}" update="msgs, pdt"/>
+                                <p:menuitem type="push" value="直接发起结果查询" icon="ui-icon ui-icon-disk" oncomplete="poll.start()"
+                                            action="#{oneKeyActChkAction.onQryResult}" update="msgs, pdt"/>
                             </p:menubar>
                             <p:ajaxStatus style="height:18px;text-align:center">
                                 <f:facet name="start">

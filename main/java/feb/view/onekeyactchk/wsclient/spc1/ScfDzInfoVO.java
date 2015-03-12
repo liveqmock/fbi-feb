@@ -476,4 +476,22 @@ public class ScfDzInfoVO  implements java.io.Serializable {
             _javaType, _xmlType, typeDesc);
     }
 
+    @Override
+    public String toString() {
+        return "ScfDzInfoVO{" +
+                "action='" + action + '\'' +
+                ", channel='" + channel + '\'' +
+                ", chnCode='" + chnCode + '\'' +
+                ", remark='" + remark + '\'' +
+                ", reqSn='" + reqSn + '\'' +
+                ", rtnCode='" + rtnCode + '\'' +
+                ", rtnMsg='" + rtnMsg + '\'' +
+                ", txnCode='" + txnCode + '\'' +
+                ", txnDate='" + txnDate + '\'' +
+                ", txnTime='" + txnTime + '\'' +
+                ", version='" + version + '\'' +
+                ", __equalsCalc=" + __equalsCalc +
+                ", __hashCodeCalc=" + __hashCodeCalc +
+                '}';
+    }
 }

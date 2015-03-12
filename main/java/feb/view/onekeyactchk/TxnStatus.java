@@ -7,10 +7,12 @@ import java.util.Hashtable;
  */
 public enum TxnStatus implements EnumApp {
     INIT("00", "初始"),
+    INFORM_STARTED("01", "已通知对账"),
     INFORM_SUCC("10", "启动对账成功"),
     INFORM_FAIL("11", "启动对账失败"),
-    ACCT_UNDERWAY("20", "对账进行中"),
-    ACCT_FAIL_EXCEPTION("21", "对账过程异常"),
+    ACCT_RESULT_QRY_STARTED("20", "已开始查询对账结果"),
+    ACCT_UNDERWAY("21", "对账进行中"),
+    ACCT_FAIL_EXCEPTION("22", "对账过程异常"),
     ACCT_SUCC_BANLANCE("30", "对账结果:平帐"),
     ACCT_SUCC_NOTBANLANCE("31", "对账结果:不平");
 
