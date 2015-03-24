@@ -108,18 +108,25 @@
                     </p:column>
                     <p:column selectionMode="multiple"/>
 
-                    <p:column headerText="索引号" style="text-align:center" sortBy="#{record.FBTIDX}">
-                        <h:outputText value="#{record.FBTIDX}"/>
-                    </p:column>
-
                     <p:column headerText="付款账号" style="text-align:center">
                         <h:outputText value="#{record.CUSACT}"/>
                     </p:column>
-
-                    <p:column headerText="收款账号" style="text-align:center">
-                        <h:outputText value="#{record.BENBID}"/>
+                    <p:column headerText="付款人名称" style="text-align:center">
+                        <h:outputText value="#{record.ACTNAM}"/>
                     </p:column>
 
+                    <p:column headerText="收款账号" style="text-align:center">
+                        <h:outputText value="#{record.BENACT}"/>
+                    </p:column>
+                    <p:column headerText="收款名称" style="text-align:center">
+                        <h:outputText value="#{record.BENNAM}"/>
+                    </p:column>
+                    <p:column headerText="收款行号" style="text-align:center">
+                        <h:outputText value="#{record.BENBID}"/>
+                    </p:column>
+                    <p:column headerText="收款行名" style="text-align:center">
+                        <h:outputText value="#{record.BENBNK}"/>
+                    </p:column>
                     <p:column headerText="交易金额" style="text-align:right" sortBy="#{record.TXNAMT}">
                         <h:outputText value="#{record.TXNAMT}">
                             <f:convertNumber pattern="###,###,##0.00"/>
