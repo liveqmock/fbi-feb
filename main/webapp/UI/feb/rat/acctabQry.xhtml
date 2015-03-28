@@ -58,7 +58,7 @@
                             <p:inputText required="true" size="25"
                                          requiredMessage="币别不能为空。"
                                          id="curcde"
-                                         value="#{acctabAction.m8621.CURCDE}"/>
+                                         value="#{acctabAction.curcde}"/>
                             <h:outputLabel value="起始序号:" style="font-weight: bold"/>
                             <p:inputText id="begnum" size="25" required="true"
                                          value="#{acctabAction.m8621.BEGNUM}"
@@ -71,7 +71,7 @@
                                              update="msgs,dt">
                             </p:commandButton>
                             <p:commandButton style="width:110px;" id="export" value="损益表导出"
-                                             action="#{acctabAction.xlsExport}" ajax="true"
+                                             action="#{acctabAction.onExpExcel}" ajax="false"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
