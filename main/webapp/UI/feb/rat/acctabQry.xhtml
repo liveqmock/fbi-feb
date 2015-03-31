@@ -57,7 +57,7 @@
                             <h:outputLabel value="币别:" style="font-weight: bold"/>
                             <p:inputText required="true" size="25"
                                          requiredMessage="币别不能为空。"
-                                         id="curcde"
+                                         id="curcde" maxlength="3"
                                          value="#{acctabAction.curcde}"/>
                             <h:outputLabel value="起始序号:" style="font-weight: bold"/>
                             <p:inputText id="begnum" size="25" required="true"
@@ -68,10 +68,11 @@
                                      width="10%">
                             <p:commandButton style="width:110px;" value="损益表查询"
                                              action="#{acctabAction.onAllQry}" ajax="true"
-                                             update="msgs,dt">
+                                             update="msgs,dt,export">
                             </p:commandButton>
                             <p:commandButton style="width:110px;" id="export" value="损益表导出"
                                              action="#{acctabAction.onExpExcel}" ajax="false"
+                                             disabled="#{!acctabAction.export}"
                                              update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
@@ -85,6 +86,10 @@
                         <h:outputText value=""/>
                     </f:facet>
                 </p:ajaxStatus>
+                <p:outputLabel
+                        style="font-size: 12px !important;font-weight: bold;color: grey;"
+                        value="查询形式：001-人民币 ， 014-各外币折美元 ，999-各货币折人民币"/>
+                <p:separator/>
                 <p:dataTable id="dt" height="200"
                              value="#{acctabAction.dataList}" var="record"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}

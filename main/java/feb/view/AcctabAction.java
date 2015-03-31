@@ -5,10 +5,6 @@ import feb.service.JxlsManager;
 import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T623;
 import gateway.sbs.txn.model.msg.M8621;
-import javafx.scene.input.DataFormat;
-import net.sf.jxls.transformer.XLSTransformer;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.tools.MessageUtil;
@@ -16,7 +12,6 @@ import pub.tools.MessageUtil;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
@@ -32,11 +27,12 @@ public class AcctabAction implements Serializable {
 
     @ManagedProperty(value = "#{dataExchangeService}")
     private DataExchangeService dataExchangeService;
+    private boolean isExport ;
     private String curcde = "001";
     M8621 m8621 = new M8621();
     List<T623.Bean> dataList = new ArrayList<>();
 
-    public void onAllQry(){
+    public void onAllQry() {
         m8621.setCURCDE(curcde);
         List<SOFForm> formList = dataExchangeService.callSbsTxn("8621", m8621);
         if (formList != null && !formList.isEmpty()) {
@@ -45,6 +41,7 @@ public class AcctabAction implements Serializable {
                 if ("T623".equalsIgnoreCase(form.getFormHeader().getFormCode())) {
                     T623 t623 = (T623) form.getFormBody();
                     dataList.addAll(t623.getBeanList());
+                    isExport = true;
                 } else if (form.getFormHeader().getFormCode().contains("W012")) {
                     MessageUtil.addInfoWithClientID("msgs", form.getFormHeader().getFormCode());
                 } else {
@@ -54,42 +51,60 @@ public class AcctabAction implements Serializable {
             }
         }
     }
+
     public String onExpExcel() {
         try {
             if (dataList == null || dataList.size() == 0) {
                 MessageUtil.addWarn("未查询数据！");
                 return null;
             }
+            Map beansMap = new HashMap();
+            Date expdat = new Date();
+            String name = "";
             BigDecimal ctot6 = null; //支出合计
             BigDecimal dtot5 = null;  //收入合计:
             BigDecimal jtot6 = null;  //收入合计:
-            BigDecimal stot5 = null;  //结损:::
+            BigDecimal stot5 = null;  //结损:
             List<T623.Bean> dataList6 = new ArrayList<>();
             List<T623.Bean> dataList5 = new ArrayList<>();
-            for (T623.Bean datas:dataList){
-                if ("2".equals(datas.getPLTYPE())){
-                    if ("3".equals(datas.getPLCLAS())){
+            for (T623.Bean datas : dataList) {
+                if ("2".equals(datas.getPLTYPE())) {
+                    if ("3".equals(datas.getPLCLAS())) {
                         ctot6 = datas.getPLAMNT();
-                    }else if ("4".equals(datas.getPLCLAS())){
+                    } else if ("4".equals(datas.getPLCLAS())) {
                         jtot6 = datas.getPLAMNT();
-                    }else {
+                    } else {
                         dataList6.add(datas);
                     }
-                }else if ("1".equals(datas.getPLTYPE())){
-                    dataList5.add(datas);
+                } else if ("1".equals(datas.getPLTYPE())) {
+                    if ("3".equals(datas.getPLCLAS())) {
+                        dtot5 = datas.getPLAMNT();
+                    } else if ("4".equals(datas.getPLCLAS())) {
+                        stot5 = datas.getPLAMNT();
+                    } else {
+                        dataList5.add(datas);
+                    }
                 }
             }
-            Date expdat = new Date();
-            String excelFilename = "损益表" + ".xls";
+            if ("001".equals(curcde)){
+                name = "人民币";
+            }else if ("014".equals(curcde)){
+                name = "各外币折美元";
+            }else {
+                name = "各货币折人民币";
+            }
+            String excelFilename = "SBS损益表" + ".xls";
             JxlsManager jxls = new JxlsManager();
-            Map beansMap = new HashMap();
             beansMap.put("record6s", dataList6);
             beansMap.put("record5s", dataList5);
             beansMap.put("curcde", curcde);
             beansMap.put("expdat", expdat);
+            beansMap.put("name", name);
             beansMap.put("ctot6", ctot6);
+            beansMap.put("dtot5", dtot5);
             beansMap.put("jtot6", jtot6);
-            jxls.exportDataToXls(excelFilename, "/tmp.xls", beansMap);
+            beansMap.put("stot5", stot5);
+            jxls.exportDataToXls(excelFilename, "/acctab.xls", beansMap);
         } catch (Exception e) {
 
         }
@@ -104,6 +119,14 @@ public class AcctabAction implements Serializable {
 
     public void setDataExchangeService(DataExchangeService dataExchangeService) {
         this.dataExchangeService = dataExchangeService;
+    }
+
+    public boolean isExport() {
+        return isExport;
+    }
+
+    public void setExport(boolean isExport) {
+        this.isExport = isExport;
     }
 
     public String getCurcde() {
