@@ -70,10 +70,14 @@
                                              action="#{acctabAction.onAllQry}" ajax="true"
                                              update="msgs,dt,export">
                             </p:commandButton>
-                            <p:commandButton style="width:110px;" id="export" value="损益表导出"
+                            <!--<p:commandButton style="width:110px;" id="export" value="损益表导出"
                                              action="#{acctabAction.onExpExcel}" ajax="false"
                                              disabled="#{!acctabAction.export}"
                                              update="msgs,dt">
+                            </p:commandButton>-->
+                            <p:commandButton style="width:110px;" id="export" value="损益表导出"
+                                             action="#{acctabAction.onExpExcel}" ajax="false"
+                                             disabled="#{!acctabAction.export}" update="msgs,dt">
                             </p:commandButton>
                         </h:panelGrid>
                     </h:panelGrid>
