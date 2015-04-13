@@ -5,6 +5,7 @@ import gateway.sbs.core.domain.SOFForm;
 import gateway.sbs.txn.model.form.ac.T623;
 import gateway.sbs.txn.model.msg.M8621;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,35 +100,40 @@ public class AcctabAction implements Serializable {
             font.setFontHeightInPoints((short) 10);             //×ÖÌå´óÐ¡
             font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);      //´ÖÌå
 
+            HSSFFont fontColoer = wb.createFont();
+            fontColoer.setColor(HSSFColor.RED.index);           //¸ºÊýºìÉ«
+
             HSSFCellStyle styleHeader = wb.createCellStyle();    //headerÉèÖÃ
             styleHeader.setAlignment(HSSFCellStyle.ALIGN_CENTER);//¾ÓÖÐ
             styleHeader.setFont(font);
-            styleHeader.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
-            styleHeader.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
-            styleHeader.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ
-            styleHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
+            //styleHeader.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
+            //styleHeader.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
+            //styleHeader.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ
+            //styleHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
 
             HSSFCellStyle styleLeft = wb.createCellStyle();
             styleLeft.setAlignment(HSSFCellStyle.ALIGN_LEFT);  //¾Ó×ó
-            styleLeft.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
-            styleLeft.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
-            styleLeft.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
-            styleLeft.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
+            //styleLeft.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
+            //styleLeft.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
+            //styleLeft.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
+            //styleLeft.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
 
             HSSFCellStyle styleCenter = wb.createCellStyle();
             styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //¾ÓÖÐ
-            styleCenter.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
-            styleCenter.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
-            styleCenter.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
-            styleCenter.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
+            //styleCenter.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
+            //styleCenter.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
+            //styleCenter.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
+            //styleCenter.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
 
             HSSFCellStyle styleRight = wb.createCellStyle();
             styleRight.setAlignment(HSSFCellStyle.ALIGN_RIGHT);    //¾ÓÓÒ
-            styleRight.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
-            styleRight.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
-            styleRight.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
-            styleRight.setBorderBottom(HSSFCellStyle.BORDER_THIN); //ÏÂ
-
+            //styleRight.setBorderLeft(HSSFCellStyle.BORDER_THIN);   //×ó±ß¿ò
+            //styleRight.setBorderRight(HSSFCellStyle.BORDER_THIN);   //ÓÒ±ß¿ò
+            //styleRight.setBorderTop(HSSFCellStyle.BORDER_THIN);    //ÉÏ±ß¿ò
+            //styleRight.setBorderBottom(HSSFCellStyle.BORDER_THkIN); //ÏÂ
+            HSSFCellStyle styleRightColoer = wb.createCellStyle();
+            styleRightColoer.setAlignment(HSSFCellStyle.ALIGN_RIGHT);    //¾ÓÓÒ
+            styleRightColoer.setFont(fontColoer);
             //µÚÒ»ÐÐ
             row = sheet.createRow((int) 0);
             for (int i = 0; i < 1; i++) {
@@ -188,7 +194,7 @@ public class AcctabAction implements Serializable {
                     cell.setCellStyle(styleHeader);
                 }
             }
-
+            //µÚ4ÐÐ
             row = sheet.createRow((int) 3);
             for (int i = 0; i < excelHeader4.length; i++) {
                 HSSFCell cell = row.createCell(i);
@@ -196,7 +202,7 @@ public class AcctabAction implements Serializable {
                 cell.setCellStyle(styleHeader);
                 sheet.autoSizeColumn(i);
             }
-
+            //ÕýÎÄ²¿·Ö
             for (int i = 0; i < dataList6.size(); i++) {
                 row = sheet.createRow(i + 4);
                 T623.Bean bean = dataList6.get(i);
@@ -209,13 +215,20 @@ public class AcctabAction implements Serializable {
                     sheet.getRow(i + 4).getCell(0).setCellStyle(styleRight);
                     sheet.setColumnWidth(0, 3000);
                 }
+
                 row.createCell(1).setCellValue(bean.getPLNAME());
                 sheet.getRow(i + 4).getCell(1).setCellStyle(styleLeft);
                 sheet.setColumnWidth(1, 8000);
 
-                row.createCell(2).setCellValue(bean.getPLAMNT().toString());
-                sheet.getRow(i + 4).getCell(2).setCellStyle(styleRight);
-                sheet.setColumnWidth(2, 6000);
+                if (bean.getPLAMNT().compareTo(BigDecimal.ZERO)==-1){
+                    row.createCell(2).setCellValue(bean.getPLAMNT().toString());
+                    sheet.getRow(i + 4).getCell(2).setCellStyle(styleRightColoer);
+                    sheet.setColumnWidth(2, 6000);
+                }else {
+                    row.createCell(2).setCellValue(bean.getPLAMNT().toString());
+                    sheet.getRow(i + 4).getCell(2).setCellStyle(styleRight);
+                    sheet.setColumnWidth(2, 6000);
+                }
             }
 
             for (int i = 0; i < dataList5.size(); i++) {
@@ -239,9 +252,16 @@ public class AcctabAction implements Serializable {
                     sheet.getRow(i + 4).getCell(4).setCellStyle(styleLeft);
                     sheet.setColumnWidth(4, 8000);
 
-                    row.createCell(5).setCellValue(bean.getPLAMNT().toString());
-                    sheet.getRow(i + 4).getCell(5).setCellStyle(styleRight);
-                    sheet.setColumnWidth(5, 6000);
+                    if (bean.getPLAMNT().compareTo(BigDecimal.ZERO)==-1){
+                        row.createCell(5).setCellValue(bean.getPLAMNT().toString());
+                        sheet.getRow(i + 4).getCell(5).setCellStyle(styleRightColoer);
+                        sheet.setColumnWidth(5, 6000);
+                    }else {
+                        row.createCell(5).setCellValue(bean.getPLAMNT().toString());
+                        sheet.getRow(i + 4).getCell(5).setCellStyle(styleRight);
+                        sheet.setColumnWidth(5, 6000);
+                    }
+
                 } else {
                     row = sheet.getRow(i + 4);
                     T623.Bean bean = dataList5.get(i);
@@ -258,9 +278,16 @@ public class AcctabAction implements Serializable {
                     sheet.getRow(i + 4).getCell(4).setCellStyle(styleLeft);
                     sheet.setColumnWidth(4, 8000);
 
-                    row.createCell(5).setCellValue(bean.getPLAMNT().toString());
-                    sheet.getRow(i + 4).getCell(5).setCellStyle(styleRight);
-                    sheet.setColumnWidth(5, 6000);
+                    if (bean.getPLAMNT().compareTo(BigDecimal.ZERO)==-1){
+                        row.createCell(5).setCellValue(bean.getPLAMNT().toString());
+                        sheet.getRow(i + 4).getCell(5).setCellStyle(styleRightColoer);
+                        sheet.setColumnWidth(5, 6000);
+                    }else {
+                        row.createCell(5).setCellValue(bean.getPLAMNT().toString());
+                        sheet.getRow(i + 4).getCell(5).setCellStyle(styleRight);
+                        sheet.setColumnWidth(5, 6000);
+                    }
+
                 }
             }
 
