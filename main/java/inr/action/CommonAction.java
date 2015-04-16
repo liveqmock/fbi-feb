@@ -124,7 +124,8 @@ public class CommonAction implements Serializable {
                 ///String bizdate = sdf.format(systemDate); //格式化业务日期
                 maa41 = new Maa41("8010" + bean.getAcntCodeOne(), "8010" + bean.getAcntCodeTwo(), amt);
                 maa41.setTXNDAT(bizdate);
-                maa41.setPASSNO("bi" + bizdate + bean.getIdOne());//当前日期+print表的idone
+                maa41.setREMARK(bean.getSerialnum1());
+                maa41.setPASSNO("BI1" + bean.getSerialnum1());//票据编号
                 List<SOFForm> formList = dataExchangeService.callSbsTxn("aa41", maa41);
                 if (formList != null && !formList.isEmpty()) {
                     String formcode = formList.get(0).getFormHeader().getFormCode();
@@ -180,7 +181,7 @@ public class CommonAction implements Serializable {
             if (!"".equals(maa06.getIPTAC2())){
                 maa06.setIPTAC2("8010" + maa06.getIPTAC2());
             }
-
+            maa06.setTXNDAT(bizdate);
             SOFForm form = dataExchangeService.callSbsTxn("aa06", maa06).get(0);
             String formcode = form.getFormHeader().getFormCode();
             t426List = new ArrayList<>();

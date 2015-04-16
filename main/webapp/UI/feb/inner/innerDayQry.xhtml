@@ -65,7 +65,7 @@
                                      columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,
                                   col-label2, col-input2, col-label2, col-input2">
                             <h:outputLabel value="交易日期:" style="font-weight: bold"/>
-                            <p:inputText id="txndat" value="#{commonAction.maa06.TXNDAT}" style="width: 152px;"
+                            <p:inputText id="txndat" value="#{commonAction.bizdate}" style="width: 152px;"
                                          onkeydown="KeyDown()" onfocus="this.select()"
                                          required="true" requiredMessage="日期不能为空 "
                                          onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
@@ -84,12 +84,9 @@
                             <h:outputLabel value="转入帐户:" style="font-weight: bold"/>
                             <p:inputText id="iptac2" size="25" value="#{commonAction.maa06.IPTAC2}"
                                          onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <h:outputLabel value="起始笔数:" style="font-weight: bold"/>
-                            <p:inputText id="cusw1" size="25" value="#{commonAction.maa06.CUSPW1}"
-                                         onkeydown="KeyDown()" onfocus="this.select()"/>
-                            <!--<h:outputLabel value="分类码:" style="font-weight: bold"/>
-                                                        <p:inputText id="anacde" size="25" value="#{commonAction.maa06.ANACDE}"
-                                                                     onkeydown="KeyDown()" onfocus="this.select()"/>-->
+                            <h:outputLabel value="分类码:" style="font-weight: bold"/>
+                                <p:inputText id="anacde" size="25" value="#{commonAction.maa06.ANACDE}"
+                            onkeydown="KeyDown()" onfocus="this.select()"/>
                         </h:panelGrid>
                         <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
                             <p:commandButton style="width:130px;" value="特转记账查询"
@@ -115,18 +112,20 @@
                              paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">
 
-                    <!--<p:column sortBy="#{record.FBTIDX}" style="text-align:center">
+                    <p:column sortBy="#{record.RETAUX}" style="text-align:center">
                         <f:facet name="header">
-                            <h:outputText value="流水号"/>
+                            <h:outputText value="凭证编号"/>
                         </f:facet>
-                        <h:outputText value="#{record.FBTIDX}"/>
+                        <h:outputText value="#{record.RETAUX}"/>
                     </p:column>
-                    <p:column sortBy="#{record.TERMNM}" style="text-align:center">
+                    <p:column style="text-align:right">
                         <f:facet name="header">
-                            <h:outputText value="渠道"/>
+                            <h:outputText value="交易金额"/>
                         </f:facet>
-                        <h:outputText value="#{record.TERMNM}"/>
-                    </p:column>-->
+                        <h:outputText value="#{record.TXNAMT}">
+                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                        </h:outputText>
+                    </p:column>
                     <p:column sortBy="#{record.CUSACT}" style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="付款人账号"/>
@@ -153,14 +152,7 @@
                         </f:facet>
                         <h:outputText value="#{record.BENNAM}"/>
                     </p:column>
-                    <p:column style="text-align:right">
-                        <f:facet name="header">
-                            <h:outputText value="交易金额"/>
-                        </f:facet>
-                        <h:outputText value="#{record.TXNAMT}">
-                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
-                        </h:outputText>
-                    </p:column>
+
                     <p:column style="text-align:center">
                         <f:facet name="header">
                             <h:outputText value="状态"/>
