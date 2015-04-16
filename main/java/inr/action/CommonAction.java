@@ -2,6 +2,9 @@ package inr.action;
 
 import feb.service.DataExchangeService;
 import gateway.sbs.core.domain.SOFForm;
+import gateway.sbs.txn.model.form.re.T462;
+import gateway.sbs.txn.model.msg.Maa05;
+import gateway.sbs.txn.model.msg.Maa06;
 import gateway.sbs.txn.model.msg.Maa41;
 import inr.bean.PrintBean;
 import inr.service.CommonService;
@@ -10,12 +13,16 @@ import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
 import pub.platform.MessageUtil;
 import pub.tools.SystemDate;
+import skyline.service.SkylineService;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,13 +43,24 @@ public class CommonAction implements Serializable {
     private List<PrintBean> vochers;
     private PrintBean selectedVocher;
 
+    private Maa05 maa05 = new Maa05();
+    private Maa06 maa06 = new Maa06();
+    private String fbtidx="";  //流水号
+    private T462 t462;
+    private List<T462.Bean> t426List = new ArrayList<>();
+    private List<SelectItem> entInnerPapItems;      // 内转查询状态
+    @ManagedProperty(value = "#{skylineService}")
+    private SkylineService skylineService;
     private Maa41 maa41;
     private List<PrintBean> dataList;
     private PrintBean[] selectedRecords;
     SystemDate systemDate = new SystemDate();
     private String bizdate = new SimpleDateFormat("yyyyMMdd").format(systemDate.getSysdate2());
 
-
+    @PostConstruct
+    public void init() {
+        entInnerPapItems = skylineService.getEnuSelectItemList("CTF-PAPSTS", false, false);
+    }
     /**
      * 导入到本地数据库
      */
@@ -153,6 +171,51 @@ public class CommonAction implements Serializable {
         }
     }
 
+    //内装记账撤销查询
+    public String onQryInnvch(){
+        try {
+            if (!"".equals(maa06.getIPTAC1())){
+                maa06.setIPTAC1("8010" + maa06.getIPTAC1());
+            }
+            if (!"".equals(maa06.getIPTAC2())){
+                maa06.setIPTAC2("8010" + maa06.getIPTAC2());
+            }
+
+            SOFForm form = dataExchangeService.callSbsTxn("aa06", maa06).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            t426List = new ArrayList<>();
+            if ("T462".equals(formcode)) {
+                t462 = (T462) form.getFormBody();
+                t426List.addAll(t462.getBeanList());
+            } else {
+                logger.error(formcode);
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("查询失败", e);
+            MessageUtil.addError("查询失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
+    //撤销记账
+    public String onRevokeVch(T462.Bean bean){
+        try {
+            maa05.setFBTIDX(bean.getFBTIDX());
+            SOFForm form = dataExchangeService.callSbsTxn("aa05", maa05).get(0);
+            String formcode = form.getFormHeader().getFormCode();
+            if ("W001".equals(formcode)) {
+                MessageUtil.addInfoWithClientID("msgs", formcode);
+                t426List.remove(bean);
+            } else {
+                logger.error(formcode);
+                MessageUtil.addErrorWithClientID("msgs", formcode);
+            }
+        } catch (Exception e) {
+            logger.error("撤销失败", e);
+            MessageUtil.addError("撤销失败." + (e.getMessage() == null ? "" : e.getMessage()));
+        }
+        return null;
+    }
     // = = = = = = = = = = = = = get set = = = = = =  = = = = =  =
 
     public String getDysdate() {
@@ -235,6 +298,61 @@ public class CommonAction implements Serializable {
         return bizdate;
     }
 
+    public Maa06 getMaa06() {
+        return maa06;
+    }
+
+    public void setMaa06(Maa06 maa06) {
+        this.maa06 = maa06;
+    }
+
+    public List<T462.Bean> getT426List() {
+        return t426List;
+    }
+
+    public void setT426List(List<T462.Bean> t426List) {
+        this.t426List = t426List;
+    }
+
+    public String getFbtidx() {
+        return fbtidx;
+    }
+
+    public void setFbtidx(String fbtidx) {
+        this.fbtidx = fbtidx;
+    }
+
+    public List<SelectItem> getEntInnerPapItems() {
+        return entInnerPapItems;
+    }
+
+    public void setEntInnerPapItems(List<SelectItem> entInnerPapItems) {
+        this.entInnerPapItems = entInnerPapItems;
+    }
+
+    public SkylineService getSkylineService() {
+        return skylineService;
+    }
+
+    public void setSkylineService(SkylineService skylineService) {
+        this.skylineService = skylineService;
+    }
+
+    public Maa05 getMaa05() {
+        return maa05;
+    }
+
+    public void setMaa05(Maa05 maa05) {
+        this.maa05 = maa05;
+    }
+
+    public T462 getT462() {
+        return t462;
+    }
+
+    public void setT462(T462 t462) {
+        this.t462 = t462;
+    }
 }
 
 

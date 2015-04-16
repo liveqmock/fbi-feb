@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/ui.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .col-95 {
+                width: 95%;
+            }
+
+            .col-5 {
+                width: 5%;
+            }
+
+            .col-label {
+                text-align: right;
+            }
+
+            .col-input {
+                width: 150px;
+                text-align: left;
+            }
+
+            .col-label2 {
+                width: 70px;
+                text-align: right;
+            }
+
+            .col-input2 {
+                width: 130px;
+                text-align: left;
+            }
+        </style>
+
+        <script language="JavaScript" type="text/JavaScript">
+            function KeyDown() {
+                if (event.keyCode == 13) {
+                    if (event.srcElement.id == 'inputform:cusidt') {
+                        //document.forms['inputform']['inputform:query'].click();
+                    } else {
+                        event.keyCode = 9;
+                    }
+                }
+            }
+
+
+
+
+
+
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="entry">
+            <h:form id="inputform">
+                <p:focus for="txndat"/>
+                <p:messages id="msgs" showDetail="true" showSummary="false"/>
+                <p:fieldset id="panel">
+                    <h:panelGrid columns="2" cellspacing="5" columnClasses="col-95,col-5">
+                        <h:panelGrid width="95%" style="padding-top:5px;padding-bottom:2px;" columns="6" cellspacing="2"
+                                     columnClasses="col-label2, col-input2, col-label2, col-input2, col-label2, col-input2 ,
+                                  col-label2, col-input2, col-label2, col-input2">
+                            <h:outputLabel value="交易日期:" style="font-weight: bold"/>
+                            <p:inputText id="txndat" value="#{commonAction.maa06.TXNDAT}" style="width: 152px;"
+                                         onkeydown="KeyDown()" onfocus="this.select()"
+                                         required="true" requiredMessage="日期不能为空 "
+                                         onclick="WdatePicker({dateFmt:'yyyyMMdd'})"/>
+                            <h:outputLabel value="状态:" style="font-weight: bold"/>
+                            <p:selectOneMenu style="width: 155px;"
+                                             id="papsts"
+                                             value="#{commonAction.maa06.PAPSTS}">
+                                <f:selectItems value="#{commonAction.entInnerPapItems}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="交易金额:" style="font-weight: bold"/>
+                            <p:inputText id="txnamt" size="25" value="#{commonAction.maa06.TXNAMT}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="转出帐户:" style="font-weight: bold"/>
+                            <p:inputText id="iptac1" size="25" value="#{commonAction.maa06.IPTAC1}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="转入帐户:" style="font-weight: bold"/>
+                            <p:inputText id="iptac2" size="25" value="#{commonAction.maa06.IPTAC2}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <h:outputLabel value="起始笔数:" style="font-weight: bold"/>
+                            <p:inputText id="cusw1" size="25" value="#{commonAction.maa06.CUSPW1}"
+                                         onkeydown="KeyDown()" onfocus="this.select()"/>
+                            <!--<h:outputLabel value="分类码:" style="font-weight: bold"/>
+                                                        <p:inputText id="anacde" size="25" value="#{commonAction.maa06.ANACDE}"
+                                                                     onkeydown="KeyDown()" onfocus="this.select()"/>-->
+                        </h:panelGrid>
+                        <h:panelGrid id="btns" columns="1" cellspacing="5" cellpadding="0">
+                            <p:commandButton style="width:130px;" value="特转记账查询"
+                                             action="#{commonAction.onQryInnvch()}" ajax="true"
+                                             update="msgs,dt">
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br/>
+                <p:ajaxStatus style="height:18px;text-align:center">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/ajaxloadingbar.gif"/>
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value=""/>
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:dataTable id="dt" height="200"
+                             value="#{commonAction.t426List}" var="record"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="100,50,15,10,5"
+                             emptyMessage="数据记录为空...">
+
+                    <!--<p:column sortBy="#{record.FBTIDX}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="流水号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.FBTIDX}"/>
+                    </p:column>
+                    <p:column sortBy="#{record.TERMNM}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="渠道"/>
+                        </f:facet>
+                        <h:outputText value="#{record.TERMNM}"/>
+                    </p:column>-->
+                    <p:column sortBy="#{record.CUSACT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="付款人账号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.CUSACT}"/>
+                    </p:column>
+
+                    <p:column style="text-align:left">
+                        <f:facet name="header">
+                            <h:outputText value="付款人名称"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ACTNAM}"/>
+                    </p:column>
+                    <p:column sortBy="#{record.CUSACT}" style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="收款人账号"/>
+                        </f:facet>
+                        <h:outputText value="#{record.BENACT}"/>
+                    </p:column>
+
+                    <p:column style="text-align:left">
+                        <f:facet name="header">
+                            <h:outputText value="收款人名称"/>
+                        </f:facet>
+                        <h:outputText value="#{record.BENNAM}"/>
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <f:facet name="header">
+                            <h:outputText value="交易金额"/>
+                        </f:facet>
+                        <h:outputText value="#{record.TXNAMT}">
+                            <f:convertNumber pattern="###,###,###,###,##0.00"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="状态"/>
+                        </f:facet>
+                        <h:outputText value="#{record.PRCSTS}"/>
+                    </p:column>
+                    <p:column sortBy="#{record.ORDTIM}"  style="text-align:center">
+                        <f:facet name="header">
+                            <h:outputText value="交易时间"/>
+                        </f:facet>
+                        <h:outputText value="#{record.ORDTIM}"/>
+                    </p:column>
+                    <p:column headerText="撤销" style="text-align:center">
+                        <p:commandLink value="撤销" ajax="true" action="#{commonAction.onRevokeVch(record)}"
+                                       style="color: blue" update=":inputform:msgs,dt">
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
