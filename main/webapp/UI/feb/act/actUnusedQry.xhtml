@@ -94,7 +94,8 @@
                              value="#{actUnusedAction.dataList}" var="record"
                              selection="#{actUnusedAction.selectedRecords}"
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks}
-                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    {NextPageLink} {LastPageLink} {RowsPerPageDropdown}
+                                    总笔数:#{actUnusedAction.t122.totcnt} 当前笔数:#{actUnusedAction.dataList.size()}"
                              paginator="true" paginatorPosition="bottom" rows="15"
                              rowKey="#{record.ACTNUM}"  rowsPerPageTemplate="100,50,15,10,5"
                              emptyMessage="数据记录为空...">

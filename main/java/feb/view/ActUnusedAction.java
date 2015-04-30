@@ -60,7 +60,17 @@ public class ActUnusedAction implements Serializable {
             dataList = new ArrayList<>();
             if ("T122".equals(formcode)) {
                 t122 = (T122) form.getFormBody();
-                dataList.addAll(t122.getBeanList());
+                int i = Integer.parseInt(m8125.getBEGNUM());
+                while (i<Integer.parseInt(t122.getTotcnt())){
+                    m8125.setBEGNUM(i+"");
+                    SOFForm form2 = dataExchangeService.callSbsTxn("8125", m8125).get(0);
+                    String formcode2 = form2.getFormHeader().getFormCode();
+                    if ("T122".equals(formcode2)){
+                        t122 = (T122)form2.getFormBody();
+                        dataList.addAll(t122.getBeanList());
+                    }
+                    i+=Integer.parseInt(t122.getCurcnt());
+                }
             } else {
                 logger.error(formcode);
                 MessageUtil.addErrorWithClientID("msgs", formcode);
