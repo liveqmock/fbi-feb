@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pub.platform.MessageUtil;
 import pub.tools.JxlsManager;
+import pub.tools.SystemDate;
 import skyline.service.SkylineService;
 
 import javax.annotation.PostConstruct;
@@ -154,10 +155,12 @@ public class ActUnusedAction implements Serializable {
                 MessageUtil.addWarn("未查询数据！");
                 return null;
             }
+            String expdat = new SystemDate().getSysdate1();
             Map beansMap = new HashMap();
             String excelFilename = "久悬户清单" + ".xls";
             JxlsManager jxls = new JxlsManager();
             beansMap.put("records", dataList);
+            beansMap.put("expdat",expdat);
             jxls.exportDataToXls(excelFilename, "/actunCls.xls", beansMap);
         } catch (Exception e) {
 
